@@ -3,86 +3,29 @@
 @section('content')
 
 <div class="row-fluid">
-	<div class="span8">
+	<div class="span8" id="onsite-table">
 
-          <h4>Attendee</h4>
-          <table class="table table-condensed dataTable attendeeTable" id="onsite">
-
-			    <thead>
-			        <tr>
-			        	<?php
-				        	if(!isset($colclass)){
-				        		$colclass = array();
-				        	}
-			        		$hid = 0;
-			        	?>
-			        	@foreach($heads as $head)
-			        		<th 
-			        			@if(isset($colclass[$hid]))
-			        				class="{{$colclass[$hid]}}"
-			        			@endif
-			        			<?php $hid++ ?>
-			        		>
-			        			{{ $head }}
-			        		</th>
-			        	@endforeach
-			        </tr>
-
-
-			    </thead>
-
-				<?php
-					$form = new Formly();
-				?>
-
-		    	@if($searchinput)
-				    <thead id="searchinput">
-					    <tr>
-				    	@foreach($searchinput as $in)
-				    		@if($in)
-				    			@if($in == 'select_all')
-				    				<td>{{ $form->checkbox('select_all','','',false,array('id'=>'select_all')) }}</td>
-				    			@else
-					        		<td><input type="text" name="search_{{$in}}" id="search_{{$in}}" value="Search {{$in}}" class="search_init" /></td>
-				    			@endif
-				    		@else
-				        		<td>&nbsp;</td>
-				    		@endif
-				    	@endforeach
-					    </tr>
-				    </thead>
-			    @endif
-
-             <tbody>
-             	<!-- will be replaced by ajax content -->
-             </tbody>
-
-          </table>
-
-          <h4>Visitor</h4>
-          <table class="table table-condensed dataTable visitorTable" id="onsite">
+          <table class="table onsite table-condensed dataTable attendeeTable" id="onsite">
 
 			    <thead>
 			        <tr>
-			        	<?php
-				        	if(!isset($colclass)){
-				        		$colclass = array();
-				        	}
-			        		$hid = 0;
-			        	?>
 			        	@foreach($heads as $head)
-			        		<th 
-			        			@if(isset($colclass[$hid]))
-			        				class="{{$colclass[$hid]}}"
-			        			@endif
-			        			<?php $hid++ ?>
-			        		>
+			        		@if(is_array($head))
+			        			<th 
+			        				@foreach($head[1] as $key=>$val)
+			        					{{ $key }}="{{ $val }}"
+
+			        				@endforeach
+			        			>
+			        			{{ $head[0] }}
+			        			</th>
+			        		@else
+			        		<th>
 			        			{{ $head }}
 			        		</th>
+			        		@endif
 			        	@endforeach
 			        </tr>
-
-
 			    </thead>
 
 				<?php
@@ -177,6 +120,21 @@
 	</div>
 </div>
 
+<div id="viewformModal" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	
+	<div class="modal-header">
+		<button type="button" id="removeviewform" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<h3 id="myModalLabel">Form Submission</h3>
+		
+	</div>
+	<div class="modal-body" id="loaddata">
+		
+	</div>
+	
+	
+
+</div>
+
 
 <script type="text/javascript">
 
@@ -254,7 +212,7 @@
 				"oLanguage": { "sSearch": "Search "},
 				"sPaginationType": "full_numbers",
 				"iDisplayLength": 5,
-				"sDom": 'tr',
+				"sDom": 'lrpt',
 				"aoColumnDefs": [ 
 				    { "bSortable": false, "aTargets": [ {{ $disablesort }} ] }
 				 ],
@@ -759,13 +717,16 @@
 
 			if ($(e.target).is('.pop')) {
 				var _id = e.target.id;
-				var _rel = $(e.target).attr('rel');
+				if($(e.target).is('.attendee')){
+					var _rel = 'onsite/attendee';
+				}else if($(e.target).is('.pop')){
+					var _rel = 'onsite/visitor';
+				}
 
-				$.fancybox({
-					type:'iframe',
-					href: '{{ URL::base() }}' + '/' + _rel + '/' + _id,
-					autosize: true
-				});
+				var url = '{{ URL::base() }}' + '/' + _rel + '/' + _id;
+
+			    $("#viewformModal .modal-body").load(url);
+				$('#viewformModal').modal();
 
 		   	}
 
