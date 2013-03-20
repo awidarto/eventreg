@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="row-fluid">
-	<div class="span8" id="onsite-table">
+	<div class="span10" id="onsite-table">
 
           <table class="table onsite table-condensed dataTable attendeeTable" id="onsite">
 
@@ -57,13 +57,14 @@
           </table>
 
 	</div>
-	<div class="span4">
+	<div class="span2">
 
 		<div class="metro row-fluid">
 			<div class="metro-sections span12">
 
-			   <div id="section2" class="metro-section tile-span-2">
+			   <div id="section2" class="metro-section tile-span-1">
 			      <h2>Quick Access</h2>
+				<!--
 			      <a class="tile app imagetext bg-color-greenDark" href="{{ URL::to('attendee')}}">
 			         <div class="image-wrapper">
 			         	{{ HTML::image('content/img/My Apps.png') }}
@@ -72,6 +73,7 @@
 			            <div class="text">Attendees</div>
 			         </div>
 			      </a>
+				-->
 
 			      <a class="tile app bg-color-blueDark" href="{{ URL::to('attendee/add') }}">
 			         <div class="image-wrapper">
@@ -79,6 +81,7 @@
 			         </div>
 			         <span class="app-label">Register New Attendee</span>
 			      </a>
+				<!--
 
 			      <a class="tile app imagetext bg-color-greenDark" href="{{ URL::to('visitor')}}">
 			         <div class="image-wrapper">
@@ -88,7 +91,7 @@
 			            <div class="text">Visitors</div>
 			         </div>
 			      </a>
-
+				-->
 			      <a class="tile app bg-color-blueDark" href="{{ URL::to('visitor/add') }}">
 			         <div class="image-wrapper">
 			            <span class="icon icon-user-2"></span>
@@ -96,6 +99,7 @@
 			         <span class="app-label">Register New Visitor</span>
 			      </a>
 
+				<!--
 			      <a class="tile app imagetext bg-color-greenDark" href="{{ URL::to('official')}}">
 			         <div class="image-wrapper">
 			         	{{ HTML::image('content/img/My Apps.png') }}
@@ -104,6 +108,7 @@
 			            <div class="text">Officials</div>
 			         </div>
 			      </a>
+				-->
 
 			      <a class="tile app bg-color-blueDark" href="{{ URL::to('official/add') }}">
 			         <div class="image-wrapper">
