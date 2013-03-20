@@ -121,6 +121,11 @@ class Model {
 		return $find['value'];
 	}
 
+	public function distinct($key){
+		$result = $this->_db->command(array('distinct'=>$this->_collection,'key'=>$key));
+		return $result['values'];
+	}
+
 
 	public function count($query = array())
 	{

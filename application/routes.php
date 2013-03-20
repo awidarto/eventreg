@@ -110,6 +110,14 @@ Route::get('hashme/(:any)',function($mypass){
 	print Hash::make($mypass);
 });
 
+Route::get('companylist',function(){
+    $attendee = new Attendee();
+
+    $companies = $attendee->distinct('country');
+
+    print_r($companies);
+});
+
 Route::get('normalize',array('uses'=>'attendee@updateField'));
 Route::get('normalTotal',array('uses'=>'attendee@normalTotal'));
 
