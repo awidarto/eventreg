@@ -970,10 +970,10 @@ class Import_Controller extends Base_Controller {
 						
 
 					
-					$attendeeDB = new Worker();
+					//$attendeeDB = new Worker();
 						
 					
-					if($obj = $attendeeDB->insert($tocommit)){
+					if($obj = $attendee->insert($tocommit)){
 
 						//if($data['sendattendee'] == 'Yes'){
 							// send message to each attendee

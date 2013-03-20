@@ -113,7 +113,7 @@ Route::get('hashme/(:any)',function($mypass){
 Route::get('companylist',function(){
     $attendee = new Attendee();
 
-    $companies = $attendee->distinct('country');
+    $companies = $attendee->distinct('company');
 
     print_r($companies);
 });
