@@ -27,13 +27,13 @@ return array(
 			'OC'=>'Other Complimentary'
 		),
 		'galadinner'=>1,
-		'reg_admin_email'=>'conventionipa2013@dyandra.com',
+		'reg_admin_email'=>'taufiq@kickstartlab.com',
 		'reg_admin_name'=>'37th IPA Convex Register',
 
-		'reg_dyandra_admin_email'=>'conventionipa2013@dyandra.com',
+		'reg_dyandra_admin_email'=>'taufiq@kickstartlab.com',
 		'reg_dyandra_admin_name'=>'37th IPA Convex Register',
 		
-		'reg_finance_email'=>'conventionipa2013@dyandra.com',
+		'reg_finance_email'=>'taufiq@kickstartlab.com',
 		'reg_finance_name'=>'37th IPA Convex Finance',
 		
 
@@ -368,15 +368,94 @@ return array(
 
 
 		'exhibitor_map'=>array(
+			'inv_letter'=>'inv_letter',
+			'salutation'=>'salutation',
+			'firstname'=>'firstname',
+			'lastname'=>'lastname',
+			'position_division'=>'position',
+			'email'=>'email',
+			'mobile'=>'mobile',
+			'company'=>'company',
+			'companys_npwp'=>'companys_npwp',
+			'address_1'=>'address_1',
+			'address_2'=>'address_2',
+			'city'=>'city',
+			'zip'=>'zip',
+			'country'=>'country',
 
-			'first_name'=>'firstname',
-			'last_name'=>'lastname',
+			'company_country_code'=>'companyphonecountry',
+			'company_area_code'=>'companyphonearea',
+			'phone'=>'companyphone',
+
+			'fax_country_code'=>'companyfaxcountry',
+			'fax_area_code'=>'companyfaxarea',
+			'fax'=>'companyfax',
+
+			'invoice_address_conv'=>'invoice_address_conv',
+			'registertype'=>'regtype',
+			'galadinner'=>'attenddinner',
+			'golf'=>'golf'
 		),
 
 		'exhibitor_template'=>array(
 
+			'address'=> '',
+			'address_1'=> '',
+			'address_2'=> '',
+			'addressInvoice'=> '',
+			'addressInvoice_1'=> '',
+			'addressInvoice_2'=> '',
+			'invoice_address_conv'=>'',
+			'attenddinner'=> '',
+			'city'=> '',
+			'cityInvoice'=> '',
+			'company'=> '',
+			'companyInvoice'=> '',
+
+
+			'companyfaxcountry'=> '',
+			'companyfaxarea'=> '',
+			'companyfax'=> '',
+
+			'companyphonecountry'=> '',
+			'companyphonearea'=> '',
+			'companyphone'=> '',
+
+
+			'companyphoneInvoiceCountry'=> '',
+			'companyphoneInvoiceArea'=> '',
+			'companyphoneInvoice'=> '',
+
+
+			'companyfaxInvoiceCountry'=> '',
+			'companyfaxInvoiceArea'=> '',
+			'companyfaxInvoice'=> '',
+
+			'confirmation'=> 'none',
+			'country'=> '',
+			'countryInvoice'=> '',
+			'email'=> '',
 			'firstname'=> '',
+			'golf'=> '',
+			'golfSequence'=> 0,
 			'lastname'=> '',
+			'mobile'=> '',
+			'npwp'=> '',
+			'npwpInvoice'=> '',
+			'pass'=> '',
+			'golfPaymentStatus'=> 'unpaid',
+			'conventionPaymentStatus'=> 'unpaid',
+			'paymentStatus'=>'',
+			'position'=> '',
+			'registrationnumber'=> '',
+			'regtype'=> '',
+			'role'=> 'attendee',
+			'salutation'=> '',
+			'zip'=> '',
+			'zipInvoice'=> ''
+			//normalize
+			
+			
 
 		),
 
@@ -393,6 +472,99 @@ return array(
 			'no'=>'no',
 			'first_name'=>'first_name',
 			'last_name'=>'last_name',
+		),
+
+
+		'exhibitor_map'=>array(
+			'inv_letter'=>'inv_letter',
+			'salutation'=>'salutation',
+			'firstname'=>'firstname',
+			'lastname'=>'lastname',
+			'position_division'=>'position',
+			'email'=>'email',
+			'mobile'=>'mobile',
+			'company'=>'company',
+			'companys_npwp'=>'companys_npwp',
+			'address_1'=>'address_1',
+			'address_2'=>'address_2',
+			'city'=>'city',
+			'zip'=>'zip',
+			'country'=>'country',
+
+			'company_country_code'=>'companyphonecountry',
+			'company_area_code'=>'companyphonearea',
+			'phone'=>'companyphone',
+
+			'fax_country_code'=>'companyfaxcountry',
+			'fax_area_code'=>'companyfaxarea',
+			'fax'=>'companyfax',
+
+			'invoice_address_conv'=>'invoice_address_conv',
+			'registertype'=>'regtype',
+			'galadinner'=>'attenddinner',
+			'golf'=>'golf'
+		),
+
+		'exhibitor_template'=>array(
+
+			'address'=> '',
+			'address_1'=> '',
+			'address_2'=> '',
+			'addressInvoice'=> '',
+			'addressInvoice_1'=> '',
+			'addressInvoice_2'=> '',
+			'invoice_address_conv'=>'',
+			'attenddinner'=> '',
+			'city'=> '',
+			'cityInvoice'=> '',
+			'company'=> '',
+			'companyInvoice'=> '',
+
+
+			'companyfaxcountry'=> '',
+			'companyfaxarea'=> '',
+			'companyfax'=> '',
+
+			'companyphonecountry'=> '',
+			'companyphonearea'=> '',
+			'companyphone'=> '',
+
+
+			'companyphoneInvoiceCountry'=> '',
+			'companyphoneInvoiceArea'=> '',
+			'companyphoneInvoice'=> '',
+
+
+			'companyfaxInvoiceCountry'=> '',
+			'companyfaxInvoiceArea'=> '',
+			'companyfaxInvoice'=> '',
+
+			'confirmation'=> 'none',
+			'country'=> '',
+			'countryInvoice'=> '',
+			'email'=> '',
+			'firstname'=> '',
+			'golf'=> '',
+			'golfSequence'=> 0,
+			'lastname'=> '',
+			'mobile'=> '',
+			'npwp'=> '',
+			'npwpInvoice'=> '',
+			'pass'=> '',
+			'golfPaymentStatus'=> 'unpaid',
+			'conventionPaymentStatus'=> 'unpaid',
+			'paymentStatus'=>'',
+			'position'=> '',
+			'registrationnumber'=> '',
+			'regtype'=> '',
+			'role'=> 'attendee',
+			'salutation'=> '',
+			'zip'=> '',
+			'zipInvoice'=> ''
+			//normalize
+			
+			
+
 		),
 
 

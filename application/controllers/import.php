@@ -481,8 +481,9 @@ class Import_Controller extends Base_Controller {
 
 				if($override == true){
 
-					if($type == 'attendee'){
 
+					if($type == 'attendee'){
+						
 						$attobj = $attendee->get(array('email'=>$tocommit['email']));
 
 						$tocommit['lastUpdate'] = new MongoDate();
@@ -745,7 +746,8 @@ class Import_Controller extends Base_Controller {
 					}
 					
 				}else if($existing == false){
-
+					
+					
 					if($type == 'attendee'){
 
 						$tocommit['createdDate'] = new MongoDate();
@@ -963,7 +965,14 @@ class Import_Controller extends Base_Controller {
 
 					}
 
-					if($obj = $attendee->insert($tocommit)){
+					
+						
+
+					
+					$attendeeDB = new Worker();
+						
+					
+					if($obj = $attendeeDB->insert($tocommit)){
 
 						//if($data['sendattendee'] == 'Yes'){
 							// send message to each attendee
