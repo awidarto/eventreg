@@ -1,7 +1,7 @@
 <ul>
-        <li><a href="#step-1">
-              <small>Form</small>
-              <label class="stepNumber">1</label>
+        <li><a class="termscondition" href="#step-1">
+              <small class="termscondition">Terms & Condition</small>
+              
           </a></li>
         <li><a 
           <?php
@@ -10,7 +10,7 @@
           }?>
           href="#step-2">
               <small>Form</small>
-              <label class="stepNumber">2</label>
+              <label class="stepNumber">1</label>
           </a></li>
         <li><a 
           <?php
@@ -20,7 +20,7 @@
 
           href="#step-3">
               <small>Form</small>
-              <label class="stepNumber">3</label>
+              <label class="stepNumber">2</label>
            </a></li>
         <li><a
           <?php
@@ -29,7 +29,7 @@
           }?>
           href="#step-4">
               <small>Form</small>
-              <label class="stepNumber">4</label>
+              <label class="stepNumber">3</label>
           </a>
         </li>
         <li>
@@ -40,7 +40,7 @@
           }?>
           href="#step-5">
               <small>Form</small>
-              <label class="stepNumber">5</label>
+              <label class="stepNumber">4</label>
           </a>
         </li>
         <li>
@@ -51,7 +51,7 @@
           }?>
           href="#step-6">
               <small>Form</small>
-              <label class="stepNumber">6</label>
+              <label class="stepNumber">5</label>
           </a>
         </li>
         <li>
@@ -62,7 +62,7 @@
           }?>
           href="#step-7">
               <small>Form</small>
-              <label class="stepNumber">7</label>
+              <label class="stepNumber">6</label>
           </a>
         </li>
         <li>
@@ -73,7 +73,7 @@
           }?>
           href="#step-8">
               <small>Form</small>
-              <label class="stepNumber">8</label>
+              <label class="stepNumber">7</label>
           </a>
         </li>
         <li>
@@ -84,7 +84,7 @@
           }?>
           href="#step-9">
               <small>Form</small>
-              <label class="stepNumber">9</label>
+              <label class="stepNumber">8</label>
           </a>
         </li>
         <li>
@@ -95,7 +95,7 @@
           }?>
           href="#step-10">
               <small>Form</small>
-              <label class="stepNumber">10</label>
+              <label class="stepNumber">9</label>
           </a>
         </li>
         <li>
@@ -106,7 +106,7 @@
           }?>
           href="#step-11">
               <small>Form</small>
-              <label class="stepNumber">11</label>
+              <label class="stepNumber">10</label>
           </a>
         </li>
         <li>
@@ -117,7 +117,7 @@
           }?>
           href="#step-12">
               <small>Form</small>
-              <label class="stepNumber">12</label>
+              <label class="stepNumber">11</label>
           </a>
         </li>
         <li>
@@ -128,7 +128,7 @@
           }?>
           href="#step-13">
               <small>Form</small>
-              <label class="stepNumber">13</label>
+              <label class="stepNumber">12</label>
           </a>
         </li>
         <li>
@@ -136,7 +136,7 @@
           
           href="#step-14">
               <small>Form</small>
-              <label class="stepNumber">14</label>
+              <label class="stepNumber">13</label>
           </a>
         </li>
 

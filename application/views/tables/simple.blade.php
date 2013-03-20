@@ -224,6 +224,24 @@
 	</div>
 </div>
 
+<div id="exhibitorResendmail" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<h3 id="myModalLabel">Send Email</h3>
+	</div>
+	<div class="modal-body">
+
+		<label>Select email type to resend:</label>
+		{{ Form::select('resendemailtype', Config::get('eventreg.exhibitoremailtype'),null,array('id'=>'sendemailtypeexhibitor'))}}
+		<br/><span id="exhbitor_errormessagemodal" class="fontRed"></span><span id="exhbitor_successmessagemodal" class="fontGreen"></span>
+
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="submitemailexhibitor">Submit</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	</div>
+</div>
+
 
 <div id="viewformModal" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	
@@ -706,6 +724,51 @@
 		});
 
 
+		$('#submitemailexhibitor').click(function(){
+			var emailtype = $('#sendemailtypeexhibitor').val();
+			$('#submitemailexhibitor').text('Processing..');
+			$('#submitemailexhibitor').attr("disabled", true);	
+
+			<?php
+
+				$ajaxsendmailexhibitor = (isset($ajaxexhibitorsendmail))?$ajaxexhibitorsendmail:'/';
+			?>
+
+			$.post('{{ URL::to($ajaxsendmailexhibitor) }}',{'id':current_pay_id,'type': emailtype}, function(data) {
+				if(data.status == 'OK'){
+					//redraw table
+					
+					oTable.fnStandingRedraw();
+
+					//$('#paystatusindicator').html('Payment status updated');
+					$('#submitemailexhibitor').text('Success');
+					
+
+					$('#sendemailtypeexhibitor').val('exhibitor.regsuccess');
+					$('#exhbitor_errormessagemodal').text('');
+					$('#exhbitor_successmessagemodal').text(data.message);
+					
+					setTimeout(function() {
+					    $('#exhibitorResendmail').modal('toggle');
+					    $('#submitemailexhibitor').text('Sumbit');
+						$('#submitemailexhibitor').attr("disabled", false);	
+					}, 2000);
+					
+
+				}else if(data.status == 'NOTFOUND'){
+
+					//$('#paystatusindicator').html('Payment status updated');
+					$('#submitemailexhibitor').text('Sumbit');
+					$('#submitemailexhibitor').attr("disabled", false);	
+					$('#exhbitor_errormessagemodal').text(data.message);
+					$('#sendemailtypeexhibitor').val('exhibitor.regsuccess');
+
+					
+				}
+			},'json');
+		});
+
+
 		$('#confirmdelete').click(function(){
 
 			$.post('{{ URL::to($ajaxdel) }}',{'id':current_del_id}, function(data) {
@@ -821,6 +884,18 @@
 				$('#updateResendmail').modal();
 
 		   	}
+
+		   	if ($(e.target).is('.sendexhibitregistmail')) {
+				var _id = e.target.id;
+
+				current_pay_id = _id;
+				$('#exhbitor_errormessagemodal').text('');
+				$('#exhbitor_successmessagemodal').text('');
+				$('#exhibitorResendmail').modal();
+
+		   	}
+
+		   	
 
 		   	if ($(e.target).is('.viewform')) {
 				

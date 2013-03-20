@@ -89,6 +89,11 @@
       </div>
 
       {{$form->select('country','Country of Origin',Config::get('country.countries'),array('class'=>'span12'))}}
+      <br/>
+      <br/>
+      {{$form->checkbox('alsosendemail','Also send email to exhibitor','',false,array('class'=>'span12'))}}
+
+      
     </div>
 </div>
 

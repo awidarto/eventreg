@@ -27,13 +27,13 @@ return array(
 			'OC'=>'Other Complimentary'
 		),
 		'galadinner'=>1,
-		'reg_admin_email'=>'conventionipa2013@dyandra.com',
+		'reg_admin_email'=>'taufiq@kickstartlab.com',
 		'reg_admin_name'=>'37th IPA Convex Register',
 
-		'reg_dyandra_admin_email'=>'conventionipa2013@dyandra.com',
+		'reg_dyandra_admin_email'=>'taufiq@kickstartlab.com',
 		'reg_dyandra_admin_name'=>'37th IPA Convex Register',
 		
-		'reg_finance_email'=>'conventionipa2013@dyandra.com',
+		'reg_finance_email'=>'taufiq@kickstartlab.com',
 		'reg_finance_name'=>'37th IPA Convex Finance',
 		
 
@@ -46,6 +46,17 @@ return array(
 		
 		'resendemailtype'=>array(
 			'email.regsuccess'=>'Registration',
+			/*'reset'=>'Reset Password',
+			'golfinfo'=>'Golf Payment Information',
+			'convinfo'=>'Convention Payment Information',
+			'boothinfo'=>'Convention & Golf Payment Information',
+			'golfconfirm'=>'Golf Payment Confirmation',
+			'convconfirm'=>'Convention Payment Confirmation',
+			'boothconfirm'=>'Convention & Golf Payment Confirmation',*/
+		),
+
+		'exhibitoremailtype'=>array(
+			'exhibitor.regsuccess'=>'Registration',
 			/*'reset'=>'Reset Password',
 			'golfinfo'=>'Golf Payment Information',
 			'convinfo'=>'Convention Payment Information',

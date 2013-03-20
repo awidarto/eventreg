@@ -14,6 +14,9 @@ body{
 #logo{
 	width:130px;
 }
+#header{
+	margin-top: -50px;
+}
 #header h2,#header h3,#header h5{
 	margin:0;
 	padding:0;
@@ -75,6 +78,26 @@ hr{
 td.detailsitem{
 	color: #4a4a4a;
 	font-size: 10px;
+}
+#terms{
+	margin-bottom: 15px;
+}
+#signature-table{
+	position:relative;
+	margin-top: 10px;
+	
+}
+.namesignature{
+	
+	text-align:center;
+	margin-right:10px;
+	
+}
+.linesignature{
+	border-bottom:4px solid #000000;"
+}
+.brown{
+	color:#bfbfbf;
 }
 
 </style>
@@ -140,9 +163,11 @@ td.detailsitem{
 			<td rowspan="3" id="logo"><img src="http://www.ipaconvex.com/images/ipa-logo.jpg"></td>
 		</tr>
 		<tr colspan="15">
-			<td><h2>CONFIRMATION OF OPERATIONAL FORMS</h2>
-			<h3 >THE 37TH IPA CONVENTION AND EXHIBITION 2013</h3>
-			<h5>JAKARTA CONVENTION CENTER, 15-17 MAY 2013</h5>
+			<td>
+				<h2>CONFIRMATION OF OPERATIONAL FORMS</h2>
+				<h3>THE 37TH IPA CONVENTION AND EXHIBITION 2013</h3>
+				<h5>JAKARTA CONVENTION CENTER, 15-17 MAY 2013</h5>
+			</td>
 		</tr>
 		
 	</table>
@@ -245,7 +270,7 @@ td.detailsitem{
 				<span class="floatleft">USD </span>
 				<?php
 				if($data['electricsubtotal']!= 0 && $data['electricsubtotal']!= ''):
-					echo number_format($data['electricsubtotal'], 2, ',', ' ');
+					echo money_format(" %!n ", $data['electricsubtotal']);
 				endif;?>
 			</td>
 		</tr>
@@ -287,7 +312,7 @@ td.detailsitem{
 				<span class="floatleft">USD </span>
 				<?php
 				if($data['phonesubtotal']!= 0 && $data['phonesubtotal']!= ''):
-					echo number_format($data['phonesubtotal'], 2, ',', ' ');
+					echo money_format(" %!n ", $data['phonesubtotal']);
 				endif;?>
 			</td>
 		</tr>
@@ -402,7 +427,7 @@ td.detailsitem{
 			<td class="alignright">
 				<span style="float:left;">USD </span><?php
 				if($data['addboothsubtotal']!=0 && $data['addboothsubtotal']!=''):
-					echo number_format($data['addboothsubtotal'], 2, ',', ' ');
+					echo money_format(" %!n ", $data['addboothsubtotal']);
 				endif;?>
 			</td>
 		</tr>
@@ -451,7 +476,7 @@ td.detailsitem{
 			<td class="alignright">
 				<span style="float:left;">USD </span><?php
 				if($data['advertsubtotal']!=0 && $data['advertsubtotal']!=''):
-					echo number_format($data['advertsubtotal'], 2, ',', ' ');
+					echo money_format(" %!n ", $data['advertsubtotal']);
 				endif;?>
 			</td>
 		</tr>
@@ -494,7 +519,7 @@ td.detailsitem{
 			<td class="alignright">
 				<span style="float:left;">USD </span><?php
 				if($data['furnituresubtotal']!='' && $data['furnituresubtotal']!=0):
-					echo number_format($data['furnituresubtotal'], 2, ',', ' ');
+					echo money_format(" %!n ", $data['furnituresubtotal']);
 				endif;?>
 			</td>
 		</tr>
@@ -537,7 +562,7 @@ td.detailsitem{
 			<td class="alignright">
 				<span style="float:left;">USD </span><?php 
 				if ($data['internetsubtotal']!=0 && $data['internetsubtotal']!=''):
-					echo number_format($data['internetsubtotal'], 2, ',', ' ');
+					echo money_format(" %!n ", $data['internetsubtotal']);
 				endif;?>
 			</td>
 		</tr>
@@ -576,7 +601,7 @@ td.detailsitem{
 			</td>
 			<td class="alignright">
 				<span style="float:left;">USD </span><?php if($data['kiosksubtotal']!=0 && $data['kiosksubtotal']!=''):
-					echo number_format($data['kiosksubtotal'], 2, ',', ' ');
+					echo money_format(" %!n ", $data['kiosksubtotal']);
 					endif;?>
 			</td>
 		</tr>
@@ -589,19 +614,10 @@ td.detailsitem{
 			</td>
 			
 			<td class="alignright">
-				<strong><span style="float:left;">USD </span>{{ number_format($subtotalall, 2, ',', ' ') }}</strong>
+				<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $subtotalall) }}</strong>
 			</td>
 		</tr>
 
-		<tr class="contentrow">
-			<td colspan="3">
-				&nbsp;
-			</td>
-			
-			<td class="alignright">
-				&nbsp;
-			</td>
-		</tr>
 		
 		<tr class="contentrow">
 			<td colspan="3">
@@ -615,14 +631,76 @@ td.detailsitem{
 
 	</table>
 	
-	<div >
+	<div id="terms">
 		<ul >
 			<li > -  PLEASE CHECK AGAIN IF THIS RECIEPT IS MATCH YOUR NEEDS</li>
 			<li > -  PLEASE SIGNED THIS CONFIRMATION LETTER AND SEND IT BACK TO THE ORGANIZER</li>
-			<li >  - AFTER WE RECEIVE THE CONFIRMATION LETTER, WE WILL SEND YOU THE INVOICE</li>
+			<li > - AFTER WE RECEIVE THE CONFIRMATION LETTER, WE WILL SEND YOU THE INVOICE</li>
 		</ul>
 		
 	</div>
+	<div class="clear"></div>
+	
+	<table id="signature-table">
+		<tr>
+			<td class="namesignature">Exhibitor,</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td class="namesignature">Co-organizer,</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="linesignature">&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td class="linesignature">&nbsp;</td>
+		</tr>
+
+		<tr>
+			<td class="brown">Name, Signature, & Company Stamp</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>DYANDRA PROMOSINDO</td>
+		</tr>
+
+	</table>
 
 
 

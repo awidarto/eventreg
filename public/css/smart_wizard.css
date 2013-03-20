@@ -111,14 +111,20 @@
   position:relative;
   float:left;
   margin:0;
-  padding:3px 7px;
+  
   /*width:100px;*/
   text-decoration: none;
   outline-style:none;
+  height:30px;
+  padding: 15px 7px 2px 7px;
   /*-moz-border-radius  : 5px;
   -webkit-border-radius: 5px;*/
   z-index:99;
   border-right: 1px solid #E0E0E0;    
+}
+.swMain ul.anchor li a.termscondition{
+  padding: 3px 7px 3px 7px;
+  height:40px;
 }
 .swMain ul.anchor li a .stepNumber{
   position:relative;

@@ -669,4 +669,7 @@ table.withborder tr td{
   margin-bottom: 5px;
   width:200px;
 }
+.swMain ul.anchor li a small.termscondition{
+  width:50px;
+}
 

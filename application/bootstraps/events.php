@@ -128,6 +128,7 @@ Event::listen('attendee.update',function($id,$newpass){
 });
 
 //EXHIBITOR
+
 Event::listen('exhibitor.createformadmin',function($id,$newpass){
     $exhibitor = new Exhibitor();
     $_id = $id;
@@ -145,6 +146,29 @@ Event::listen('exhibitor.createformadmin',function($id,$newpass){
         ->body( $body )
         ->html(true)
         ->send();
+
+});
+
+Event::listen('exhibitor.logmessage',function($id,$newpass){
+
+    //log message 
+    $exhibitor = new Exhibitor();
+    $_id = $id;
+    $data = $exhibitor->get(array('_id'=>$_id));
+
+    $message = new Logmessage();
+
+    $messagedata['user'] = $data['_id'];
+    $messagedata['type'] = 'email.regsuccessexhibit';
+    //$messagedata['emailto'] = $data['email'];
+    //$messagedata['emailfrom'] = Config::get('eventreg.reg_admin_email');
+    //$messagedata['emailfromname'] = Config::get('eventreg.reg_admin_name');
+    $messagedata['passwordRandom'] = $newpass;
+    //$messagedata['emailcc1'] = Config::get('eventreg.reg_dyandra_admin_email');
+    //$messagedata['emailcc1name'] = Config::get('eventreg.reg_dyandra_admin_name');
+    //$messagedata['emailsubject'] = 'Indonesia Petroleum Association – 37th Convention & Exhibition (Exhibitor – '.$data['registrationnumber'].')';
+    $messagedata['createdDate'] = new MongoDate();
+    $message->insert($messagedata);
 
 });
 

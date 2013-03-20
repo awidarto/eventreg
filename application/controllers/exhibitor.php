@@ -76,6 +76,7 @@ class Exhibitor_Controller extends Base_Controller {
 				->with('ajaxpaygolf',URL::to('exhibitor/paystatusgolf'))
 				->with('ajaxpaygolfconvention',URL::to('exhibitor/paystatusgolfconvention'))
 				->with('printsource',URL::to('exhibitor/printbadge'))
+				->with('ajaxexhibitorsendmail',URL::to('exhibitor/sendmail'))
 				->with('form',$form)
 				->with('crumb',$this->crumb)
 				->with('heads',$heads)
@@ -185,6 +186,12 @@ class Exhibitor_Controller extends Base_Controller {
 				$formstatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['formstatus'].'</span>';
 			}
 
+			if(isset($doc['emailregsent']) && ($doc['emailregsent']!=0)){
+				$rowResendMessage = '<a class="icon-"  ><i style="color:#bc1c48;">&#xe165;</i><span class="sendexhibitregistmail" id="'.$doc['_id'].'" style="color:#bc1c48;">Send Email Reg</span>';
+			}else{
+				$rowResendMessage = '<a class="icon-"  ><i>&#xe165;</i><span class="sendexhibitregistmail" id="'.$doc['_id'].'" >Send Email Reg</span>';
+			}
+
 			$aadata[] = array(
 				$counter,
 				$select,
@@ -196,6 +203,7 @@ class Exhibitor_Controller extends Base_Controller {
 				$doc['company'],
 				$doc['country'],
 				$formstatus,
+				$rowResendMessage.
 				'<a class="icon-"  ><i>&#xe1b0;</i><span class="formstatus" id="'.$doc['_id'].'" > Set Form Status</span>'.
 				'<a class="icon-"  ><i>&#x0035;</i><span class="viewform" id="'.$doc['_id'].'" rel="viewform"> View Form</span>'.
 				'<a class="icon-"  href="'.URL::to('exhibitor/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
@@ -498,12 +506,24 @@ class Exhibitor_Controller extends Base_Controller {
 			$data['groupId'] = '';
 			$data['groupName'] = '';
 
+			if(isset($data['alsosendemail'])){
+				$data['sendemaillater']='no';
+				$data['emailregsent']=1;
+			}else{
+				$data['sendemaillater']='yes';
+				$data['emailregsent']=0;
+			}
 
 			$user = new Exhibitor();
 
 			if($obj = $user->insert($data)){
 
-				Event::fire('exhibitor.createformadmin',array($obj['_id'],$passwordRandom));
+				if($data['sendemaillater']=='no'){
+					Event::fire('exhibitor.logmessage',array($obj['_id'],$passwordRandom));
+					Event::fire('exhibitor.createformadmin',array($obj['_id'],$passwordRandom));
+				}else{
+					Event::fire('exhibitor.logmessage',array($obj['_id'],$passwordRandom));
+				}
 				
 		    	return Redirect::to('exhibitor')->with('notify_success',Config::get('site.register_success'));
 			}else{
@@ -923,6 +943,58 @@ class Exhibitor_Controller extends Base_Controller {
 				->with('ConfCount',$ConfCount)
 				->with('normalRate',$normalRate)
 				->with('title','Update Field');
+	}
+
+
+	public function post_sendmail(){
+		$id = Input::get('id');
+		$mailtype = Input::get('type');
+
+
+		$user = new Exhibitor();
+		$log = new Logmessage();
+
+		if(is_null($id)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$_id = new MongoId($id);
+
+			//find user first
+			$data = $user->get(array('_id'=>$_id));
+			$logs = $log->get(array('user'=>$_id));
+			$currentlog = $data['emailregsent']+1;
+			
+
+			if($logs!=null){
+				if($mailtype == 'exhibitor.regsuccess'){
+					if($user->update(array('_id'=>$_id),
+						array('$set'=>array('emailregsent'=>$currentlog))
+					)){
+						Event::fire('exhibitor.createformadmin',array($data['_id'],$logs['passwordRandom']));
+						$result = array('status'=>'OK','data'=>'CONTENTDELETED','message'=>'Successfully sent mail');
+					}
+					/*$body = View::make($mailtype)
+						->with('data',$data)
+						->with('fromadmin','yes')
+						->with('passwordRandom',$logs['passwordRandom'])
+						->render();
+
+					Message::to($logs['emailto'])
+					    ->from($logs['emailfrom'], $logs['emailfromname'])
+					    ->cc($logs['emailcc1'], $logs['emailcc1name'])
+					    ->subject($logs['emailsubject'])
+					    ->body( $body )
+					    ->html(true)
+					    ->send();*/
+					
+				}
+			}else{
+				$result = array('status'=>'NOTFOUND','data'=>'CONTENTDELETED','message'=>'Can\'t Found Email to send');
+			}
+		}
+
+		print json_encode($result);
 	}
 
 }
