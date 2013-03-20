@@ -720,7 +720,8 @@ class Import_Controller extends Base_Controller {
 
 							$commitedobj[] = $tocommit;
 
-							$icache->update(array('email'=>$tocommit['email']),array('$set'=>array('cache_commit'=>true)));
+							//$icache->update(array('email'=>$tocommit['email']),array('$set'=>array('cache_commit'=>true)));
+							$icache->update(array('_id'=>$tocommit['cache_obj']),array('$set'=>array('cache_commit'=>true)));
 
 							$commit_count++;
 
@@ -976,7 +977,7 @@ class Import_Controller extends Base_Controller {
 
 						$commitedobj[] = $tocommit;
 
-							$icache->update(array('_id'=>$tocommit['cache_obj']),array('$set'=>array('cache_commit'=>true)));
+						$icache->update(array('_id'=>$tocommit['cache_obj']),array('$set'=>array('cache_commit'=>true)));
 
 						$commit_count++;
 
