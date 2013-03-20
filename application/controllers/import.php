@@ -162,6 +162,7 @@ class Import_Controller extends Base_Controller {
 			$ajaxsource = URL::to('import/loader/'.$id);
 			$commiturl = 'import/commit/'.$id;
 			$disablesort = '0,5,6';
+			$type = 'attendee';
 		}else{
 			$ajaxsource = URL::to('import/loader/'.$id.'/'.$type);
 			$commiturl = 'import/commit/'.$id.'/'.$type;
@@ -391,7 +392,7 @@ class Import_Controller extends Base_Controller {
 
 		$data = Input::all();
 
-		$type = (is_null($data['type']))?'attendee':$data['type'];
+		$type = (is_null($data['type']) || $data['type'] == '')?'attendee':$data['type'];
 
 		$importsession = new Import();
 

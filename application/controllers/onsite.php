@@ -57,9 +57,8 @@ class Onsite_Controller extends Base_Controller {
 
 		$heads = array(
 			'#',
-			//$select_all,
-			//'Reg. Number',
 			'Reg. Date',
+			'Reg. Number',
 			'Email',
 			'First Name',
 			'Last Name',
@@ -73,8 +72,8 @@ class Onsite_Controller extends Base_Controller {
 
 		$searchinput = array(
 			false,
-			//'Reg Number',
 			'Reg. Date',
+			'Reg Number',
 			'Email',
 			'First Name',
 			'Last Name',
@@ -92,7 +91,7 @@ class Onsite_Controller extends Base_Controller {
 		return View::make('dashboard.onsite')
 			->with('title','Master Data')
 			->with('newbutton','New Visitor')
-			->with('disablesort','0,1')
+			->with('disablesort','0')
 			->with('addurl','attendee/add')
 			->with('colclass',$colclass)
 			->with('searchinput',$searchinput)
@@ -114,6 +113,314 @@ class Onsite_Controller extends Base_Controller {
 	}
 
 	public function post_index()
+	{
+
+
+		$fields = array(
+			'createdDate',
+			'registrationnumber',
+			'email',
+			'firstname',
+			'lastname',
+			'company',
+			//'regtype',
+			//'country',
+			//'conventionPaymentStatus',
+			//'golfPaymentStatus'
+		);
+
+		$rel = array('like','like','like','like','like','like','like','like');
+
+		$cond = array('both','both','both','both','both','both','both','both','both');
+
+		$pagestart = Input::get('iDisplayStart');
+		$pagelength = Input::get('iDisplayLength');
+
+		$limit = array($pagelength, $pagestart);
+
+		$defsort = 1;
+		$defdir = -1;
+
+		$idx = 0;
+		$q = array();
+
+		$hilite = array();
+		$hilite_replace = array();
+
+		foreach($fields as $field){
+			if(Input::get('sSearch_'.$idx))
+			{
+
+				$hilite_item = Input::get('sSearch_'.$idx);
+				$hilite[] = $hilite_item;
+				$hilite_replace[] = '<span class="hilite">'.$hilite_item.'</span>';
+
+				if($rel[$idx] == 'like'){
+					if($cond[$idx] == 'both'){
+						$q[$field] = new MongoRegex('/'.Input::get('sSearch_'.$idx).'/i');
+					}else if($cond[$idx] == 'before'){
+						$q[$field] = new MongoRegex('/^'.Input::get('sSearch_'.$idx).'/i');
+					}else if($cond[$idx] == 'after'){
+						$q[$field] = new MongoRegex('/'.Input::get('sSearch_'.$idx).'$/i');
+					}
+				}else if($rel[$idx] == 'equ'){
+					$q[$field] = Input::get('sSearch_'.$idx);
+				}
+			}
+			$idx++;
+		}
+
+		//print_r($q)
+
+		$attendee = new Attendee();
+		$visitor = new Visitor();
+
+		/* first column is always sequence number, so must be omitted */
+		$fidx = Input::get('iSortCol_0');
+		if($fidx == 0){
+			$fidx = $defsort;
+			$sort_col = $fields[$fidx];
+			$sort_dir = $defdir;
+		}else{
+			$fidx = ($fidx > 0)?$fidx - 1:$fidx;
+			$sort_col = $fields[$fidx];
+			$sort_dir = (Input::get('sSortDir_0') == 'asc')?1:-1;
+		}
+
+		$count_all_attendee = $attendee->count();
+		$count_all_visitor = $attendee->count();
+
+		$count_all = $count_all_attendee + $count_all_visitor;
+
+		if(count($q) > 0){
+			$attendees = $attendee->find($q,array(),array($sort_col=>$sort_dir),$limit);
+			$visitors = $visitor->find($q,array(),array($sort_col=>$sort_dir),$limit);
+			$count_display_all_attendee = $attendee->count($q);
+			$count_display_all_visitor = $visitor->count($q);
+		}else{
+			$attendees = $attendee->find(array(),array(),array($sort_col=>$sort_dir),$limit);
+			$visitors = $visitor->find(array(),array(),array($sort_col=>$sort_dir),$limit);
+			$count_display_all_attendee = $attendee->count($q);
+			$count_display_all_visitor = $visitor->count($q);
+		}
+
+		$count_display_all = $count_display_all_attendee + $count_display_all_visitor;
+		
+		$aadata = array();
+
+		$form = new Formly();
+
+		$messagelog = new Logmessage();
+
+		$counter = 1 + $pagestart;
+
+		$aadata[] = array('','<strong>Attendees</strong>','','','','','');
+
+		foreach ($attendees as $doc) {
+
+			$extra = $doc;
+
+			$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
+
+			if(isset($doc['conventionPaymentStatus'])){
+				if($doc['conventionPaymentStatus'] == 'unpaid'){
+					$paymentStatus = '<span class="fontRed fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+				}elseif ($doc['conventionPaymentStatus'] == 'pending') {
+					$paymentStatus = '<span class="fontOrange fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+				}elseif ($doc['conventionPaymentStatus'] == 'cancel') {
+					$paymentStatus = '<span class="fontGray fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+
+				}else{
+					$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+				}
+			}else{
+				$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
+			}
+
+			if(isset($doc['golfPaymentStatus'])){
+				if($doc['golfPaymentStatus'] == 'unpaid' && $doc['golf'] == 'Yes'){
+					$paymentStatusGolf = '<span class="fontRed fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+				}elseif ($doc['golfPaymentStatus'] == 'pending') {
+					$paymentStatusGolf = '<span class="fontOrange fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+				}elseif ($doc['golfPaymentStatus'] == 'cancel') {
+					$paymentStatusGolf = '<span class="fontGray fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+				}elseif ($doc['golf'] == 'No') {
+					$paymentStatusGolf = '<span class="fontGray fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+				}else{
+					$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+				}
+			}else{
+				$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
+			}
+
+			if(isset($doc['golf'])){
+				if($doc['golf'] == 'Yes'){
+					$rowGolfAction = '<a class="icon-"  ><i>&#xe146;</i><span class="paygolf" id="'.$doc['_id'].'" >Golf Status</span>';
+				}else{
+					$rowGolfAction = '';
+				}
+			}else{
+				$rowGolfAction = '';
+			}
+
+			if(isset($doc['golfPaymentStatus']) && isset($doc['conventionPaymentStatus'])){
+
+				if(($doc['golfPaymentStatus'] == 'pending' && $doc['conventionPaymentStatus'] == 'pending') || ($doc['golfPaymentStatus'] == 'unpaid' && $doc['conventionPaymentStatus'] == 'unpaid')){
+					$rowBoothAction = '<a class="icon-"  ><i>&#xe1e9;</i><span class="paygolfconvention" id="'.$doc['_id'].'" >Conv & Golf</span>';
+				}else{
+					$rowBoothAction = '';
+				}
+			}else{
+				$rowGolfAction = '';
+			}
+
+			//find message log
+
+			//$rowResendMessage = '';
+			//$messagelogs = $messagelog->find(array('user'=>$doc['_id']),array(),array(),array());
+			//if(count($messagelogs)>0){
+
+				$rowResendMessage = '<a class="icon-"  ><i>&#xe165;</i><span class="resendmail" id="'.$doc['_id'].'" >Resend Email</span>';
+			//}
+
+			$aadata[] = array(
+				$counter,
+				//$select,
+				date('Y-m-d', $doc['createdDate']->sec),
+				(isset($doc['registrationnumber']))?$doc['registrationnumber']:'',
+				$doc['email'],
+				'<span class="pop attendee" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
+				$doc['lastname'],
+				$doc['company'],
+				$doc['regtype'],
+				//$doc['country'],
+				//$paymentStatus,
+				//$paymentStatusGolf,
+				//$rowBoothAction.
+
+				//'<a class="icon-"  ><i>&#xe1b0;</i><span class="pay" id="'.$doc['_id'].'" >Convention Status</span>'.
+				//$rowGolfAction.
+
+				//'<a class="icon-"  ><i>&#xe14c;</i><span class="pbadge" id="'.$doc['_id'].'" >Print Badge</span>'.
+				//'<a class="icon-"  href="'.URL::to('attendee/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
+				//$rowResendMessage.
+				//'<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$doc['_id'].'" >Delete</span>',
+
+				'extra'=>$extra
+			);
+			$counter++;
+		}
+
+		$aadata[] = array('','<strong>Visitors</strong>','','','','','');
+
+		foreach ($visitors as $doc) {
+
+			$extra = $doc;
+
+			$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
+
+			if(isset($doc['conventionPaymentStatus'])){
+				if($doc['conventionPaymentStatus'] == 'unpaid'){
+					$paymentStatus = '<span class="fontRed fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+				}elseif ($doc['conventionPaymentStatus'] == 'pending') {
+					$paymentStatus = '<span class="fontOrange fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+				}elseif ($doc['conventionPaymentStatus'] == 'cancel') {
+					$paymentStatus = '<span class="fontGray fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+
+				}else{
+					$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+				}
+			}else{
+				$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
+			}
+
+			if(isset($doc['golfPaymentStatus'])){
+				if($doc['golfPaymentStatus'] == 'unpaid' && $doc['golf'] == 'Yes'){
+					$paymentStatusGolf = '<span class="fontRed fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+				}elseif ($doc['golfPaymentStatus'] == 'pending') {
+					$paymentStatusGolf = '<span class="fontOrange fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+				}elseif ($doc['golfPaymentStatus'] == 'cancel') {
+					$paymentStatusGolf = '<span class="fontGray fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+				}elseif ($doc['golf'] == 'No') {
+					$paymentStatusGolf = '<span class="fontGray fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+				}else{
+					$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+				}
+			}else{
+				$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
+			}
+
+			if(isset($doc['golf'])){
+				if($doc['golf'] == 'Yes'){
+					$rowGolfAction = '<a class="icon-"  ><i>&#xe146;</i><span class="paygolf" id="'.$doc['_id'].'" >Golf Status</span>';
+				}else{
+					$rowGolfAction = '';
+				}
+			}else{
+				$rowGolfAction = '';
+			}
+
+			if(isset($doc['golfPaymentStatus']) && isset($doc['conventionPaymentStatus'])){
+
+				if(($doc['golfPaymentStatus'] == 'pending' && $doc['conventionPaymentStatus'] == 'pending') || ($doc['golfPaymentStatus'] == 'unpaid' && $doc['conventionPaymentStatus'] == 'unpaid')){
+					$rowBoothAction = '<a class="icon-"  ><i>&#xe1e9;</i><span class="paygolfconvention" id="'.$doc['_id'].'" >Conv & Golf</span>';
+				}else{
+					$rowBoothAction = '';
+				}
+			}else{
+				$rowGolfAction = '';
+			}
+
+			//find message log
+
+			//$rowResendMessage = '';
+			//$messagelogs = $messagelog->find(array('user'=>$doc['_id']),array(),array(),array());
+			//if(count($messagelogs)>0){
+
+				$rowResendMessage = '<a class="icon-"  ><i>&#xe165;</i><span class="resendmail" id="'.$doc['_id'].'" >Resend Email</span>';
+			//}
+
+			$aadata[] = array(
+				$counter,
+				//$select,
+				date('Y-m-d', $doc['createdDate']->sec),
+				(isset($doc['registrationnumber']))?$doc['registrationnumber']:'',
+				$doc['email'],
+				'<span class="pop visitor" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
+				$doc['lastname'],
+				$doc['company'],
+				'',
+				//$doc['country'],
+				//$paymentStatus,
+				//$paymentStatusGolf,
+				//$rowBoothAction.
+
+				//'<a class="icon-"  ><i>&#xe1b0;</i><span class="pay" id="'.$doc['_id'].'" >Convention Status</span>'.
+				//$rowGolfAction.
+
+				//'<a class="icon-"  ><i>&#xe14c;</i><span class="pbadge" id="'.$doc['_id'].'" >Print Badge</span>'.
+				//'<a class="icon-"  href="'.URL::to('attendee/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
+				//$rowResendMessage.
+				//'<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$doc['_id'].'" >Delete</span>',
+
+				'extra'=>$extra
+			);
+			$counter++;
+		}
+
+		$result = array(
+			'sEcho'=> Input::get('sEcho'),
+			'iTotalRecords'=>$count_all,
+			'iTotalDisplayRecords'=> $count_display_all,
+			'aaData'=>$aadata,
+			'qrs'=>$q
+		);
+
+		return Response::json($result);
+	}
+
+
+	public function __post_index()
 	{
 
 
@@ -301,7 +608,7 @@ class Onsite_Controller extends Base_Controller {
 	}
 
 
-	public function post_visitor()
+	public function __post_visitor()
 	{
 
 
@@ -1092,115 +1399,6 @@ class Onsite_Controller extends Base_Controller {
 	}
 
 
-	public function __get_type($type = null)
-	{
-		$menutitle = array(
-			'opportunity'=>'Opportunity',
-			'tender'=>'Tender',
-			'commbid'=>'Commercial Bid',
-			'proposal'=>'Tech Proposal',
-			'techbid'=>'Tech Bid',
-			'contract'=>'Contracts',
-			'legal'=>'Legal Docs',
-			'qc'=>'QA / QC',
-			'warehouse'=>'Warehouse'
-			);
-
-		$heads = array('#','Title','Created','Creator','Owner','Tags','Action');
-		$fields = array('seq','title','created','creator','owner','tags','action');
-		$searchinput = array(false,'title','created','creator','owner','tags',false);
-
-		return View::make('tables.simple')
-			->with('title',(is_null($type))?'Document - All':'Document - '.$menutitle[$type])
-			->with('newbutton','New Document')
-			->with('disablesort','0,5,6')
-			->with('addurl','document/add')
-			->with('searchinput',$searchinput)
-			->with('ajaxsource',URL::to('document/type/'.$type))
-			->with('ajaxdel',URL::to('document/del'))
-			->with('heads',$heads);
-	}
-
-	public function __post_type($type = null)
-	{
-		$fields = array('title','createdDate','creatorName','creatorName','tags');
-
-		$rel = array('like','like','like','like','equ');
-
-		$cond = array('both','both','both','both','equ');
-
-		$idx = 0;
-		$q = array();
-		foreach($fields as $field){
-			if(Input::get('sSearch_'.$idx))
-			{
-				if($rel[$idx] == 'like'){
-					if($cond[$idx] == 'both'){
-						$q[$field] = new MongoRegex('/'.Input::get('sSearch_'.$idx).'/');
-					}else if($cond[$idx] == 'before'){
-						$q[$field] = new MongoRegex('/^'.Input::get('sSearch_'.$idx).'/');						
-					}else if($cond[$idx] == 'after'){
-						$q[$field] = new MongoRegex('/'.Input::get('sSearch_'.$idx).'$/');						
-					}
-				}else if($rel[$idx] == 'equ'){
-					$q[$field] = Input::get('sSearch_'.$idx);
-				}
-			}
-			$idx++;
-		}
-
-		//print_r($q)
-
-		$document = new Document();
-
-		/* first column is always sequence number, so must be omitted */
-		$fidx = Input::get('iSortCol_0');
-		$fidx = ($fidx > 0)?$fidx - 1:$fidx;
-		$sort_col = $fields[$fidx];
-		$sort_dir = (Input::get('sSortDir_0') == 'asc')?1:-1;
-
-		$count_all = $document->count();
-
-		if(count($q) > 0){
-			$documents = $document->find($q,array(),array($sort_col=>$sort_dir));
-			$count_display_all = $document->count($q);
-		}else{
-			$documents = $document->find(array(),array(),array($sort_col=>$sort_dir));
-			$count_display_all = $document->count();
-		}
-
-
-
-
-		$aadata = array();
-
-		$counter = 1;
-		foreach ($documents as $doc) {
-			$aadata[] = array(
-				$counter,
-				$doc['title'],
-				date('Y-m-d h:i:s',$doc['createdDate']),
-				$doc['creatorName'],
-				$doc['creatorName'],
-				implode(',',$doc['tag']),
-				'<i class="foundicon-edit action"></i>&nbsp;<i class="foundicon-trash action"></i>'
-			);
-			$counter++;
-		}
-
-		
-		$result = array(
-			'sEcho'=> Input::get('sEcho'),
-			'iTotalRecords'=>$count_all,
-			'iTotalDisplayRecords'=> $count_display_all,
-			'aaData'=>$aadata,
-			'qrs'=>$q
-		);
-
-		print json_encode($result);
-	}
-
-
 	public function get_view($id){
 		$id = new MongoId($id);
 
@@ -1209,6 +1407,27 @@ class Onsite_Controller extends Base_Controller {
 		$doc = $document->get(array('_id'=>$id));
 
 		return View::make('pop.docview')->with('profile',$doc);
+	}
+
+
+	public function get_attendee($id){
+		$id = new MongoId($id);
+
+		$document = new Attendee();
+
+		$doc = $document->get(array('_id'=>$id));
+
+		return View::make('pop.attendeeview')->with('profile',$doc);
+	}
+
+	public function get_visitor($id){
+		$id = new MongoId($id);
+
+		$document = new Visitor();
+
+		$doc = $document->get(array('_id'=>$id));
+
+		return View::make('pop.visitorview')->with('profile',$doc);
 	}
 
 	public function get_fileview($id){
