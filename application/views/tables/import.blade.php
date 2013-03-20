@@ -14,56 +14,6 @@
 
     <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>-->
 
-    <div id="content-filters" class="row-fluid" style="display:none;">
-       <div class="span12">
-          <h5>Filter Data</h5>
-          <ul class="nav nav-pills">
-             <li class="dropdown">
-                <a class="dropdown-toggle accent-color" data-toggle="dropdown" href="#">
-                   All projects
-                   <b class="caret" href="#"></b>
-                </a>
-                <ul id="projects-filter" class="dropdown-menu">
-                   <li><a href="#">All projects</a></li>
-                   <li><a href="#">ACME</a></li>
-                   <li><a href="#">Surface</a></li>
-                   <li><a href="#">OSX</a></li>
-                   <li><a href="#">WinRT</a></li>
-                </ul>
-             </li>
-             <li class="dropdown">
-                <a class="dropdown-toggle accent-color" data-toggle="dropdown" href="#">
-                   All budgets
-                   <b class="caret" href="#"></b>
-                </a>
-                <ul id="budget-filter" class="dropdown-menu">
-                   <li><a href="#">All budgets</a></li>
-                   <li><a href="#">Budget &lt; 1.000</a></li>
-                   <li><a href="#">Budget 1.000 - 10.000</a></li>
-                   <li><a href="#">Budget 10.000 - 45.000</a></li>
-                   <li><a href="#">Budget 45.000 - 100.000</a></li>
-                   <li><a href="#">Budget &gt; 100.000</a></li>
-                </ul>
-             </li>
-             <li class="">
-                <a>&nbsp;|&nbsp;</a><span>Sort by&nbsp;</span>
-             </li>
-             <li class="dropdown">
-
-                <a class="dropdown-toggle accent-color" data-toggle="dropdown" href="#">
-                   Project name
-                   <b class="caret" href="#"></b>
-                </a>
-                <ul id="sort-filter" class="dropdown-menu">
-                   <li><a href="#">Project name</a></li>
-                   <li><a href="#">Budget Cost</a></li>
-                   <li><a href="#">Duration</a></li>
-                </ul>
-             </li>
-          </ul>
-       </div>
-    </div>
-
     <div class="row-fluid">
        <div class="span12">
     @if (Session::has('notify_success'))
@@ -78,6 +28,20 @@
 			{{ $form->hidden('importid',$importid)}}
 			{{ $form->hidden('head_count',$head_count)}}
 
+			{{ $form->hidden('type',$type)}}
+
+			@if($type == 'exhibitor')
+
+				{{ $form->hidden('exhibitor_id','')}}
+				{{ $form->hidden('salutation','')}}
+                {{ $form->hidden('firstname','')}}
+                {{ $form->hidden('lastname','') }}
+                {{ $form->hidden('position','') }}
+                {{ $form->hidden('email','') }}
+                {{ $form->hidden('mobile','') }}
+                {{ $form->hidden('company','') }}
+
+			@else
 			<div class="row-fluid">
 				<div class="span1"><strong>Choose option :</strong></div>
 				<!--<div class="span3">
@@ -168,7 +132,6 @@
 				</div>
 				<div class="span2">&nbsp;</div>
 
-
 			</div>
 			<div class="row-fluid">
 				<div class="span1">&nbsp;</div>
@@ -190,6 +153,9 @@
 
 				</div>
 			</div>
+
+			@endif
+
 			<hr />
 			<div class="row-fluid">
 				<div class="span1"><strong>Legend :</strong></div>

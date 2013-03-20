@@ -61,7 +61,7 @@ Route::post('myprofile/edit',array('uses'=>'register@edit'));
 Route::get('myprofile',array('uses'=>'register@profile'));
 
 
-Route::get('payment/checkout',array('uses'=>'register@checkout'));
+Route::get('payment/checkout',array('before'=>'auth','uses'=>'register@checkout'));
 
 Route::get('payment/(:any)',array('uses'=>'register@payment'));
 Route::post('payment/(:any)',array('uses'=>'register@payment'));
