@@ -61,8 +61,15 @@ class Import_Controller extends Base_Controller {
 		$this->crumb->add('exhibitor','Exhibitor');
 		$this->crumb->add('import','Import Worker Data');
 
+		$ex = new Exhibitor();
 
-		$form = new Formly();
+		$_id = new MongoId($exid);
+
+		$exhibitor = $ex->get(array('_id'=>$_id));
+
+		$exhibitor['exhibitor_id'] = $exid;
+
+		$form = new Formly($exhibitor);
 
 		return View::make('import.eximport')
 			->with('title','Import Exhibitor Data')
@@ -75,6 +82,27 @@ class Import_Controller extends Base_Controller {
 	{
 
 		$this->crumb->add('import/preview','Preview');
+
+		if($type == 'exhibitor'){
+			$import = new Import();
+
+			$_importid = new MongoId($id);
+
+			$exhibitor = $import->get(array('_id'=>$_importid));
+
+			$form = new Formly($exhibitor);
+
+			$this->crumb->add('import/preview/'.$id.'/'.$type,'Exhibitor\'s Worker');
+
+		}else{
+
+			$exhibitor = false;
+
+			$form = new Formly();
+
+			$this->crumb->add('import/preview/'.$id,'Attendee');
+
+		}
 
 		$imp = new Importcache();
 
@@ -90,7 +118,6 @@ class Import_Controller extends Base_Controller {
 
 		$searchinput = array();
 
-		$form = new Formly();
 
 		$select_all = $form->checkbox('select_all','','',false,array('id'=>'select_all'));
 
@@ -157,6 +184,8 @@ class Import_Controller extends Base_Controller {
 			->with('ajaxdel',URL::to('attendee/del'))
 			->with('crumb',$this->crumb)
 			->with('heads',$heads)
+			->with('type',$type)
+			->with('exhibitor',$exhibitor)
 			->nest('row','attendee.rowdetail');
 	}
 
@@ -270,14 +299,18 @@ class Import_Controller extends Base_Controller {
 			}
 
 			//print_r($email_arrays);
+			if(!empty($email_arrays)){
+				$email_check = $attending->find(array('$or'=>$email_arrays),array('firstname'=>1,'_id'=>-1));
+				$email_arrays = array();
 
-			$email_check = $attending->find(array('$or'=>$email_arrays),array('firstname'=>1,'_id'=>-1));
+				foreach($email_check as $ec){
+					$email_arrays[] = $ec['firstname'];
+				}
 
-			$email_arrays = array();
-
-			foreach($email_check as $ec){
-				$email_arrays[] = $ec['firstname'];
+			}else{
+				$email_arrays = array();
 			}
+
 
 		}
 
@@ -358,7 +391,7 @@ class Import_Controller extends Base_Controller {
 
 		$data = Input::all();
 
-		//print_r($data);
+		$type = (is_null($data['type']))?'attendee':$data['type'];
 
 		$importsession = new Import();
 
@@ -382,17 +415,23 @@ class Import_Controller extends Base_Controller {
 			$commitobj = $icache->find(array('$or'=>$idvals));
 
 			//print_r($commitobj);
+			if($type == 'attendee'){
+				$attendee = new Attendee();
+				$i2o = Config::get('eventreg.attendee_map');
 
-			$attendee = new Attendee();
+			}elseif($type == 'exhibitor'){
+				$attendee = new Worker();
+				$i2o = Config::get('eventreg.exhibitor_map');
+			}
 
-			$i2o = Config::get('eventreg.attendee_map');
+			//print_r($i2o);
 
 			$commit_count = 0;
 
 			foreach($commitobj as $comobj){
 				//print_r($comobj);
 
-				$tocommit = Config::get('eventreg.attendee_template');
+				$tocommit = Config::get('eventreg.'.$type.'_template');
 
 
 				for($i = 0; $i < $data['head_count']; $i++ ){
@@ -407,8 +446,13 @@ class Import_Controller extends Base_Controller {
 				// import and group identifier
 				$tocommit['cache_id'] = $comobj['cache_id'];
 				$tocommit['cache_obj'] = $comobj['_id'];
-				$tocommit['groupName'] = $comobj['groupName'];
-				$tocommit['groupId'] = $comobj['groupId'];
+
+				if($type == 'attendee'){
+					$tocommit['groupName'] = $comobj['groupName'];
+					$tocommit['groupId'] = $comobj['groupId'];
+				}else if($type == 'exhibitor'){
+					$tocommit['exhibitor_id'] = $data['exhibitor_id'];
+				}
 
 				if(isset($data['over'])){
 					if( in_array($comobj['_id']->__toString(), $data['over'])){
@@ -437,36 +481,297 @@ class Import_Controller extends Base_Controller {
 
 				if($override == true){
 
-					$attobj = $attendee->get(array('email'=>$tocommit['email']));
+					if($type == 'attendee'){
 
-					$tocommit['lastUpdate'] = new MongoDate();
-					$tocommit['role'] = 'attendee';
+						$attobj = $attendee->get(array('email'=>$tocommit['email']));
 
-					if(isset($tocommit['conventionPaymentStatus'])){
-						$tocommit['conventionPaymentStatus'] = $attobj['conventionPaymentStatus'];
+						$tocommit['lastUpdate'] = new MongoDate();
+						$tocommit['role'] = 'attendee';
+
+						if(isset($tocommit['conventionPaymentStatus'])){
+							$tocommit['conventionPaymentStatus'] = $attobj['conventionPaymentStatus'];
+						}
+
+						if(isset($tocommit['golfPaymentStatus'])){
+							$tocommit['golfPaymentStatus'] = $attobj['golfPaymentStatus'];
+						}
+
+						$reg_number = array();
+						$seq = new Sequence();
+
+						if(isset($attobj['registrationnumber']) && $attobj['registrationnumber'] != ''){
+							$reg_number = explode('-',$attobj['registrationnumber']);
+
+							$reg_number[0] = 'C';
+							$reg_number[1] = $tocommit['regtype'];
+							$reg_number[2] = ($tocommit['attenddinner'] == 'Yes')?str_pad(Config::get('eventreg.galadinner'), 2,'0',STR_PAD_LEFT):'00';
+
+						}else if($attobj['registrationnumber'] == ''){
+							$reg_number = array();
+							$rseq = $seq->find_and_modify(array('_id'=>'attendee'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
+
+							$reg_number[0] = 'C';
+							$reg_number[1] = $tocommit['regtype'];
+							$reg_number[2] = ($tocommit['attenddinner'] == 'Yes')?str_pad(Config::get('eventreg.galadinner'), 2,'0',STR_PAD_LEFT):'00';
+
+							$regsequence = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
+
+							$reg_number[3] = $regsequence;
+
+							$tocommit['regsequence'] = $regsequence;
+
+						}
+
+						$tocommit['registrationnumber'] = implode('-',$reg_number);
+
+						$plainpass = rand_string(8);
+
+						$tocommit['pass'] = Hash::make($plainpass);
+
+						//golf sequencer
+						$tocommit['golfSequence'] = 0;
+
+						if($tocommit['golf'] == 'Yes' && $attobj['golf'] == 'No'){
+							$gseq = $seq->find_and_modify(array('_id'=>'golf'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true,'upsert'=>true));
+							$tocommit['golfSequence'] = $gseq['seq'];
+						}
+
+						if($data['updatepass'] == 'Yes'){
+							$plainpass = rand_string(8);
+							$tocommit['pass'] = Hash::make($plainpass);
+						}else{
+							$tocommit['pass'] = $attobj['pass'];
+							$plainpass = 'nochange';
+						}
+
+						if( $attobj['golfPaymentStatus']=='paid' || $attobj['conventionPaymentStatus']=='paid'){						
+
+							$tocommit['regtype'] == $attobj['regtype'];
+							$tocommit['golf'] == $attobj['golf'];
+
+						}else{
+							if(strtotime($dateA) > strtotime($earlybirddate)){
+
+								if($data['foc']=='Yes'){
+								
+									$tocommit['totalIDR'] = '-';
+									$tocommit['totalUSD'] = '-';
+									$tocommit['regPD'] = '';
+									$tocommit['regPO'] = '';
+									$tocommit['regSD'] = '';
+									$tocommit['regSO'] = '';
+									$tocommit['conventionPaymentStatus'] = 'free';
+									$tocommit['golfPaymentStatus'] = 'free';
+
+								}elseif($data['earlybird'] == 'No'){
+
+									$tocommit['overrideratenormal'] = 'no';
+									//normalrate valid
+									if($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'No'){
+										$tocommit['totalIDR'] = $conventionrate['PD-normal'];
+										$tocommit['totalUSD'] = '';
+										$tocommit['regPD'] = $conventionrate['PD-normal'];
+										$tocommit['regPO'] = '';
+										$tocommit['regSD'] = '';
+										$tocommit['regSO'] = '';
+									}elseif ($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'Yes'){
+										$tocommit['totalIDR'] = $conventionrate['PD-normal']+$golfrate;
+										$tocommit['totalUSD'] = '';
+										$tocommit['regPD'] = $conventionrate['PD-normal'];
+										$tocommit['regPO'] = '';
+										$tocommit['regSD'] = '';
+										$tocommit['regSO'] = '';
+									}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'No'){
+										$tocommit['totalIDR'] = '';
+										$tocommit['totalUSD'] = $conventionrate['PO-normal'];
+										$tocommit['regPD'] = '';
+										$tocommit['regPO'] = $conventionrate['PO-normal'];
+										$tocommit['regSD'] = '';
+										$tocommit['regSO'] = '';
+									}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'Yes'){
+										$tocommit['totalIDR'] = $golfrate;
+										$tocommit['totalUSD'] = $conventionrate['PO-normal'];
+										$tocommit['regPD'] = '';
+										$tocommit['regPO'] = $conventionrate['PO-normal'];
+										$tocommit['regSD'] = '';
+										$tocommit['regSO'] = '';
+									}elseif ($tocommit['regtype'] == 'SD'){
+										$tocommit['totalIDR'] = $conventionrate['SD'];
+										$tocommit['totalUSD'] = '';
+										$tocommit['regPD'] = '';
+										$tocommit['regPO'] = '';
+										$tocommit['regSD'] = $conventionrate['SD'];
+										$tocommit['regSO'] = '';
+									}elseif ($tocommit['regtype'] == 'SO'){
+										$tocommit['totalIDR'] = '';
+										$tocommit['totalUSD'] = $conventionrate['SO'];
+										$tocommit['regPD'] = '';
+										$tocommit['regPO'] = '';
+										$tocommit['regSD'] = '';
+										$tocommit['regSO'] = $conventionrate['SO'];
+									}
+
+									
+
+								}else{
+
+									$tocommit['overrideratenormal'] = 'yes';
+									if($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'No'){
+										$tocommit['totalIDR'] = $conventionrate['PD-earlybird'];
+										$tocommit['totalUSD'] = '';
+										$tocommit['regPD'] = $conventionrate['PD-earlybird'];
+										$tocommit['regPO'] = '';
+										$tocommit['regSD'] = '';
+										$tocommit['regSO'] = '';
+									}elseif ($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'Yes'){
+										$tocommit['totalIDR'] = $conventionrate['PD-earlybird']+$golfrate;
+										$tocommit['totalUSD'] = '';
+										$tocommit['regPD'] = $conventionrate['PD-earlybird'];
+										$tocommit['regPO'] = '';
+										$tocommit['regSD'] = '';
+										$tocommit['regSO'] = '';
+									}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'No'){
+										$tocommit['totalIDR'] = '';
+										$tocommit['totalUSD'] = $conventionrate['PO-earlybird'];
+										$tocommit['regPD'] = '';
+										$tocommit['regPO'] = $conventionrate['PO-earlybird'];
+										$tocommit['regSD'] = '';
+										$tocommit['regSO'] = '';
+									}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'Yes'){
+										$tocommit['totalIDR'] = $golfrate;
+										$tocommit['totalUSD'] = $conventionrate['PO-earlybird'];
+										$tocommit['regPD'] = '';
+										$tocommit['regPO'] = $conventionrate['PO-earlybird'];
+										$tocommit['regSD'] = '';
+										$tocommit['regSO'] = '';
+									}elseif ($tocommit['regtype'] == 'SD'){
+										$tocommit['totalIDR'] = $conventionrate['SD'];
+										$tocommit['totalUSD'] = '';
+										$tocommit['regPD'] = '';
+										$tocommit['regPO'] = '';
+										$tocommit['regSD'] = $conventionrate['SD'];
+										$tocommit['regSO'] = '';
+									}elseif ($tocommit['regtype'] == 'SO'){
+										$tocommit['totalIDR'] = '';
+										$tocommit['totalUSD'] = $conventionrate['SO'];
+										$tocommit['regPD'] = '';
+										$tocommit['regPO'] = '';
+										$tocommit['regSD'] = '';
+										$tocommit['regSO'] = $conventionrate['SO'];
+									}
+
+								}
+							}else{
+
+								if($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'No'){
+									$tocommit['totalIDR'] = $conventionrate['PD-earlybird'];
+									$tocommit['totalUSD'] = '';
+									$tocommit['regPD'] = $conventionrate['PD-earlybird'];
+									$tocommit['regPO'] = '';
+									$tocommit['regSD'] = '';
+									$tocommit['regSO'] = '';
+								}elseif ($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'Yes'){
+									$tocommit['totalIDR'] = $conventionrate['PD-earlybird']+$golfrate;
+									$tocommit['totalUSD'] = '';
+									$tocommit['regPD'] = $conventionrate['PD-earlybird'];
+									$tocommit['regPO'] = '';
+									$tocommit['regSD'] = '';
+									$tocommit['regSO'] = '';
+								}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'No'){
+									$tocommit['totalIDR'] = '';
+									$tocommit['totalUSD'] = $conventionrate['PO-earlybird'];
+									$tocommit['regPD'] = '';
+									$tocommit['regPO'] = $conventionrate['PO-earlybird'];
+									$tocommit['regSD'] = '';
+									$tocommit['regSO'] = '';
+								}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'Yes'){
+									$tocommit['totalIDR'] = $golfrate;
+									$tocommit['totalUSD'] = $conventionrate['PO-earlybird'];
+									$tocommit['regPD'] = '';
+									$tocommit['regPO'] = $conventionrate['PO-earlybird'];
+									$tocommit['regSD'] = '';
+									$tocommit['regSO'] = '';
+								}elseif ($tocommit['regtype'] == 'SD'){
+									$tocommit['totalIDR'] = $conventionrate['SD'];
+									$tocommit['totalUSD'] = '';
+									$tocommit['regPD'] = '';
+									$tocommit['regPO'] = '';
+									$tocommit['regSD'] = $conventionrate['SD'];
+									$tocommit['regSO'] = '';
+								}elseif ($tocommit['regtype'] == 'SO'){
+									$tocommit['totalIDR'] = '';
+									$tocommit['totalUSD'] = $conventionrate['SO'];
+									$tocommit['regPD'] = '';
+									$tocommit['regPO'] = '';
+									$tocommit['regSD'] = '';
+									$tocommit['regSO'] = $conventionrate['SO'];
+								}
+							}
+						}
+
+						if($attendee->update(array('email'=>$tocommit['email']),array('$set'=>$tocommit))){
+
+							Event::fire('attendee.update',array($attobj['_id'],$plainpass,$pic['email'],$pic['firstname'].$pic['lastname']));
+
+							//if($data['sendattendee'] == 'Yes'){
+							//	// send message to each attendee
+								//Event::fire('attendee.update',array($comobj['_id'],$plainpass));
+							//}
+
+							$commitedobj[] = $tocommit;
+
+							//$icache->update(array('email'=>$tocommit['email']),array('$set'=>array('cache_commit'=>true)));
+							$icache->update(array('_id'=>$tocommit['cache_obj']),array('$set'=>array('cache_commit'=>true)));
+
+							$commit_count++;
+
+						}
+
+					}else if($type == 'exhibitor'){
+
+
+						if($attendee->update(array('firstname'=>$tocommit['firstname'],'lastname'=>$tocommit['lastname']),array('$set'=>$tocommit))){
+
+							Event::fire($type.'.update',array($attobj['_id'],$plainpass,$pic['email'],$pic['firstname'].$pic['lastname']));
+
+							$commitedobj[] = $tocommit;
+
+							$icache->update(array('_id'=>$tocommit['cache_obj']),array('$set'=>array('cache_commit'=>true)));
+
+							$commit_count++;
+
+						}
+
 					}
+					
+				}else if($existing == false){
 
-					if(isset($tocommit['golfPaymentStatus'])){
-						$tocommit['golfPaymentStatus'] = $attobj['golfPaymentStatus'];
-					}
+					if($type == 'attendee'){
 
-					$reg_number = array();
-					$seq = new Sequence();
+						$tocommit['createdDate'] = new MongoDate();
+						$tocommit['lastUpdate'] = new MongoDate();
 
-					if(isset($attobj['registrationnumber']) && $attobj['registrationnumber'] != ''){
-						$reg_number = explode('-',$attobj['registrationnumber']);
+						$tocommit['role'] = 'attendee';
+						$tocommit['paymentStatus'] = 'unpaid';
+						$tocommit['conventionPaymentStatus'] = 'unpaid';
+
+						if($tocommit['golf'] == 'Yes'){
+							$tocommit['golfPaymentStatus'] = 'unpaid';
+						}else{
+							$tocommit['golfPaymentStatus'] = '-';
+						}
+
+						$reg_number = array();
 
 						$reg_number[0] = 'C';
 						$reg_number[1] = $tocommit['regtype'];
 						$reg_number[2] = ($tocommit['attenddinner'] == 'Yes')?str_pad(Config::get('eventreg.galadinner'), 2,'0',STR_PAD_LEFT):'00';
 
-					}else if($attobj['registrationnumber'] == ''){
-						$reg_number = array();
+						$seq = new Sequence();
+
 						$rseq = $seq->find_and_modify(array('_id'=>'attendee'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
 
-						$reg_number[0] = 'C';
-						$reg_number[1] = $tocommit['regtype'];
-						$reg_number[2] = ($tocommit['attenddinner'] == 'Yes')?str_pad(Config::get('eventreg.galadinner'), 2,'0',STR_PAD_LEFT):'00';
+						//$reg_number[3] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
 
 						$regsequence = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
 
@@ -474,40 +779,25 @@ class Import_Controller extends Base_Controller {
 
 						$tocommit['regsequence'] = $regsequence;
 
-					}
 
-					$tocommit['registrationnumber'] = implode('-',$reg_number);
+						$tocommit['registrationnumber'] = implode('-',$reg_number);
 
-					$plainpass = rand_string(8);
-
-					$tocommit['pass'] = Hash::make($plainpass);
-
-					//golf sequencer
-					$tocommit['golfSequence'] = 0;
-
-					if($tocommit['golf'] == 'Yes' && $attobj['golf'] == 'No'){
-						$gseq = $seq->find_and_modify(array('_id'=>'golf'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true,'upsert'=>true));
-						$tocommit['golfSequence'] = $gseq['seq'];
-					}
-
-					if($data['updatepass'] == 'Yes'){
 						$plainpass = rand_string(8);
+
 						$tocommit['pass'] = Hash::make($plainpass);
-					}else{
-						$tocommit['pass'] = $attobj['pass'];
-						$plainpass = 'nochange';
-					}
 
-					if( $attobj['golfPaymentStatus']=='paid' || $attobj['conventionPaymentStatus']=='paid'){						
+						//golf sequencer
+						$tocommit['golfSequence'] = 0;
 
-						$tocommit['regtype'] == $attobj['regtype'];
-						$tocommit['golf'] == $attobj['golf'];
+						if($tocommit['golf'] == 'Yes'){
+							$gseq = $seq->find_and_modify(array('_id'=>'golf'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true,'upsert'=>true));
+							$tocommit['golfSequence'] = $gseq['seq'];
+						}
 
-					}else{
 						if(strtotime($dateA) > strtotime($earlybirddate)){
 
 							if($data['foc']=='Yes'){
-							
+
 								$tocommit['totalIDR'] = '-';
 								$tocommit['totalUSD'] = '-';
 								$tocommit['regPD'] = '';
@@ -518,7 +808,7 @@ class Import_Controller extends Base_Controller {
 								$tocommit['golfPaymentStatus'] = 'free';
 
 							}elseif($data['earlybird'] == 'No'){
-
+								
 								$tocommit['overrideratenormal'] = 'no';
 								//normalrate valid
 								if($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'No'){
@@ -564,12 +854,12 @@ class Import_Controller extends Base_Controller {
 									$tocommit['regSD'] = '';
 									$tocommit['regSO'] = $conventionrate['SO'];
 								}
-
-								
+									
 
 							}else{
 
 								$tocommit['overrideratenormal'] = 'yes';
+
 								if($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'No'){
 									$tocommit['totalIDR'] = $conventionrate['PD-earlybird'];
 									$tocommit['totalUSD'] = '';
@@ -615,187 +905,9 @@ class Import_Controller extends Base_Controller {
 								}
 
 							}
+
 						}else{
-
-							if($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'No'){
-								$tocommit['totalIDR'] = $conventionrate['PD-earlybird'];
-								$tocommit['totalUSD'] = '';
-								$tocommit['regPD'] = $conventionrate['PD-earlybird'];
-								$tocommit['regPO'] = '';
-								$tocommit['regSD'] = '';
-								$tocommit['regSO'] = '';
-							}elseif ($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'Yes'){
-								$tocommit['totalIDR'] = $conventionrate['PD-earlybird']+$golfrate;
-								$tocommit['totalUSD'] = '';
-								$tocommit['regPD'] = $conventionrate['PD-earlybird'];
-								$tocommit['regPO'] = '';
-								$tocommit['regSD'] = '';
-								$tocommit['regSO'] = '';
-							}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'No'){
-								$tocommit['totalIDR'] = '';
-								$tocommit['totalUSD'] = $conventionrate['PO-earlybird'];
-								$tocommit['regPD'] = '';
-								$tocommit['regPO'] = $conventionrate['PO-earlybird'];
-								$tocommit['regSD'] = '';
-								$tocommit['regSO'] = '';
-							}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'Yes'){
-								$tocommit['totalIDR'] = $golfrate;
-								$tocommit['totalUSD'] = $conventionrate['PO-earlybird'];
-								$tocommit['regPD'] = '';
-								$tocommit['regPO'] = $conventionrate['PO-earlybird'];
-								$tocommit['regSD'] = '';
-								$tocommit['regSO'] = '';
-							}elseif ($tocommit['regtype'] == 'SD'){
-								$tocommit['totalIDR'] = $conventionrate['SD'];
-								$tocommit['totalUSD'] = '';
-								$tocommit['regPD'] = '';
-								$tocommit['regPO'] = '';
-								$tocommit['regSD'] = $conventionrate['SD'];
-								$tocommit['regSO'] = '';
-							}elseif ($tocommit['regtype'] == 'SO'){
-								$tocommit['totalIDR'] = '';
-								$tocommit['totalUSD'] = $conventionrate['SO'];
-								$tocommit['regPD'] = '';
-								$tocommit['regPO'] = '';
-								$tocommit['regSD'] = '';
-								$tocommit['regSO'] = $conventionrate['SO'];
-							}
-						}
-					}
-
-					
-
-					if($attendee->update(array('email'=>$tocommit['email']),array('$set'=>$tocommit))){
-
-						Event::fire('attendee.update',array($attobj['_id'],$plainpass,$pic['email'],$pic['firstname'].$pic['lastname']));
-
-						//if($data['sendattendee'] == 'Yes'){
-						//	// send message to each attendee
-							//Event::fire('attendee.update',array($comobj['_id'],$plainpass));
-						//}
-
-						$commitedobj[] = $tocommit;
-
-						$icache->update(array('email'=>$tocommit['email']),array('$set'=>array('cache_commit'=>true)));
-
-						$commit_count++;
-
-					}
-				}else if($existing == false){
-
-
-					$tocommit['createdDate'] = new MongoDate();
-					$tocommit['lastUpdate'] = new MongoDate();
-
-					$tocommit['role'] = 'attendee';
-					$tocommit['paymentStatus'] = 'unpaid';
-					$tocommit['conventionPaymentStatus'] = 'unpaid';
-
-					if($tocommit['golf'] == 'Yes'){
-						$tocommit['golfPaymentStatus'] = 'unpaid';
-					}else{
-						$tocommit['golfPaymentStatus'] = '-';
-					}
-
-					$reg_number = array();
-
-					$reg_number[0] = 'C';
-					$reg_number[1] = $tocommit['regtype'];
-					$reg_number[2] = ($tocommit['attenddinner'] == 'Yes')?str_pad(Config::get('eventreg.galadinner'), 2,'0',STR_PAD_LEFT):'00';
-
-					$seq = new Sequence();
-
-					$rseq = $seq->find_and_modify(array('_id'=>'attendee'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
-
-					//$reg_number[3] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
-
-					$regsequence = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
-
-					$reg_number[3] = $regsequence;
-
-					$tocommit['regsequence'] = $regsequence;
-
-
-					$tocommit['registrationnumber'] = implode('-',$reg_number);
-
-					$plainpass = rand_string(8);
-
-					$tocommit['pass'] = Hash::make($plainpass);
-
-					//golf sequencer
-					$tocommit['golfSequence'] = 0;
-
-					if($tocommit['golf'] == 'Yes'){
-						$gseq = $seq->find_and_modify(array('_id'=>'golf'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true,'upsert'=>true));
-						$tocommit['golfSequence'] = $gseq['seq'];
-					}
-
-					if(strtotime($dateA) > strtotime($earlybirddate)){
-
-						if($data['foc']=='Yes'){
-
-							$tocommit['totalIDR'] = '-';
-							$tocommit['totalUSD'] = '-';
-							$tocommit['regPD'] = '';
-							$tocommit['regPO'] = '';
-							$tocommit['regSD'] = '';
-							$tocommit['regSO'] = '';
-							$tocommit['conventionPaymentStatus'] = 'free';
-							$tocommit['golfPaymentStatus'] = 'free';
-
-						}elseif($data['earlybird'] == 'No'){
 							
-							$tocommit['overrideratenormal'] = 'no';
-							//normalrate valid
-							if($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'No'){
-								$tocommit['totalIDR'] = $conventionrate['PD-normal'];
-								$tocommit['totalUSD'] = '';
-								$tocommit['regPD'] = $conventionrate['PD-normal'];
-								$tocommit['regPO'] = '';
-								$tocommit['regSD'] = '';
-								$tocommit['regSO'] = '';
-							}elseif ($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'Yes'){
-								$tocommit['totalIDR'] = $conventionrate['PD-normal']+$golfrate;
-								$tocommit['totalUSD'] = '';
-								$tocommit['regPD'] = $conventionrate['PD-normal'];
-								$tocommit['regPO'] = '';
-								$tocommit['regSD'] = '';
-								$tocommit['regSO'] = '';
-							}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'No'){
-								$tocommit['totalIDR'] = '';
-								$tocommit['totalUSD'] = $conventionrate['PO-normal'];
-								$tocommit['regPD'] = '';
-								$tocommit['regPO'] = $conventionrate['PO-normal'];
-								$tocommit['regSD'] = '';
-								$tocommit['regSO'] = '';
-							}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'Yes'){
-								$tocommit['totalIDR'] = $golfrate;
-								$tocommit['totalUSD'] = $conventionrate['PO-normal'];
-								$tocommit['regPD'] = '';
-								$tocommit['regPO'] = $conventionrate['PO-normal'];
-								$tocommit['regSD'] = '';
-								$tocommit['regSO'] = '';
-							}elseif ($tocommit['regtype'] == 'SD'){
-								$tocommit['totalIDR'] = $conventionrate['SD'];
-								$tocommit['totalUSD'] = '';
-								$tocommit['regPD'] = '';
-								$tocommit['regPO'] = '';
-								$tocommit['regSD'] = $conventionrate['SD'];
-								$tocommit['regSO'] = '';
-							}elseif ($tocommit['regtype'] == 'SO'){
-								$tocommit['totalIDR'] = '';
-								$tocommit['totalUSD'] = $conventionrate['SO'];
-								$tocommit['regPD'] = '';
-								$tocommit['regPO'] = '';
-								$tocommit['regSD'] = '';
-								$tocommit['regSO'] = $conventionrate['SO'];
-							}
-								
-
-						}else{
-
-							$tocommit['overrideratenormal'] = 'yes';
-
 							if($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'No'){
 								$tocommit['totalIDR'] = $conventionrate['PD-earlybird'];
 								$tocommit['totalUSD'] = '';
@@ -839,66 +951,33 @@ class Import_Controller extends Base_Controller {
 								$tocommit['regSD'] = '';
 								$tocommit['regSO'] = $conventionrate['SO'];
 							}
-
 						}
 
-					}else{
-						
-						if($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'No'){
-							$tocommit['totalIDR'] = $conventionrate['PD-earlybird'];
-							$tocommit['totalUSD'] = '';
-							$tocommit['regPD'] = $conventionrate['PD-earlybird'];
-							$tocommit['regPO'] = '';
-							$tocommit['regSD'] = '';
-							$tocommit['regSO'] = '';
-						}elseif ($tocommit['regtype'] == 'PD' && $tocommit['golf'] == 'Yes'){
-							$tocommit['totalIDR'] = $conventionrate['PD-earlybird']+$golfrate;
-							$tocommit['totalUSD'] = '';
-							$tocommit['regPD'] = $conventionrate['PD-earlybird'];
-							$tocommit['regPO'] = '';
-							$tocommit['regSD'] = '';
-							$tocommit['regSO'] = '';
-						}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'No'){
-							$tocommit['totalIDR'] = '';
-							$tocommit['totalUSD'] = $conventionrate['PO-earlybird'];
-							$tocommit['regPD'] = '';
-							$tocommit['regPO'] = $conventionrate['PO-earlybird'];
-							$tocommit['regSD'] = '';
-							$tocommit['regSO'] = '';
-						}elseif ($tocommit['regtype'] == 'PO' && $tocommit['golf'] == 'Yes'){
-							$tocommit['totalIDR'] = $golfrate;
-							$tocommit['totalUSD'] = $conventionrate['PO-earlybird'];
-							$tocommit['regPD'] = '';
-							$tocommit['regPO'] = $conventionrate['PO-earlybird'];
-							$tocommit['regSD'] = '';
-							$tocommit['regSO'] = '';
-						}elseif ($tocommit['regtype'] == 'SD'){
-							$tocommit['totalIDR'] = $conventionrate['SD'];
-							$tocommit['totalUSD'] = '';
-							$tocommit['regPD'] = '';
-							$tocommit['regPO'] = '';
-							$tocommit['regSD'] = $conventionrate['SD'];
-							$tocommit['regSO'] = '';
-						}elseif ($tocommit['regtype'] == 'SO'){
-							$tocommit['totalIDR'] = '';
-							$tocommit['totalUSD'] = $conventionrate['SO'];
-							$tocommit['regPD'] = '';
-							$tocommit['regPO'] = '';
-							$tocommit['regSD'] = '';
-							$tocommit['regSO'] = $conventionrate['SO'];
-						}
+
+
+					}elseif($type == 'exhibitor'){
+						$tocommit['createdDate'] = new MongoDate();
+						$tocommit['lastUpdate'] = new MongoDate();
+
+						$tocommit['role'] = 'worker';
+
 					}
 
 					if($obj = $attendee->insert($tocommit)){
 
 						//if($data['sendattendee'] == 'Yes'){
 							// send message to each attendee
-							Event::fire('attendee.create',array($obj['_id'],$plainpass,$pic['email'],$pic['firstname'].$pic['lastname']));
+						if($type == 'attendee'){
+							Event::fire($type.'.create',array($obj['_id'],$plainpass,$pic['email'],$pic['firstname'].$pic['lastname']));
+						}elseif ($type == 'exhibitor') {
+							$plainpass = 'nopass';
+							Event::fire($type.'.create',array($obj['_id'],$plainpass,$data['email'],$data['firstname'].$data['lastname']));
+						}
 						// /}
 
 						$commitedobj[] = $tocommit;
 
-						$icache->update(array('email'=>$tocommit['email']),array('$set'=>array('cache_commit'=>true)));
+						$icache->update(array('_id'=>$tocommit['cache_obj']),array('$set'=>array('cache_commit'=>true)));
 
 						$commit_count++;
 
@@ -908,7 +987,7 @@ class Import_Controller extends Base_Controller {
 
 			}
 
-			if($data['attendeesummary'] == 'Yes'){
+			if($type == 'attendee' && $data['attendeesummary'] == 'Yes'){
 
 				//print_r($commitedobj);
 
@@ -937,9 +1016,9 @@ class Import_Controller extends Base_Controller {
 				
 			//}
 
-			return Redirect::to('import/preview/'.$importid)->with('notify_success','Committing '.$commit_count.' record(s)');
+			return Redirect::to('import/preview/'.$importid.'/'.$type)->with('notify_success','Committing '.$commit_count.' record(s)');
 		}else{
-			return Redirect::to('import/preview/'.$importid)->with('notify_success','No entry selected to commit');
+			return Redirect::to('import/preview/'.$importid.'/'.$type)->with('notify_success','No entry selected to commit');
 		}
 
 	}

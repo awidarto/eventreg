@@ -61,7 +61,7 @@ Route::post('myprofile/edit',array('uses'=>'register@edit'));
 Route::get('myprofile',array('uses'=>'register@profile'));
 
 
-Route::get('payment/checkout',array('uses'=>'register@checkout'));
+Route::get('payment/checkout',array('before'=>'auth','uses'=>'register@checkout'));
 
 Route::get('payment/(:any)',array('uses'=>'register@payment'));
 Route::post('payment/(:any)',array('uses'=>'register@payment'));
@@ -108,6 +108,14 @@ Route::get('/',  function(){
 Route::get('hashme/(:any)',function($mypass){
 
 	print Hash::make($mypass);
+});
+
+Route::get('companylist',function(){
+    $attendee = new Attendee();
+
+    $companies = $attendee->distinct('country');
+
+    print_r($companies);
 });
 
 Route::get('normalize',array('uses'=>'attendee@updateField'));

@@ -10,8 +10,10 @@
 
 <div class="row-fluid formNewAttendee">
     <div class="span6">
-<fieldset>
+      <fieldset>
             <legend>Field Person In Charge Information</legend>
+
+                {{ $form->hidden('exhibitor_id','')}}
 
                 {{ Form::label('salutation','Salutation')}}
 
