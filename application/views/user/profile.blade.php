@@ -36,10 +36,7 @@
 					<td class="detail-title">&nbsp;</td>
 					
 				</tr>
-				<!--<tr>
-					<td class="detail-title">Department</td>
-					<td class="detail-info">{{ depttitle($profile['department']) }}</td>
-				</tr>-->
+				
 
 			</table>
 		</div>
