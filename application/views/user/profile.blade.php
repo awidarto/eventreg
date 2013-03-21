@@ -29,11 +29,7 @@
 						<span>{{roletitle($profile['role'])}}</span>
 					</td>
 				</tr>
-				<tr>
-					<td class="detail-title">Job Title</td>
-					<td class="detail-title">:</td>
-					<td class="detail-info">{{ $profile['employee_jobtitle'] }}</td>
-				</tr>
+				
 				<tr>
 					<td><a href="{{ URL::to('user/pass')}}" class="inlink" ><i class="foundicon-lock action"></i> Change Password</a></td>
 					<td class="detail-title">&nbsp;</td>
