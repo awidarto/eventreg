@@ -15,6 +15,8 @@
 
         @if(Auth::user()->role == 'onsite')
             <li>{{ HTML::link('attendee','Attendees')}}</li>
+        @elseif(Auth::user()->role == 'exhibitionadmin')
+
         @else
             <li class="has-dropdown">{{ HTML::link('attendee','Attendees')}}
                 <ul class="dropdown">
@@ -24,11 +26,18 @@
         @endif        
 
 
-        @if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'onsite')
+        @if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'onsite' )
             <li>{{ HTML::link('visitor','Visitors')}}</li>
             
             <li>{{ HTML::link('official','Officials')}}</li>
             <li>{{ HTML::link('exhibitor','Exhibitors')}}</li>
+
+        @elseif( Auth::user()->role == 'exhibitionadmin' )
+            <li>{{ HTML::link('exhibitor','Exhibitors')}}</li>
+            <li>{{ HTML::link('visitor','Visitors')}}</li>
+            
+            <li>{{ HTML::link('official','Officials')}}</li>
+            
         @endif
 
         @if(Auth::user()->role == 'root' || Auth::user()->role == 'super')
@@ -44,8 +53,13 @@
                 <li>{{ HTML::link('users', 'User Manager' ) }}</li>
               </ul>
             </li>
-
+        @elseif(Auth::user()->role == 'exhibitionadmin')
+            <li>{{ HTML::link('report','Reports')}}
+            <!--<li>{{ HTML::link('import','Import Data')}}-->
+            <li>{{ HTML::link('export','Export Data')}}
         @endif
+       
+
         <li class="divider"></li>
         @if(Auth::user()->role == 'onsite')
             <li>{{ HTML::link('onsite', 'Home') }}</li>

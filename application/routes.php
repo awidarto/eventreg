@@ -36,7 +36,7 @@ Route::controller(array('register','exhibition','report','booth','import','expor
 
 Route::get('/',function(){
     if(Auth::check()){
-        if(Auth::user()->role == 'root' || Auth::user()->role == 'super'){
+        if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'exhibitionadmin'){
            return Redirect::to('dashboard');
         }else if(Auth::user()->role == 'onsite'){
            return Redirect::to('onsite');

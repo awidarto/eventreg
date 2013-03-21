@@ -129,7 +129,7 @@
 	
 	<div class="modal-header">
 		<button type="button" id="removeviewform" class="close" data-dismiss="modal" aria-hidden="true"></button>
-		<h3 id="myModalLabel">Form Submission</h3>
+		<h3 id="myModalLabel">Detail</h3>
 		
 	</div>
 	<div class="modal-body" id="loaddata">

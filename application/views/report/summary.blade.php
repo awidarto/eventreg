@@ -140,6 +140,8 @@
 	  	  </div>
 
 	      <div class="clear"></div>
+
+	      
 	      <?php
 			$last = array_pop($getdate);
 			$lastCount = array_pop($getCount);	
@@ -203,9 +205,32 @@
             {{ HTML::script('js/highcharts.js') }}
             {{ HTML::script('js/highcharts-exporting.js') }}
             <h2 style="margin-top: 5px;margin-bottom: 5px;">Daily Registration</h2>
-	    	<div id="charts" style="min-width: 400px; height: 400px; margin: 0 auto">
+	    	<div id="charts" style="min-width: 400px; height: 500px; margin: 0 auto">
 
             </div>
+            <div class="clear"></div>
+            <br/>
+            <div class="separateMetro marginbottom companylist clearfix">
+	      	<h2>Registration by Company</h2>
+	      	<a class="icon-" href="{{ URL::to('export/reportbycompany') }}"><i></i><span class="pay" id="">Export as .csv</span></a>
+	      	<table class="report">
+
+	      	<?php
+	      	$countdata = 0;
+	      	foreach ($companies as $key =>$value ) {
+	      		$countdata++;
+	      		if($companyValue[$value] > 0){?>
+			      	<tr>
+			      		<td>{{$value}}</td>
+			      		<td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+			      		<td class="countresult">{{$companyValue[$value]}}</td>
+	      	<?php 
+	      		}
+	      	}
+	      	?>
+	      	</table>
+	  	  	</div>
+	  	  	<div class="clear"></div>
 	   </div>
 
 		

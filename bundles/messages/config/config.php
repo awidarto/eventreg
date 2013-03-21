@@ -52,4 +52,22 @@ return array(
 		'mail',
 
 	),
+
+	/*'transports' => array(
+
+		'smtp' => array(
+			'host'       =>	'smtp.gmail.com', 
+			'username'   =>	'taufiq@kickstartlab.com',
+			'password'   =>	'taufiq123',
+			'port'       =>	465,
+			'encryption' =>	'ssl',
+		),
+
+		'sendmail' => array(
+			'command' => '/usr/sbin/sendmail -bs',
+		),
+
+		'mail',
+
+	),*/
 );

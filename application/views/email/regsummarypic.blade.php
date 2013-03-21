@@ -74,10 +74,10 @@ $PORateCount = 0;
 $SORateCount = 0;
 $SDRateCount = 0;
 
-
+$golfCount = 0;
 foreach($attendee as $data):
 	$no ++;
-	$golfCount = 0;
+	
 
 	if($data['regtype'] == 'PD'):
 	$PDCount ++;
@@ -214,6 +214,7 @@ foreach($attendee as $data):
 ?>
 
 <?php endforeach;
+	$golfrate = Config::get('eventreg.golffee');
 	/*$totalConvFeePD = $PDCount*$PD_rate;
 	$totalConvFeePO = $POCount*$PO_rate;
 	$totalConvFeeSD = $SDCount*$SD_rate;
@@ -227,7 +228,7 @@ foreach($attendee as $data):
 	
 	$rp=formatrp($totalConvFeePD+$totalConvFeeSD);
 	$usd=money_format(" %i ", $totalConvFeePO+$totalConvFeeSO);
-	$rpGolf=formatrp($totalGolfFee);
+	
 	$totalAllIDR=formatrp($totalGolfFee + $totalConvFeePD+$totalConvFeeSD);
 	$totalAllUSD= money_format(" %i ", $totalConvFeePO+$totalConvFeeSO);
 ?>
@@ -236,7 +237,7 @@ foreach($attendee as $data):
 	<td style="padding:3px 7px 2px 7px;border:1px solid #545454;margin:0;">IDR <?php echo $rp; ?></td>
 	<td style="padding:3px 7px 2px 7px;border:1px solid #545454;margin:0;"><?php echo $usd; ?></td>
 	<td style="padding:3px 7px 2px 7px;border:1px solid #545454;margin:0;">&nbsp;</td>
-	<td style="padding:3px 7px 2px 7px;border:1px solid #545454;margin:0;">IDR <?php echo $rpGolf;?> </td>
+	<td style="padding:3px 7px 2px 7px;border:1px solid #545454;margin:0;">IDR <?php echo formatrp($totalGolfFee) ;?> </td>
 	
 </tr>
 

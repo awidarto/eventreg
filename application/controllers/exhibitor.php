@@ -61,7 +61,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 		$colclass = array('','span1','span3','span1','span3','span3','span1','span1','span1','','','','');
 
-		if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'onsite'){
+		if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'onsite' || Auth::user()->role == 'exhibitionadmin'){
 			return View::make('tables.simple')
 				->with('title','Exhibitors')
 				->with('newbutton','New Exhibitors')

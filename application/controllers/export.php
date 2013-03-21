@@ -476,6 +476,82 @@ class Export_Controller extends Base_Controller {
 	}
 
 
+	public function get_reportbycompany(){
+
+
+		$dataset = new Attendee();
+		$collection = 'attendee';
+
+		//$dataresult = $dataset->find(array('createdDate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
+		$dataresult = $dataset->find(array(), array(), array(),array());
+		$companies = $dataset->distinct('company');
+		
+
+		if(isset($dataresult)){
+
+			$filename = date('Ymd_his',time()).'_'.$collection.'.csv';
+
+			$header['Cache-Control'] = "must-revalidate, post-check=0, pre-check=0";
+			$header['Content-Description'] = "File Transfer";
+			$header['Content-type'] = "text/csv";
+			$header['Content-Disposition'] = "attachment; filename=".$filename;
+			$header['Expires'] = "0";
+			$header['Pragma'] = "public";
+
+			$dataheader = 
+			array(
+				//new template
+				'NO'=> '',
+				'COMPANY'=> '',
+				'PERSONS'=> '',
+				'COUNTRY'=> ''
+			);
+
+			$dataheader = array_keys($dataheader);
+
+			for($i = 0; $i < count($dataheader);$i++){
+				$first_row[$i] = '"'.$dataheader[$i].'"';
+			}
+
+			$first_row = implode(',',$first_row);
+
+			//print $first_row;
+
+			//print $first_row;
+
+			$result = array();
+			$result[] = $first_row; // add the header
+
+			foreach($companies as $row){
+				$inrow = array();
+				for($i = 0; $i < count($dataheader); $i++){
+	
+					$row[$dataheader[0]] = 1;
+					$row[$dataheader[1]] = '';
+					$row[$dataheader[2]] = '';
+					
+					if(isset($row[$dataheader[$i]])){
+						if(is_float($row[$dataheader[$i]]) || is_double($row[$dataheader[$i]]) || is_long($row[$dataheader[$i]]) || is_integer($row[$dataheader[$i]])){
+							$row[$dataheader[$i]] = (string) $row[$dataheader[$i]];
+							$inrow[$i] = '"\''.$row[$dataheader[$i]].'"';
+						}else{
+							$inrow[$i] = '"'.$row[$dataheader[$i]].'"';
+						}
+					}else{
+						$inrow[$i] = '""';
+					}
+				}					
+				$result[] = implode(',',$inrow);
+			}
+
+
+			$result = implode("\r\n",$result);
+			return Response::make($result,'200',$header);
+		}
+
+	}
+
+
 }
 
 ?>

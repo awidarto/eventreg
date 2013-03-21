@@ -947,3 +947,23 @@ color: #717171;
 table.onsite {
 	margin-top: 60px;
 } 
+
+.companylist a.icon-{
+	float: right;
+	margin-top: -21px;
+	margin-right: -22px;
+	color: #333;
+}
+.profilepopup,.secondtable{
+	float: left;
+	margin-right: 10px;
+	width:32%;
+	border-right:1px solid #eaeaea;
+}
+.profilepopup td,.secondtable td{
+	padding:7px;
+}
+.onsitetableclick{
+	cursor: pointer;
+	border-bottom: 1px dotted #bc1c48;
+}

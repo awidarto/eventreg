@@ -13,7 +13,7 @@
 <strong>Registration Number : {{ $data['registrationnumber'] }}</strong></p>
 
 <p>Dear Sir/Madam,<br />
-Thank you for registering to 37th IPA Convention & Exhibition. Please find below summary of your registration:</p>
+Thank you for registering to The 37th IPA Convention & Exhibition 2013 Secretariat. Please find below summary of your registration:</p>
 </p>
 
 @if($passwordRandom == 'nochange')
@@ -37,12 +37,27 @@ Thank you for registering to 37th IPA Convention & Exhibition. Please find below
 
 
 <p>If you need further information regarding the convention, please feel free to contact us.
-Thank you very much for your participation and we look forward to see you on 37th IPA Convex.
+Thank you very much for your participation and we look forward to see you on The 37th IPA Convention & Exhibition 2013.
 </p>
 
 <p>Regards,<br/>
-<strong>37th IPA Convex Secretariat</strong><br/>
+<strong>The 37th IPA Convention & Exhibition 2013 Secretariat</strong><br/>
 PT Dyandra Promosindo<br/>
 The City Tower, 7th Floor | Jl. M.H. Thamrin No. 81 | Jakarta 10310 - Indonesia<br/>
 T. +62-21-31996077, 31997174 (direct) | F. +62-21-31997176<br/>
 E. conventionipa2013@dyandra.com | W. www.ipaconvex.com</p>
+
+<p>*Kindly contact your hall coordinator for further enquires, requirements and operational form submission.</p>
+
+<table id="order-table" class="withborder">
+<tr>
+  <th>HALL</th>
+  <th>NAME </th>
+  <th>PHONE </th>
+  <th>EXT </th>
+  <th>MOBILE PHONE </th>
+  <th>EMAIL</th>
+</tr>
+
+</table>
+

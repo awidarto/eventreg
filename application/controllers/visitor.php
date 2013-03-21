@@ -57,7 +57,7 @@ class Visitor_Controller extends Base_Controller {
 
 		$searchinput = false; // no searchinput form on footer
 
-		if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'onsite'){
+		if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'onsite'|| Auth::user()->role == 'exhibitionadmin'){
 			return View::make('tables.simple')
 				->with('title','Visitors')
 				->with('newbutton','New Visitor')

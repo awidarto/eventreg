@@ -6,6 +6,7 @@ return array(
       'administrator'=>'Administrator',
       'onsite'=>'Onsite Officer',
       'registration'=>'Registration Officer',
+      'exhibitionadmin'=>'Exhibition Administrator',
       'attendee'=>'Attendee'
     ),
   'access'=>array( 

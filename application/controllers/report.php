@@ -48,6 +48,11 @@ class Report_Controller extends Base_Controller {
 
 		$attendee = new Attendee();
 
+	    $companies = $attendee->distinct('company');
+
+	    
+	    
+
 		$stat['PO'] = $attendee->count(array('regtype'=>'PO'));
 
 		$stat['PD'] = $attendee->count(array('regtype'=>'PD'));
@@ -57,6 +62,7 @@ class Report_Controller extends Base_Controller {
 		$stat['SD'] = $attendee->count(array('regtype'=>'SD'));
 
 		$stat['Attendee'] = $attendee->count();
+
 
 		$stat['paidAttendee'] = $attendee->count(array('conventionPaymentStatus'=>'paid'));
 
@@ -69,6 +75,9 @@ class Report_Controller extends Base_Controller {
 		$getdate = $this->makeDateRange('2013-02-11', $today);
 		$getCount = $this->getCountAttendee('2013-02-11', $today);
 		
+		foreach($companies as $key => $value){
+			$companyValue[$value] = $attendee->count(array('company'=>$value));
+		}
 
 		foreach ($country as $key => $value) {
 			$coutryValue[$value] = $attendee->count(array('country'=>$value));
@@ -77,7 +86,9 @@ class Report_Controller extends Base_Controller {
 		return View::make('report.summary')
 			->with('title','Report')
 			->with('stat',$stat)
+			->with('companies',$companies)
 			->with('coutryValue',$coutryValue)
+			->with('companyValue',$companyValue)
 			->with('country',$country)
 			->with('getdate',$getdate)
 			->with('getCount',$getCount)

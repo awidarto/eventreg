@@ -233,7 +233,7 @@ class Attendee_Controller extends Base_Controller {
 					$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
 				}
 			}else{
-				$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
+				$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">-</span>';
 			}
 
 			if(isset($doc['golfPaymentStatus'])){
@@ -249,7 +249,7 @@ class Attendee_Controller extends Base_Controller {
 					$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
 				}
 			}else{
-				$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
+				$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">-</span>';
 			}
 
 			if(isset($doc['golf'])){
