@@ -7,7 +7,7 @@
 </div>
 
 {{$form->open('user/pass/'.$doc['_id'],'POST',array('class'=>'custom'))}}
-<div class="row">
+<div class="row-fluid">
   <div class="five columns left">
     {{ $form->hidden('id',$doc['_id'])}}
 

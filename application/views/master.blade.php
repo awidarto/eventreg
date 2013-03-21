@@ -66,7 +66,7 @@
             </div>
          </div>
          <div id="top-info" class="pull-right">
-           <a href="#" class="pull-left">
+           <a href="{{ URL::to('user/profile') }}" class="pull-left">
               @yield('identity')
               <div class="top-info-block">
                  <b class="icon-user"></b>

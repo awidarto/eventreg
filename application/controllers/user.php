@@ -360,11 +360,11 @@ class User_Controller extends Base_Controller {
 
 	public function post_pass($id = null){
 
-		if(is_null($id)){
-			$back = 'user/profile';
-		}else{
-			$back = 'users';
-		}
+		//if(is_null($id)){
+			$back = '/';
+		//}else{
+		//	$back = 'users';
+		//}
 
 	    $rules = array(
 	        'pass' => 'same:repass',
