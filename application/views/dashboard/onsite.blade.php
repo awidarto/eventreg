@@ -3,7 +3,11 @@
 @section('content')
 
 <div class="row-fluid">
+	@if(Auth::user()->role == 'onsite')
 	<div class="span10" id="onsite-table">
+	@else
+	<div class="span12" id="onsite-table">
+	@endif
 
           <table class="table onsite table-condensed dataTable attendeeTable" id="onsite">
 
@@ -57,6 +61,7 @@
           </table>
 
 	</div>
+	@if(Auth::user()->role == 'onsite')
 	<div class="span2">
 
 		<div class="metro row-fluid">
@@ -120,9 +125,8 @@
 			   </div>
 			</div>
 		</div>
-
-
 	</div>
+	@endif
 </div>
 
 <div id="viewformModal" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

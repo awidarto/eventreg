@@ -38,7 +38,7 @@ Route::get('/',function(){
     if(Auth::check()){
         if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'exhibitionadmin'){
            return Redirect::to('dashboard');
-        }else if(Auth::user()->role == 'onsite'){
+        }else if(Auth::user()->role == 'onsite' || Auth::user()->role == 'cashier'){
            return Redirect::to('onsite');
         }
     }else{

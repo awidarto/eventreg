@@ -7,7 +7,8 @@ return array(
       'onsite'=>'Onsite Officer',
       'registration'=>'Registration Officer',
       'exhibitionadmin'=>'Exhibition Administrator',
-      'attendee'=>'Attendee'
+      'attendee'=>'Attendee',
+      'cashier'=>'Cashier'
     ),
   'access'=>array( 
       'all'=>'all',

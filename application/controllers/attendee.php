@@ -281,32 +281,56 @@ class Attendee_Controller extends Base_Controller {
 
 				$rowResendMessage = '<a class="icon-"  ><i>&#xe165;</i><span class="resendmail" id="'.$doc['_id'].'" >Resend Email</span>';
 			//}
+			if(Auth::user()->role == 'root' || Auth::user()->role == 'super'){
+				$aadata[] = array(
+					$counter,
+					$select,
+					(isset($doc['registrationnumber']))?$doc['registrationnumber']:'',
+					date('Y-m-d', $doc['createdDate']->sec),
+					$doc['email'],
+					'<span class="expander" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
+					$doc['lastname'],
+					$doc['company'],
+					$doc['regtype'],
+					$doc['country'],
+					$paymentStatus,
+					$paymentStatusGolf,
+					$rowBoothAction.
+					'<a class="icon-"  ><i>&#xe1b0;</i><span class="pay" id="'.$doc['_id'].'" >Convention Status</span>'.
+					$rowGolfAction.
+					
+					'<a class="icon-"  ><i>&#xe14c;</i><span class="pbadge" id="'.$doc['_id'].'" >Print Badge</span>'.
+					'<a class="icon-"  href="'.URL::to('attendee/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
+					
+					$rowResendMessage.
+					'<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$doc['_id'].'" >Delete</span>',
+					
 
-			$aadata[] = array(
-				$counter,
-				$select,
-				(isset($doc['registrationnumber']))?$doc['registrationnumber']:'',
-				date('Y-m-d', $doc['createdDate']->sec),
-				$doc['email'],
-				'<span class="expander" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
-				$doc['lastname'],
-				$doc['company'],
-				$doc['regtype'],
-				$doc['country'],
-				$paymentStatus,
-				$paymentStatusGolf,
-				$rowBoothAction.
+					'extra'=>$extra
+				);
+			}else{
+				$aadata[] = array(
+					$counter,
+					$select,
+					(isset($doc['registrationnumber']))?$doc['registrationnumber']:'',
+					date('Y-m-d', $doc['createdDate']->sec),
+					$doc['email'],
+					'<span class="expander" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
+					$doc['lastname'],
+					$doc['company'],
+					$doc['regtype'],
+					$doc['country'],
+					$paymentStatus,
+					$paymentStatusGolf,
+					
+					
+					'<a class="icon-"  ><i>&#xe14c;</i><span class="pbadge" id="'.$doc['_id'].'" >Print Badge</span>'.
+					'<a class="icon-"  href="'.URL::to('attendee/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>',
+					
 
-				'<a class="icon-"  ><i>&#xe1b0;</i><span class="pay" id="'.$doc['_id'].'" >Convention Status</span>'.
-				$rowGolfAction.
-
-				'<a class="icon-"  ><i>&#xe14c;</i><span class="pbadge" id="'.$doc['_id'].'" >Print Badge</span>'.
-				'<a class="icon-"  href="'.URL::to('attendee/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
-				$rowResendMessage.
-				'<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$doc['_id'].'" >Delete</span>',
-
-				'extra'=>$extra
-			);
+					'extra'=>$extra
+				);
+			}
 			$counter++;
 		}
 
@@ -603,6 +627,33 @@ class Attendee_Controller extends Base_Controller {
 		print json_encode($result);
 	}
 
+
+	public function post_paystatusconvonsite(){
+		$id = Input::get('userid');
+		$paystatus = Input::get('new_value');
+		$displaytax = Input::get('foo');
+
+		$user = new Attendee();
+
+		if(is_null($id)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$_id = new MongoId($id);
+
+
+			if($user->update(array('_id'=>$_id),array('$set'=>array('conventionPaymentStatus'=>$paystatus)))){
+				$result = $paystatus;
+				
+			}else{
+				Event::fire('paymentstatusgolfconvention.update',array('id'=>$id,'result'=>'FAILED'));
+				$result = array('status'=>'ERR','data'=>'DELETEFAILED');
+			}
+		}
+
+		print json_encode($result);
+	}
+
 	public function post_resendmail(){
 		$id = Input::get('id');
 		$mailtype = Input::get('type');
@@ -643,6 +694,8 @@ class Attendee_Controller extends Base_Controller {
 
 		print json_encode($result);
 	}
+
+
 
 
 	public function get_add($type = null){
@@ -950,8 +1003,14 @@ class Attendee_Controller extends Base_Controller {
 			if($obj = $user->insert($data)){
 
 				Event::fire('attendee.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+				
+				if(Auth::user()->role == 'onsite'){
+					return Redirect::to('onsite')->with('notify_success',Config::get('site.register_success'));
+				}else{
+					return Redirect::to('attendee')->with('notify_success',Config::get('site.register_success'));
+				}
 
-		    	return Redirect::to('attendee')->with('notify_success',Config::get('site.register_success'));
+		    	
 			}else{
 		    	return Redirect::to('attendee')->with('notify_success',Config::get('site.register_failed'));
 			}
@@ -1239,6 +1298,29 @@ class Attendee_Controller extends Base_Controller {
 		$doc = $attendee->get(array('_id'=>$id));
 
 		return View::make('print.attendeebadge')->with('profile',$doc);
+	}
+
+	public function get_printbadgeonsite($id){
+		$id = new MongoId($id);
+
+		$attendee = new Attendee();
+
+		$doc = $attendee->get(array('_id'=>$id));
+
+		return View::make('print.attendeebadgeonsite')
+		->with('ajaxpaymentupdateonsite',URL::to('attendee/edit'))
+		->with('profile',$doc);
+	}
+
+	public function get_printreceipt($id){
+		$id = new MongoId($id);
+
+		$attendee = new Attendee();
+
+		$doc = $attendee->get(array('_id'=>$id));
+
+		return View::make('print.attendeereceipt')
+		->with('data',$doc);
 	}
 
 	public function get_view($id){

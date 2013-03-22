@@ -967,3 +967,8 @@ table.onsite {
 	cursor: pointer;
 	border-bottom: 1px dotted #bc1c48;
 }
+.printonsite{
+	margin-top: 40px;
+	color: #fff;
+}
+

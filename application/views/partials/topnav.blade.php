@@ -17,6 +17,8 @@
             <li>{{ HTML::link('attendee','Attendees')}}</li>
         @elseif(Auth::user()->role == 'exhibitionadmin')
 
+        @elseif(Auth::user()->role == 'cashier')
+
         @else
             <li class="has-dropdown">{{ HTML::link('attendee','Attendees')}}
                 <ul class="dropdown">
@@ -61,7 +63,7 @@
        
 
         <li class="divider"></li>
-        @if(Auth::user()->role == 'onsite')
+        @if(Auth::user()->role == 'onsite' || Auth::user()->role == 'cashier')
             <li>{{ HTML::link('onsite', 'Home') }}</li>
         @else
             <li>{{ HTML::link('dashboard', 'Home') }}</li>

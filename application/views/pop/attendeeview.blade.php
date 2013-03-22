@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <div class="row-fluid">
 	
 			<h2>{{ $profile['firstname'].' '.$profile['lastname'] }}</h2>
@@ -27,22 +28,7 @@
 					<td class="detail-info">{{ $profile['mobile'] }}</td>
 				</tr>
 				
-				<tr>
-					<td class="detail-title">Status</td>
-					<td>:&nbsp;</td>
-					<td class="detail-info">
-						@if($profile['conventionPaymentStatus'] == 'unpaid')
-							<span style="color: #BC1C4B;text-transform:uppercase;text-decoration:underline;">{{ HTML::link('payment/convention',$profile['conventionPaymentStatus']) }}</span>
-						@elseif($profile['conventionPaymentStatus'] == 'cancel')
-							<span style="text-transform:uppercase;">{{ $profile['conventionPaymentStatus'] }}</span>
-						@elseif($profile['conventionPaymentStatus'] == 'paid')
-							<span style="color: #229835;text-transform:uppercase;">{{ $profile['conventionPaymentStatus'] }}</span>
-						@else
-							<span style="color: #BC1C4B;text-transform:uppercase;">{{ $profile['conventionPaymentStatus'] }}</span>
-						@endif
-						
-					</td>
-				</tr>
+				
 				<tr>
 					<td class="detail-title">Registration  Type</td>
 					<td>:&nbsp;</td>
@@ -70,13 +56,13 @@
 					<td class="detail-info">
 						@if($profile['golf'] == 'Yes')
 							@if($profile['golfPaymentStatus'] == 'unpaid')
-								<span>{{ $profile['golf'] }} - <span style="color: #BC1C4B;text-transform:uppercase;text-decoration:underline;">{{ HTML::link('payment/golf',$profile['golfPaymentStatus']) }}</span></span>
+								<span>{{ $profile['golf'] }} - <span style="color: #BC1C4B;text-transform:uppercase;text-decoration:underline;font-weight:bold;">{{ $profile['golfPaymentStatus'] }}</span></span>
 							@elseif ($profile['golfPaymentStatus'] == 'pending')
-								<span>{{ $profile['golf'] }} - <span style="text-transform:uppercase;">{{ $profile['golfPaymentStatus'] }}</span></span>
+								<span>{{ $profile['golf'] }} - <span style="text-transform:uppercase;font-weight:bold;">{{ $profile['golfPaymentStatus'] }}</span></span>
 							@elseif ($profile['golfPaymentStatus'] == 'paid')
-								<span>{{ $profile['golf'] }} - <span style="color: #229835;text-transform:uppercase;">{{ $profile['golfPaymentStatus'] }}</span></span>
+								<span>{{ $profile['golf'] }} - <span style="color: #229835;text-transform:uppercase;font-weight:bold;">{{ $profile['golfPaymentStatus'] }}</span></span>
 							@else
-								<span>{{ $profile['golf'] }} - <span style="color: #BC1C4B;text-transform:uppercase;">{{ $profile['golfPaymentStatus'] }}</span></span>
+								<span>{{ $profile['golf'] }} - <span style="color: #BC1C4B;text-transform:uppercase;font-weight:bold;">{{ $profile['golfPaymentStatus'] }}</span></span>
 							@endif
 						@else
 							<span>{{ $profile['golf'] }}</span>
@@ -84,6 +70,34 @@
 					</td>
 				</tr>
 				
+				<tr>
+					<td class="detail-title">Status</td>
+					<td>:&nbsp;</td>
+					<td class="detail-info">
+						@if($profile['conventionPaymentStatus'] == 'unpaid')
+							<span style="color: #BC1C4B;text-transform:uppercase;text-decoration:underline;font-weight:bold;"><div class="convPayment" id="select_1">{{ $profile['conventionPaymentStatus'] }}</div></span>
+						@elseif($profile['conventionPaymentStatus'] == 'cancel')
+							<span style="text-transform:uppercase;font-weight:bold;"><div class="convPayment" id="select_1">{{ $profile['conventionPaymentStatus'] }}</div></span>
+						@elseif($profile['conventionPaymentStatus'] == 'paid')
+							<span style="color: #229835;text-transform:uppercase;font-weight:bold;"><div class="convPayment" id="select_1">{{ $profile['conventionPaymentStatus'] }}</div></span>
+						@else
+							<span style="color: #BC1C4B;text-transform:uppercase;font-weight:bold;"><div class="convPayment" id="select_1">{{ $profile['conventionPaymentStatus'] }}</div></span>
+						@endif
+						
+					</td>
+				</tr>
+
+				<tr>
+					<td class="detail-title">Notes</td>
+					<td>:&nbsp;</td>
+					<td class="detail-info">
+						@if(isset($profile['notes']))
+							{{$profile['notes']}}
+						@else
+							-
+						@endif
+					</td>
+				</tr>
 			</table>
 			<table class="secondtable">
 				<tr><td colspan="3"><h4>Company Information</h4></td></tr>
@@ -200,6 +214,60 @@
 					@endif
 				
 			</table>
+			<div class="clear"></div>
+			
+			@if(Auth::user()->role == 'onsite')
+				<button class="printonsite btn btn-info" id="printstart"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>
+				<iframe src="{{ URL::to('attendee/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
+			@elseif(Auth::user()->role == 'cashier')
+				<button class="printonsite btn btn-info" id="printstart" disable="disable"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT RECEIPT</button>
+				<iframe src="{{ URL::to('attendee/printreceipt/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
+			@endif
+			</div>
 	
 </div>
+<script type="text/javascript">
+<?php
+
+	$ajaxpaymentupdateonsite = (isset($ajaxpaymentupdateonsite))?$ajaxpaymentupdateonsite:'/';
+	$userid = $profile['_id']->__toString();
+	$paystat = $profile['conventionPaymentStatus'];
+?>
+$(document).ready(function() {
+	
+	var paystat = '<?php echo $paystat;?>';
+	if((paystat != 'paid') && (paystat != 'free')){
+
+		$('#printstart').attr('disabled', 'disabled');
+	}
+	
+	
+ 	$('.convPayment').editable('{{ URL::to("attendee/paystatusconvonsite") }}', { 
+	    indicator : 'Saving...',
+	    name   : 'new_value',
+	    data   : '{"unpaid":"Unpaid","paid":"Paid","free":"Free"}',
+	    type   : 'select',
+	    submit : 'OK',
+	    style   : 'display: inline',
+	    callback : function(value, settings) {
+	    	console.log(value);
+	    	if(value =='"paid"'){
+	    		alert('Successfully change payment status, you can print the receipt now');
+	    		$('#printstart').removeAttr('disabled');     
+	    	}else{
+	    		$('#printstart').attr('disabled', 'disabled');
+	    	}
+     	},
+	    submitdata : {userid: '<?php echo $userid;?>'}
+
+  	});
+});
+$('#printstart').click(function(){
+	var pframe = document.getElementById('print_frame');
+	var pframeWindow = pframe.contentWindow;
+	pframeWindow.print();
+
+});
+
+</script>
 @endsection
