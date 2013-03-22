@@ -46,6 +46,16 @@ Route::get('/',function(){
     }
 });
 
+Route::get('barcode/(:any)',function($text){
+    $barcode = new Barcode();
+    $barcode->make($text);
+    return $barcode->render('png');
+});
+
+Route::get('bartest/(:any)',function($text){
+    return View::make('bartest')->with('text',$text);
+});
+
 Route::get('general',array('uses'=>'content@public'));
 
 Route::post('register',array('uses'=>'register@add'));
