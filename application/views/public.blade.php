@@ -103,7 +103,11 @@
             stm_aix("p3i0","p1i0",[0,"  How to Get There  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=howtogetthere"],0,26);
             stm_ep();
             @if(Auth::attendeecheck() == false)
-            stm_aix("p0i6","p0i2",[0,"  LOGIN   ","","",-1,-1,0,"http://46.23.76.180/ipa37/index.php/register/login"],0,36);
+            stm_aix("p0i6","p0i2",[0,"  LOGIN   ","","",-1,-1,0,"#"],0,36);
+            //stm_aix("p0i6","p0i2",[0,"  LOGIN   ","","",-1,-1,0,"http://46.23.76.180/ipa37/index.php/register/login"],0,36);
+            stm_bpx("p3","p1",[]);
+            stm_aix("p3i0","p1i0",[0,"  Convention ","","",-1,-1,0,"http://46.23.76.180/ipa37/index.php/register/login"],0,26);
+            stm_aix("p3i1","p1i0",[0,"  Exhibitor  ","","",-1,-1,0,"http://46.23.76.180/ipa37/index.php/exhibitor/login"],0,26);
             @endif
             stm_em();
             </script>

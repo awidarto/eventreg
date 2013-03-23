@@ -67,84 +67,6 @@ function removeName(klass) {
     
 }
 
-function calcTotalPallets() {
-
-    var totalPallets = 0;
-
-    $(".num-pallets-input").each(function() {
-    
-        var thisValue = parseInt($(this).val());
-    
-        if ( (IsNumeric(thisValue)) &&  (thisValue != '') ) {
-            totalPallets += parseInt(thisValue);
-        };
-    
-    });
-    
-    $("#total-pallets-input").val(totalPallets);
-
-}
-
-function calcProdSubTotal() {
-    
-    var prodSubTotal = 0;
-
-    $(".row-total-input").each(function() {
-    
-        var valString = $(this).val() || 0;
-        
-        prodSubTotal += parseInt(valString);
-        
-    });
-    var instalationFee = $('#operationalfeeelectric').val();
-    prodSubTotal = prodSubTotal+parseInt(instalationFee);
-    $("#product-subtotal").text(CommaFormatted(prodSubTotal));
-    $("#electricsubtotal").val(prodSubTotal);
-
-
-}
-
-function calcTax() {
-
-    var totaltax = 0;
-
-    var productSubtotal = $("#product-subtotal").text() || 0;
-
-    var totaltax = (10 * parseInt(CleanNumber(productSubtotal)))/100;    
-    
-    $("#product-tax").text(CommaFormatted(totaltax));
-    $("#electrictax").val(totaltax);
-
-}
-
-
-
-
-function calcShippingTotal() {
-
-    var totalPallets = $("#total-pallets-input").val() || 0;
-    var shippingRate = $("#shipping-rate").text() || 0;
-    var shippingTotal = totalPallets * shippingRate;
-    
-    $("#shipping-subtotal").val(CommaFormatted(shippingTotal));
-
-}
-
-function calcOrderTotal() {
-
-    var orderTotal = 0;
-
-    var productSubtotal = $("#product-subtotal").text() || 0;
-    var taxTotal = $("#product-tax").text() || 0;
-    //var taxTotal = "0";
-        
-    var orderTotal = parseInt(CleanNumber(productSubtotal)) + parseInt(CleanNumber(taxTotal));    
-        
-    $("#order-total").text(CommaFormatted(orderTotal));
-    
-    $("#electricgrandtotal").val(orderTotal);
-    
-}
 
 
 
@@ -234,11 +156,95 @@ $(function() {
         // Calcuate the overal totals
         calcProdSubTotal();
         calcTax();
-        //calcTotalPallets();
+        calcTotalPallets();
         //calcShippingTotal();
         calcOrderTotal();
     
     });
+
+function calcTotalPallets() {
+
+    var totalPallets = 0;
+
+    $(".num-pallets-input").each(function() {
+    
+        var thisValue = parseInt($(this).val());
+    
+        if ( (IsNumeric(thisValue)) &&  (thisValue != '') ) {
+            totalPallets += parseInt(thisValue);
+        };
+    
+    });
+    
+    $("#total-pallets-input").val(totalPallets);
+
+}
+
+function calcProdSubTotal() {
+    
+    var prodSubTotal = 0;
+
+    $(".row-total-input").each(function() {
+    
+        var valString = $(this).val() || 0;
+        
+        prodSubTotal += parseInt(valString);
+        
+    });
+    var instalationFee = $('#operationalfeeelectric').val();
+    
+    prodSubTotal = prodSubTotal+parseInt(instalationFee);
+    //console.log(prodSubTotal);
+    prodSubTotal = prodSubTotal;
+    $("#product-subtotal").text(CommaFormatted(prodSubTotal));
+    $("#electricsubtotal").val(prodSubTotal);
+
+
+}
+
+function calcTax() {
+
+    var totaltax = 0;
+
+    var productSubtotal = $("#product-subtotal").text() || 0;
+
+    var totaltax = (10 * parseInt(CleanNumber(productSubtotal)))/100;    
+    
+    $("#product-tax").text(CommaFormatted(totaltax));
+    $("#electrictax").val(totaltax);
+
+}
+
+
+
+
+function calcShippingTotal() {
+
+    var totalPallets = $("#total-pallets-input").val() || 0;
+    var shippingRate = $("#shipping-rate").text() || 0;
+    var shippingTotal = totalPallets * shippingRate;
+    
+    $("#shipping-subtotal").val(CommaFormatted(shippingTotal));
+
+}
+
+function calcOrderTotal() {
+
+    var orderTotal = 0;
+
+    var productSubtotal = $("#product-subtotal").text() || 0;
+    var taxTotal = $("#product-tax").text() || 0;
+    var taxTotal = "0";
+        
+    var orderTotal = parseInt(CleanNumber(productSubtotal)) + parseInt(CleanNumber(taxTotal));    
+        
+    $("#order-total").text(CommaFormatted(orderTotal));
+    
+    $("#electricgrandtotal").val(orderTotal);
+    
+    
+}
+
 
     $('.num-pallets-input-phone').bind("focus blur change keyup", function(){
     

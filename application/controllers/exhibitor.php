@@ -55,9 +55,9 @@ class Exhibitor_Controller extends Base_Controller {
 
 		$btn_add_to_group = '<span class=" add_to_group" id="add_to_group">'.$action_selection.'</span>';
 
-		$heads = array('#',$select_all,'Reg. Number','Reg. Date','Email','First Name','Last Name','Company','Country','Form Status','');
+		$heads = array('#',$select_all,'Reg. Number','Reg. Date','Email','Hall','First Name','Last Name','Company','Country','Form Status','');
 
-		$searchinput = array(false,false,'Reg Number','Reg. Date','Email','First Name','Last Name','Company','Country',false,false);
+		$searchinput = array(false,false,'Reg Number','Reg. Date','Email','Hall','First Name','Last Name','Company','Country',false,false);
 
 		$colclass = array('','span1','span3','span1','span3','span3','span1','span1','span1','','','','');
 
@@ -65,7 +65,7 @@ class Exhibitor_Controller extends Base_Controller {
 			return View::make('tables.simple')
 				->with('title','Exhibitors')
 				->with('newbutton','New Exhibitors')
-				->with('disablesort','0,1,9')
+				->with('disablesort','0,1,10')
 				->with('addurl','exhibitor/add')
 				->with('colclass',$colclass)
 				->with('searchinput',$searchinput)
@@ -93,11 +93,11 @@ class Exhibitor_Controller extends Base_Controller {
 	{
 
 
-		$fields = array('registrationnumber','createdDate','email','firstname','lastname','company','country','formstatus');
+		$fields = array('registrationnumber','createdDate','email','hall','firstname','lastname','company','country','formstatus');
 
-		$rel = array('like','like','like','like','like','like','like','like');
+		$rel = array('like','like','like','like','like','like','like','like','like');
 
-		$cond = array('both','both','both','both','both','both','both','both','both');
+		$cond = array('both','both','both','both','both','both','both','both','both','both');
 
 		$pagestart = Input::get('iDisplayStart');
 		$pagelength = Input::get('iDisplayLength');
@@ -198,6 +198,7 @@ class Exhibitor_Controller extends Base_Controller {
 				(isset($doc['registrationnumber']))?$doc['registrationnumber']:'',
 				date('Y-m-d', $doc['createdDate']->sec),
 				$doc['email'],
+				$doc['hall'],
 				'<span class="expander" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
 				$doc['lastname'],
 				$doc['company'],
