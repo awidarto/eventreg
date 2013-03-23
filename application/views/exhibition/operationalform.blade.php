@@ -3,7 +3,8 @@
 <div class="tableHeader">
     <h3>{{$title}}</h3>
 </div>
-{{$form->open('exhibition/operationalform','POST',array('class'=>'addAttendeeForm'))}}
+{{$form->open('exhibition/operationalform','POST',array('class'=>'addAttendeeForm','id'=>'operationalformexhibitor'))}}
+{{ $form->hidden('formstatus','open')}}
 <div id="wizard" class="swMain">
 
   @include('partials.operationalform.headformempty')
@@ -415,9 +416,9 @@
           <div class="furnituredetailcontainer">
             {{ HTML::image('images/exhibitor/furniture2.png','',array('class'=>'furnitureImage')) }}
           </div>
-          <div class="furniturepricecontainer" price="20">
+          <div class="furniturepricecontainer" price="30">
             <input name="furniture2"  type="text" id="" placeholder="0" class="num-pallets-input-furniture"></input><br/>
-            <span     id="furnitureprice1" class="furnitureprice">USD 20/Unit</span>
+            <span id="furnitureprice1" class="furnitureprice">USD 30/Unit</span>
             <input name="rowfurniture2" class="row-total-input-furniture" type="hidden"></input>
           </div>
         </div>
@@ -443,9 +444,9 @@
           <div class="furnituredetailcontainer">
             {{ HTML::image('images/exhibitor/furniture4.png','',array('class'=>'furnitureImage')) }}
           </div>
-          <div class="furniturepricecontainer" price="25">
+          <div class="furniturepricecontainer" price="30">
             <input name="furniture4" type="text" id="" placeholder="0" class="num-pallets-input-furniture"></input><br/>
-            <span      id="furnitureprice1" class="furnitureprice" >USD 25/Unit</span>
+            <span      id="furnitureprice1" class="furnitureprice" >USD 30/Unit</span>
             <input name="rowfurniture4" class="row-total-input-furniture" type="hidden"></input>
           </div>
         </div>
@@ -455,9 +456,9 @@
           <div class="furnituredetailcontainer">
             {{ HTML::image('images/exhibitor/furniture5.png','',array('class'=>'furnitureImage')) }}
           </div>
-          <div class="furniturepricecontainer" price="20">
+          <div class="furniturepricecontainer" price="40">
             <input name="furniture5" type="text" id="" placeholder="0" class="num-pallets-input-furniture"></input><br/>
-            <span      id="furnitureprice1" class="furnitureprice" >USD 20/Unit</span>
+            <span      id="furnitureprice1" class="furnitureprice" >USD 40/Unit</span>
             <input name="rowfurniture5" class="row-total-input-furniture" type="hidden"></input>
           </div>
         </div>
@@ -513,7 +514,7 @@
        @include('partials.operationalform.step11')  
       <br/>
     </div>                     
-  </div>  
+  </div>
 
   <div id="step-12">
     <h2 class="StepTitle">INTERNET CONNECTION</h2>
@@ -673,7 +674,7 @@
 
   <div id="step-14">
     @include('partials.operationalform.step14')
-  </div>  
+  </div>
   
 </div>
 {{$form->close()}}

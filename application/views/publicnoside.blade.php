@@ -29,7 +29,7 @@
   {{ HTML::script('js/jquery-ui-1.9.2.custom.min.js') }}
 
   {{ HTML::script('js/select2.min.js') }}
-  {{ HTML::script('js/jquery.smartWizard-2.0.min.js') }}
+  {{ HTML::script('js/jquery.smartWizard-2.0.js') }}
   <!--<script src="http://www.ipaconvex.com/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
   <script type="text/javascript" src="http://www.ipaconvex.com/css/jquery.cycle.all.js"></script>
 

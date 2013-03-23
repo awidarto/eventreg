@@ -31,7 +31,7 @@
   {{ HTML::script('js/jquery.form.js') }}
 
   {{ HTML::script('js/select2.min.js') }}
-  {{ HTML::script('js/jquery.smartWizard-2.0.min.js') }}
+  {{ HTML::script('js/jquery.smartWizard-2.0.js') }}
   <script src="http://www.ipaconvex.com/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
   <script type="text/javascript" src="http://www.ipaconvex.com/css/jquery.cycle.all.js"></script>
 
@@ -159,7 +159,7 @@
                                 <p style="padding-left:7px;"><img src="http://www.ipaconvex.com/images/arrow1.jpg" border="0" align="absmiddle" style="margin-right:5px ">{{ HTML::link('exhibitor/operationalform','Operational Form')}}</p>
                               @elseif (Auth::attendee()->formstatus == "submitted")
                                 <p style="padding-left:7px;"><img src="http://www.ipaconvex.com/images/arrow1.jpg" border="0" align="absmiddle" style="margin-right:5px ">{{ HTML::link('exhibition/readform','Operational Form')}}</p>
-                              @elseif (Auth::attendee()->formstatus == "revision")
+                              @elseif (Auth::attendee()->formstatus == "revision" || Auth::attendee()->formstatus == "saved")
                                 <p style="padding-left:7px;"><img src="http://www.ipaconvex.com/images/arrow1.jpg" border="0" align="absmiddle" style="margin-right:5px ">{{ HTML::link('exhibition/editform','Operational Form')}}</p>
                               @else
                                 <p style="padding-left:7px;"><img src="http://www.ipaconvex.com/images/arrow1.jpg" border="0" align="absmiddle" style="margin-right:5px ">{{ HTML::link('exhibition/readform','Operational Form')}}</p>

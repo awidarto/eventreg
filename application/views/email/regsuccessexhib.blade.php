@@ -48,16 +48,113 @@ T. +62-21-31996077, 31997174 (direct) | F. +62-21-31997176<br/>
 E. conventionipa2013@dyandra.com | W. www.ipaconvex.com</p>
 
 <p>*Kindly contact your hall coordinator for further enquires, requirements and operational form submission.</p>
+<style type="text/css">
+#order-table td {
 
-<table id="order-table" class="withborder">
-<tr>
-  <th>HALL</th>
-  <th>NAME </th>
-  <th>PHONE </th>
-  <th>EXT </th>
-  <th>MOBILE PHONE </th>
-  <th>EMAIL</th>
+}
+
+table.withborder tr td {
+
+}
+</style>
+<table id="order-table" class="withborder cptable">
+<tr class="even" style="background-color: #bdbdbd;">
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">No.</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Hall</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">PIC</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Phone</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Ext.</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Mobile Phone</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Email</td>
 </tr>
+<tr class="odd">
+  <td style="padding: 5px;border: 1px solid #d6d6d6;" rowspan="2">1.</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;" rowspan="2">Main Lobby</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Trisa</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">(+6221) 3199 6077</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">332</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">+62 813 1847 1957</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">trisa@dyandra.com</td>
+</tr>
+<tr class="odd">
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Rachel</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">(+6221) 3199 6077</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">119</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">+62 812 9850 9799</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">rachel.pardede@dyandra.com</td>
+</tr>
+
+<tr class="even">
+  <td style="padding: 5px;border: 1px solid #d6d6d6;" rowspan="2">2.</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;" rowspan="2">Assembly</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Dina</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">(+6221) 3199 6077</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">523</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">+62 856 9364 0498</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">kusuma.ardina@dyandra.com</td>
+</tr>
+<tr class="even">
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Talitha</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">(+6221) 3199 6077</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">358</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">+62 878 2276 5155</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">talitha.sabrina@dyandra.com</td>
+</tr>
+
+
+<tr class="odd">
+  <td style="padding: 5px;border: 1px solid #d6d6d6;" rowspan="2">3.</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;" rowspan="2">Cendrawasih</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Dian</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">(+6221) 3199 6077</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">271</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">+62 811 143 004</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">dian@dyandra.com</td>
+</tr>
+<tr class="odd">
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Anita</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">(+6221) 3199 6077</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">326</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">+62 812 1011 094</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">anita.afriani@dyandra.com</td>
+</tr>
+
+<tr class="even">
+  <td style="padding: 5px;border: 1px solid #d6d6d6;" rowspan="2">4.</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;" rowspan="2">Hall A</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Tia</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">(+6221) 3199 6077</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">323</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">+62 812 8723 9036</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">tia.hamidah@dyandra.com</td>
+</tr>
+<tr class="even">
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Wulan</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">(+6221) 3199 6077</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">528</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">+62 856 7578 738</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">wulan.septiani@dyandra.com</td>
+</tr>
+
+
+<tr class="odd">
+  <td style="padding: 5px;border: 1px solid #d6d6d6;" rowspan="2">5.</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;" rowspan="2">Hall B</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Raymond</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">(+6221) 3199 6077</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">356</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">+62 852 1067 1046</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">raymond@dyandra.com</td>
+</tr>
+<tr class="odd">
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">Rain</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">(+6221) 3199 6077</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">329</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">+62 813 8057 3636</td>
+  <td style="padding: 5px;border: 1px solid #d6d6d6;">rain.januardo@dyandra.com</td>
+</tr>
+
+
 
 </table>
 

@@ -7,7 +7,7 @@
 <?php 
 
 $dir = URL::base().'/storage/operationalforms';
-$id = $userdata['_id']->__toString();
+$id = $userdata['regnumber'];
 $path = $dir.'/confirmexhibitor'.$id.'.pdf'; 
 
 ?>
@@ -422,10 +422,10 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
             <div class="furnituredetailcontainer">
               {{ HTML::image('images/exhibitor/furniture2.png','',array('class'=>'furnitureImage')) }}
             </div>
-            <div class="furniturepricecontainer" price="20">
+            <div class="furniturepricecontainer" price="30">
               {{ $form->text('furniture2','','',array('id'=>'furnitureinput1','class'=>'num-pallets-input-furniture','placeholder'=>'0')) }}
               <br/>
-              <span     id="furnitureprice1" class="furnitureprice">USD 20/Unit</span>
+              <span     id="furnitureprice1" class="furnitureprice">USD 30/Unit</span>
               <input type="hidden" class="row-total-input-furniture" id="" name="rowfurniture2" value="{{ $data['rowfurniture2'] }}"></input>
 
             </div>
@@ -454,10 +454,10 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
             <div class="furnituredetailcontainer">
               {{ HTML::image('images/exhibitor/furniture4.png','',array('class'=>'furnitureImage')) }}
             </div>
-            <div class="furniturepricecontainer" price="25">
+            <div class="furniturepricecontainer" price="30">
               {{ $form->text('furniture4','','',array('id'=>'furnitureinput4','class'=>'num-pallets-input-furniture','placeholder'=>'0')) }}
               <br/>
-              <span      id="furnitureprice1" class="furnitureprice" >USD 25/Unit</span>
+              <span      id="furnitureprice1" class="furnitureprice" >USD 30/Unit</span>
               <input type="hidden" class="row-total-input-furniture" id="" name="rowfurniture4" value="{{ $data['rowfurniture4'] }}"></input>
 
             </div>
@@ -468,9 +468,9 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
             <div class="furnituredetailcontainer">
               {{ HTML::image('images/exhibitor/furniture5.png','',array('class'=>'furnitureImage')) }}
             </div>
-            <div class="furniturepricecontainer" price="20">
+            <div class="furniturepricecontainer" price="40">
               {{ $form->text('furniture5','','',array('id'=>'furnitureinput5','class'=>'num-pallets-input-furniture','placeholder'=>'0')) }}
-              <span      id="furnitureprice1" class="furnitureprice" >USD 20/Unit</span>
+              <span      id="furnitureprice1" class="furnitureprice" >USD 40/Unit</span>
               <input type="hidden" class="row-total-input-furniture" id="" name="rowfurniture5" value="{{ $data['rowfurniture5'] }}"></input>
 
             </div>

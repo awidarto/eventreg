@@ -134,6 +134,31 @@ Event::listen('exhibitor.createformadmin',function($id,$newpass){
     $_id = $id;
     $data = $exhibitor->get(array('_id'=>$_id));
 
+    $hallname = $data['hall'];
+    $piccontact = Config::get('eventreg.emailpichall');
+
+
+    if($hallname == 'Main Lobby'){
+        $cc1 = $piccontact['mainlobby1'];
+        $cc2 = $piccontact['mainlobby2'];
+    }elseif ($hallname == 'Hall A') {
+        $cc1 = $piccontact['halla1'];
+        $cc2 = $piccontact['halla2'];
+    }elseif ($hallname == 'Assembly Hall') {
+        $cc1 = $piccontact['assembly1'];
+        $cc2 = $piccontact['assembly2'];
+    }elseif ($hallname == 'Cendrawasih Hall') {
+        $cc1 = $piccontact['cendrawasih1'];
+        $cc2 = $piccontact['cendrawasih2'];
+    }elseif ($hallname == 'Hall B') {
+        $cc1 = $piccontact['hallb1'];
+        $cc2 = $piccontact['hallb2'];
+    }else{
+        $cc1 = '';
+        $cc2 = '';
+    }
+
+
     $body = View::make('email.regsuccessexhib')
         ->with('data',$data)
         ->with('passwordRandom',$newpass)
@@ -141,7 +166,9 @@ Event::listen('exhibitor.createformadmin',function($id,$newpass){
         ->render();
 
     Message::to($data['email'])
-        ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
+        ->from(Config::get('eventreg.reg_exhibitor_admin_email'), Config::get('eventreg.reg_exhibitor_admin_name'))
+        ->cc($cc1['email'],$cc1['name'])
+        ->cc($cc2['email'],$cc2['name'])
         ->subject('Indonesia Petroleum Association – 37th Convention & Exhibition (Exhibitor – '.$data['registrationnumber'].')')
         ->body( $body )
         ->html(true)
@@ -183,6 +210,33 @@ Event::listen('exhibition.postoperationalform',function($id,$exhibitorid){
 
     $user = $exhibitor->get(array('_id'=>$exhibitorid));
 
+    $hallname = $user['hall'];
+    $piccontact = Config::get('eventreg.emailpichall');
+
+
+    if($hallname == 'Main Lobby'){
+        $cc1 = $piccontact['mainlobby1'];
+        $cc2 = $piccontact['mainlobby2'];
+    }elseif ($hallname == 'Hall A') {
+        $cc1 = $piccontact['halla1'];
+        $cc2 = $piccontact['halla2'];
+    }elseif ($hallname == 'Assembly Hall') {
+        $cc1 = $piccontact['assembly1'];
+        $cc2 = $piccontact['assembly2'];
+    }elseif ($hallname == 'Cendrawasih Hall') {
+        $cc1 = $piccontact['cendrawasih1'];
+        $cc2 = $piccontact['cendrawasih2'];
+    }elseif ($hallname == 'Hall B') {
+        $cc1 = $piccontact['hallb1'];
+        $cc2 = $piccontact['hallb2'];
+    }else{
+        $cc1 = '';
+        $cc2 = '';
+    }
+
+
+    $regnumber = $user['registrationnumber'];
+
     $doc = View::make('pdf.confirmexhibitor')
             ->with('data',$data)
             ->with('user',$user)
@@ -194,7 +248,7 @@ Event::listen('exhibition.postoperationalform',function($id,$exhibitorid){
 
     $newdir = realpath(Config::get('kickstart.storage'));
 
-    $path = $newdir.'/operationalforms/confirmexhibitor'.$exhibitorid.'.pdf';
+    $path = $newdir.'/operationalforms/confirmexhibitor'.$regnumber.'.pdf';
 
     $pdf->render();
 
@@ -208,7 +262,9 @@ Event::listen('exhibition.postoperationalform',function($id,$exhibitorid){
         ->render();
 
     Message::to($user['email'])
-        ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
+        ->from(Config::get('eventreg.reg_exhibitor_admin_email'), Config::get('eventreg.reg_exhibitor_admin_name'))
+        ->cc($cc1['email'],$cc1['name'])
+        ->cc($cc2['email'],$cc2['name'])
         ->subject('CONFIRMATION OF OPERATIONAL FORMS - Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$user['registrationnumber'].')')
         ->body( $body )
         ->html(true)

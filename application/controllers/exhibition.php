@@ -360,15 +360,37 @@ class Exhibition_Controller extends Base_Controller {
 
 		$submitdata = new Operationalform();
 
+		$savebtn = $data['btnSave'];
+		$formstatus = $data['formstatus'];
+		
+		if($savebtn == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formsaved';
+		}else{
+			$formstatus = 'submitted';
+			$redirectto = 'exhibition/formsubmitted';
+			
+		}
+
+		unset($savebtn);
+
 		if($obj = $submitdata->insert($data)){
-
-			$exhibitor->update(array('_id'=>$_id),array('$set'=>array('formstatus'=>'submitted')));
+			
+			$exhibitor->update(array('_id'=>$_id),array('$set'=>array('formstatus'=>$formstatus)));
 			$user_id = $_id;
-			Event::fire('exhibition.postoperationalform',array($obj['_id'],$user_id));
 
+			$ex = $exhibitor->get(array('_id'=>$_id));
+
+			if($ex['formstatus']!='saved'){
+				Event::fire('exhibition.postoperationalform',array($obj['_id'],$user_id));
+			}
+
+			
+			return Redirect::to($redirectto)->with('notify_success',Config::get('site.register_success'));
+			
 			//Event::fire('exhibitor.createformadmin',array($obj['_id'],$passwordRandom));
 			
-	    	return Redirect::to('exhibition/formsubmitted')->with('notify_success',Config::get('site.register_success'));
+	    	
 		}else{
 	    	return Redirect::to('exhibition/formsubmitted')->with('notify_success',Config::get('site.register_failed'));
 		}
@@ -441,7 +463,7 @@ class Exhibition_Controller extends Base_Controller {
 
 		
 		//security purposes
-		if(Auth::exhibitor()->formstatus == 'revision'){
+		if(Auth::exhibitor()->formstatus == 'revision' || Auth::exhibitor()->formstatus == 'saved'){
 			$data = Input::get();
 
 			$id = new MongoId($data['id']);
@@ -468,18 +490,38 @@ class Exhibition_Controller extends Base_Controller {
 			$exhibitor = new Exhibitor();
 
 
+			$savebtn = $data['btnSave'];
+			
+			
+			if($savebtn == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formsaved';
+			}else{
+				$formstatus = 'submitted';
+				$redirectto = 'exhibition/formsubmitted';
+				
+			}
+
+			unset($savebtn);
+
 			if($operationalform->update(array('_id'=>$id),array('$set'=>$data))){
 
 				$userid = Auth::exhibitor()->id;
 
 				$_id = new MongoId($userid);
 
-				$exhibitor->update(array('_id'=>$_id),array('$set'=>array('formstatus'=>'submitted')));
+				$exhibitor->update(array('_id'=>$_id),array('$set'=>array('formstatus'=>$formstatus)));
 
-				Event::fire('exhibition.postoperationalform',array($id,$_id));
+				$ex = $exhibitor->get(array('_id'=>$_id));
 
+				if($ex['formstatus']!='saved'){
+					Event::fire('exhibition.postoperationalform',array($id,$_id));
+				}
 
-		    	return Redirect::to('exhibition/formsubmitted')->with('notify_success',Config::get('site.register_success'));
+				
+				return Redirect::to($redirectto)->with('notify_success',Config::get('site.register_success'));
+
+				
 
 			}else{
 		    	return Redirect::to('exhibitor/profile/')->with('notify_success','Exhibitor saving failed');
@@ -550,6 +592,18 @@ class Exhibition_Controller extends Base_Controller {
 					->with('form',$form)
 					->with('crumb',$this->crumb)
 					->with('title','Thank you for your submission!');
+
+	}
+
+	public function get_formsaved(){
+
+		$this->crumb->add('exhibition','Exhibition');
+
+		$form = new Formly();
+		return View::make('exhibition.formsaved')
+					->with('form',$form)
+					->with('crumb',$this->crumb)
+					->with('title','Sucessfully saved your form');
 
 	}
 

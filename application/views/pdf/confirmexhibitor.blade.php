@@ -633,9 +633,9 @@ td.detailsitem{
 	
 	<div id="terms">
 		<ul >
-			<li > -  PLEASE CHECK AGAIN IF THIS RECIEPT IS MATCH YOUR NEEDS</li>
-			<li > -  PLEASE SIGNED THIS CONFIRMATION LETTER AND SEND IT BACK TO THE ORGANIZER</li>
-			<li > - AFTER WE RECEIVE THE CONFIRMATION LETTER, WE WILL SEND YOU THE INVOICE</li>
+			<li > - Please check again if this reciept is match your needs</li>
+			<li > - Please signed this confirmation letter and send it back to the organizer</li>
+			<li > - After we receive the confirmation letter, we will send you the invoice</li>
 		</ul>
 		
 	</div>

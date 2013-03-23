@@ -10,7 +10,9 @@
 				<tr>
 					<td class="detail-title">Registration Number</td>
 					<td>:&nbsp;</td>
-					<td class="detail-info">{{ $profile['registrationnumber'] }}</td>
+					<td class="detail-info">{{ $profile['registrationnumber'] }}
+						<img src="{{URL::to('barcode/'.$profile['registrationnumber'] )}}" />
+					</td>
 				</tr>
 				<tr>
 					<td class="detail-title">Email</td>
@@ -224,6 +226,7 @@
 				<iframe src="{{ URL::to('attendee/printreceipt/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 			@endif
 			</div>
+
 	
 </div>
 <script type="text/javascript">

@@ -132,8 +132,9 @@
   text-align: center;
   /*padding:5px;*/
   padding-top:0;
-  font: bold 13px Verdana, Arial, Helvetica, sans-serif;
+  font: bold 11px Verdana, Arial, Helvetica, sans-serif;
   display: inline-block;
+  margin-top: 2px;
 }
 .swMain ul.anchor li:last-child a{
   border-right: none;

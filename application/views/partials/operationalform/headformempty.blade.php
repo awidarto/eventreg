@@ -73,8 +73,7 @@
     </li>
     <li>
       <a href="#step-14">
-          <small>Form</small>
-          <label class="stepNumber">13</label>
+          <small>Terms & Condition Reminder</small>
       </a>
     </li>
 

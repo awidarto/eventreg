@@ -27,15 +27,31 @@ return array(
 			'OC'=>'Other Complimentary'
 		),
 		'galadinner'=>1,
+
 		'reg_admin_email'=>'conventionipa2013@dyandra.com',
 		'reg_admin_name'=>'37th IPA Convex Register',
 
 		'reg_dyandra_admin_email'=>'conventionipa2013@dyandra.com',
 		'reg_dyandra_admin_name'=>'37th IPA Convex Register',
+
+		'reg_exhibitor_admin_email'=>'exhibitionipa2013@dyandra.com',
+		'reg_exhibitor_admin_name'=>'37th IPA Exhibitor Registration',
 		
 		'reg_finance_email'=>'conventionipa2013@dyandra.com',
 		'reg_finance_name'=>'37th IPA Convex Finance',
-		
+
+		'emailpichall'=>array(
+			'mainlobby1'=>array('email'=>'trisa@dyandra.com','name'=>'Trisa'),
+			'mainlobby2'=>array('email'=>'rachel.pardede@dyandra.com','name'=>'Rachel'),
+			'halla1'=>array('email'=>'kusuma.ardina@dyandra.com','name'=>'Dina'),
+			'halla2'=>array('email'=>'talitha.sabrina@dyandra.com','name'=>'Talitha'),
+			'assembly1'=>array('email'=>'dian@dyandra.com','name'=>'Dian'),
+			'assembly2'=>array('email'=>'anita.afriani@dyandra.com','name'=>'Anita'),
+			'cendrawasih1'=>array('email'=>'tia.hamidah@dyandra.com','name'=>'Tia'),
+			'cendrawasih2'=>array('email'=>'wulan.septiani@dyandra.com','name'=>'Wulan'),
+			'hallb1'=>array('email'=>'raymond@dyandra.com','name'=>'Raymond'),
+			'hallb2'=>array('email'=>'rain.januardo@dyandra.com','name'=>'Rain')
+		),
 
 		'paystatus'=>array(
 			'unpaid'=>'Unpaid',

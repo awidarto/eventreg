@@ -7,7 +7,7 @@
         <thead>
           <tr>
             <th style="width:50px;">No.</th>
-            <th>Booth Program</th>
+            <th>Booth Programs per Hall </th>
             <th style="width:130px;">Date</th>
             <th style="width:130px;">Time</th>
           </tr>
@@ -29,7 +29,7 @@
         <thead>
           <tr>
             <th style="width:50px;">No.</th>
-            <th>Cocktail Party Program</th>
+            <th>Exhibition Cocktail Program </th>
             <th style="width:130px;">Date</th>
             <th style="width:130px;">Time</th>
           </tr>

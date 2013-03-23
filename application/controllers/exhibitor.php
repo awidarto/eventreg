@@ -459,7 +459,6 @@ class Exhibitor_Controller extends Base_Controller {
 	        'companyphone' => 'required',
 	        'address_1' => 'required',
 	        'city' => 'required',
-	        'zip' => 'required',
 	        'country' => 'required',
 	    );
 

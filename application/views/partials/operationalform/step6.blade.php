@@ -59,9 +59,15 @@
         }
         
       ?>
-      <p><strong>If your booth size is in between those explained number, kindly ask your Hall coordinator for assistance.</strong></p>
+      <p><strong>If your booth size in between those explained numbers, kindly ask your Hall Coordinator for assistance.</strong></p>
       <p> Your Booth Number is : <strong>{{$booth['boothno']}}</strong> and you have <strong>{{ $pass }}</strong> persons to register
-      <p>Please list below the names of EXHIBITOR’S PASS HOLDERS you wish to register:</p>
+      <p><strong>Please register the names of EXHIBITOR’S PASS HOLDERS you wish to register:</strong></p>  
+      <p><strong>Terms & Conditions:</strong></p>
+      <ol>
+        <li>The Exhibitor Passes entitle holders for coffee break and lunch during 3 days of exhibition</li>
+        <li>Maximum 10 Exhibitor Passes per company</li>
+        <li>Exhibitor pass does not include free entry to the <u>Plenary Session, but holder may attend TPC</u></li>
+      </ol>
       <table id="order-table">
         <thead>
           <tr>
@@ -79,14 +85,6 @@
           
         </tbody>
       </table>
-      <br/>
-      <strong>Terms & Conditions:</strong><br/>
-      <ol>
-        <li>The Exhibitor Passes entitle holders for coffee break and lunch during 3 days of exhibition</li>
-        <li>Maximum 10 Exhibitor Passes per company</li>
-        <li>Please register the names of your exhibitor pass holders by filling the registration form (form 5 & 6)</li>
-        <li>Exhibitor pass does not include free entry to the <u>Plenary Session, but holder may attend TPC.</u></li>
-      </ol>
       <br/>
       <br/>
     </div>
