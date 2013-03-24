@@ -34,7 +34,7 @@ return array(
 		'reg_dyandra_admin_email'=>'conventionipa2013@dyandra.com',
 		'reg_dyandra_admin_name'=>'37th IPA Convex Register',
 
-		'reg_exhibitor_admin_email'=>'taufiq@kickstartlab.com',
+		'reg_exhibitor_admin_email'=>'exhibitionipa2013@dyandra.com',
 		'reg_exhibitor_admin_name'=>'37th IPA Exhibitor Registration',
 		
 		'reg_finance_email'=>'conventionipa2013@dyandra.com',
@@ -332,8 +332,6 @@ return array(
 			'groupname'=> '',
 			'address'=>''
 		),
-
-		
 
 		'electriclist' =>array(
 			'2A / 1 ph / 440 Watt',
