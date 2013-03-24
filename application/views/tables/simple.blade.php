@@ -129,7 +129,11 @@
 		   				Use selection for:
 		   			</div>
 		   			<div class="span5">
-				   		{{ $form->select('action','',Config::get('kickstart.actionselection'))}}
+		   				@if(isset($ajaxexhibitorsendmail))
+				   			{{ $form->select('action','',Config::get('kickstart.actionselectionexhibitor'))}}
+				   		@else
+				   			{{ $form->select('action','',Config::get('kickstart.actionselection'))}}
+				   		@endif
 		   			</div>
 						<a class="win-command" id="do_action">
 							<span class="win-commandimage win-commandring">&#xe132;</span>
@@ -324,6 +328,18 @@
 	<div class="modal-footer">
 		<button class="btn btn-primary" id="confirmdelete">Yes</button>
 		<button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+	</div>
+</div>
+
+<div id="infodata" class="modal warning hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	</div>
+	<div class="modal-body">
+		<p id="statusdata" ></p>
+	</div>
+	<div class="modal-footer">
+		
 	</div>
 </div>
 
@@ -534,10 +550,57 @@
 			}
 		} );
 
-
+		
 		$('#do_action').click( function(){
-			alert($('#field_action').val());
+			var idtoprocess = [];
+			var totalSelected = 0;
+			var totalSuccess = 0;	
+			var dothat = 0;
+			var totalFailure = 0;
+			var value = $("#field_action").val();
 
+			$('.selector:checked').each(function() {
+				var idRecord = $(this).attr('id');
+				idtoprocess.push(idRecord);
+				totalSelected++;
+			});
+
+			if(value == 'exhibitor.regsuccess'){
+
+				<?php
+
+					$ajaxsendmailexhibitor = (isset($ajaxexhibitorsendmail))?$ajaxexhibitorsendmail:'/';
+				?>
+
+				for (var i = 0; i < totalSelected; i++) {
+				  	element = idtoprocess[i];
+				  	// Do something with element i.
+				  	dothat++;
+				  	
+					$.post('{{ URL::to($ajaxsendmailexhibitor) }}',{'id':element,'type': value}, function(data) {
+						if(data.status == 'OK'){
+
+						}else if(data.status == 'NOTFOUND'){
+							totalFailure++;
+						}else{
+							totalFailure++;
+						}
+					},'json');
+				}
+
+				var totalSuccess = totalSelected-totalFailure;
+				console.log(totalFailure);
+
+				var datainfo ='Successfully sent mail to '+totalSuccess+' from '+totalSelected+' selected data';
+				alert(datainfo);
+				oTable.fnStandingRedraw();
+				$("#field_action").val('none');
+			
+			}else{
+				alert(value);
+			}
+			
+			
 
 		});
 

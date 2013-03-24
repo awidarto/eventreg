@@ -97,7 +97,14 @@ function calcProdSubTotal() {
         
     });
     var instalationFee = $('#operationalfeeelectric').val();
-    prodSubTotal = prodSubTotal+parseInt(instalationFee);
+
+    if(prodSubTotal!=0){
+        prodSubTotal = prodSubTotal+parseInt(instalationFee);    
+    }else{
+        prodSubTotal = prodSubTotal;
+    }
+
+    
     $("#product-subtotal").text(CommaFormatted(prodSubTotal));
     $("#electricsubtotal").val(prodSubTotal);
 

@@ -135,6 +135,14 @@ return array(
       'payconvention'=>'Set Convention payment status'
 
     ),
+
+    'actionselectionexhibitor'=>array(
+      'none'=>'none',
+      'exhibitor.regsuccess'=>'Send Registration Email'
+      
+
+    ),
+
     'invalidchars'=>array('%','&','|','\'','(',')','/'),
 
     'paymentgw_url'=>'http://dyandratiket.com/get_data.php',

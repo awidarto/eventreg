@@ -184,16 +184,23 @@ function calcProdSubTotal() {
     
     var prodSubTotal = 0;
 
-    $(".row-total-input").each(function() {
+    $(".row-total input.electrichidden").each(function() {
     
         var valString = $(this).val() || 0;
         
         prodSubTotal += parseInt(valString);
+
         
     });
     var instalationFee = $('#operationalfeeelectric').val();
+
+    if(prodSubTotal!=0){
+        prodSubTotal = prodSubTotal+parseInt(instalationFee);    
+    }else{
+        prodSubTotal = prodSubTotal;
+    }
     
-    prodSubTotal = prodSubTotal+parseInt(instalationFee);
+    
     //console.log(prodSubTotal);
     prodSubTotal = prodSubTotal;
     $("#product-subtotal").text(CommaFormatted(prodSubTotal));
