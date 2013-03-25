@@ -48,7 +48,7 @@ return array(
 			'cendrawasih1'=>array('email'=>'dian@dyandra.com','name'=>'Dian'),
 			'cendrawasih2'=>array('email'=>'anita.afriani@dyandra.com','name'=>'Anita'),
 			'halla1'=>array('email'=>'tia.hamidah@dyandra.com','name'=>'Tia'),
-			'halla1'=>array('email'=>'wulan.septiani@dyandra.com','name'=>'Wulan'),
+			'halla2'=>array('email'=>'wulan.septiani@dyandra.com','name'=>'Wulan'),
 			'hallb1'=>array('email'=>'raymond@dyandra.com','name'=>'Raymond'),
 			'hallb2'=>array('email'=>'rain.januardo@dyandra.com','name'=>'Rain')
 		),
