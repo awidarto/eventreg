@@ -262,6 +262,21 @@
 
 </div>
 
+<div id="editformModal" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	
+	<div class="modal-header">
+		<button type="button" id="removeviewform" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<h3 id="myModalLabel">Edit Form</h3>
+		
+	</div>
+	<div class="modal-body" id="loaddata">
+		
+	</div>
+	
+	
+
+</div>
+
 
 <div id="updatePaymentGolfConvention" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
@@ -973,6 +988,25 @@
 				
 				
 				$('#viewformModal').modal();
+
+		   	}
+
+		   	if ($(e.target).is('.editform')) {
+				
+				var _id = e.target.id;
+				var _rel = $(e.target).attr('rel');
+				var url = '{{ URL::base() }}' + '/exhibitor/' + _rel + '/' + _id;
+				
+
+				//var url = $(this).attr('url');
+			    //var modal_id = $(this).attr('data-controls-modal');
+			    setTimeout(function() {
+				    $("#editformModal .modal-body").load(url);
+				}, 1000);
+			    
+				
+				
+				$('#editformModal').modal();
 
 		   	}
 

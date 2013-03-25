@@ -192,6 +192,12 @@ class Exhibitor_Controller extends Base_Controller {
 				$rowResendMessage = '<a class="icon-"  ><i>&#xe165;</i><span class="sendexhibitregistmail" id="'.$doc['_id'].'" >Send Email Reg</span>';
 			}
 
+			if($doc['formstatus']=='open'){
+				$rowEditform = '';
+			}else{
+				$rowEditform = '<a class="icon-"  ><i>&#x0025;</i><span class="editform" id="'.$doc['_id'].'" rel="editform"> Edit Form</span>';
+			}
+
 			$aadata[] = array(
 				$counter,
 				$select,
@@ -207,8 +213,9 @@ class Exhibitor_Controller extends Base_Controller {
 				$rowResendMessage.
 				'<a class="icon-"  ><i>&#xe1b0;</i><span class="formstatus" id="'.$doc['_id'].'" > Set Form Status</span>'.
 				'<a class="icon-"  ><i>&#x0035;</i><span class="viewform" id="'.$doc['_id'].'" rel="viewform"> View Form</span>'.
+				$rowEditform.
 				'<a class="icon-"  href="'.URL::to('exhibitor/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
-				'<a class="icon-"  href="'.URL::to('import/exhibitor/'.$doc['_id']).'"><i>&#xe164;</i><span>Import Worker</span>'.
+				'<a class="icon-"  href="'.URL::to('import/exhibitor/'.$doc['_id']).'"><i>&#x0052;</i><span>Import Worker</span>'.
 				'<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$doc['_id'].'" >Delete</span>',
 				
 				'extra'=>$extra
@@ -690,6 +697,130 @@ class Exhibitor_Controller extends Base_Controller {
 
 		
 
+	}
+
+
+	public function get_editform($id){
+
+		$this->crumb->add('exhibitor','Form Submission',false);
+
+		//$this->crumb->add('user/edit','Edit',false);
+		$user = new Exhibitor();
+
+		$formData = new Operationalform();
+
+
+
+	
+		
+
+		$_id = new MongoId($id);
+
+		$userdata = $user->get(array('_id'=>$_id));
+
+
+		$booths = new Booth();
+		
+		
+		$booth = '';
+
+
+		if(isset($userdata['boothid'])){
+			$_boothID = new MongoId($userdata['boothid']);
+			$booth = $booths->get(array('_id'=>$_boothID));
+		}
+
+		
+		
+
+		$user_form = $formData->get(array('userid'=>$id));
+
+		if (isset($user_form['programdate1']) && $user_form['programdate1']!='') {$user_form['programdate1'] = date('d-m-Y', $user_form['programdate1']->sec); }
+		if (isset($user_form['programdate2']) && $user_form['programdate2']!='') {$user_form['programdate2'] = date('d-m-Y', $user_form['programdate2']->sec); }
+		if (isset($user_form['programdate3']) && $user_form['programdate3']!='') {$user_form['programdate3'] = date('d-m-Y', $user_form['programdate3']->sec); }
+		if (isset($user_form['programdate4']) && $user_form['programdate4']!='') {$user_form['programdate4'] = date('d-m-Y', $user_form['programdate4']->sec); }
+		if (isset($user_form['programdate5']) && $user_form['programdate5']!='') {$user_form['programdate5'] = date('d-m-Y', $user_form['programdate5']->sec); }
+		if (isset($user_form['programdate6']) && $user_form['programdate6']!='') {$user_form['programdate6'] = date('d-m-Y', $user_form['programdate6']->sec); }
+
+		if (isset ($user_form['cocktaildate1'])&& $user_form['cocktaildate1']!='') { $user_form['cocktaildate1'] = date('d-m-Y', $user_form['cocktaildate1']->sec);; }
+		if (isset ($user_form['cocktaildate2'])&& $user_form['programdate2']!='') { $user_form['cocktaildate2']  = date('d-m-Y', $user_form['cocktaildate2']->sec);; }
+		if (isset ($user_form['cocktaildate3'])&& $user_form['programdate3']!='') { $user_form['cocktaildate3']  = date('d-m-Y', $user_form['cocktaildate3']->sec);; }
+		if (isset ($user_form['cocktaildate4'])&& $user_form['programdate4']!='') { $user_form['cocktaildate4']  = date('d-m-Y', $user_form['cocktaildate4']->sec);; }
+
+
+		$form = Formly::make($user_form);
+
+
+		//$form = Formly::make($user_profile);
+
+		//$form->framework = 'zurb';
+
+		return View::make('exhibitor.editform')
+					->with('form',$form)
+					->with('userdata',$userdata)
+					->with('data',$user_form)
+					->with('booth',$booth)
+					->with('id',$id)
+					->with('crumb',$this->crumb)
+					->with('title','Operational Form Submission');
+
+		
+
+	}
+
+	public function post_editform(){
+
+		
+		$data = Input::get();
+
+		$id = new MongoId($data['id']);
+		$data['lastUpdate'] = new MongoDate();
+		
+		
+		unset($data['csrf_token']);
+		unset($data['id']);
+
+		$operationalform = new Operationalform();
+		
+		if (isset($data['programdate1']) && $data['programdate1']!='') {$data['programdate1'] = new MongoDate(strtotime($data['programdate1']." 00:00:00")); }
+		if (isset($data['programdate2']) && $data['programdate2']!='') {$data['programdate2'] = new MongoDate(strtotime($data['programdate2']." 00:00:00")); }
+		if (isset($data['programdate3']) && $data['programdate3']!='') {$data['programdate3'] = new MongoDate(strtotime($data['programdate3']." 00:00:00")); }
+		if (isset($data['programdate4']) && $data['programdate4']!='') {$data['programdate4'] = new MongoDate(strtotime($data['programdate4']." 00:00:00")); }
+		if (isset($data['programdate5']) && $data['programdate5']!='') {$data['programdate5'] = new MongoDate(strtotime($data['programdate5']." 00:00:00")); }
+		if (isset($data['programdate6']) && $data['programdate6']!='') {$data['programdate6'] = new MongoDate(strtotime($data['programdate6']." 00:00:00")); }
+
+		if (isset ($data['cocktaildate1'])&& $data['cocktaildate1']!='') { $data['cocktaildate1'] = new MongoDate(strtotime($data['cocktaildate1']." 00:00:00")); }
+		if (isset ($data['cocktaildate2'])&& $data['programdate2']!='') { $data['cocktaildate2'] = new MongoDate(strtotime($data['cocktaildate2']." 00:00:00")); }
+		if (isset ($data['cocktaildate3'])&& $data['programdate3']!='') { $data['cocktaildate3'] = new MongoDate(strtotime($data['cocktaildate3']." 00:00:00")); }
+		if (isset ($data['cocktaildate4'])&& $data['programdate4']!='') { $data['cocktaildate4'] = new MongoDate(strtotime($data['cocktaildate4']." 00:00:00")); }
+
+		$exhibitor = new Exhibitor();
+
+
+
+		if($operationalform->update(array('_id'=>$id),array('$set'=>$data))){
+
+			$form = $operationalform->get(array('_id'=>$id));
+			
+			$userid = $form['userid'];
+
+			$_id = new MongoId($userid);
+
+			$exhibitor->update(array('_id'=>$_id),array('$set'=>array('formstatus'=>'submitted')));
+
+			$ex = $exhibitor->get(array('_id'=>$_id));
+
+			
+			Event::fire('exhibition.postoperationalform',array($id,$_id));
+			
+
+			
+			return Redirect::to('exhibitor')->with('notify_success',Config::get('site.register_success'));
+
+		}else{
+	    	return Redirect::to('exhibitor/profile/')->with('notify_success','Exhibitor saving failed');
+		}
+		
 	}
 
 	public function get_printbadge($id){

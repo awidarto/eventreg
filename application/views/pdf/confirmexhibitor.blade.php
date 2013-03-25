@@ -143,13 +143,13 @@ td.detailsitem{
       $pass = 10;
     }
 
-
-	//check how much Free exhibitor pass
-	/*for($i=1;$i<11;$i++){
-		if($data['freepassname'.$i.'']!=''){
+    //count freepass
+    for($i=1;$i<$pass+1;$i++){
+    	if($data['freepassname'.$i.'']!=''){
 			$freepasscount++;
 		}
-	}*/
+    }
+
 
 	for($i=1;$i<11;$i++){
 		if($data['boothassistant'.$i.'']!=''){
@@ -261,6 +261,9 @@ td.detailsitem{
 
 						}
 					}
+					if($data['electricsubtotal']!= 0 && $data['electricsubtotal']!= ''):
+						$toprint .= '1&nbsp;&nbsp; x &nbsp;&nbsp;Installation fee&nbsp;&nbsp; = &nbsp;&nbsp;$ 23<br/>';
+					endif;
 					echo $toprint;
 
 				}
@@ -361,9 +364,9 @@ td.detailsitem{
 			</td>
 			<td class="detailsitem">
 				<?php
-				if( $pass!=0){
+				if( $freepasscount!=0){
 					
-					$toprint = $pass.'&nbsp;&nbsp; Exhibitor Pass (FREE) Registered <br/>';
+					$toprint = $freepasscount.'&nbsp;&nbsp; Exhibitor Pass (FREE) Registered <br/>';
 					
 					echo $toprint;
 
@@ -590,7 +593,7 @@ td.detailsitem{
 						$i++;
 						$m++;
 						if($data['kiosk'.$m.''] !='' && $data['kiosk'.$m.''] !=0){
-							$toprint .= $data['kiosk'.$m.''].'&nbsp;&nbsp; x &nbsp;&nbsp;'.$details[$i].'&nbsp;&nbsp;= &nbsp;&nbsp;$ '.$data['rowkiosk'].'<br/>';
+							$toprint .= $data['kiosk'.$m.''].'&nbsp;&nbsp; x &nbsp;&nbsp;'.$details[$i].'&nbsp;&nbsp;= &nbsp;&nbsp;$ 480<br/>';
 
 						}
 					}

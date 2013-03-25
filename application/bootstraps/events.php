@@ -89,7 +89,7 @@ Event::listen('attendee.createformadmin',function($id,$newpass,$paymentstatus){
         if(isset($data['registonsite'])){
             //donothing
         }else{
-            
+
             $body = View::make('email.regsuccess')
             ->with('data',$data)
             ->with('passwordRandom',$newpass)

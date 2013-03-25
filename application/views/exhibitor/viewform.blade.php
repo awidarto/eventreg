@@ -7,7 +7,7 @@
 <?php 
 
 $dir = URL::base().'/storage/operationalforms';
-$id = $userdata['regnumber'];
+$id = $userdata['registrationnumber'];
 $path = $dir.'/confirmexhibitor'.$id.'.pdf'; 
 
 ?>
@@ -698,7 +698,7 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
   {{ HTML::script('js/jquery.smartWizard-2.0.min.js') }}
   <script type="text/javascript">
     $('#removeviewform').live('click', function() {
-      remove('viewformcontainer');
+      $('#viewformcontainer').remove();
     });
     
     $(document).ready(function() {

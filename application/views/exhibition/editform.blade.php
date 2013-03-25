@@ -855,7 +855,7 @@ $('#totaladdboothinput').bind("focus blur change keyup", function(){
           totaladdboothrecent++;
           var appendStr = '<tr class="addboothrow">';
           appendStr += '<td>'+totaladdboothrecent+'. </td>';
-          appendStr += '<td><input name="addboothname'+totaladdboothrecent+'" type="text" class="passholderbooth" id="" placeholder="John Dochin"></input></td>';
+          appendStr += '<td><input name="addboothname'+totaladdboothrecent+'" type="text" class="passholderbooth" id="" placeholder="Type name here"></input></td>';
           appendStr +=  '</tr>';
           //var appendStr = '<div class="form-label"><label for="newfield'+index+'">New field no '+index+'</label></div>'
           //appendStr += '<div class="form-field"><input id="newfield'+index+'" name="newfield'+index+'" size="20" class="exit-detect"></div>'

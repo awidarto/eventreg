@@ -892,13 +892,21 @@ input.inputhightlights{
 .swMain .stepContainer div.content{
 	font:normal 12px "Open Sans",Arial,Helvetica,Sans-Serif;
 }
-#viewformModal{
+.modal-body{
+	max-height: 450px;
+}
+#ui-datepicker-div{
+	z-index:2000;
+}
+#viewformModal,#editformModal{
 	padding: 0 3%;
 	width: 94%;
 	top:5%;
 	height: 90%;
+
 }
-#viewformModal .modal-body{
+
+#viewformModal .modal-body,#editformModal .modal-body,{
 	max-height: 83%;
 	overflow: auto;
 }

@@ -27,7 +27,7 @@
   height:700px;
   width: 900px;
 }
-.adminview .swMain .stepContainer{
+.adminview .swMain .stepContainer,.adminedit .swMain .stepContainer{
  width: 1100px; 
 }
 .swMain .stepContainer div.content {
