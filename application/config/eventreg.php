@@ -43,12 +43,12 @@ return array(
 		'emailpichall'=>array(
 			'mainlobby1'=>array('email'=>'trisa@dyandra.com','name'=>'Trisa'),
 			'mainlobby2'=>array('email'=>'rachel.pardede@dyandra.com','name'=>'Rachel'),
-			'halla1'=>array('email'=>'kusuma.ardina@dyandra.com','name'=>'Dina'),
-			'halla2'=>array('email'=>'talitha.sabrina@dyandra.com','name'=>'Talitha'),
-			'assembly1'=>array('email'=>'dian@dyandra.com','name'=>'Dian'),
-			'assembly2'=>array('email'=>'anita.afriani@dyandra.com','name'=>'Anita'),
-			'cendrawasih1'=>array('email'=>'tia.hamidah@dyandra.com','name'=>'Tia'),
-			'cendrawasih2'=>array('email'=>'wulan.septiani@dyandra.com','name'=>'Wulan'),
+			'assembly1'=>array('email'=>'kusuma.ardina@dyandra.com','name'=>'Dina'),
+			'assembly2'=>array('email'=>'talitha.sabrina@dyandra.com','name'=>'Talitha'),
+			'cendrawasih1'=>array('email'=>'dian@dyandra.com','name'=>'Dian'),
+			'cendrawasih2'=>array('email'=>'anita.afriani@dyandra.com','name'=>'Anita'),
+			'halla1'=>array('email'=>'tia.hamidah@dyandra.com','name'=>'Tia'),
+			'halla1'=>array('email'=>'wulan.septiani@dyandra.com','name'=>'Wulan'),
 			'hallb1'=>array('email'=>'raymond@dyandra.com','name'=>'Raymond'),
 			'hallb2'=>array('email'=>'rain.januardo@dyandra.com','name'=>'Rain')
 		),
