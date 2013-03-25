@@ -272,6 +272,44 @@
         <fieldset>
             @if(Auth::user()->role == 'onsite')
               {{ $form->hidden('registonsite','true')}}
+              {{ $form->hidden('mobile','-')}}
+              {{ $form->hidden('address','-')}}
+              {{ $form->hidden('address_1','-')}}
+              {{ $form->hidden('address_2','-')}}
+              {{ $form->hidden('addressInvoice','-')}}
+              {{ $form->hidden('addressInvoice_2','-')}}
+              {{ $form->hidden('invoice_address_conv','-')}}
+              {{ $form->hidden('city','-')}}
+              {{ $form->hidden('cityInvoice','-')}}
+              {{ $form->hidden('companyInvoice','-')}}
+              {{ $form->hidden('companyfaxcountry','-')}}
+              {{ $form->hidden('companyfaxarea','-')}}
+              {{ $form->hidden('companyfax','-')}}
+              {{ $form->hidden('companyphonecountry','-')}}
+              {{ $form->hidden('companyphonearea','-')}}
+              {{ $form->hidden('companyphone','-')}}
+              {{ $form->hidden('companyphoneInvoiceCountry','-')}}
+              {{ $form->hidden('companyphoneInvoiceArea','-')}}
+              {{ $form->hidden('companyphoneInvoice','-')}}
+            {{ $form->hidden('companyfaxInvoiceCountry','-')}}
+            {{ $form->hidden('companyfaxInvoiceArea','-')}}
+            {{ $form->hidden('companyfaxInvoice','-')}}
+            {{ $form->hidden('confirmation','none')}}
+            {{ $form->hidden('country','none')}}
+            {{ $form->hidden('countryInvoice','none')}}
+            {{ $form->hidden('countryInvoice','none')}}
+            {{ $form->hidden('npwp','none')}}
+            {{ $form->hidden('npwpInvoice','none')}}
+            {{ $form->hidden('golfPaymentStatus','unpaid')}}
+            {{ $form->hidden('conventionPaymentStatus','unpaid')}}
+            {{ $form->hidden('paymentStatus','-')}}
+            {{ $form->hidden('position','-')}}
+            {{ $form->hidden('role','attendee')}}
+            {{ $form->hidden('zip','-')}}
+            {{ $form->hidden('zipInvoice','-')}}
+
+
+           
             @endif
             <legend>Personal Information</legend>
 

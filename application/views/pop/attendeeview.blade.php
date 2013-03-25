@@ -27,7 +27,9 @@
 				<tr>
 					<td class="detail-title">Mobile Phone Number</td>
 					<td>:&nbsp;</td>
-					<td class="detail-info">{{ $profile['mobile'] }}</td>
+					<td class="detail-info">
+						{{ $profile['mobile'] }}
+					</td>
 				</tr>
 				
 				
@@ -266,6 +268,13 @@ $(document).ready(function() {
   	});
 });
 $('#printstart').click(function(){
+	var pframe = document.getElementById('print_frame');
+	var pframeWindow = pframe.contentWindow;
+	pframeWindow.print();
+
+});
+
+$('#printstartcashier').click(function(){
 	var pframe = document.getElementById('print_frame');
 	var pframeWindow = pframe.contentWindow;
 	pframeWindow.print();
