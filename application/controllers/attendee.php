@@ -724,26 +724,40 @@ class Attendee_Controller extends Base_Controller {
 	public function post_add(){
 
 		//print_r(Session::get('permission'));
+		$data = Input::get();
 
-	    $rules = array(
-	    	'firstname' => 'required',
-	    	'lastname' => 'required',
-	    	'position' => 'required',
-	        'email' => 'required|email|unique:attendee',
+		if(isset($data['registonsite'])){
 
-	        'company' => 'required',
-	        'companyphone' => 'required',
-	        'address_1' => 'required',
-	        'city' => 'required',
-	        'zip' => 'required',
-	        'country' => 'required',
-	        'companyInvoice' => 'required',
-	        'companyphoneInvoice' => 'required',
-	        'addressInvoice_1' => 'required',
-	        'cityInvoice' => 'required',
-	        'zipInvoice' => 'required',
-	        'countryInvoice' => 'required'
-	    );
+		    $rules = array(
+		    	'firstname' => 'required',
+		    	'lastname' => 'required',
+		    	'email' => 'required|email|unique:attendee',
+		        'company' => 'required',
+		    );
+		}else{
+
+			$rules = array(
+		    	'firstname' => 'required',
+		    	'lastname' => 'required',
+		    	'position' => 'required',
+		        'email' => 'required|email|unique:attendee',
+
+		        'company' => 'required',
+		        'companyphone' => 'required',
+		        'address_1' => 'required',
+		        'city' => 'required',
+		        'zip' => 'required',
+		        'country' => 'required',
+		        'companyInvoice' => 'required',
+		        'companyphoneInvoice' => 'required',
+		        'addressInvoice_1' => 'required',
+		        'cityInvoice' => 'required',
+		        'zipInvoice' => 'required',
+		        'countryInvoice' => 'required'
+		    );
+
+		}
+
 
 	    $validation = Validator::make($input = Input::all(), $rules);
 
@@ -753,7 +767,7 @@ class Attendee_Controller extends Base_Controller {
 
 	    }else{
 
-			$data = Input::get();
+			//$data = Input::get();
 
 			$passwordRandom = rand_string(8);
 

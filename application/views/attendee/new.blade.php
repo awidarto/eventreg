@@ -8,6 +8,8 @@
 
 {{$form->open('attendee/add','POST',array('class'=>'custom addAttendeeForm'))}}
 
+@if(Auth::user()->role == 'root' || Auth::user()->role == 'super' )
+
 <div class="row-fluid formNewAttendee">
     <div class="span6">
         <fieldset>
@@ -262,6 +264,158 @@
 {{ Form::reset('Reset',array('class'=>'button'))}}
 </div>
 {{$form->close()}}
+
+@else
+
+<div class="row-fluid formNewAttendee">
+    <div class="span6">
+        <fieldset>
+            @if(Auth::user()->role == 'onsite')
+              {{ $form->hidden('registonsite','true')}}
+            @endif
+            <legend>Personal Information</legend>
+
+                {{ Form::label('salutation','Salutation')}}
+
+                <div class="row-fluid radioInput">
+                    <div class="span2">
+                      {{ $form->radio('salutation','Mr','Mr',true)}} 
+                    </div>   
+                    <div class="span2">
+                      {{ $form->radio('salutation','Mrs','Mrs')}} 
+                    </div>   
+                    <div class="span2">
+                      {{ $form->radio('salutation','Ms','Ms')}} 
+                    </div>
+                    <div class="span6"></div>
+                </div>
+
+                
+                {{ $form->text('firstname','First Name.req','',array('class'=>'text span8','id'=>'firstname')) }}
+                
+                {{ $form->text('lastname','Last Name.req','',array('class'=>'text span8','id'=>'lastname')) }}
+                {{ $form->text('email','Email.req','',array('class'=>'text span8','id'=>'email')) }}
+                {{ $form->text('company','Company / Institution.req','',array('class'=>'text span6','id'=>'companyName')) }}
+
+
+                <fieldset>
+                <legend>Will attend the Industrial Dinner on 16 May 2013</legend>
+
+                    <div class="row-fluid">
+                        <div class="span2">
+                          {{ $form->radio('attenddinner','Yes','Yes',true) }} 
+                        </div>   
+                        <div class="span2">
+                          {{ $form->radio('attenddinner','No','No') }} 
+                        </div>   
+                        <div class="span8"></div>
+                    </div>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Golf Tournament on 12 May 2013</legend>
+
+                    <div class="row-fluid">
+                        <div class="span2">
+                          {{ $form->radio('golf','Yes','Yes',false,array('class'=>'paymentSettle field_golfType')) }} 
+                        </div>   
+                        <div class="span2">
+                          {{ $form->radio('golf','No','No',true,array('class'=>'paymentSettle field_golfType')) }} 
+                        </div>   
+                        <div class="span8"></div>
+                    </div>
+
+            </fieldset>
+        </fieldset>
+    </div>
+    <div class="span6">
+        <fieldset>
+            <legend>Registration Type</legend>
+                <small>Normal rate</small>
+                <div class="row-fluid">
+                    <div class="span6">
+                        Professional / Delegate Domestic
+                    </div>   
+                    <div class="span6">
+                      {{ $form->radio('regtype','IDR 5.000.000','PD',true,array('class'=>'paymentSettle regType')) }} 
+                    </div>   
+                </div>
+
+                <div class="row-fluid">
+                    <div class="span6">
+                        Professional / Delegate Overseas
+                    </div>   
+                    <div class="span6">
+                      {{ $form->radio('regtype','USD 550','PO',false,array('class'=>'paymentSettle regType')) }} 
+                    </div>   
+                </div>
+
+                <div class="row-fluid">
+                    <div class="span6">
+                        Student Domestic
+                    </div>   
+                    <div class="span6">
+                      {{ $form->radio('regtype','IDR 400.000','SD',false,array('class'=>'paymentSettle regType')) }} 
+                    </div>   
+                </div>
+
+                <div class="row-fluid">
+                    <div class="span6">
+                        Student Overseas
+                    </div>   
+                    <div class="span6">
+                      {{ $form->radio('regtype','USD 120','SO',false,array('class'=>'paymentSettle regType')) }} 
+                    </div>   
+                </div>
+        </fieldset>
+        
+        <fieldset>
+            <legend>FOC (Free Of Charge)</legend>
+
+                <div class="row-fluid">
+                    <div class="span2">
+                      {{ $form->radio('foc','Yes','Yes') }} 
+                    </div>   
+                    <div class="span2">
+                      {{ $form->radio('foc','No','No',true) }} 
+                    </div>   
+                    <div class="span8"></div>
+                </div>
+
+        </fieldset>
+        <fieldset>
+            <legend><strong>Use Early Bird Rates</strong></legend>
+
+                <div class="row-fluid">
+                    <div class="span2">
+                      {{ $form->radio('overrideratenormal','Yes','yes') }} 
+                    </div>   
+                    <div class="span2">
+                      {{ $form->radio('overrideratenormal','No','no',true) }} 
+                    </div>   
+                    <div class="span8"></div>
+                </div>
+
+        </fieldset>
+
+        
+
+    </div>
+
+  
+</div>
+
+<hr />
+
+<div class="row right">
+{{ Form::submit('Save',array('class'=>'button'))}}&nbsp;&nbsp;
+{{ Form::reset('Reset',array('class'=>'button'))}}
+</div>
+{{$form->close()}}
+
+
+@endif
 
 <script type="text/javascript">
   $('select').select2({

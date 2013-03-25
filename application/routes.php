@@ -48,7 +48,7 @@ Route::get('/',function(){
 
 Route::get('barcode/(:any)',function($text){
     $barcode = new Barcode();
-    $barcode->make($text);
+    $barcode->make($text,'code128',50);
     return $barcode->render('png');
 });
 

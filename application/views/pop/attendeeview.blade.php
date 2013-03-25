@@ -11,7 +11,7 @@
 					<td class="detail-title">Registration Number</td>
 					<td>:&nbsp;</td>
 					<td class="detail-info">{{ $profile['registrationnumber'] }}
-						<img src="{{URL::to('barcode/'.$profile['registrationnumber'] )}}" />
+						
 					</td>
 				</tr>
 				<tr>
@@ -222,7 +222,7 @@
 				<button class="printonsite btn btn-info" id="printstart"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>
 				<iframe src="{{ URL::to('attendee/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 			@elseif(Auth::user()->role == 'cashier')
-				<button class="printonsite btn btn-info" id="printstart" disable="disable"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT RECEIPT</button>
+				<button class="printonsite btn btn-info" id="printstartcashier" disable="disable"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT RECEIPT</button>
 				<iframe src="{{ URL::to('attendee/printreceipt/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 			@endif
 			</div>
@@ -241,7 +241,7 @@ $(document).ready(function() {
 	var paystat = '<?php echo $paystat;?>';
 	if((paystat != 'paid') && (paystat != 'free')){
 
-		$('#printstart').attr('disabled', 'disabled');
+		$('#printstartcashier').attr('disabled', 'disabled');
 	}
 	
 	
@@ -256,9 +256,9 @@ $(document).ready(function() {
 	    	console.log(value);
 	    	if(value =='"paid"'){
 	    		alert('Successfully change payment status, you can print the receipt now');
-	    		$('#printstart').removeAttr('disabled');     
+	    		$('#printstartcashier').removeAttr('disabled');     
 	    	}else{
-	    		$('#printstart').attr('disabled', 'disabled');
+	    		$('#printstartcashier').attr('disabled', 'disabled');
 	    	}
      	},
 	    submitdata : {userid: '<?php echo $userid;?>'}
