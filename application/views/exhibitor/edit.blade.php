@@ -15,9 +15,13 @@
         <fieldset>
             <legend>Booth Detail</legend>
             
-            {{ $form->text('hall','Hall.req','',array('class'=>'text span8','id'=>'firstname')) }}
+            {{ $form->hidden('hallid','',array('id'=>'hallid'))}}
+            {{ $form->text('hall','Hall ( autocomplete, use Hall name to search ).req','',array('id'=>'hallName','class'=>'auto_hall span8'))}}
+            {{-- $form->text('hall','Hall.req','',array('class'=>'text span8','id'=>'firstname')) --}}
             
-            {{ $form->text('booth','Booth No..req','',array('class'=>'text span8','id'=>'lastname')) }}
+            {{ $form->hidden('boothid','',array('id'=>'boothid'))}}
+            {{ $form->text('booth','Booth No. (autocomplete).req','',array('id'=>'boothName','class'=>'auto_booth'))}}
+            
         </fieldset>
         <fieldset>
             <legend>Person in Charge Details</legend>

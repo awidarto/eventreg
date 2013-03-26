@@ -55,11 +55,11 @@ class Booth_Controller extends Base_Controller {
 
 		$btn_add_to_group = '<span class=" add_to_group" id="add_to_group">'.$action_selection.'</span>';
 
-		$heads = array('#',$select_all,'Reg. Number','Reg. Date','Email','First Name','Last Name','Company','Country','Form Status','');
+		$heads = array('#',$select_all,'Booth No','Width','Height','Size','');
 
-		$searchinput = array(false,false,'Reg Number','Reg. Date','Email','First Name','Last Name','Company','Country',false,false);
+		$searchinput = array(false,false,'Booth No','Width','Height','Size',false);
 
-		$colclass = array('','span1','span3','span1','span3','span3','span1','span1','span1','','','','');
+		$colclass = array('','span1','span3','span1','span3','span3','span1','span1','');
 
 		if(Auth::user()->role == 'root' || Auth::user()->role == 'super'){
 			return View::make('tables.simple')
@@ -92,9 +92,9 @@ class Booth_Controller extends Base_Controller {
 	{
 
 
-		$fields = array('registrationnumber','createdDate','email','firstname','lastname','company','country','formstatus');
+		$fields = array('boothno','width','height','size');
 
-		$rel = array('like','like','like','like','like','like','like','like');
+		$rel = array('like','like','like','like');
 
 		$cond = array('both','both','both','both','both','both','both','both','both');
 

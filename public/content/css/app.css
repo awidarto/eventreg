@@ -1,3 +1,6 @@
+.win-backbutton{
+	top:27px;
+}
 .logo-header{
 	float:left;
 	margin-right:8px;
@@ -124,6 +127,16 @@ a.icon- span{
 	display: inline-block;
 	float: left;
 
+}
+td.align-center{
+	text-align: center;
+}
+td.align-center a.icon-{
+	margin:0 auto;
+	text-align: center;
+}
+th.align-left{
+	text-align: left;
 }
 .rightPosition{
 	float: right;
@@ -979,4 +992,12 @@ table.onsite {
 	margin-top: 40px;
 	color: #fff;
 }
-
+#importboothassis legend small{
+	float: right;
+	font-weight: 300;
+	font-size: 12px;
+	line-height: 20px;
+	margin-bottom: 20px;
+	
+	color: #333333;
+}
