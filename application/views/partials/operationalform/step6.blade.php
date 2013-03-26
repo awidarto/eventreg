@@ -46,11 +46,11 @@
 
         if($sizebooth >= 9 && $sizebooth <= 18){
           $pass = 2;
-        }else if($sizebooth >= 18 && $sizebooth <= 27){
+        }else if($sizebooth >= 18 && $sizebooth < 27){
           $pass = 4;
-        }else if($sizebooth >= 27 && $sizebooth <= 36){
+        }else if($sizebooth >= 27 && $sizebooth < 36){
           $pass = 6;
-        }else if($sizebooth >= 36 && $sizebooth <= 45){
+        }else if($sizebooth >= 36 && $sizebooth < 45){
           $pass = 8;
         }else if($sizebooth >= 45){
           $pass = 10;
