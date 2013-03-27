@@ -683,8 +683,8 @@
   $(document).ready(function() {
         $('#wizard').smartWizard({
           transitionEffect: 'slideleft',
-          keyNavigation: false
-          //enableAllSteps: true
+          keyNavigation: false,
+          enableAllSteps: true
         });
         
 

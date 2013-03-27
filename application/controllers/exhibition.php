@@ -825,9 +825,9 @@ class Exhibition_Controller extends Base_Controller {
 					->render();
 
 				Message::to($data['email'])
-				    ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
-				    ->cc(Config::get('eventreg.reg_dyandra_admin_email'), Config::get('eventreg.reg_dyandra_admin_name'))
-				    ->subject('Indonesia Petroleum Association – 37th Convention & Exhibitionion (Profile Updated – '.$data['registrationnumber'].')')
+				    ->from(Config::get('eventreg.reg_exhibitor_admin_email'), Config::get('eventreg.reg_exhibitor_admin_name'))
+				    ->cc(Config::get('eventreg.reg_exhibitor_admin_email'), Config::get('eventreg.reg_exhibitor_admin_name'))
+				    ->subject('Indonesia Petroleum Association – 37th Convention & Ehibition (Profile Updated – '.$data['registrationnumber'].')')
 				    ->body( $body )
 				    ->html(true)
 				    ->send();
