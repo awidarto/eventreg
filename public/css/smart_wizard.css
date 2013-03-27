@@ -138,7 +138,13 @@
 }
 .swMain ul.anchor li:last-child a{
   border-right: none;
+  padding: 5px 7px 2px 7px;
 }
+.swMain ul.anchor li:last-child a small{
+  width: 75px;
+  
+}
+ 
 .swMain ul.anchor li a small{
   float: left;
   display: block;
