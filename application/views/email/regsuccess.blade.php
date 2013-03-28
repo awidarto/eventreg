@@ -41,8 +41,8 @@ if(strtotime($dateA) > strtotime($earlybirddate)){
 $totalIDRtax = 0.10*$data['totalIDR'];
 $totalIDR = $data['totalIDR']+$totalIDRtax;
 
-$totalUSDtax = 0.10*$data['totalUSD'];
-$totalUSD = $data['totalUSD']+$totalUSDtax;
+//$totalUSDtax = 0.10*$data['totalUSD'];
+$totalUSD = $data['totalUSD'];
 
 ?>
 <?php
@@ -117,11 +117,13 @@ Thank you for registering to 37th IPA Convention & Exhibition. Please find below
 				<td style="padding:10px;border-bottom:1px solid #000;"><strong>IDR - </strong></td>
 			</tr>
 		@endif
+		@if(($data['regtype'] == 'PD') || ($data['regtype'] == 'SD'))
 		<tr>
 			<td style="padding:10px;border-bottom:1px solid #000;"><strong>VAT</strong></td>
 			<td style="padding:10px;border-bottom:1px solid #000;"><strong>10% </strong></td>
 			<td style="padding:10px;border-bottom:1px solid #000;"><strong>&nbsp;</strong></td>
 		</tr>
+		@endif
 		@if($data['regtype'] == 'PO' && $data['golf'] == 'Yes')
 			<tr>
 				<td style="padding:10px;"><strong>Grand Total</strong></td>
@@ -222,11 +224,13 @@ Thank you for registering to 37th IPA Convention & Exhibition. Please find below
 			</tr>
 		@endif
 
+		@if(($data['regtype'] == 'PD') || ($data['regtype'] == 'SD'))
 		<tr>
 			<td style="padding:10px;border-bottom:1px solid #000;"><strong>VAT</strong></td>
 			<td style="padding:10px;border-bottom:1px solid #000;"><strong>10% </strong></td>
 			<td style="padding:10px;border-bottom:1px solid #000;"><strong>&nbsp;</strong></td>
 		</tr>
+		@endif
 
 		@if($data['regtype'] == 'PO' && $data['golf'] == 'Yes')
 			<tr>
@@ -311,7 +315,7 @@ Thank you for registering to 37th IPA Convention & Exhibition. Please find below
 <p><i>Convention registration fee includes admission to all Plenary & Technical Sessions, Conference Kits, Opening and Closing Ceremony, Lunches, Coffee Breaks, Exhibition Cocktail, Industry Dinner, and Entrance to Exhibition Area.<br/><br/>
 * The cost of the Golf Tournament includes green fee, caddy & cart fee.</i><br/><br/>
 @if($data['regtype'] != 'PD')
-<strong>* Fees above exclude VAT 10%</strong></i>
+<!--<strong>* Fees above exclude VAT 10%</strong></i>-->
 @endif
 </p>
 <p>For the registration payment, you can settle it by bank transfer to:</p>
