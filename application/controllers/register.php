@@ -444,6 +444,12 @@ class Register_Controller extends Base_Controller {
 	    				break;
 	    		}
 
+	    		$paymentcharges = ($convfee * 0.03) + 2200;
+
+	    		$item[] = 'Payment Charges,'.$paymentcharges.',1,'.$paymentcharges;
+
+	    		$totalamount += $paymentcharges;
+
 	    		$paydata['item_list'] = $itemline;
 	    		$paydata['amount'] = $totalamount;
 	    		$paydata['invoice_no'] = Auth::attendee()->registrationnumber;

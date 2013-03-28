@@ -56,6 +56,7 @@ Route::get('cps',function(){
             $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
             if(isset($attendee['paymentStatus'])){
                 $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('paymentStatus'=>'paid')));
+                //Event::fire('payment.success',array('id'=>$attendee['_id']->__toString(),'status'=>'success'));
                 return Response::json(array('status'=>'OK','description'=>'payment success'));
             }else{
                 return Response::json(array('status'=>'ERR','description'=>'record not exist'));
