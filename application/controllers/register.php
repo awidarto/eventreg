@@ -392,7 +392,7 @@ class Register_Controller extends Base_Controller {
 	    					$totalamount += $golffee;
 	    				}
 
-	    				$itemline = implode(';',$item);
+	    				//$itemline = implode(';',$item);
 
 	    				break;
 
@@ -424,7 +424,7 @@ class Register_Controller extends Base_Controller {
 
 	    				$item[] = 'VAT 10%,'.$vat.',1,'.$vat;
 
-	    				$itemline = implode(';',$item);
+	    				//$itemline = implode(';',$item);
 
 	    				break;
 
@@ -439,14 +439,21 @@ class Register_Controller extends Base_Controller {
 
 	    				$item[] = 'VAT 10%,'.$vat.',1,'.$vat;
 
-	    				$itemline = implode(';',$item);
 
 	    				break;
 	    		}
 
+	    		$paymentcharges = ($convfee * 0.03) + 2200;
+
+	    		$item[] = 'Payment Charges,'.$paymentcharges.',1,'.$paymentcharges;
+
+	    		$totalamount += $paymentcharges;
+
+				$itemline = implode(';',$item);
+
 	    		$paydata['item_list'] = $itemline;
 	    		$paydata['amount'] = $totalamount;
-	    		$paydata['invoice_no'] = Auth::attendee()->id;
+	    		$paydata['invoice_no'] = Auth::attendee()->registrationnumber;
 	    		$paydata['session_id'] = $sess['_id']->__toString();
 
 				$gw_url = Config::get('kickstart.paymentgw_url');
