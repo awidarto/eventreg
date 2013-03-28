@@ -46,6 +46,23 @@ Route::get('/',function(){
     }
 });
 
+Route::get('cps',function(){
+    $getvar = Input::all();
+    //no_invoice=123123&amount=10000.00&statuscode=00
+    $att = new Attendee();
+
+    if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
+        if(isset($getvar['no_invoice'])){
+            $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('paymentStatus'=>'paid')));
+            return Response::json(array('status'=>'OK','description'=>'payment success'));
+        }else{
+            return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
+        }
+    }else{
+        return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
+    }
+});
+
 Route::get('barcode/(:any)',function($text){
     $barcode = new Barcode();
     $barcode->make($text,'code128',40);
