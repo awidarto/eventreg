@@ -96,7 +96,7 @@ return array(
 			'boothconfirm'=>'Convention & Golf Payment Confirmation',*/
 		),
 
-		'golfquota'=>100,
+		'golfquota'=>80,
 
 		'currencyconversion'=>9800,
 		

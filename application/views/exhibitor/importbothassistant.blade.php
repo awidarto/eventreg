@@ -33,6 +33,14 @@
       $boothassistantcount++;
     }
   }
+
+  if(!empty($boothassistantdata)){
+    $freepass = $boothassistantdata['freepassname'];
+  }else{
+    $freepass = '';
+  }
+  
+  $countfromnol = -1;
   
 ?>
 <div class="tableHeader">
@@ -60,12 +68,38 @@
           </tr>
         </thead>
         <tbody>
+          <?php $exist='';
+
+          foreach($freepass as $s =>$v):
+            $record =  $v['id'];
+            echo $v['name'];
+            echo '<br/>';
+            $exist = 'false';
+            for($i=1;$i<=$freepasscount;$i++){
+              if($record == 'freepassname'.$i){
+                $exist = 'true';  
+              }else{
+                $exist = 'false';  
+              }
+            }
+          endforeach;?>
+
           @for($i=1;$i<=$freepasscount;$i++)
+            <?php $countfromnol++; ?>
             <tr>
               <td>{{ $i }}. </td>
-              <td>{{ $data['freepassname'.$i.''] }}. </td>
-              <td class="align-center">-</td>
-              <td class="align-center"><a class="icon-"  ><i>&#xe20b;</i><span class="formstatus" id="'.$doc['_id'].'" > Import this data</span></a></td>
+              <td class="passname">{{ $data['freepassname'.$i.''] }}. </td>
+
+
+              @if($exist == 'true')
+                  <td class="aligncenter action" >Imported on {{ date('d-m-Y',  $freepass[$countfromnol]['timestamp']->sec) }}</td>
+                  <td id="status_freepassname{{ $i }}" class="align-center status"><span class="icon- fontGreen existtrue">&#xe20c;</span></td>
+                
+              @else
+              <td id="status_freepassname{{ $i }}" class="align-center status"></td>
+              <td class="align-center action"><a class="icon- importidividual" id="freepassname{{ $i }}" type="freepassname" typeid="{{ $i }}"><i>&#xe20b;</i><span class="formstatus" id="" > Import this data</span></a></td>
+              @endif
+              
             </tr>
           @endfor
           
@@ -89,7 +123,7 @@
               <td>{{ $i }}. </td>
               <td>{{ $data['boothassistant'.$i.''] }}. </td>
               <td class="align-center">-</td>
-              <td class="align-center"><a class="icon-"  ><i>&#xe20b;</i><span class="formstatus" id="'.$doc['_id'].'" > Import this data</span></a></td>
+              <td class="align-center"><a class="icon- importidividual" id="boothassistant{{ $i }}" type="boothassistant" typeid="{{ $i }}"><i>&#xe20b;</i><span class="formstatus" id="'.$doc['_id'].'" > Import this data</span></a></td>
             </tr>
           @endfor
           
@@ -114,7 +148,7 @@
               <td>{{ $i }}. </td>
               <td>{{ $data['addboothname'.$i.''] }}. </td>
               <td class="align-center">-</td>
-              <td class="align-center"><a class="icon-"  ><i>&#xe20b;</i><span class="formstatus" id="'.$doc['_id'].'" > Import this data</span></a></td>
+              <td class="align-center"><a class="icon- importidividual" id="addboothname{{ $i }}" type="addboothname" typeid="{{$i}}"><i>&#xe20b;</i><span class="formstatus" id="'.$doc['_id'].'" > Import this data</span></a></td>
             </tr>
           @endfor
           
@@ -123,5 +157,51 @@
 
   </div>
 </div>
+
+<script>
+$(document).ready(function(){
+
+  var current_type = '';
+  var current_type_id = 0;
+  var current_id='';
+  <?php $exhibitorid = $userdata['_id']->__toString();?>
+  var exhibitorid     = '<?php echo $exhibitorid;?>';
+  var companyname     = '<?php echo $userdata['company'];?>';
+  var companypic      = '<?php echo $userdata['firstname'].' '.$userdata['lastname'];?>';
+  var companypicemail = '<?php echo $userdata['email'];?>';
+  var hallname        = '<?php echo $userdata['hall'];?>';
+  var boothname       = '<?php echo $userdata['booth'];?>';
+  
+  $('.importidividual').click(function(){
+    var thisitem = $(this);
+    current_id = $(this).parent().parent().find('td.status').attr('id');
+    current_type = $(this).attr('type');
+    current_type_id = $(this).attr('typeid');
+    var current_pass_name = $(this).parent().parent().find('td.passname').text();
+    
+    
+    <?php
+
+      $ajaxImportBoothAssistant = (isset($ajaxImportBoothAssistant))?$ajaxImportBoothAssistant:'/';
+    ?>
+    $.post('{{ URL::to($ajaxImportBoothAssistant) }}',{'exhibitorid':exhibitorid,'companyname':companyname,'companypic':companypic,'companypicemail':companypicemail,'hallname':hallname,'boothname':boothname,'type':current_type,'typeid':current_type_id,'passname':current_pass_name}, function(data) {
+      
+      $('#'+current_id).html('Processing');
+      thisitem.html('');
+      
+
+      if(data.status == 'OK'){
+        thisitem.parent().append('<span class="icon- fontGreen existtrue">&#xe20c;</span>');
+        thisitem.remove();
+        $('#'+current_id).html(data.message);
+        
+      }
+    },'json');
+  });
+
+  
+
+});
+</script>
 
 @endsection
