@@ -392,7 +392,7 @@ class Register_Controller extends Base_Controller {
 	    					$totalamount += $golffee;
 	    				}
 
-	    				$itemline = implode(';',$item);
+	    				//$itemline = implode(';',$item);
 
 	    				break;
 
@@ -424,7 +424,7 @@ class Register_Controller extends Base_Controller {
 
 	    				$item[] = 'VAT 10%,'.$vat.',1,'.$vat;
 
-	    				$itemline = implode(';',$item);
+	    				//$itemline = implode(';',$item);
 
 	    				break;
 
@@ -439,7 +439,6 @@ class Register_Controller extends Base_Controller {
 
 	    				$item[] = 'VAT 10%,'.$vat.',1,'.$vat;
 
-	    				$itemline = implode(';',$item);
 
 	    				break;
 	    		}
@@ -449,6 +448,8 @@ class Register_Controller extends Base_Controller {
 	    		$item[] = 'Payment Charges,'.$paymentcharges.',1,'.$paymentcharges;
 
 	    		$totalamount += $paymentcharges;
+
+				$itemline = implode(';',$item);
 
 	    		$paydata['item_list'] = $itemline;
 	    		$paydata['amount'] = $totalamount;
