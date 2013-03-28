@@ -65,7 +65,7 @@ Route::get('cps',function(){
             return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
         }
     }else{
-        return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
+        return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
     }
 });
 
