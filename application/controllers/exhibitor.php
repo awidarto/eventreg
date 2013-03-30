@@ -711,10 +711,6 @@ class Exhibitor_Controller extends Base_Controller {
 		$formData = new Operationalform();
 
 
-
-	
-		
-
 		$_id = new MongoId($id);
 
 		$userdata = $user->get(array('_id'=>$_id));

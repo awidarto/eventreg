@@ -245,16 +245,33 @@ class Boothassistant_Controller extends Base_Controller {
 			$data['companyemail']  = $companyemail;
 			$data['hallname']  = $hallname;
 			$data['boothname']  = $boothname;
+
+			if($type == 'freepassname'){
+				$data['role'] = 'BA1';
+			}else{
+				$data['role'] = 'BA2';
+			}
+			$reg_number[0] = 'A';
+			$reg_number[1] = $data['role'];
+			$reg_number[2] = '00';
+
+			$seq = new Sequence();
+
+			$rseq = $seq->find_and_modify(array('_id'=>'boothassistant'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
+
+			$reg_number[] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
+
+			$regnumberall = implode('-',$reg_number);
 			
 			//cannot find data then create new
 			if(!isset($datafind)){
 				
-				
-
 				if($obj = $boothassistant->insert($data)){
 					
-					if($obj = $boothassistant->update(array('_id'=>$obj['_id']),array('$addToSet'=>array($type=>array('id'=>$type.$typeid,'name'=>$passname,'timestamp'=>new MongoDate()))),array('upsert'=>true)) ){
-						
+					
+
+					if($objs = $boothassistant->update(array('_id'=>$obj['_id']),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$regnumberall,$type.$typeid.'timestamp'=>new MongoDate() ))) ){
+
 						$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'));	
 					}
 				}
@@ -263,11 +280,12 @@ class Boothassistant_Controller extends Base_Controller {
 
 				$_id = $datafind['_id'];
 				
-				//$datafind[$type] = array($type.$typeid=>$passname);
-				if($boothassistant->update(array('_id'=>$_id),array('$addToSet'=>array($type=>array('id'=>$type.$typeid,'name'=>$passname,'timestamp'=>new MongoDate()))),array('upsert'=>true)) ){
-					
-					$result = array('status'=>'OK','message'=>'Imported on'.date('d-m-Y'));
+				
+				if($objs = $boothassistant->update(array('_id'=>$_id),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$regnumberall,$type.$typeid.'timestamp'=>new MongoDate() ))) ){
+											
+					$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'));	
 				}
+				
 				
 				
 				
