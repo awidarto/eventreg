@@ -51,22 +51,29 @@ Route::get('cps',function(){
     //no_invoice=123123&amount=10000.00&statuscode=00
     $att = new Attendee();
 
-    if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
-        if(isset($getvar['no_invoice'])){
-            $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
-            if(isset($attendee['paymentStatus'])){
-                $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('paymentStatus'=>'paid')));
-                //Event::fire('payment.success',array('id'=>$attendee['_id']->__toString(),'status'=>'success'));
-                return Response::json(array('status'=>'OK','description'=>'payment success'));
+    if(Request::server('http_referer') == Config::get('kickstart.payment_host')){
+
+        if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
+            if(isset($getvar['no_invoice'])){
+                $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
+                if(isset($attendee['paymentStatus'])){
+                    $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('paymentStatus'=>'paid')));
+                    //Event::fire('payment.success',array('id'=>$attendee['_id']->__toString(),'status'=>'success'));
+                    return Response::json(array('status'=>'OK','description'=>'payment success'));
+                }else{
+                    return Response::json(array('status'=>'ERR','description'=>'record not exist'));
+                }
             }else{
-                return Response::json(array('status'=>'ERR','description'=>'record not exist'));
+                return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
             }
         }else{
-            return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
+            return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
         }
+
     }else{
-        return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
+        return Response::json(array('status'=>'ERR','description'=>'invalid gateway host'));        
     }
+
 });
 
 Route::get('barcode/(:any)',function($text){
