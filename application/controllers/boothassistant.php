@@ -1,6 +1,6 @@
 <?php
 
-class Exhibitor_Controller extends Base_Controller {
+class Boothassistant_Controller extends Base_Controller {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 	public function __construct(){
 		$this->crumb = new Breadcrumb();
-		$this->crumb->add('exhibitor','Exhibitors');
+		$this->crumb->add('boothassistant','Boothassistants');
 
 		date_default_timezone_set('Asia/Jakarta');
 		$this->filter('before','auth');
@@ -55,35 +55,34 @@ class Exhibitor_Controller extends Base_Controller {
 
 		$btn_add_to_group = '<span class=" add_to_group" id="add_to_group">'.$action_selection.'</span>';
 
-		$heads = array('#',$select_all,'Reg. Number','Reg. Date','Email','Hall','First Name','Last Name','Company','Country','Form Status','');
+		$heads = array('#',$select_all,'Boothassistant No','Width','Height','Size','');
 
-		$searchinput = array(false,false,'Reg Number','Reg. Date','Email','Hall','First Name','Last Name','Company','Country',false,false);
+		$searchinput = array(false,false,'Boothassistant No','Width','Height','Size',false);
 
-		$colclass = array('','span1','span3','span1','span3','span3','span1','span1','span1','','','','');
+		$colclass = array('','span1','span3','span1','span3','span3','span1','span1','');
 
-		if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'onsite' || Auth::user()->role == 'exhibitionadmin'){
+		if(Auth::user()->role == 'root' || Auth::user()->role == 'super'){
 			return View::make('tables.simple')
-				->with('title','Exhibitors')
-				->with('newbutton','New Exhibitors')
-				->with('disablesort','0,1,10')
-				->with('addurl','exhibitor/add')
+				->with('title','Master Data')
+				->with('newbutton','New Visitor')
+				->with('disablesort','0,1,9')
+				->with('addurl','boothassistant/add')
 				->with('colclass',$colclass)
 				->with('searchinput',$searchinput)
-				->with('ajaxsource',URL::to('exhibitor'))
-				->with('ajaxdel',URL::to('exhibitor/del'))
-				->with('ajaxpay',URL::to('exhibitor/paystatus'))
-				->with('ajaxformstatus',URL::to('exhibitor/setformstatus'))
-				->with('ajaxpaygolf',URL::to('exhibitor/paystatusgolf'))
-				->with('ajaxpaygolfconvention',URL::to('exhibitor/paystatusgolfconvention'))
-				->with('printsource',URL::to('exhibitor/printbadge'))
-				->with('ajaxexhibitorsendmail',URL::to('exhibitor/sendmail'))
+				->with('ajaxsource',URL::to('boothassistant'))
+				->with('ajaxdel',URL::to('boothassistant/del'))
+				->with('ajaxpay',URL::to('boothassistant/paystatus'))
+				->with('ajaxformstatus',URL::to('boothassistant/setformstatus'))
+				->with('ajaxpaygolf',URL::to('boothassistant/paystatusgolf'))
+				->with('ajaxpaygolfconvention',URL::to('boothassistant/paystatusgolfconvention'))
+				->with('printsource',URL::to('boothassistant/printbadge'))
 				->with('form',$form)
 				->with('crumb',$this->crumb)
 				->with('heads',$heads)
-				->nest('row','exhibitor.rowdetail');
+				->nest('row','boothassistant.rowdetail');
 		}else{
-			return View::make('exhibitor.restricted')
-							->with('title','Exhibitors');			
+			return View::make('boothassistant.restricted')
+							->with('title',$title);			
 		}
 	}
 
@@ -93,11 +92,11 @@ class Exhibitor_Controller extends Base_Controller {
 	{
 
 
-		$fields = array('registrationnumber','createdDate','email','hall','firstname','lastname','company','country','formstatus');
+		$fields = array('boothassistantno','width','height','size');
 
-		$rel = array('like','like','like','like','like','like','like','like','like');
+		$rel = array('like','like','like','like');
 
-		$cond = array('both','both','both','both','both','both','both','both','both','both');
+		$cond = array('both','both','both','both','both','both','both','both','both');
 
 		$pagestart = Input::get('iDisplayStart');
 		$pagelength = Input::get('iDisplayLength');
@@ -138,7 +137,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 		//print_r($q)
 
-		$exhibitor = new Exhibitor();
+		$boothassistant = new Boothassistant();
 
 		/* first column is always sequence number, so must be omitted */
 		$fidx = Input::get('iSortCol_0');
@@ -152,14 +151,14 @@ class Exhibitor_Controller extends Base_Controller {
 			$sort_dir = (Input::get('sSortDir_0') == 'asc')?1:-1;
 		}
 
-		$count_all = $exhibitor->count();
+		$count_all = $boothassistant->count();
 
 		if(count($q) > 0){
-			$exhibitors = $exhibitor->find($q,array(),array($sort_col=>$sort_dir),$limit);
-			$count_display_all = $exhibitor->count($q);
+			$boothassistants = $boothassistant->find($q,array(),array($sort_col=>$sort_dir),$limit);
+			$count_display_all = $boothassistant->count($q);
 		}else{
-			$exhibitors = $exhibitor->find(array(),array(),array($sort_col=>$sort_dir),$limit);
-			$count_display_all = $exhibitor->count();
+			$boothassistants = $boothassistant->find(array(),array(),array($sort_col=>$sort_dir),$limit);
+			$count_display_all = $boothassistant->count();
 		}
 
 		$aadata = array();
@@ -168,7 +167,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 		$counter = 1 + $pagestart;
 
-		foreach ($exhibitors as $doc) {
+		foreach ($boothassistants as $doc) {
 
 			$extra = $doc;
 
@@ -186,37 +185,20 @@ class Exhibitor_Controller extends Base_Controller {
 				$formstatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['formstatus'].'</span>';
 			}
 
-			if(isset($doc['emailregsent']) && ($doc['emailregsent']!=0)){
-				$rowResendMessage = '<a class="icon-"  ><i style="color:#bc1c48;">&#xe165;</i><span class="sendexhibitregistmail" id="'.$doc['_id'].'" style="color:#bc1c48;">Send Email Reg</span>';
-			}else{
-				$rowResendMessage = '<a class="icon-"  ><i>&#xe165;</i><span class="sendexhibitregistmail" id="'.$doc['_id'].'" >Send Email Reg</span>';
-			}
-
-			if($doc['formstatus']=='open'){
-				$rowEditform = '';
-			}else{
-				$rowEditform = '<a class="icon-"  ><i>&#x0025;</i><span class="editform" id="'.$doc['_id'].'" rel="editform"> Edit Form</span>';
-			}
-
 			$aadata[] = array(
 				$counter,
 				$select,
 				(isset($doc['registrationnumber']))?$doc['registrationnumber']:'',
 				date('Y-m-d', $doc['createdDate']->sec),
 				$doc['email'],
-				$doc['hall'],
 				'<span class="expander" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
 				$doc['lastname'],
 				$doc['company'],
 				$doc['country'],
 				$formstatus,
-				$rowResendMessage.
 				'<a class="icon-"  ><i>&#xe1b0;</i><span class="formstatus" id="'.$doc['_id'].'" > Set Form Status</span>'.
 				'<a class="icon-"  ><i>&#x0035;</i><span class="viewform" id="'.$doc['_id'].'" rel="viewform"> View Form</span>'.
-				$rowEditform.
-				'<a class="icon-"  href="'.URL::to('exhibitor/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
-				'<a class="icon-"  href="'.URL::to('exhibitor/importbothassistant/'.$doc['_id']).'"><i>&#xe1dd;</i><span>Import Booth Ass.</span>'.
-				'<a class="icon-"  href="'.URL::to('import/exhibitor/'.$doc['_id']).'"><i>&#x0052;</i><span>Import Worker</span>'.
+				'<a class="icon-"  href="'.URL::to('boothassistant/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
 				'<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$doc['_id'].'" >Delete</span>',
 				
 				'extra'=>$extra
@@ -236,25 +218,80 @@ class Exhibitor_Controller extends Base_Controller {
 		return Response::json($result);
 	}
 
-	public function post_del(){
-		$id = Input::get('id');
+	public function post_individual(){
+		
+		$exhibitorid = Input::get('exhibitorid');
+		$companyname = Input::get('companyname');
+		$companypic = Input::get('companypic');
+		$companyemail = Input::get('companypicemail');
+		$hallname = Input::get('hallname');
+		$boothname = Input::get('boothname');
+		$type = Input::get('type');
+		$typeid = Input::get('typeid');
+		$passname = Input::get('passname');
 
-		$user = new Exhibitor();
+		$boothassistant = new Boothassistant();
 
-		if(is_null($id)){
+		if(is_null($exhibitorid)){
 			$result = array('status'=>'ERR','data'=>'NOID');
 		}else{
 
-			$id = new MongoId($id);
+			//find first if record for this exhibitor exist
 
+			$datafind = $boothassistant->get(array('exhibitorid'=>$exhibitorid));
+			$data['exhibitorid']=$exhibitorid;
+			$data['companyname']  = $companyname;
+			$data['companypic']  = $companypic;
+			$data['companyemail']  = $companyemail;
+			$data['hallname']  = $hallname;
+			$data['boothname']  = $boothname;
 
-			if($user->delete(array('_id'=>$id))){
-				Event::fire('exhibitor.delete',array('id'=>$id,'result'=>'OK'));
-				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
+			if($type == 'freepassname'){
+				$data['role'] = 'BA1';
 			}else{
-				Event::fire('exhibitor.delete',array('id'=>$id,'result'=>'FAILED'));
-				$result = array('status'=>'ERR','data'=>'DELETEFAILED');				
+				$data['role'] = 'BA2';
 			}
+			$reg_number[0] = 'A';
+			$reg_number[1] = $data['role'];
+			$reg_number[2] = '00';
+
+			$seq = new Sequence();
+
+			$rseq = $seq->find_and_modify(array('_id'=>'boothassistant'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
+
+			$reg_number[] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
+
+			$regnumberall = implode('-',$reg_number);
+			
+			//cannot find data then create new
+			if(!isset($datafind)){
+				
+				if($obj = $boothassistant->insert($data)){
+					
+					
+
+					if($objs = $boothassistant->update(array('_id'=>$obj['_id']),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$regnumberall,$type.$typeid.'timestamp'=>new MongoDate() ))) ){
+
+						$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'));	
+					}
+				}
+
+			}else{
+
+				$_id = $datafind['_id'];
+				
+				
+				if($objs = $boothassistant->update(array('_id'=>$_id),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$regnumberall,$type.$typeid.'timestamp'=>new MongoDate() ))) ){
+											
+					$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'));	
+				}
+				
+				
+				
+				
+			}
+
+			
 		}
 
 		print json_encode($result);
@@ -264,7 +301,7 @@ class Exhibitor_Controller extends Base_Controller {
 		$id = Input::get('id');
 		$paystatus = Input::get('paystatus');
 
-		$user = new Exhibitor();
+		$user = new Boothassistant();
 
 		if(is_null($id)){
 			$result = array('status'=>'ERR','data'=>'NOID');
@@ -306,7 +343,7 @@ class Exhibitor_Controller extends Base_Controller {
 		$id = Input::get('id');
 		$paystatus = Input::get('paystatusgolf');
 
-		$user = new Exhibitor();
+		$user = new Boothassistant();
 
 		if(is_null($id)){
 			$result = array('status'=>'ERR','data'=>'NOID');
@@ -348,7 +385,7 @@ class Exhibitor_Controller extends Base_Controller {
 		$id = Input::get('id');
 		$paystatus = Input::get('formstatus');
 
-		$user = new Exhibitor();
+		$user = new Boothassistant();
 
 		if(is_null($id)){
 			$result = array('status'=>'ERR','data'=>'NOID');
@@ -393,7 +430,7 @@ class Exhibitor_Controller extends Base_Controller {
 		$id = Input::get('id');
 		$paystatus = Input::get('paystatusgolfconvention');
 
-		$user = new Exhibitor();
+		$user = new Boothassistant();
 
 		if(is_null($id)){
 			$result = array('status'=>'ERR','data'=>'NOID');
@@ -434,22 +471,22 @@ class Exhibitor_Controller extends Base_Controller {
 	public function get_add($type = null){
 
 		if(is_null($type)){
-			$this->crumb->add('exhibitor/add','New Exhibitor');
+			$this->crumb->add('boothassistant/add','New Boothassistant');
 		}else{
 			$this->crumb = new Breadcrumb();
-			$this->crumb->add('exhibitor/type/'.$type,'Exhibitor');
+			$this->crumb->add('boothassistant/type/'.$type,'Boothassistant');
 
-			$this->crumb->add('exhibitor/type/'.$type,depttitle($type));
-			$this->crumb->add('exhibitor/add','New Exhibitor');
+			$this->crumb->add('boothassistant/type/'.$type,depttitle($type));
+			$this->crumb->add('boothassistant/add','New Boothassistant');
 		}
 
 
 		$form = new Formly();
-		return View::make('exhibitor.new')
+		return View::make('boothassistant.new')
 					->with('form',$form)
 					->with('type',$type)
 					->with('crumb',$this->crumb)
-					->with('title','New Exhibitor');
+					->with('title','New Boothassistant');
 
 	}
 
@@ -462,12 +499,13 @@ class Exhibitor_Controller extends Base_Controller {
 	    	'firstname' => 'required',
 	    	'lastname' => 'required',
 	    	'position' => 'required',
-	        'email' => 'required|email|unique:exhibitor',
+	        'email' => 'required|email|unique:boothassistant',
 	        
 	        'company' => 'required',
 	        'companyphone' => 'required',
 	        'address_1' => 'required',
 	        'city' => 'required',
+	        'zip' => 'required',
 	        'country' => 'required',
 	    );
 
@@ -475,7 +513,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 	    if($validation->fails()){
 
-	    	return Redirect::to('exhibitor/add')->with_errors($validation)->with_input(Input::all());
+	    	return Redirect::to('boothassistant/add')->with_errors($validation)->with_input(Input::all());
 
 	    }else{
 
@@ -514,28 +552,16 @@ class Exhibitor_Controller extends Base_Controller {
 			$data['groupId'] = '';
 			$data['groupName'] = '';
 
-			if(isset($data['alsosendemail'])){
-				$data['sendemaillater']='no';
-				$data['emailregsent']=1;
-			}else{
-				$data['sendemaillater']='yes';
-				$data['emailregsent']=0;
-			}
 
-			$user = new Exhibitor();
+			$user = new Boothassistant();
 
 			if($obj = $user->insert($data)){
 
-				if($data['sendemaillater']=='no'){
-					Event::fire('exhibitor.logmessage',array($obj['_id'],$passwordRandom));
-					Event::fire('exhibitor.createformadmin',array($obj['_id'],$passwordRandom));
-				}else{
-					Event::fire('exhibitor.logmessage',array($obj['_id'],$passwordRandom));
-				}
+				Event::fire('boothassistant.createformadmin',array($obj['_id'],$passwordRandom));
 				
-		    	return Redirect::to('exhibitor')->with('notify_success',Config::get('site.register_success'));
+		    	return Redirect::to('boothassistant')->with('notify_success',Config::get('site.register_success'));
 			}else{
-		    	return Redirect::to('exhibitor')->with('notify_success',Config::get('site.register_failed'));
+		    	return Redirect::to('boothassistant')->with('notify_success',Config::get('site.register_failed'));
 			}
 
 	    }
@@ -546,9 +572,9 @@ class Exhibitor_Controller extends Base_Controller {
 
 	public function get_edit($id){
 
-		$this->crumb->add('exhibitor/edit','Edit',false);
+		$this->crumb->add('boothassistant/edit','Edit',false);
 
-		$user = new Exhibitor();
+		$user = new Boothassistant();
 
 		$_id = new MongoId($id);
 
@@ -559,13 +585,13 @@ class Exhibitor_Controller extends Base_Controller {
 
 		$form = Formly::make($user_profile);
 
-		$this->crumb->add('exhibitor/edit/'.$id,$user_profile['registrationnumber'],false);
+		$this->crumb->add('boothassistant/edit/'.$id,$user_profile['registrationnumber'],false);
 
-		return View::make('exhibitor.edit')
+		return View::make('boothassistant.edit')
 					->with('user',$user_profile)
 					->with('form',$form)
 					->with('crumb',$this->crumb)
-					->with('title','Edit Exhibitor');
+					->with('title','Edit Boothassistant');
 
 	}
 
@@ -582,7 +608,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 	    if($validation->fails()){
 
-	    	return Redirect::to('exhibitor/edit')->with_errors($validation)->with_input(Input::all());
+	    	return Redirect::to('boothassistant/edit')->with_errors($validation)->with_input(Input::all());
 
 	    }else{
 
@@ -595,7 +621,7 @@ class Exhibitor_Controller extends Base_Controller {
 			unset($data['csrf_token']);
 			unset($data['id']);
 
-			$user = new Exhibitor();
+			$user = new Boothassistant();
 
 			if(isset($data['registrationnumber']) && $data['registrationnumber'] != ''){
 				$reg_number = explode('-',$data['registrationnumber']);			
@@ -622,9 +648,9 @@ class Exhibitor_Controller extends Base_Controller {
 			
 			
 			if($user->update(array('_id'=>$id),array('$set'=>$data))){
-		    	return Redirect::to('exhibitor')->with('notify_success','Exhibitor saved successfully');
+		    	return Redirect::to('boothassistant')->with('notify_success','Boothassistant saved successfully');
 			}else{
-		    	return Redirect::to('exhibitor')->with('notify_success','Exhibitor saving failed');
+		    	return Redirect::to('boothassistant')->with('notify_success','Boothassistant saving failed');
 			}
 			
 	    }
@@ -634,33 +660,12 @@ class Exhibitor_Controller extends Base_Controller {
 
 	public function get_viewform($id){
 
-		$this->crumb->add('exhibitor','Form Submission',false);
+		$this->crumb->add('boothassistant','Form Submission',false);
 
 		//$this->crumb->add('user/edit','Edit',false);
-		$user = new Exhibitor();
+		$user = new Boothassistant();
 
 		$formData = new Operationalform();
-
-
-
-	
-		
-
-		$_id = new MongoId($id);
-
-		$userdata = $user->get(array('_id'=>$_id));
-
-
-		$booths = new Booth();
-		
-		
-		$booth = '';
-
-
-		if(isset($userdata['boothid'])){
-			$_boothID = new MongoId($userdata['boothid']);
-			$booth = $booths->get(array('_id'=>$_boothID));
-		}
 
 		
 		
@@ -687,236 +692,33 @@ class Exhibitor_Controller extends Base_Controller {
 
 		//$form->framework = 'zurb';
 
-		return View::make('exhibitor.viewform')
+		return View::make('boothassistant.viewform')
 					->with('form',$form)
-					->with('userdata',$userdata)
 					->with('data',$user_form)
-					->with('booth',$booth)
 					->with('id',$id)
 					->with('crumb',$this->crumb)
 					->with('title','Operational Form Submission');
 
 		
 
-	}
-
-
-	public function get_importbothassistant($id){
-
-		$this->crumb->add('exhibitor','Import Booth Assistant',false);
-
-		//$this->crumb->add('user/edit','Edit',false);
-		$user = new Exhibitor();
-
-		$formData = new Operationalform();
-
-
-		$_id = new MongoId($id);
-
-		$userdata = $user->get(array('_id'=>$_id));
-
-
-		$booths = new Booth();
-		
-		
-		$booth = '';
-
-
-		if(isset($userdata['boothid'])){
-			$_boothID = new MongoId($userdata['boothid']);
-			$booth = $booths->get(array('_id'=>$_boothID));
-		}
-
-		
-		
-
-		$user_form = $formData->get(array('userid'=>$id));
-
-		if (isset($user_form['programdate1']) && $user_form['programdate1']!='') {$user_form['programdate1'] = date('d-m-Y', $user_form['programdate1']->sec); }
-		if (isset($user_form['programdate2']) && $user_form['programdate2']!='') {$user_form['programdate2'] = date('d-m-Y', $user_form['programdate2']->sec); }
-		if (isset($user_form['programdate3']) && $user_form['programdate3']!='') {$user_form['programdate3'] = date('d-m-Y', $user_form['programdate3']->sec); }
-		if (isset($user_form['programdate4']) && $user_form['programdate4']!='') {$user_form['programdate4'] = date('d-m-Y', $user_form['programdate4']->sec); }
-		if (isset($user_form['programdate5']) && $user_form['programdate5']!='') {$user_form['programdate5'] = date('d-m-Y', $user_form['programdate5']->sec); }
-		if (isset($user_form['programdate6']) && $user_form['programdate6']!='') {$user_form['programdate6'] = date('d-m-Y', $user_form['programdate6']->sec); }
-
-		if (isset ($user_form['cocktaildate1'])&& $user_form['cocktaildate1']!='') { $user_form['cocktaildate1'] = date('d-m-Y', $user_form['cocktaildate1']->sec);; }
-		if (isset ($user_form['cocktaildate2'])&& $user_form['programdate2']!='') { $user_form['cocktaildate2']  = date('d-m-Y', $user_form['cocktaildate2']->sec);; }
-		if (isset ($user_form['cocktaildate3'])&& $user_form['programdate3']!='') { $user_form['cocktaildate3']  = date('d-m-Y', $user_form['cocktaildate3']->sec);; }
-		if (isset ($user_form['cocktaildate4'])&& $user_form['programdate4']!='') { $user_form['cocktaildate4']  = date('d-m-Y', $user_form['cocktaildate4']->sec);; }
-
-
-		$form = Formly::make($user_form);
-
-		$boothassistant = new Boothassistant;
-
-
-
-		$boothassistantdata = $boothassistant->get(array('exhibitorid'=>$id));
-
-		if(isset($boothassistantdata)){
-			$boothassistantdata = $boothassistantdata;
-		}else{
-			$boothassistantdata = '';
-		}
-
-
-		//$form = Formly::make($user_profile);
-
-		//$form->framework = 'zurb';
-
-		return View::make('exhibitor.importbothassistant')
-					->with('form',$form)
-					->with('userdata',$userdata)
-					->with('data',$user_form)
-					->with('booth',$booth)
-					->with('boothassistantdata',$boothassistantdata)
-					->with('id',$id)
-					->with('ajaxImportBoothAssistant',URL::to('boothassistant/individual'))
-					->with('crumb',$this->crumb)
-					->with('title','Import Booth Assistanf for '.$userdata['company'].', '.$userdata['registrationnumber']);
-
-	}
-
-
-	public function get_editform($id){
-
-		$this->crumb->add('exhibitor','Form Submission',false);
-
-		//$this->crumb->add('user/edit','Edit',false);
-		$user = new Exhibitor();
-
-		$formData = new Operationalform();
-
-
-
-	
-		
-
-		$_id = new MongoId($id);
-
-		$userdata = $user->get(array('_id'=>$_id));
-
-
-		$booths = new Booth();
-		
-		
-		$booth = '';
-
-
-		if(isset($userdata['boothid'])){
-			$_boothID = new MongoId($userdata['boothid']);
-			$booth = $booths->get(array('_id'=>$_boothID));
-		}
-
-		
-		
-
-		$user_form = $formData->get(array('userid'=>$id));
-
-		if (isset($user_form['programdate1']) && $user_form['programdate1']!='') {$user_form['programdate1'] = date('d-m-Y', $user_form['programdate1']->sec); }
-		if (isset($user_form['programdate2']) && $user_form['programdate2']!='') {$user_form['programdate2'] = date('d-m-Y', $user_form['programdate2']->sec); }
-		if (isset($user_form['programdate3']) && $user_form['programdate3']!='') {$user_form['programdate3'] = date('d-m-Y', $user_form['programdate3']->sec); }
-		if (isset($user_form['programdate4']) && $user_form['programdate4']!='') {$user_form['programdate4'] = date('d-m-Y', $user_form['programdate4']->sec); }
-		if (isset($user_form['programdate5']) && $user_form['programdate5']!='') {$user_form['programdate5'] = date('d-m-Y', $user_form['programdate5']->sec); }
-		if (isset($user_form['programdate6']) && $user_form['programdate6']!='') {$user_form['programdate6'] = date('d-m-Y', $user_form['programdate6']->sec); }
-
-		if (isset ($user_form['cocktaildate1'])&& $user_form['cocktaildate1']!='') { $user_form['cocktaildate1'] = date('d-m-Y', $user_form['cocktaildate1']->sec);; }
-		if (isset ($user_form['cocktaildate2'])&& $user_form['programdate2']!='') { $user_form['cocktaildate2']  = date('d-m-Y', $user_form['cocktaildate2']->sec);; }
-		if (isset ($user_form['cocktaildate3'])&& $user_form['programdate3']!='') { $user_form['cocktaildate3']  = date('d-m-Y', $user_form['cocktaildate3']->sec);; }
-		if (isset ($user_form['cocktaildate4'])&& $user_form['programdate4']!='') { $user_form['cocktaildate4']  = date('d-m-Y', $user_form['cocktaildate4']->sec);; }
-
-
-		$form = Formly::make($user_form);
-
-
-		//$form = Formly::make($user_profile);
-
-		//$form->framework = 'zurb';
-
-		return View::make('exhibitor.editform')
-					->with('form',$form)
-					->with('userdata',$userdata)
-					->with('data',$user_form)
-					->with('booth',$booth)
-					->with('id',$id)
-					->with('crumb',$this->crumb)
-					->with('title','Operational Form Submission');
-
-		
-
-	}
-
-	public function post_editform(){
-
-		
-		$data = Input::get();
-
-		$id = new MongoId($data['id']);
-		$data['lastUpdate'] = new MongoDate();
-		
-		
-		unset($data['csrf_token']);
-		unset($data['id']);
-
-		$operationalform = new Operationalform();
-		
-		if (isset($data['programdate1']) && $data['programdate1']!='') {$data['programdate1'] = new MongoDate(strtotime($data['programdate1']." 00:00:00")); }
-		if (isset($data['programdate2']) && $data['programdate2']!='') {$data['programdate2'] = new MongoDate(strtotime($data['programdate2']." 00:00:00")); }
-		if (isset($data['programdate3']) && $data['programdate3']!='') {$data['programdate3'] = new MongoDate(strtotime($data['programdate3']." 00:00:00")); }
-		if (isset($data['programdate4']) && $data['programdate4']!='') {$data['programdate4'] = new MongoDate(strtotime($data['programdate4']." 00:00:00")); }
-		if (isset($data['programdate5']) && $data['programdate5']!='') {$data['programdate5'] = new MongoDate(strtotime($data['programdate5']." 00:00:00")); }
-		if (isset($data['programdate6']) && $data['programdate6']!='') {$data['programdate6'] = new MongoDate(strtotime($data['programdate6']." 00:00:00")); }
-
-		if (isset ($data['cocktaildate1'])&& $data['cocktaildate1']!='') { $data['cocktaildate1'] = new MongoDate(strtotime($data['cocktaildate1']." 00:00:00")); }
-		if (isset ($data['cocktaildate2'])&& $data['programdate2']!='') { $data['cocktaildate2'] = new MongoDate(strtotime($data['cocktaildate2']." 00:00:00")); }
-		if (isset ($data['cocktaildate3'])&& $data['programdate3']!='') { $data['cocktaildate3'] = new MongoDate(strtotime($data['cocktaildate3']." 00:00:00")); }
-		if (isset ($data['cocktaildate4'])&& $data['programdate4']!='') { $data['cocktaildate4'] = new MongoDate(strtotime($data['cocktaildate4']." 00:00:00")); }
-
-		$exhibitor = new Exhibitor();
-
-
-
-		if($operationalform->update(array('_id'=>$id),array('$set'=>$data))){
-
-			$form = $operationalform->get(array('_id'=>$id));
-			
-			$userid = $form['userid'];
-
-			$_id = new MongoId($userid);
-
-			$exhibitor->update(array('_id'=>$_id),array('$set'=>array('formstatus'=>'submitted')));
-
-			$ex = $exhibitor->get(array('_id'=>$_id));
-
-			
-			Event::fire('exhibition.postoperationalform',array($id,$_id));
-			
-
-			
-			return Redirect::to('exhibitor')->with('notify_success',Config::get('site.register_success'));
-
-		}else{
-	    	return Redirect::to('exhibitor/profile/')->with('notify_success','Exhibitor saving failed');
-		}
-		
 	}
 
 	public function get_printbadge($id){
 		$id = new MongoId($id);
 
-		$exhibitor = new Exhibitor();
+		$boothassistant = new Boothassistant();
 
-		$doc = $exhibitor->get(array('_id'=>$id));
+		$doc = $boothassistant->get(array('_id'=>$id));
 
-		return View::make('print.exhibitorbadge')->with('profile',$doc);
+		return View::make('print.boothassistantbadge')->with('profile',$doc);
 	}
 
 	public function get_view($id){
 		$id = new MongoId($id);
 
-		$exhibitor = new Document();
+		$boothassistant = new Document();
 
-		$doc = $exhibitor->get(array('_id'=>$id));
+		$doc = $boothassistant->get(array('_id'=>$id));
 
 		return View::make('pop.docview')->with('profile',$doc);
 	}
@@ -925,9 +727,9 @@ class Exhibitor_Controller extends Base_Controller {
 	public function get_fileview($id){
 		$_id = new MongoId($id);
 
-		$exhibitor = new Document();
+		$boothassistant = new Document();
 
-		$doc = $exhibitor->get(array('_id'=>$_id));
+		$doc = $boothassistant->get(array('_id'=>$_id));
 
 		//$file = URL::to(Config::get('kickstart.storage').$id.'/'.$doc['docFilename']);
 
@@ -939,9 +741,9 @@ class Exhibitor_Controller extends Base_Controller {
 	public function get_approve($id){
 		$id = new MongoId($id);
 
-		$exhibitor = new Document();
+		$boothassistant = new Document();
 
-		$doc = $exhibitor->get(array('_id'=>$id));
+		$doc = $boothassistant->get(array('_id'=>$id));
 
 		$form = new Formly();
 
@@ -962,12 +764,26 @@ class Exhibitor_Controller extends Base_Controller {
 		return $str;
 	}
 
+	public function get_makeidhall() {
+		$boothassistant = new Boothassistant;
 
+		$boothassistants = $boothassistant->find();
+
+		foreach ($boothassistants as $n) {
+			$_id = $n['_id'];
+			$idhall = $n['hall_id'];
+			$hallidmongo = new MongoId($idhall);
+			$boothassistant->update(array('_id'=>$_id),array('$set'=>array('hall_id'=>$hallidmongo)));
+		}
+		
+
+		return true;
+	}
 
 	public function get_updateField(){
-		$exhibitor = new Exhibitor();
+		$boothassistant = new Boothassistant();
 
-		$exhibitors = $exhibitor->find();
+		$boothassistants = $boothassistant->find();
 		$updateCount = 0;
 		$caheIDCount = 0;
 		$caheOBJCount = 0;
@@ -982,7 +798,7 @@ class Exhibitor_Controller extends Base_Controller {
 		$ConfCount = 0;
 		$normalRate =0;
 
-		foreach($exhibitors as $att){
+		foreach($boothassistants as $att){
 
 			if(!isset($att['totalIDR'])){
 				$_id = $att['_id'];
@@ -1010,7 +826,7 @@ class Exhibitor_Controller extends Base_Controller {
 					$totalUSD = '120';
 				}
 
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('totalIDR'=>$totalIDR,'totalUSD'=>$totalUSD)))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('totalIDR'=>$totalIDR,'totalUSD'=>$totalUSD)))){
 					$updateCount++;	
 				}
 				
@@ -1018,14 +834,14 @@ class Exhibitor_Controller extends Base_Controller {
 
 			if(!isset($att['cache_id'])){
 				$_id = $att['_id'];
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('cache_id'=>'')))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('cache_id'=>'')))){
 					$caheIDCount++;	
 				}
 			}
 
 			if(!isset($att['cache_obj'])){
 				$_id = $att['_id'];
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('cache_obj'=>'')))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('cache_obj'=>'')))){
 					$caheOBJCount++;	
 				}
 				
@@ -1033,7 +849,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 			if(!isset($att['companys_npwp'])){
 				$_id = $att['_id'];
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('companys_npwp'=>'')))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('companys_npwp'=>'')))){
 					$companyNPWPCount++;	
 				}
 				
@@ -1041,14 +857,14 @@ class Exhibitor_Controller extends Base_Controller {
 
 			if(!isset($att['groupId'])){
 				$_id = $att['_id'];
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('groupId'=>'')))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('groupId'=>'')))){
 					$groupIDCount++;	
 				}
 				
 			}
 			if(!isset($att['groupName'])){
 				$_id = $att['_id'];
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('groupName'=>'')))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('groupName'=>'')))){
 					$groupNameCount++;	
 				}
 				
@@ -1056,7 +872,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 			if(!isset($att['inv_letter'])){
 				$_id = $att['_id'];
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('inv_letter'=>'')))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('inv_letter'=>'')))){
 					$invLetterCount++;	
 				}
 				
@@ -1064,14 +880,14 @@ class Exhibitor_Controller extends Base_Controller {
 
 			if(!isset($att['invoice_address_conv'])){
 				$_id = $att['_id'];
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('invoice_address_conv'=>'')))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('invoice_address_conv'=>'')))){
 					$invCompanyAddCount++;	
 				}
 				
 			}
 			if(!isset($att['paymentStatus'])){
 				$_id = $att['_id'];
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('paymentStatus'=>'')))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('paymentStatus'=>'')))){
 					$paymentStatCount++;	
 				}
 				
@@ -1080,7 +896,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 			if(!isset($att['address'])){
 				$_id = $att['_id'];
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('address'=>'')))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('address'=>'')))){
 					$AddCount++;	
 				}
 				
@@ -1088,7 +904,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 			if(!isset($att['addressInvoice'])){
 				$_id = $att['_id'];
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('addressInvoice'=>'')))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('addressInvoice'=>'')))){
 					$AddCountInvoice++;	
 				}
 				
@@ -1096,7 +912,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 			if(!isset($att['confirmation'])){
 				$_id = $att['_id'];
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('confirmation'=>'none')))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('confirmation'=>'none')))){
 					$ConfCount++;	
 				}
 				
@@ -1128,7 +944,7 @@ class Exhibitor_Controller extends Base_Controller {
 					$totalUSD = '120';
 				}
 
-				if($exhibitor->update(array('_id'=>$_id),array('$set'=>array('totalIDR'=>$totalIDR,'totalUSD'=>$totalUSD)))){
+				if($boothassistant->update(array('_id'=>$_id),array('$set'=>array('totalIDR'=>$totalIDR,'totalUSD'=>$totalUSD)))){
 					$normalRate++;	
 				}
 				
@@ -1139,7 +955,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 		}
 		
-		return View::make('exhibitor.updateField')
+		return View::make('boothassistant.updateField')
 				->with('updateCount',$updateCount)
 				->with('caheIDCount',$caheIDCount)
 				->with('caheOBJCount',$caheOBJCount)
@@ -1154,78 +970,6 @@ class Exhibitor_Controller extends Base_Controller {
 				->with('ConfCount',$ConfCount)
 				->with('normalRate',$normalRate)
 				->with('title','Update Field');
-	}
-
-
-	public function post_sendmail(){
-		$id = Input::get('id');
-		$mailtype = Input::get('type');
-
-
-		$user = new Exhibitor();
-		$log = new Logmessage();
-
-		if(is_null($id)){
-			$result = array('status'=>'ERR','data'=>'NOID');
-		}else{
-
-			$_id = new MongoId($id);
-
-			//find user first
-			$data = $user->get(array('_id'=>$_id));
-			$logs = $log->get(array('user'=>$_id));
-			$currentlog = $data['emailregsent']+1;
-			
-
-			if($logs!=null){
-				if($mailtype == 'exhibitor.regsuccess'){
-					if($user->update(array('_id'=>$_id),
-						array('$set'=>array('emailregsent'=>$currentlog))
-					)){
-						Event::fire('exhibitor.createformadmin',array($data['_id'],$logs['passwordRandom']));
-						$result = array('status'=>'OK','data'=>'CONTENTDELETED','message'=>'Successfully sent mail');
-					}
-					/*$body = View::make($mailtype)
-						->with('data',$data)
-						->with('fromadmin','yes')
-						->with('passwordRandom',$logs['passwordRandom'])
-						->render();
-
-					Message::to($logs['emailto'])
-					    ->from($logs['emailfrom'], $logs['emailfromname'])
-					    ->cc($logs['emailcc1'], $logs['emailcc1name'])
-					    ->subject($logs['emailsubject'])
-					    ->body( $body )
-					    ->html(true)
-					    ->send();*/
-					
-				}
-			}else{
-				$result = array('status'=>'NOTFOUND','data'=>'CONTENTDELETED','message'=>'Can\'t Found Email to send');
-			}
-		}
-
-		print json_encode($result);
-	}
-
-	public function get_printbadgeonsite($regnumber,$name,$companyname){
-		$data['name'] = $name;
-		$data['registrationnumber'] = $regnumber;
-		$data['companyname'] = $companyname;
-
-		return View::make('print.exhibitorbadgeonsite')
-		
-		->with('profile',$data);
-	}
-
-	public function get_printbadgeonsite2($regnumber,$name,$companyname){
-		$data['name'] = $name;
-		$data['registrationnumber'] = $regnumber;
-		$data['companyname'] = $companyname;
-
-		return View::make('print.exhibitorbadgeonsite2')
-		
-		->with('profile',$data);
 	}
 
 }

@@ -28,6 +28,8 @@
     {{ HTML::style('content/css/icomoon.css') }}
     {{ HTML::style('css/smart_wizard.css') }}
     {{ HTML::style('content/css/app.css') }}
+    {{ HTML::style('content/css/bootstrap-modal.css') }}
+
 
     {{ HTML::style('css/jquery-datatables/TableTools.css')}}
 
@@ -36,6 +38,7 @@
 
     {{ HTML::style('css/select2.css') }}
     {{ HTML::style('content/css/demo.css') }}
+
     <link rel="stylesheet" type="text/css" href="{{URL::base()}}/scripts/google-code-prettify/prettify.css" >
 
     <!-- Le fav and touch icons -->
@@ -136,6 +139,9 @@
   {{ HTML::script('scripts/demo.js') }}
   {{ HTML::script('scripts/holder.js') }}
   {{ HTML::script('js/pnu.js') }}
+  
+  {{ HTML::script('js/bootstrap-modalmanager.js') }}
+  {{ HTML::script('js/bootstrap-modal.js') }}
  
  <script type="text/javascript">
     $(".metro").metro();

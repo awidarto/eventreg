@@ -490,6 +490,20 @@ class Import_Controller extends Base_Controller {
 						$tocommit['lastUpdate'] = new MongoDate();
 						$tocommit['role'] = 'attendee';
 
+						//clean row needed
+						$cleanemail = preg_replace('/\s+/', '', $tocommit['email']);
+						$tocommit['email'] = $cleanemail;
+
+						$cleanregtype = preg_replace('/\s+/', '', $tocommit['regtype']);
+						$tocommit['regtype'] = $cleanregtype;
+
+						$cleandinner = preg_replace('/\s+/', '', $tocommit['attenddinner']);
+						$tocommit['attenddinner'] = $cleandinner;
+
+						$cleangolf = preg_replace('/\s+/', '', $tocommit['golf']);
+						$tocommit['golf'] = $cleangolf;
+						
+
 						if(isset($tocommit['conventionPaymentStatus'])){
 							$tocommit['conventionPaymentStatus'] = $attobj['conventionPaymentStatus'];
 						}
@@ -529,6 +543,7 @@ class Import_Controller extends Base_Controller {
 						$plainpass = rand_string(8);
 
 						$tocommit['pass'] = Hash::make($plainpass);
+
 
 						//golf sequencer
 						$tocommit['golfSequence'] = 0;
@@ -789,6 +804,19 @@ class Import_Controller extends Base_Controller {
 
 						$tocommit['pass'] = Hash::make($plainpass);
 
+						//clean row needed
+						$cleanemail = preg_replace('/\s+/', '', $tocommit['email']);
+						$tocommit['email'] = $cleanemail;
+
+						$cleanregtype = preg_replace('/\s+/', '', $tocommit['regtype']);
+						$tocommit['regtype'] = $cleanregtype;
+
+						$cleandinner = preg_replace('/\s+/', '', $tocommit['attenddinner']);
+						$tocommit['attenddinner'] = $cleandinner;
+
+						$cleangolf = preg_replace('/\s+/', '', $tocommit['golf']);
+						$tocommit['golf'] = $cleangolf;
+
 						//golf sequencer
 						$tocommit['golfSequence'] = 0;
 
@@ -796,6 +824,10 @@ class Import_Controller extends Base_Controller {
 							$gseq = $seq->find_and_modify(array('_id'=>'golf'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true,'upsert'=>true));
 							$tocommit['golfSequence'] = $gseq['seq'];
 						}
+
+
+
+
 
 						if(strtotime($dateA) > strtotime($earlybirddate)){
 

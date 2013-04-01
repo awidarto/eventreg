@@ -32,7 +32,7 @@
 |
 */
 
-Route::controller(array('register','exhibition','report','booth','import','export','dashboard','onsite','attendee','exhibitor','official','visitor','user','message','search','activity','category','content','ajax'));
+Route::controller(array('register','exhibition','report','booth','boothassistant','import','export','dashboard','onsite','attendee','exhibitor','official','visitor','user','message','search','activity','category','content','ajax'));
 
 Route::get('/',function(){
     if(Auth::check()){
@@ -50,29 +50,35 @@ Route::get('cps',function(){
     $getvar = Input::all();
     //no_invoice=123123&amount=10000.00&statuscode=00
     $att = new Attendee();
-
-    if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
-        if(isset($getvar['no_invoice'])){
-            $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
-            if(isset($attendee['paymentStatus'])){
-                $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('paymentStatus'=>'paid')));
-                //Event::fire('payment.success',array('id'=>$attendee['_id']->__toString(),'status'=>'success'));
-                return Response::json(array('status'=>'OK','description'=>'payment success'));
+    if(Request::server('http_referer') == Config::get('kickstart.payment_host')){
+        if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
+            if(isset($getvar['no_invoice'])){
+                $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
+                if(isset($attendee['conventionPaymentStatus'])){
+                    //$att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
+                    return Response::json(array('status'=>'OK','description'=>Request::ip().'record not exist'));
+                    //return Redirect::to('register/checkoutsuccess');
+                }else{
+                    return Redirect::to('register/checkoutfailed');
+                    //return Response::json(array('status'=>'ERR','description'=>'record not exist'));
+                }
             }else{
-                return Response::json(array('status'=>'ERR','description'=>'record not exist'));
+                return Redirect::to('register/checkoutfailed');
+                return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
             }
         }else{
-            return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
-        }
+            return Redirect::to('register/checkoutfailed');
+            return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
+        }        
     }else{
-        return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
+        return Response::json(array('status'=>'ERR','description'=>'invalid gateway host : '.Request::server('http_referer')));
     }
 });
 
 Route::get('barcode/(:any)',function($text){
     $barcode = new Barcode();
-    $barcode->make($text,'code128',40);
-    return $barcode->render('png');
+    $barcode->make($text,'code128',45);
+    return $barcode->render('jpg');
 });
 
 Route::get('bartest/(:any)',function($text){
@@ -100,6 +106,8 @@ Route::get('payment/(:any)',array('uses'=>'register@payment'));
 Route::post('payment/(:any)',array('uses'=>'register@payment'));
 
 Route::get('export/report/(:any)',array('uses'=>'export@report'));
+Route::get('exhibitor/printbadgeonsite/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite'));
+Route::get('exhibitor/printbadgeonsite2/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite2'));
 
 
 Route::get('reset',array('uses'=>'register@reset'));

@@ -67,13 +67,27 @@ background: #fff;
 	display: block;
 }
 .cardtemplate{
-	width:315px;
-	height:196px;
+	width:309px;
+	height:193px;
 }
 .barcodeimage{
 	width:155px;
 }
 </style>
+<?php
+$urlonsite = URL::to('onsite');
+?>
+<script type="text/javascript">
+
+
+window.print();	
+setTimeout("location.href = '<?php echo $urlonsite;?>';",1500);
+
+	
+
+
+
+</script>
 <div id="preview-card">
 	<div class="card-template-area">
 		{{ HTML::image('images/idcard-template-attendee.jpg','badge_bg',array('class'=>'cardtemplate')) }}
@@ -87,5 +101,7 @@ background: #fff;
 		</div>
 	</div>
 </div>
+
+
 
 @endsection

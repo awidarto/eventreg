@@ -695,6 +695,7 @@ class Attendee_Controller extends Base_Controller {
 		print json_encode($result);
 	}
 
+	
 
 
 
@@ -1019,7 +1020,8 @@ class Attendee_Controller extends Base_Controller {
 				Event::fire('attendee.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
 				
 				if(Auth::user()->role == 'onsite'){
-					return Redirect::to('onsite')->with('notify_success',Config::get('site.register_success'));
+					$_id = $obj['_id']->__toString();
+					return Redirect::to('attendee/printbadgeonsitedoprint/'.$_id)->with('notify_success',Config::get('site.register_success'));
 				}else{
 					return Redirect::to('attendee')->with('notify_success',Config::get('site.register_success'));
 				}
@@ -1322,6 +1324,18 @@ class Attendee_Controller extends Base_Controller {
 		$doc = $attendee->get(array('_id'=>$id));
 
 		return View::make('print.attendeebadgeonsite')
+		->with('ajaxpaymentupdateonsite',URL::to('attendee/edit'))
+		->with('profile',$doc);
+	}
+
+	public function get_printbadgeonsitedoprint($id){
+		$id = new MongoId($id);
+
+		$attendee = new Attendee();
+
+		$doc = $attendee->get(array('_id'=>$id));
+
+		return View::make('print.attendeebadgeonsitedoprint')
 		->with('ajaxpaymentupdateonsite',URL::to('attendee/edit'))
 		->with('profile',$doc);
 	}

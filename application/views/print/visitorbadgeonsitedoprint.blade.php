@@ -22,7 +22,7 @@ body{
 }
 .barcodearea{
 	position: absolute;
-	top: 26px;
+	top: 35px;
 	right: -12px;
 	
 	text-align: center;
@@ -67,16 +67,30 @@ background: #fff;
 	display: block;
 }
 .cardtemplate{
-	width:315px;
-	height:196px;
+	width:307px;
+	height:193px;
 }
 .barcodeimage{
 	width:155px;
 }
 </style>
+<?php
+$urlonsite = URL::to('onsite');
+?>
+<script type="text/javascript">
+
+
+window.print();	
+setTimeout("location.href = '<?php echo $urlonsite;?>';",1500);
+
+	
+
+
+
+</script>
 <div id="preview-card">
 	<div class="card-template-area">
-		{{ HTML::image('images/idcard-template-attendee.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		{{ HTML::image('images/idcard-template-visitor.jpg','badge_bg',array('class'=>'cardtemplate')) }}
 		<div class="headarea">
 			<h1 class="fullname"><?php echo $profile['firstname'].' '.$profile['lastname'];?></h1>
 			<h1 class="companyname"><?php echo $profile['company'];?></h1>
@@ -87,5 +101,7 @@ background: #fff;
 		</div>
 	</div>
 </div>
+
+
 
 @endsection

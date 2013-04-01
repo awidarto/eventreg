@@ -1001,3 +1001,7 @@ table.onsite {
 	
 	color: #333333;
 }
+
+#print_frame{
+	background-color: red;
+}

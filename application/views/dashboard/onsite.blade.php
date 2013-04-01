@@ -122,6 +122,13 @@
 			         <span class="app-label">Register New Official</span>
 			      </a>
 
+			      <a id="boothaddnew" class="tile app bg-color-blueDark boothadd" href="#">
+			         <div class="image-wrapper">
+			            <span class="icon icon-user-2"></span>
+			         </div>
+			         <span class="app-label">Register  Booth Assist</span>
+			      </a>
+
 			   </div>
 			</div>
 		</div>
@@ -134,6 +141,21 @@
 	<div class="modal-header">
 		<button type="button" id="removeviewform" class="close" data-dismiss="modal" aria-hidden="true"></button>
 		<h3 id="myModalLabel">Detail</h3>
+		
+	</div>
+	<div class="modal-body" id="loaddata">
+		
+	</div>
+	
+	
+
+</div>
+
+<div id="ajax-modal" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	
+	<div class="modal-header">
+		<button type="button" id="removeviewform" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<h3 id="myModalLabel">Register New Booth assistant</h3>
 		
 	</div>
 	<div class="modal-body" id="loaddata">
@@ -728,16 +750,26 @@
 				var _id = e.target.id;
 				if($(e.target).is('.attendee')){
 					var _rel = 'onsite/attendee';
-				}else if($(e.target).is('.pop')){
+				}else if($(e.target).is('.exhibitorview')){
+					var _rel = 'onsite/exhibitor';
+				}else if($(e.target).is('.visitor')){
 					var _rel = 'onsite/visitor';
+
 				}
 
-				var url = '{{ URL::base() }}' + '/' + _rel + '/' + _id;
 
+				var url = '{{ URL::base() }}' + '/' + _rel + '/' + _id;
+				$("#viewformModal .modal-body .row-fluid").remove();
 			    $("#viewformModal .modal-body").load(url);
 				$('#viewformModal').modal();
 
 		   	}
+
+		   	
+ 
+			
+
+		   	
 
 		   	/*if ($(e.target).is('.viewform')) {
 				var _id = e.target.id;
@@ -786,10 +818,43 @@
 			}
 
 		});
+		
+		<?php
 
+			$ajaxexhibitorcheck = (isset($ajaxexhibitorcheck))?$ajaxexhibitorcheck:'/';
+		?>
+
+		var $modal = $('#ajax-modal');
+ 
+		$('#boothaddnew').on('click', function(){
+		  // create the backdrop and wait for next modal to be triggered
+		  $('body').modalmanager('loading');
+		 
+		  setTimeout(function(){
+		     $modal.load('{{ URL::base() }}' + '/onsite/newboothassist', '', function(){
+		      $modal.modal();
+		    });
+		  }, 1000);
+		});
+		 
+		$modal.on('click', '.update', function(){
+			var current_exhibitor_id = $('#exhibitorid').val();
+		  	$modal.modal('loading');
+		  	setTimeout(function(){
+		    	$modal.modal('loading');
+		      	$.post('{{ URL::to($ajaxexhibitorcheck) }}',{'id':current_exhibitor_id}, function(data) {
+					if(data.status == 'OK'){
+						$modal.find('.modal-body').prepend('<div class="alert alert-info fade in">' +
+		          		'Updated!<button type="button" class="close" data-dismiss="alert">&nbsp;</button>' +
+		        		'</div>');
+					}
+				},'json');
+		  	}, 1000);
+		});
 		
 
     });
+	
   </script>
 
 

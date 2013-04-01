@@ -33,6 +33,8 @@
       $boothassistantcount++;
     }
   }
+
+
   
 ?>
 <div class="tableHeader">
@@ -60,12 +62,22 @@
           </tr>
         </thead>
         <tbody>
+          
           @for($i=1;$i<=$freepasscount;$i++)
+            
             <tr>
               <td>{{ $i }}. </td>
-              <td>{{ $data['freepassname'.$i.''] }}. </td>
-              <td class="align-center">-</td>
-              <td class="align-center"><a class="icon-"  ><i>&#xe20b;</i><span class="formstatus" id="'.$doc['_id'].'" > Import this data</span></a></td>
+              <td class="passname">{{ $data['freepassname'.$i.''] }}</td>
+
+              @if(isset($boothassistantdata['freepassname'.$i.'']))
+                  <td class="aligncenter action" >Imported on {{ date('d-m-Y',  $boothassistantdata['freepassname'.$i.'timestamp']->sec) }}</td>
+                  <td id="status_freepassname{{ $i }}" class="align-center status"><span class="icon- fontGreen existtrue">&#xe20c;</span></td>
+                
+              @else
+              <td id="status_freepassname{{ $i }}" class="align-center status"></td>
+              <td class="align-center action"><a class="icon- importidividual" id="freepassname{{ $i }}" type="freepassname" typeid="{{ $i }}"><i>&#xe20b;</i><span class="formstatus" id="" > Import this data</span></a></td>
+              @endif
+              
             </tr>
           @endfor
           
@@ -85,12 +97,22 @@
         </thead>
         <tbody>
           @for($i=1;$i<=$boothassistantcount;$i++)
+
             <tr>
               <td>{{ $i }}. </td>
-              <td>{{ $data['boothassistant'.$i.''] }}. </td>
-              <td class="align-center">-</td>
-              <td class="align-center"><a class="icon-"  ><i>&#xe20b;</i><span class="formstatus" id="'.$doc['_id'].'" > Import this data</span></a></td>
+              <td class="passname">{{ $data['boothassistant'.$i.''] }}</td>
+
+              @if(isset($boothassistantdata['boothassistant'.$i.'']))
+                  <td class="aligncenter action" >Imported on {{ date('d-m-Y',  $boothassistantdata['boothassistant'.$i.'timestamp']->sec) }}</td>
+                  <td id="status_boothassistant{{ $i }}" class="align-center status"><span class="icon- fontGreen existtrue">&#xe20c;</span></td>
+                
+              @else
+              <td id="status_boothassistant{{ $i }}" class="align-center status"></td>
+              <td class="align-center action"><a class="icon- importidividual" id="boothassistant{{ $i }}" type="boothassistant" typeid="{{ $i }}"><i>&#xe20b;</i><span class="formstatus" id="" > Import this data</span></a></td>
+              @endif
+              
             </tr>
+
           @endfor
           
         </tbody>
@@ -110,12 +132,22 @@
         </thead>
         <tbody>
           @for($i=1;$i<=$data['totaladdbooth'];$i++)
+
             <tr>
               <td>{{ $i }}. </td>
-              <td>{{ $data['addboothname'.$i.''] }}. </td>
-              <td class="align-center">-</td>
-              <td class="align-center"><a class="icon-"  ><i>&#xe20b;</i><span class="formstatus" id="'.$doc['_id'].'" > Import this data</span></a></td>
+              <td class="passname">{{ $data['addboothname'.$i.''] }}</td>
+
+              @if(isset($boothassistantdata['addboothname'.$i.'']))
+                  <td class="aligncenter action" >Imported on {{ date('d-m-Y',  $boothassistantdata['addboothname'.$i.'timestamp']->sec) }}</td>
+                  <td id="status_addboothname{{ $i }}" class="align-center status"><span class="icon- fontGreen existtrue">&#xe20c;</span></td>
+                
+              @else
+              <td id="status_addboothname{{ $i }}" class="align-center status"></td>
+              <td class="align-center action"><a class="icon- importidividual" id="addboothname{{ $i }}" type="addboothname" typeid="{{ $i }}"><i>&#xe20b;</i><span class="formstatus" id="" > Import this data</span></a></td>
+              @endif
+              
             </tr>
+            
           @endfor
           
         </tbody>
@@ -123,5 +155,51 @@
 
   </div>
 </div>
+
+<script>
+$(document).ready(function(){
+
+  var current_type = '';
+  var current_type_id = 0;
+  var current_id='';
+  <?php $exhibitorid = $userdata['_id']->__toString();?>
+  var exhibitorid     = '<?php echo $exhibitorid;?>';
+  var companyname     = '<?php echo $userdata['company'];?>';
+  var companypic      = '<?php echo $userdata['firstname'].' '.$userdata['lastname'];?>';
+  var companypicemail = '<?php echo $userdata['email'];?>';
+  var hallname        = '<?php echo $userdata['hall'];?>';
+  var boothname       = '<?php echo $userdata['booth'];?>';
+  
+  $('.importidividual').click(function(){
+    var thisitem = $(this);
+    current_id = $(this).parent().parent().find('td.status').attr('id');
+    current_type = $(this).attr('type');
+    current_type_id = $(this).attr('typeid');
+    var current_pass_name = $(this).parent().parent().find('td.passname').text();
+    
+    
+    <?php
+
+      $ajaxImportBoothAssistant = (isset($ajaxImportBoothAssistant))?$ajaxImportBoothAssistant:'/';
+    ?>
+    $.post('{{ URL::to($ajaxImportBoothAssistant) }}',{'exhibitorid':exhibitorid,'companyname':companyname,'companypic':companypic,'companypicemail':companypicemail,'hallname':hallname,'boothname':boothname,'type':current_type,'typeid':current_type_id,'passname':current_pass_name}, function(data) {
+      
+      $('#'+current_id).html('Processing');
+      thisitem.html('');
+      
+
+      if(data.status == 'OK'){
+        thisitem.parent().append('<span class="icon- fontGreen existtrue">&#xe20c;</span>');
+        thisitem.remove();
+        $('#'+current_id).html(data.message);
+        
+      }
+    },'json');
+  });
+
+  
+
+});
+</script>
 
 @endsection

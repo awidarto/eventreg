@@ -98,6 +98,15 @@ return array(
 
 		'golfquota'=>80,
 
+		'pinsupervisorconvention'=>'12345',
+		'pinsupervisorexhibitor'=>'123456',
+
+		'exhibitorassistanttype'=>array(
+			'freepassname'=>'f',
+			'boothassistant'=>'b',
+			'addboothname'=>'a',
+		),
+
 		'currencyconversion'=>9800,
 		
 		'conventionrate'=>array(
@@ -626,6 +635,7 @@ return array(
 			'golfPaymentStatus'=>'',
 			'notes'=>''
 		)
+		
 	);
 
 

@@ -104,6 +104,7 @@ class Onsite_Controller extends Base_Controller {
 			->with('ajaxpaygolfconvention',URL::to('attendee/paystatusgolfconvention'))
 			->with('ajaxresendmail',URL::to('attendee/resendmail'))
 			->with('printsource',URL::to('attendee/printbadge'))
+			->with('ajaxexhibitorcheck',URL::to('onsite/ajaxexhibitorcheck'))
 			->with('form',$form)
 			->with('crumb',$this->crumb)
 			->with('heads',$heads)
@@ -174,6 +175,7 @@ class Onsite_Controller extends Base_Controller {
 
 		$attendee = new Attendee();
 		$visitor = new Visitor();
+		$exhibitor = new Exhibitor();
 
 		/* first column is always sequence number, so must be omitted */
 		$fidx = Input::get('iSortCol_0');
@@ -195,16 +197,20 @@ class Onsite_Controller extends Base_Controller {
 		if(count($q) > 0){
 			$attendees = $attendee->find($q,array(),array($sort_col=>$sort_dir),$limit);
 			$visitors = $visitor->find($q,array(),array($sort_col=>$sort_dir),$limit);
+			$exhibitors = $exhibitor->find($q,array(),array($sort_col=>$sort_dir),$limit);
 			$count_display_all_attendee = $attendee->count($q);
 			$count_display_all_visitor = $visitor->count($q);
+			$count_display_all_exhibitor = $exhibitor->count($q);
 		}else{
 			$attendees = $attendee->find(array(),array(),array($sort_col=>$sort_dir),$limit);
 			$visitors = $visitor->find(array(),array(),array($sort_col=>$sort_dir),$limit);
+			$exhibitors = $exhibitor->find(array(),array(),array($sort_col=>$sort_dir),$limit);
 			$count_display_all_attendee = $attendee->count($q);
 			$count_display_all_visitor = $visitor->count($q);
+			$count_display_all_exhibitor = $exhibitor->count($q);
 		}
 
-		$count_display_all = $count_display_all_attendee + $count_display_all_visitor;
+		$count_display_all = $count_display_all_attendee + $count_display_all_visitor+$count_display_all_exhibitor;
 		
 		$aadata = array();
 
@@ -384,7 +390,55 @@ class Onsite_Controller extends Base_Controller {
 				$counter,
 				//$select,
 				date('Y-m-d', $doc['createdDate']->sec),
-				(isset($doc['registrationnumber']))?$doc['registrationnumber']:'',
+				(isset($doc['registrationnumber']))?'<span class="pop visitor fontRed onsitetableclick" id="'.$doc['_id'].'">'.$doc['registrationnumber'].'</span>':'',
+				$doc['email'],
+				$doc['firstname'],
+				$doc['lastname'],
+				$doc['company'],
+				'',
+				//$doc['country'],
+				//$paymentStatus,
+				//$paymentStatusGolf,
+				//$rowBoothAction.
+
+				//'<a class="icon-"  ><i>&#xe1b0;</i><span class="pay" id="'.$doc['_id'].'" >Convention Status</span>'.
+				//$rowGolfAction.
+
+				//'<a class="icon-"  ><i>&#xe14c;</i><span class="pbadge" id="'.$doc['_id'].'" >Print Badge</span>'.
+				//'<a class="icon-"  href="'.URL::to('attendee/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
+				//$rowResendMessage.
+				//'<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$doc['_id'].'" >Delete</span>',
+
+				'extra'=>$extra
+			);
+			$counter++;
+		}
+
+
+		$aadata[] = array('','<strong>Exhibitors</strong>','','','','','');
+
+		foreach ($exhibitors as $doc) {
+
+			$extra = $doc;
+
+			$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
+
+			
+
+			//find message log
+
+			//$rowResendMessage = '';
+			//$messagelogs = $messagelog->find(array('user'=>$doc['_id']),array(),array(),array());
+			//if(count($messagelogs)>0){
+
+				$rowResendMessage = '<a class="icon-"  ><i>&#xe165;</i><span class="resendmail" id="'.$doc['_id'].'" >Resend Email</span>';
+			//}
+
+			$aadata[] = array(
+				$counter,
+				//$select,
+				date('Y-m-d', $doc['createdDate']->sec),
+				(isset($doc['registrationnumber']))?'<span class="pop exhibitorview fontRed onsitetableclick" id="'.$doc['_id'].'">'.$doc['registrationnumber'].'</span>':'',
 				$doc['email'],
 				'<span class="pop visitor" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
 				$doc['lastname'],
@@ -1417,7 +1471,141 @@ class Onsite_Controller extends Base_Controller {
 
 		$doc = $document->get(array('_id'=>$id));
 
-		return View::make('pop.attendeeview')->with('profile',$doc);
+		return View::make('pop.attendeeview')
+		->with('ajaxprintbadge',URL::to('onsite/printbadgecount'))
+		->with('profile',$doc);
+	}
+
+	public function get_newboothassist(){
+		//$id = new MongoId($id);
+
+		//$document = new Attendee();
+
+		//$doc = $document->get(array('_id'=>$id));
+		$form = new Formly();
+
+		return View::make('pop.newboothassist')
+		->with('ajaxexhibitorcheck',URL::to('onsite/ajaxexhibitorcheck'))
+		->with('form',$form);
+		
+		//->with('profile',$doc);
+	}
+
+	public function post_ajaxexhibitorcheck(){
+		$result = array('status'=>'OK','data'=>'DELETEFAILED');
+		print json_encode($result);
+	}
+
+
+	public function get_exhibitor($id){
+		$_id = new MongoId($id);
+
+		$boothassistant = new Boothassistant();
+		$exhibitor = new Exhibitor();
+		$formData = new Operationalform();
+
+		$exhibitorprofile = $exhibitor->get(array('_id'=>$_id));
+		$boothassistantdata = $boothassistant->get(array('exhibitorid'=>$id));
+		$user_form = $formData->get(array('userid'=>$id));
+		$booths = new Booth();
+
+		$booth = '';
+
+
+		if(isset($exhibitorprofile['boothid'])){
+			$_boothID = new MongoId($exhibitorprofile['boothid']);
+			$booth = $booths->get(array('_id'=>$_boothID));
+		}
+
+		return View::make('pop.exhibitorview')
+		->with('ajaxprintbadge',URL::to('onsite/printbadgecount'))
+		->with('data',$user_form)
+		->with('booth',$booth)
+		->with('boothassistantdata',$boothassistantdata)
+		->with('ajaxonsiteBoothAssistant',URL::to('onsite/addboothassistant'))
+		->with('ajaxprintbadge',URL::to('onsite/printbadgecount'))
+		->with('id',$id)
+		->with('exhibitor',$exhibitorprofile);
+	}
+
+
+
+	public function post_addboothassistant(){
+		
+		$exhibitorid = Input::get('exhibitorid');
+		$companyname = Input::get('companyname');
+		$companypic = Input::get('companypic');
+		$companyemail = Input::get('companypicemail');
+		$hallname = Input::get('hallname');
+		$boothname = Input::get('boothname');
+		$type = Input::get('type');
+		$typeid = Input::get('typeid');
+		$passname = Input::get('passname');
+
+		$boothassistant = new Boothassistant();
+
+		if(is_null($exhibitorid)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			//find first if record for this exhibitor exist
+
+			$datafind = $boothassistant->get(array('exhibitorid'=>$exhibitorid));
+			$data['exhibitorid']=$exhibitorid;
+			$data['companyname']  = $companyname;
+			$data['companypic']  = $companypic;
+			$data['companyemail']  = $companyemail;
+			$data['hallname']  = $hallname;
+			$data['boothname']  = $boothname;
+
+			if($type == 'freepassname'){
+				$data['role'] = 'BA1';
+			}else{
+				$data['role'] = 'BA2';
+			}
+			$reg_number[0] = 'A';
+			$reg_number[1] = $data['role'];
+			$reg_number[2] = '00';
+
+			$seq = new Sequence();
+
+			$rseq = $seq->find_and_modify(array('_id'=>'boothassistant'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
+
+			$reg_number[] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
+
+			$regnumberall = implode('-',$reg_number);
+			
+			//cannot find data then create new
+			if(!isset($datafind)){
+				
+				if($obj = $boothassistant->insert($data)){
+					
+					
+					if($objs = $boothassistant->update(array('_id'=>$obj['_id']),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$regnumberall,$type.$typeid.'timestamp'=>new MongoDate() ))) ){
+
+						$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'),'importedtime'=>date('d-m-Y'));
+					}
+				}
+
+			}else{
+
+				$_id = $datafind['_id'];
+				
+				
+				if($objs = $boothassistant->update(array('_id'=>$_id),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$regnumberall,$type.$typeid.'timestamp'=>new MongoDate() ))) ){
+											
+					$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'),'importedtime'=>date('d-m-Y'));	
+				}
+				
+				
+				
+				
+			}
+
+			
+		}
+
+		print json_encode($result);
 	}
 
 	public function get_visitor($id){
@@ -1427,8 +1615,79 @@ class Onsite_Controller extends Base_Controller {
 
 		$doc = $document->get(array('_id'=>$id));
 
-		return View::make('pop.visitorview')->with('profile',$doc);
+		return View::make('pop.visitorview')
+		->with('ajaxprintbadge',URL::to('onsite/printbadgecountvisitor'))
+		->with('profile',$doc);
 	}
+
+	
+
+	public function post_printbadgecount(){
+		$id = Input::get('id');
+		
+
+		$user = new Attendee();
+
+		if(is_null($id)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$_id = new MongoId($id);
+
+			//find countbadge
+			$userdata = $user->get(array('_id'=>$_id));
+			if(isset($userdata['printbadge'])){
+				$dataprintcount = $userdata['printbadge'];
+				$toadd = $dataprintcount+1;
+				if($user->update(array('_id'=>$_id),array('$set'=>array('printbadge'=>$toadd)))){
+					$result = array('status'=>'OK','data'=>'DELETEFAILED');
+				}else{
+					//Event::fire('paymentstatusgolfconvention.update',array('id'=>$id,'result'=>'FAILED'));
+					$result = array('status'=>'ERR','data'=>'DELETEFAILED');
+				}
+			}else{
+				if($user->update(array('_id'=>$_id),array('$set'=>array('printbadge'=>1)))){
+					$result = array('status'=>'OK','data'=>'DELETEFAILED');
+				}
+			}
+		}
+
+		print json_encode($result);
+	}
+
+	public function post_printbadgecountvisitor(){
+		$id = Input::get('id');
+		
+
+		$user = new Visitor();
+
+		if(is_null($id)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$_id = new MongoId($id);
+
+			//find countbadge
+			$userdata = $user->get(array('_id'=>$_id));
+			if(isset($userdata['printbadge'])){
+				$dataprintcount = $userdata['printbadge'];
+				$toadd = $dataprintcount+1;
+				if($user->update(array('_id'=>$_id),array('$set'=>array('printbadge'=>$toadd)))){
+					$result = array('status'=>'OK','data'=>'DELETEFAILED');
+				}else{
+					//Event::fire('paymentstatusgolfconvention.update',array('id'=>$id,'result'=>'FAILED'));
+					$result = array('status'=>'ERR','data'=>'DELETEFAILED');
+				}
+			}else{
+				if($user->update(array('_id'=>$_id),array('$set'=>array('printbadge'=>1)))){
+					$result = array('status'=>'OK','data'=>'DELETEFAILED');
+				}
+			}
+		}
+
+		print json_encode($result);
+	}
+
 
 	public function get_fileview($id){
 		$_id = new MongoId($id);

@@ -235,8 +235,10 @@ class Visitor_Controller extends Base_Controller {
 		//print_r(Session::get('permission'));
 
 	    $rules = array(
-	        'firstname'  => 'required|max:150',
-	        'email' => 'required|email'
+	        'firstname' => 'required',
+	    	'lastname' => 'required',
+	    	'email' => 'required|email|unique:attendee',
+	        'company' => 'required',
 	    );
 
 	    $validation = Validator::make($input = Input::all(), $rules);
@@ -270,8 +272,14 @@ class Visitor_Controller extends Base_Controller {
 
 			$user = new Visitor();
 
-			if($user->insert($data)){
-		    	return Redirect::to('visitor')->with('notify_success',Config::get('site.register_success'));
+			if($obj = $user->insert($data)){
+				if(Auth::user()->role == 'onsite'){
+					$_id = $obj['_id']->__toString();
+					return Redirect::to('visitor/printbadgeonsitedoprint/'.$_id)->with('notify_success',Config::get('site.register_success'));
+				}else{
+					return Redirect::to('visitor')->with('notify_success',Config::get('site.register_success'));
+				}
+		    	
 			}else{
 		    	return Redirect::to('visitor')->with('notify_success',Config::get('site.register_failed'));
 			}
@@ -440,6 +448,29 @@ class Visitor_Controller extends Base_Controller {
 		$file = URL::base().'/storage/'.$id.'/'.$doc['docFilename'];
 		
 		return View::make('pop.approval')->with('doc',$doc)->with('form',$form)->with('href',$file);
-	}	
+	}
+
+	public function get_printbadgeonsite($id){
+		$id = new MongoId($id);
+
+		$attendee = new Visitor();
+
+		$doc = $attendee->get(array('_id'=>$id));
+
+		return View::make('print.visitorbadgeonsite')
+		
+		->with('profile',$doc);
+	}
+
+	public function get_printbadgeonsitedoprint($id){
+		$id = new MongoId($id);
+
+		$attendee = new Visitor();
+
+		$doc = $attendee->get(array('_id'=>$id));
+
+		return View::make('print.visitorbadgeonsitedoprint')
+		->with('profile',$doc);
+	}
 
 }

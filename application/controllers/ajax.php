@@ -116,6 +116,8 @@ class Ajax_Controller extends Base_Controller {
 		return Response::json($result);		
 	}
 
+
+
 	public function get_booth($id)
 	{
 		$q = Input::get('term');
@@ -137,7 +139,25 @@ class Ajax_Controller extends Base_Controller {
 		
 
 		return Response::json($result);		
-	}	
+	}
+
+	public function get_exhibitor()
+	{
+		$q = Input::get('term');
+
+		$hall = new Exhibitor();
+		$qemail = new MongoRegex('/'.$q.'/i');
+
+		$res = $hall->find(array('company'=>$qemail));
+
+		$result = array();
+
+		foreach($res as $r){
+			$result[] = array('id'=>$r['_id']->__toString(),'value'=>$r['company']);
+		}
+
+		return Response::json($result);		
+	}
 
 	public function get_userdata()
 	{
