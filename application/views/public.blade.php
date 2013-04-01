@@ -103,6 +103,9 @@
       stm_aix("p0i8","p0i2",[0,"  DISCOVER THE SHOW   ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=visitor"],0,36);
       stm_bpx("p0i8","p1",[]);
       stm_aix("p0i8","p1i0",[0,"  About Indonesia  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=about-indonesia"],0,26);
+      stm_ep();
+      stm_aix("p0i9","p0i2",[0,"  Exhibitor Login   ","","",-1,-1,0,"http://46.23.76.180/ipa37/index.php/exhibitor/login"],0,36);
+      
 
       stm_ep();
       stm_em();
