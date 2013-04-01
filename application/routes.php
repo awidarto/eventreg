@@ -54,17 +54,20 @@ Route::get('cps',function(){
     if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
         if(isset($getvar['no_invoice'])){
             $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
-            if(isset($attendee['paymentStatus'])){
-                $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('paymentStatus'=>'paid')));
-                //Event::fire('payment.success',array('id'=>$attendee['_id']->__toString(),'status'=>'success'));
-                return Response::json(array('status'=>'OK','description'=>'payment success'));
+            if(isset($attendee['conventionPaymentStatus'])){
+                $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
+                //return Response::json(array('status'=>'OK','description'=>$attendee['firstname'].'record not exist'));
+                return Redirect::to('register/checkoutsuccess');
             }else{
-                return Response::json(array('status'=>'ERR','description'=>'record not exist'));
+                return Redirect::to('register/checkoutfailed');
+                //return Response::json(array('status'=>'ERR','description'=>'record not exist'));
             }
         }else{
+            return Redirect::to('register/checkoutfailed');
             return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
         }
     }else{
+        return Redirect::to('register/checkoutfailed');
         return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
     }
 });
