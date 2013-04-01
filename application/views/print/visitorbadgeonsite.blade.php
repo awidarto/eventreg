@@ -76,7 +76,7 @@ background: #fff;
 </style>
 <div id="preview-card">
 	<div class="card-template-area">
-		{{ HTML::image('images/idcard-template-attendee.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		{{ HTML::image('images/idcard-template-visitor.jpg','badge_bg',array('class'=>'cardtemplate')) }}
 		<div class="headarea">
 			<h1 class="fullname"><?php echo $profile['firstname'].' '.$profile['lastname'];?></h1>
 			<h1 class="companyname"><?php echo $profile['company'];?></h1>

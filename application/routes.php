@@ -71,7 +71,7 @@ Route::get('cps',function(){
 
 Route::get('barcode/(:any)',function($text){
     $barcode = new Barcode();
-    $barcode->make($text,'code128',40);
+    $barcode->make($text,'code128',25);
     return $barcode->render('png');
 });
 
@@ -100,6 +100,8 @@ Route::get('payment/(:any)',array('uses'=>'register@payment'));
 Route::post('payment/(:any)',array('uses'=>'register@payment'));
 
 Route::get('export/report/(:any)',array('uses'=>'export@report'));
+Route::get('exhibitor/printbadgeonsite/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite'));
+Route::get('exhibitor/printbadgeonsite2/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite2'));
 
 
 Route::get('reset',array('uses'=>'register@reset'));

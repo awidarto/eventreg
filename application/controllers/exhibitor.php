@@ -1208,4 +1208,24 @@ class Exhibitor_Controller extends Base_Controller {
 		print json_encode($result);
 	}
 
+	public function get_printbadgeonsite($regnumber,$name,$companyname){
+		$data['name'] = $name;
+		$data['registrationnumber'] = $regnumber;
+		$data['companyname'] = $companyname;
+
+		return View::make('print.exhibitorbadgeonsite')
+		
+		->with('profile',$data);
+	}
+
+	public function get_printbadgeonsite2($regnumber,$name,$companyname){
+		$data['name'] = $name;
+		$data['registrationnumber'] = $regnumber;
+		$data['companyname'] = $companyname;
+
+		return View::make('print.exhibitorbadgeonsite2')
+		
+		->with('profile',$data);
+	}
+
 }

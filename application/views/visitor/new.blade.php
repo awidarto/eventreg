@@ -67,6 +67,7 @@
   $('select').select2({
     width : 'resolve'
   });
+  $("#s2id_field_country").select2("val", "Indonesia");
 
   $('#field_role').change(function(){
       //alert($('#field_role').val());
