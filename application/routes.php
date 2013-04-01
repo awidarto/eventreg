@@ -71,7 +71,7 @@ Route::get('cps',function(){
             return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
         }        
     }else{
-        return Response::json(array('status'=>'ERR','description'=>'invalid gateway host'));
+        return Response::json(array('status'=>'ERR','description'=>'invalid gateway host : '.Request::server('http_referer')));
     }
 });
 
