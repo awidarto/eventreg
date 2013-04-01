@@ -334,5 +334,15 @@
 			});
 		});
 
+		$('.auto_exhibitor').autocomplete({
+			source: base + 'ajax/exhibitor',
+			select: function(event, ui){
+				$('#exhibitorid').val(ui.item.id);
+				hallId = $('#exhibitorid').val();
+			}
+		});
+
+		
+
 
     });

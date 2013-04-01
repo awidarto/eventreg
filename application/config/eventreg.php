@@ -96,7 +96,16 @@ return array(
 			'boothconfirm'=>'Convention & Golf Payment Confirmation',*/
 		),
 
-		'golfquota'=>100,
+		'golfquota'=>80,
+
+		'pinsupervisorconvention'=>'12345',
+		'pinsupervisorexhibitor'=>'123456',
+
+		'exhibitorassistanttype'=>array(
+			'freepassname'=>'f',
+			'boothassistant'=>'b',
+			'addboothname'=>'a',
+		),
 
 		'currencyconversion'=>9800,
 		
@@ -626,6 +635,7 @@ return array(
 			'golfPaymentStatus'=>'',
 			'notes'=>''
 		)
+		
 	);
 
 

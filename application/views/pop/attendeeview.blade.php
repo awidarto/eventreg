@@ -221,8 +221,17 @@
 			<div class="clear"></div>
 			
 			@if(Auth::user()->role == 'onsite')
-				<button class="printonsite btn btn-info" id="printstart"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>
-				<iframe src="{{ URL::to('attendee/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
+				@if(isset($profile['printbadge']) && ($profile['printbadge']!=''))
+					<br/>
+					<p>This user already {{$profile['printbadge']}} printed the badge, please input PIN for re-print</p>
+					<input type="password" id="supervisorpin"></input><br/><button class="btn btn-info" value="Submit" id="submitpin">Submit for reprint</button>
+					<!--<button class="printonsite btn btn-info" id="printstart" disabled="disabled"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>-->
+					<iframe src="{{ URL::to('attendee/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
+				@else
+					<button class="printonsite btn btn-info" id="printstart"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>
+					<iframe src="{{ URL::to('attendee/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
+				@endif
+
 			@elseif(Auth::user()->role == 'cashier')
 				<button class="printonsite btn btn-info" id="printstartcashier" disable="disable"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT RECEIPT</button>
 				<iframe src="{{ URL::to('attendee/printreceipt/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
@@ -233,11 +242,13 @@
 </div>
 <script type="text/javascript">
 <?php
-
+	
 	$ajaxpaymentupdateonsite = (isset($ajaxpaymentupdateonsite))?$ajaxpaymentupdateonsite:'/';
+	$ajaxprintbadge = (isset($ajaxprintbadge))?$ajaxprintbadge:'/';
 	$userid = $profile['_id']->__toString();
 	$paystat = $profile['conventionPaymentStatus'];
 ?>
+
 $(document).ready(function() {
 	
 	var paystat = '<?php echo $paystat;?>';
@@ -267,10 +278,33 @@ $(document).ready(function() {
 
   	});
 });
+
 $('#printstart').click(function(){
-	var pframe = document.getElementById('print_frame');
-	var pframeWindow = pframe.contentWindow;
-	pframeWindow.print();
+	$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}'}, function(data) {
+		if(data.status == 'OK'){
+			var pframe = document.getElementById('print_frame');
+			var pframeWindow = pframe.contentWindow;
+			pframeWindow.print();
+		}
+	},'json');
+
+});
+
+$('#submitpin').click(function(){
+	var pintrue = '{{ Config::get("eventreg.pinsupervisorconvention") }}';
+	var pinvalue = $('#supervisorpin').val();
+	if(pinvalue == pintrue){
+		$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}'}, function(data) {
+			if(data.status == 'OK'){
+				var pframe = document.getElementById('print_frame');
+				var pframeWindow = pframe.contentWindow;
+				pframeWindow.print();
+				$('#supervisorpin').val('');
+			}
+		},'json');
+	}else{
+		alert("Wrong PIN, please try again");
+	}
 
 });
 

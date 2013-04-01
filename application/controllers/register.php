@@ -313,24 +313,26 @@ class Register_Controller extends Base_Controller {
 
 	public function get_checkout(){
 
-		$type = 'attendee';
+		if(isset(Auth::attendee()->id)){
+			$type = 'attendee';
 
-		$this->crumb->add('register/payment/'.$type,'Convention Payment Checkout');
+			$this->crumb->add('register/payment/'.$type,'Convention Payment Checkout');
 
-		$form = new Formly();
-		$form->framework = 'zurb';
+			$form = new Formly();
+			$form->framework = 'zurb';
 
-		$attendee = new Attendee();
+			$attendee = new Attendee();
 
-		$golfcount = $attendee->count(array('golf'=>'Yes'));
+			$golfcount = $attendee->count(array('golf'=>'Yes'));
 
-		return View::make('register.checkout')
-			->with('form',$form)
-			->with('type','attendee')
-			->with('ajaxpost','register/checkout')
-			->with('crumb',$this->crumb)
-			->with('golfcount',$golfcount)
-			->with('title',ucfirst($type).' Payment Checkout');
+			return View::make('register.checkout')
+				->with('form',$form)
+				->with('type','attendee')
+				->with('ajaxpost','register/checkout')
+				->with('crumb',$this->crumb)
+				->with('golfcount',$golfcount)
+				->with('title',ucfirst($type).' Payment Checkout');
+		}
 
 	}
 
@@ -343,8 +345,6 @@ class Register_Controller extends Base_Controller {
 	        'email' => 'required|email',
 	        'contact_phone' => 'required',
 	        'mobile_phone' => 'required',
-	        'home_phone' => 'required',
-	        'work_phone' => 'required',
 	        'address' => 'required',
 	        'billing_address' => 'required',
 	        'billing_zip' => 'required',
@@ -743,6 +743,30 @@ class Register_Controller extends Base_Controller {
 					->with('form',$form)
 					->with('crumb',$this->crumb)
 					->with('title','Thank you for your payment confirmation!');
+
+	}
+
+	public function get_checkoutsuccess(){
+
+		$this->crumb->add('register','Register');
+
+		$form = new Formly();
+		return View::make('payment.checkoutsuccess')
+					->with('form',$form)
+					->with('crumb',$this->crumb)
+					->with('title','Thank you for your payment!');
+
+	}
+
+	public function get_checkoutfailed(){
+
+		$this->crumb->add('register','Register');
+
+		$form = new Formly();
+		return View::make('payment.checkoutfailed')
+					->with('form',$form)
+					->with('crumb',$this->crumb)
+					->with('title','Error');
 
 	}
 

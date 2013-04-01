@@ -32,7 +32,7 @@
 |
 */
 
-Route::controller(array('register','exhibition','report','booth','import','export','dashboard','onsite','attendee','exhibitor','official','visitor','user','message','search','activity','category','content','ajax'));
+Route::controller(array('register','exhibition','report','booth','boothassistant','import','export','dashboard','onsite','attendee','exhibitor','official','visitor','user','message','search','activity','category','content','ajax'));
 
 Route::get('/',function(){
     if(Auth::check()){
@@ -51,6 +51,7 @@ Route::get('cps',function(){
     //no_invoice=123123&amount=10000.00&statuscode=00
     $att = new Attendee();
 
+<<<<<<< HEAD
     if(Request::server('http_referer') == Config::get('kickstart.payment_host')){
 
         if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
@@ -68,17 +69,38 @@ Route::get('cps',function(){
             }
         }else{
             return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
+=======
+    if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
+        if(isset($getvar['no_invoice'])){
+            $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
+            if(isset($attendee['conventionPaymentStatus'])){
+                $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
+                //return Response::json(array('status'=>'OK','description'=>$attendee['firstname'].'record not exist'));
+                return Redirect::to('register/checkoutsuccess');
+            }else{
+                return Redirect::to('register/checkoutfailed');
+                //return Response::json(array('status'=>'ERR','description'=>'record not exist'));
+            }
+        }else{
+            return Redirect::to('register/checkoutfailed');
+            return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
+>>>>>>> 5ea02d8f7ac2e9eb1a0e0fe05161ac2e0a39dd51
         }
 
     }else{
+<<<<<<< HEAD
         return Response::json(array('status'=>'ERR','description'=>'invalid gateway host'));        
+=======
+        return Redirect::to('register/checkoutfailed');
+        return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
+>>>>>>> 5ea02d8f7ac2e9eb1a0e0fe05161ac2e0a39dd51
     }
 
 });
 
 Route::get('barcode/(:any)',function($text){
     $barcode = new Barcode();
-    $barcode->make($text,'code128',40);
+    $barcode->make($text,'code128',25);
     return $barcode->render('png');
 });
 
@@ -107,6 +129,8 @@ Route::get('payment/(:any)',array('uses'=>'register@payment'));
 Route::post('payment/(:any)',array('uses'=>'register@payment'));
 
 Route::get('export/report/(:any)',array('uses'=>'export@report'));
+Route::get('exhibitor/printbadgeonsite/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite'));
+Route::get('exhibitor/printbadgeonsite2/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite2'));
 
 
 Route::get('reset',array('uses'=>'register@reset'));
