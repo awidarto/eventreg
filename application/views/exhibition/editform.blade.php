@@ -847,7 +847,12 @@ $('#totaladdboothinput').bind("focus blur change keyup", function(){
   
 
   $('.addboothrow').remove();
-  var totaladdboothrecent = <?php echo $data['totaladdbooth'];?>
+  var totaladdboothrecent = <?php
+  if($data['totaladdbooth']!=''){
+    echo $data['totaladdbooth'];
+  }else{
+    echo '0';
+  }?>
   //alert(totalfields);
   if((totalfieldsNum!=totaladdboothrecent)){
       for(var i=totaladdboothrecent; i<totalfieldsNum; i++){
