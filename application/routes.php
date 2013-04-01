@@ -55,9 +55,9 @@ Route::get('cps',function(){
             if(isset($getvar['no_invoice'])){
                 $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
                 if(isset($attendee['conventionPaymentStatus'])){
-                    $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
-                    //return Response::json(array('status'=>'OK','description'=>$attendee['firstname'].'record not exist'));
-                    return Redirect::to('register/checkoutsuccess');
+                    //$att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
+                    return Response::json(array('status'=>'OK','description'=>Request::ip().'record not exist'));
+                    //return Redirect::to('register/checkoutsuccess');
                 }else{
                     return Redirect::to('register/checkoutfailed');
                     //return Response::json(array('status'=>'ERR','description'=>'record not exist'));
@@ -77,8 +77,8 @@ Route::get('cps',function(){
 
 Route::get('barcode/(:any)',function($text){
     $barcode = new Barcode();
-    $barcode->make($text,'code128',25);
-    return $barcode->render('png');
+    $barcode->make($text,'code128',45);
+    return $barcode->render('jpg');
 });
 
 Route::get('bartest/(:any)',function($text){
