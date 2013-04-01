@@ -50,7 +50,8 @@ Route::get('cps',function(){
     $getvar = Input::all();
     //no_invoice=123123&amount=10000.00&statuscode=00
     $att = new Attendee();
-    if(Request::server('http_referer') == Config::get('kickstart.payment_host')){
+    $gatewayhost = get_domain(Request::server('http_referer'));
+    if($gatewayhost == Config::get('kickstart.payment_host')){
         if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
             if(isset($getvar['no_invoice'])){
                 $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
@@ -71,7 +72,7 @@ Route::get('cps',function(){
             return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
         }        
     }else{
-        return Response::json(array('status'=>'ERR','description'=>'invalid gateway host : '.Request::server('http_referer')));
+        return Response::json(array('status'=>'ERR','description'=>'invalid gateway host : '));
     }
 });
 
