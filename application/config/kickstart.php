@@ -147,7 +147,7 @@ return array(
 
     'paymentgw_url'=>'http://dyandratiket.com/get_data.php',
 
-    'payment_host'=>'http://46.23.76.180/',
+    'payment_host'=>'http://www.ipaconvex.com',
     
 
 );
