@@ -59,7 +59,7 @@
               </script>
               <div class="blink" style="margin: 0px 0px 15px 270px; color: red; font-size: 14px; float: left; font-weight: bold; font-family: Tahoma; visibility: hidden;">
                 {{ HTML::link('register/landing','Convention Registration',array('class'=>'')) }}&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-                {{ HTML::link('register/landing','Exhibitor Login',array('class'=>'')) }}
+                {{ HTML::link('exhibitor/login','Exhibitor Login',array('class'=>'')) }}
               </div>
             </td>
         </tr>
