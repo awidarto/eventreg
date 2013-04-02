@@ -453,7 +453,7 @@ class Register_Controller extends Base_Controller {
 
 	    		$paydata['item_list'] = $itemline;
 	    		$paydata['amount'] = $totalamount;
-	    		$paydata['invoice_no'] = Auth::attendee()->id;
+	    		$paydata['invoice_no'] = Auth::attendee()->regsequence;
 	    		$paydata['session_id'] = $sess['_id']->__toString();
 
 				$gw_url = Config::get('kickstart.paymentgw_url');

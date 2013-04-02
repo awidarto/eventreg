@@ -4,5 +4,5 @@
 header("Content-type: image/svg+xml");
 ?>
 <?php
-$barcode = new Code39();
+$barcode = new Code128();
 echo $barcode->draw($text);?>

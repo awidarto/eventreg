@@ -56,7 +56,7 @@ Route::get('cps',function(){
     if($gatewayhost == Config::get('kickstart.payment_host')){
         if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
             if(isset($getvar['no_invoice'])){
-                $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
+                $attendee = $att->get(array('regsequence'=>$getvar['no_invoice']));
                 if(isset($attendee['conventionPaymentStatus'])){
                     //$att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
                     //if(isset($attendee['golfPaymentStatus'])){
@@ -83,8 +83,20 @@ Route::get('cps',function(){
 
 Route::get('barcode/(:any)',function($text){
     $barcode = new Barcode();
-    $barcode->make($text,'code128',45);
+    $barcode->make($text,'code39',45);
     return $barcode->render('jpg');
+});
+
+Route::get('barcode128/(:any)',function($text){
+    $barcode = new Code128();
+    $barcode->draw($text);
+    return View::make('bartest')->with('text',$text);
+});
+
+Route::get('barcode39/(:any)',function($text){
+    $barcode = new Code39();
+    $barcode->draw($text);
+    return View::make('bartest')->with('text',$text);
 });
 
 Route::get('bartest/(:any)',function($text){
