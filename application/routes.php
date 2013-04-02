@@ -50,13 +50,18 @@ Route::get('cps',function(){
     $getvar = Input::all();
     //no_invoice=123123&amount=10000.00&statuscode=00
     $att = new Attendee();
+    //$gatewayhost = get_domain(Request::server('http_referer'));
     $gatewayhost = get_domain(Request::server('http_referer'));
+    //$gatewayhost = 'dyandratiket.com';
     if($gatewayhost == Config::get('kickstart.payment_host')){
         if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
             if(isset($getvar['no_invoice'])){
                 $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
                 if(isset($attendee['conventionPaymentStatus'])){
                     //$att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
+                    //if(isset($attendee['golfPaymentStatus'])){
+                    //    $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('golfPaymentStatus'=>'paid')));
+                    //}
                     return Response::json(array('status'=>'OK','description'=>Request::ip().'record not exist'));
                     //return Redirect::to('register/checkoutsuccess');
                 }else{
