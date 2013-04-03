@@ -502,6 +502,7 @@ class Attendee_Controller extends Base_Controller {
 
 
 			if($user->update(array('_id'=>$_id),array('$set'=>array('conventionPaymentStatus'=>$paystatus)))){
+				//Event::fire('paymentstatus.update',array('id'=>$id,'result'=>'OK'));
 				
 				//mail to registrant about payment updated
 				//if only set to paid to send email
@@ -522,8 +523,7 @@ class Attendee_Controller extends Base_Controller {
 					    ->body( $body )
 					    ->html(true)
 					    ->send();
-					
-					Event::fire('paymentstatus.update',array('id'=>$id,'result'=>'OK'));
+					    
 					$result = array('status'=>'OK','data'=>'CONTENTDELETED');
 				}
 			}else{
