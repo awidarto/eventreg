@@ -262,7 +262,7 @@ class Official_Controller extends Base_Controller {
 
 			$seq = new Sequence();
 
-			$rseq = $seq->find_and_modify(array('_id'=>'official'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
+			$rseq = $seq->find_and_modify(array('_id'=>'officials'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
 
 			$reg_number[] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
 
@@ -345,7 +345,7 @@ class Official_Controller extends Base_Controller {
 			}else if($data['registrationnumber'] == ''){
 				$reg_number = array();
 				$seq = new Sequence();
-				$rseq = $seq->find_and_modify(array('_id'=>'official'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
+				$rseq = $seq->find_and_modify(array('_id'=>'officials'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
 
 				$reg_number[0] = 'O';
 				$reg_number[1] = $data['role'];
