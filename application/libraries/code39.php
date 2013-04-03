@@ -53,7 +53,7 @@ class Code39{
     '*'=>'121121211');
     
     var $unit='px';//Unit
-    var $bw=1;//bar width
+    var $bw=3;//bar width
     //var $height=50*3;// px
     var $height=30;// px
     var $fs=15;//Font size
@@ -62,6 +62,8 @@ class Code39{
     var $x=5;
     var $y=4;
     var $bl=105;
+
+    var $barcode;
     
     function checksum( $string )
     {
@@ -94,8 +96,12 @@ class Code39{
             $img.=$this->drawsymbol($char);
         }
         $img.='</svg>';
-        return $img;
+
+        //return $img;
+        $this->barcode = $img;
+
     }
+
     function drawsymbol($char){
         
         $this->x+=$this->bw;
@@ -114,6 +120,11 @@ class Code39{
             $this->x += $w;
         }
         return $img;
+    }
+
+    function render(){
+        header("Content-type: image/svg+xml");
+        print $this->barcode;
     }
 }
 ?>

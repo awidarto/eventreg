@@ -83,10 +83,8 @@ Route::get('cps',function(){
 
 Route::get('barcode/(:any)',function($text){
     $barcode = new Barcode();
-<<<<<<< HEAD
     $barcode->make($text,'code39',40);
     return $barcode->render('gif');
-=======
     $barcode->make($text,'code39',45);
     return $barcode->render('jpg');
 });
@@ -100,8 +98,10 @@ Route::get('barcode128/(:any)',function($text){
 Route::get('barcode39/(:any)',function($text){
     $barcode = new Code39();
     $barcode->draw($text);
-    return View::make('bartest')->with('text',$text);
->>>>>>> 657a5dea80781796325361fe51facfd8dda14205
+
+    $barcode->render();
+
+    //return View::make('bartest')->with('text',$text);
 });
 
 Route::get('bartest/(:any)',function($text){
