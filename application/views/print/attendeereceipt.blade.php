@@ -96,7 +96,7 @@ $totalUSD = $data['totalUSD']+$totalUSDtax;
 			<tr style="vertical-align: top;margin:5px 0;">
 				<td>Amount:</td>
 				<td>:</td>
-				<td>(IDR) <strong>{{ formatrp($totalIDR) }}</strong><br/>
+				<td>(IDR) <strong>{{ formatrp($totalIDR) }}</strong>
 					<br/>
 					(USD) --
 				</td>
@@ -122,7 +122,7 @@ $totalUSD = $data['totalUSD']+$totalUSDtax;
 	
 
 </div>
-<div style="width:32%;position:absolute;display:block; right:20px; bottom:30px;font-family:Helvetica,Arial,Sans-serif;font-size:10px;">
+<div style="width:32%;position:absolute;display:block; right:20px; bottom:10px;font-family:Helvetica,Arial,Sans-serif;font-size:10px;">
 	<p>Jakarta, <?php echo date('l jS F Y');?></p>
 	<br/>
 	<br/>

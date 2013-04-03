@@ -83,7 +83,7 @@ Route::get('cps',function(){
 
 Route::get('barcode/(:any)',function($text){
     $barcode = new Barcode();
-    $barcode->make($text,'code39',45);
+    $barcode->make($text,'code39',40);
     return $barcode->render('jpg');
 });
 
