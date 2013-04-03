@@ -77,8 +77,8 @@ Route::get('cps',function(){
 
 Route::get('barcode/(:any)',function($text){
     $barcode = new Barcode();
-    $barcode->make($text,'code128',25);
-    return $barcode->render('png');
+    $barcode->make($text,'code39',40);
+    return $barcode->render('gif');
 });
 
 Route::get('bartest/(:any)',function($text){
