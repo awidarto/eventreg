@@ -147,7 +147,6 @@ return array(
 
     'paymentgw_url'=>'http://dyandratiket.com/get_data.php',
 
-    'payment_host'=>'localhost',
-    
+    'payment_host'=>'dyandratiket.com',    
 
 );

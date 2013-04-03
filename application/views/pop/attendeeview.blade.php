@@ -79,7 +79,11 @@
 					<td>:&nbsp;</td>
 					<td class="detail-info">
 						@if($profile['conventionPaymentStatus'] == 'unpaid')
-							<span style="color: #BC1C4B;text-transform:uppercase;text-decoration:underline;font-weight:bold;"><div class="convPayment" id="select_1">{{ $profile['conventionPaymentStatus'] }}</div></span>
+							@if(Auth::user()->role == 'cashier')
+								<span style="color: #BC1C4B;text-transform:uppercase;text-decoration:underline;font-weight:bold;"><div class="convPayment" id="select_1">{{ $profile['conventionPaymentStatus'] }}</div></span>
+							@else
+								<span style="color: #BC1C4B;text-transform:uppercase;text-decoration:underline;font-weight:bold;"><div class="" id="">{{ $profile['conventionPaymentStatus'] }}</div></span>
+							@endif
 						@elseif($profile['conventionPaymentStatus'] == 'cancel')
 							<span style="text-transform:uppercase;font-weight:bold;"><div class="convPayment" id="select_1">{{ $profile['conventionPaymentStatus'] }}</div></span>
 						@elseif($profile['conventionPaymentStatus'] == 'paid')
@@ -233,9 +237,47 @@
 				@endif
 
 			@elseif(Auth::user()->role == 'cashier')
-				<button class="printonsite btn btn-info" id="printstartcashier" disable="disable"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT RECEIPT</button>
+				<!--<button class="printonsite btn btn-info" id="printstartcashier" disable="disable"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT RECEIPT</button>-->
+				<button class="dopayment btn btn-info" id="#" ><i class="icon-">&#xe150;</i>&nbsp;&nbsp;MAKE A PAYMENT</button>
 				<iframe src="{{ URL::to('attendee/printreceipt/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 			@endif
+			</div>
+
+
+			<div id="stack3" class="modal hide fade" tabindex="1" data-focus-on="input:first">
+			  <div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+			    <h3>Make a Payment</h3>
+			  </div>
+			  <div class="modal-body">
+			    <label>Status</label>
+			    <select>
+				  <option value="unpaid">Unpaid</option>
+				  <option value="paid">Paid</option>
+				  <option value="free">Free</option>
+				  
+				</select>
+			    <br/>
+			    <label>Payment via</label>
+			    <select>
+				  <option value="cash">Cash</option>
+				  <option value="cash">Credit Card</option>
+				</select>
+			    <br/>
+			    <div class="currencyselect" style="display:hide;">
+			    <label>Currency</label>
+			    <select>
+			    	<option value="rupiah">IDR</option>
+				  	<option value="usd">USD</option>
+				</select>
+				</div>
+			    <br/>
+			    <button class="btn" data-toggle="modal" id="submitaddassist" href="#">Submit</button>
+			    <button class="btn" data-toggle="modal" id="closestack3" href="#">Cancel</button>
+
+			  </div>
+			  <div class="modal-footer">
+			  </div>
 			</div>
 
 	
@@ -258,7 +300,7 @@ $(document).ready(function() {
 	}
 	
 	
- 	$('.convPayment').editable('{{ URL::to("attendee/paystatusconvonsite") }}', { 
+ 	/*$('.convPayment').editable('{{ URL::to("attendee/paystatusconvonsite") }}', { 
 	    indicator : 'Saving...',
 	    name   : 'new_value',
 	    data   : '{"unpaid":"Unpaid","paid":"Paid","free":"Free"}',
@@ -268,15 +310,40 @@ $(document).ready(function() {
 	    callback : function(value, settings) {
 	    	console.log(value);
 	    	if(value =='"paid"'){
-	    		alert('Successfully change payment status, you can print the receipt now');
-	    		$('#printstartcashier').removeAttr('disabled');     
+	    		$('#stack3').modal('show');
+	    		//alert('Successfully change payment status, you can print the receipt now');
+	    		//$('#printstartcashier').removeAttr('disabled');     
 	    	}else{
 	    		$('#printstartcashier').attr('disabled', 'disabled');
 	    	}
      	},
 	    submitdata : {userid: '<?php echo $userid;?>'}
 
-  	});
+  	});*/
+});
+
+$('.dopayment').click(function(){
+	$('#stack3').modal('show');
+	/*$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}'}, function(data) {
+		if(data.status == 'OK'){
+			var pframe = document.getElementById('print_frame');
+			var pframeWindow = pframe.contentWindow;
+			pframeWindow.print();
+		}
+	},'json');*/
+
+});
+
+$('#closestack3').click(function(){
+	$('#stack3').modal('hide');
+	/*$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}'}, function(data) {
+		if(data.status == 'OK'){
+			var pframe = document.getElementById('print_frame');
+			var pframeWindow = pframe.contentWindow;
+			pframeWindow.print();
+		}
+	},'json');*/
+
 });
 
 $('#printstart').click(function(){
@@ -289,6 +356,7 @@ $('#printstart').click(function(){
 	},'json');
 
 });
+
 
 $('#submitpin').click(function(){
 	var pintrue = '{{ Config::get("eventreg.pinsupervisorconvention") }}';

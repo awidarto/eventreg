@@ -57,65 +57,62 @@
               });
 
               </script>
-              <div class="blink" style="margin: 0px 0px 15px 450px; color: black; font-size: 14px; font-weight: bold; font-family: Tahoma; visibility: visible;">
-                {{ HTML::link('register/landing','ONLINE REGISTRATION',array('class'=>'')) }}
+              <div class="blink" style="margin: 0px 0px 15px 270px; color: red; font-size: 14px; float: left; font-weight: bold; font-family: Tahoma; visibility: hidden;">
+                {{ HTML::link('register/landing','Convention Registration',array('class'=>'')) }}&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+                {{ HTML::link('exhibitor/login','Exhibitor Login',array('class'=>'')) }}
               </div>
             </td>
         </tr>
         <tr>
-          <td width="940" height="35" bgcolor="#b60002" align="center" style="padding-left:170px;">
-            <script type="text/javascript">
+        <td width="940" height="35" bgcolor="#b60002" align="center" style="padding-left:170px;">
+      <script type="text/javascript">
+      <!--
+      stm_bm(["menu7def",980,"","http://www.ipaconvex.com/blank.gif",0,"","",0,0,250,0,1000,1,0,0,"","",67109119,0,1,2,"default","hand","",2,30],this);
+      stm_bp("p0",[0,4,0,0,0,5,0,0,100,"",-2,"",-2,50,0,0,"#999999","#b60002","",1,0,0,"#000000"]);
+      stm_ai("p0i0",[0,"  HOME ","","",-1,-1,0,"http://www.ipaconvex.com/index.php","_self","","","","",0,7,0,"","",0,0,0,1,1,"#2d2e26",1,"#870002",0,"","",2,0,0,0,"#FFFFFF #490001","#FFFFFF #490001","#FFFFFF","#FFFFFF","bold 11px Trebuchet MS","bold 11px Trebuchet MS",0,0,"","","","",0,0,0],0,36);
+      stm_aix("p0i1","p0i0",[0,"   CONVENTION   ","","",-1,-1,0,"#"],0,36);
+      stm_bpx("p1","p0",[1,4,0,0,0,7,0,0,100,"stEffect(\"slip\")",-2,"stEffect(\"slip\")",-2,95,0,0,"#799BD8","transparent","",3]);
+      stm_aix("p1i0","p0i0",[0,"  Plenary Sessions","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=plenary-session","_self","","","","",0,0,0,"","",0,0,0,0,1,"#c02b13",0,"#870002",0,"","",3,3,0,0,"#FFFFF7","#000000"],0,26);
+      stm_aix("p1i1","p1i0",[0,"  Technical Program - Oral Presentation  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=technical-program"],0,26);
+      stm_aix("p1i2","p1i0",[0,"  Pre Convention Courses  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=Pre-Convention-Courses"],0,26);
+      stm_ep();
+      stm_aix("p0i2","p1i0",[0,"  EXHIBITION  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=exhibition","_self","","","","",0,7,0,"","",0,0,0,1,1,"#2d2e26",1,"#870002",0,"","",2,0],0,36);
+      stm_bpx("p2","p1",[]);
+      stm_aix("p2i0","p1i0",[0,"  Floorplan  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=exhibitor&file_id=3"],0,26);
+      stm_aix("p2i1","p1i0",[0,"  Exhibitor List  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=exhibitor-list"],0,26);
+      stm_aix("p2i2","p1i0",[0,"  Pricelist  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=exhibitor&file_id=4"],0,26);
+      stm_aix("p2i3","p1i0",[0,"  Application & Contract Form  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=exhibitor&file_id=6"],0,26);
+      stm_aix("p2i4","p1i0",[0,"  Best Booth Award  ","","",-1,-1,0,"http://www.ipaconvex.com/download/IPA-Newsletter-5th Final 6.pdf"],0,26);
+      stm_ep();
+      stm_aix("p0i4","p0i2",[0,"  SUPPORTING EVENTS    ","","",-1,-1,0,"#"],0,36);
+      stm_bpx("p3","p1",[]);
+      stm_aix("p3i0","p1i0",[0,"  CSR Zone & Empowerment Center  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=csrzone"],0,26);
+      //stm_aix("p3i1","p1i0",[0,"  Empowerment Center  ","","",-1,-1,0,"content.php?go=empowerment"],0,26);
+      //stm_aix("p3i1","p1i0",[0,"  Energy Edutainment Center  ","","",-1,-1,0,"content.php?go=energi-ec"],0,26);
+      stm_aix("p3i1","p1i0",[0,"  Golf Tournament  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=golftournament"],0,26);
+      stm_aix("p3i2","p1i0",[0,"  Industry Dinner  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=industrialdinner"],0,26);
+      stm_aix("p3i3","p1i0",[0,"  Photo Competition  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=photocompetition"],0,26);
+      stm_aix("p3i4","p1i0",[0,"  Writing Competition  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=writingcompetition"],0,26);
+      stm_ep();
+      stm_aix("p0i5","p0i2",[0,"  MEDIA   ","","",-1,-1,0,"#"],0,36);
+      stm_bpx("p3","p1",[]);
+      stm_aix("p3i0","p1i0",[0,"  Media Partner  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=mediapartner"],0,26);
+      stm_aix("p3i1","p1i0",[0,"  News Release  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=media&show=all"],0,26);
+      stm_ep();
+      stm_aix("p0i6","p0i2",[0,"  SPONSORSHIP   ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=sponsorship"],0,36);
+      stm_aix("p0i7","p0i2",[0,"  HOTEL   ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=hotel"],0,36);
+      stm_aix("p0i8","p0i2",[0,"  DISCOVER THE SHOW   ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=visitor"],0,36);
+      stm_bpx("p0i8","p1",[]);
+      stm_aix("p0i8","p1i0",[0,"  About Indonesia  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=about-indonesia"],0,26);
+      
+      
 
-            stm_bm(["menu7def",980,"","blank.gif",0,"","",0,0,250,0,1000,1,0,0,"","",67109119,0,1,2,"default","hand","",2,30],this);
-            stm_bp("p0",[0,4,0,0,0,5,0,0,100,"",-2,"",-2,50,0,0,"#999999","#b60002","",1,0,0,"#000000"]);
-            stm_ai("p0i0",[0,"  HOME ","","",-1,-1,0,"http://www.ipaconvex.com/index.php","_self","","","","",0,7,0,"","",0,0,0,1,1,"#2d2e26",1,"#870002",0,"","",2,0,0,0,"#FFFFFF #490001","#FFFFFF #490001","#FFFFFF","#FFFFFF","bold 11px Trebuchet MS","bold 11px Trebuchet MS",0,0,"","","","",0,0,0],0,36);
-            stm_aix("p0i1","p0i0",[0,"   CONVENTION   ","","",-1,-1,0,"#"],0,36);
-            stm_bpx("p1","p0",[1,4,0,0,0,7,0,0,100,"stEffect(\"slip\")",-2,"stEffect(\"slip\")",-2,95,0,0,"#799BD8","transparent","",3]);
-            stm_aix("p1i0","p0i0",[0,"  Plenary Sessions","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=plenary-session","_self","","","","",0,0,0,"","",0,0,0,0,1,"#c02b13",0,"#870002",0,"","",3,3,0,0,"#FFFFF7","#000000"],0,26);
-            stm_aix("p1i1","p1i0",[0,"  Technical Program - Oral Presentation  ","","",-1,-1,0,"content.php?go=technical-program"],0,26);
-            stm_aix("p1i2","p1i0",[0,"  Pre Convention Courses  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=Pre-Convention-Courses"],0,26);
-            stm_ep();
-            stm_aix("p0i2","p1i0",[0,"  EXHIBITION  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=exhibition","_self","","","","",0,7,0,"","",0,0,0,1,1,"#2d2e26",1,"#870002",0,"","",2,0],0,36);
-            stm_bpx("p2","p1",[]);
-            stm_aix("p2i0","p1i0",[0,"  Floorplan  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=exhibitor&file_id=3"],0,26);
-            stm_aix("p2i1","p1i0",[0,"  Pricelist  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=exhibitor&file_id=4"],0,26);
-            stm_aix("p2i2","p1i0",[0,"  Application & Contract Form  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=exhibitor&file_id=6"],0,26);
-            stm_ep();
-            stm_aix("p0i4","p0i2",[0,"  SUPPORTING EVENTS    ","","",-1,-1,0,"#"],0,36);
-            stm_bpx("p3","p1",[]);
-            stm_aix("p3i0","p1i0",[0,"  CSR Zone  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=csrzone"],0,26);
-            stm_aix("p3i1","p1i0",[0,"  Empowerment Center  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=empowerment"],0,26);
-            stm_aix("p3i2","p1i0",[0,"  Energy Edutainment Center  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=energi-ec"],0,26);
-            stm_aix("p3i2","p1i0",[0,"  Golf Tournament  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=golftournament"],0,26);
-            stm_aix("p3i3","p1i0",[0,"  Industry Dinner  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=industrialdinner"],0,26);
-            stm_aix("p3i4","p1i0",[0,"  Photo Competition  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=photocompetition"],0,26);
-            stm_aix("p3i5","p1i0",[0,"  Writing Competition  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=writingcompetition"],0,26);
-            stm_ep();
-            stm_aix("p0i5","p0i2",[0,"  MEDIA   ","","",-1,-1,0,"#"],0,36);
-            stm_bpx("p3","p1",[]);
-            stm_aix("p3i0","p1i0",[0,"  Media Partner  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=mediapartner"],0,26);
-            stm_aix("p3i1","p1i0",[0,"  News Release  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=media&show=all"],0,26);
-            stm_ep();
-            stm_aix("p0i6","p0i2",[0,"  SPONSORSHIP   ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=sponsorship"],0,36);
-            stm_aix("p0i7","p0i2",[0,"  HOTEL   ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=hotel"],0,36);
-            stm_aix("p0i8","p0i2",[0,"  VISITOR   ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=visitor"],0,36);
-            stm_bpx("p3","p1",[]);
-            stm_aix("p3i0","p1i0",[0,"  How to Get There  ","","",-1,-1,0,"http://www.ipaconvex.com/content.php?go=howtogetthere"],0,26);
-            stm_ep();
-            @if(Auth::attendeecheck() == false)
-            stm_aix("p0i6","p0i2",[0,"  LOGIN   ","","",-1,-1,0,"#"],0,36);
-            //stm_aix("p0i6","p0i2",[0,"  LOGIN   ","","",-1,-1,0,"http://46.23.76.180/ipa37/index.php/register/login"],0,36);
-            stm_bpx("p3","p1",[]);
-            stm_aix("p3i0","p1i0",[0,"  Convention ","","",-1,-1,0,"http://46.23.76.180/ipa37/index.php/register/login"],0,26);
-            stm_aix("p3i1","p1i0",[0,"  Exhibitor  ","","",-1,-1,0,"http://46.23.76.180/ipa37/index.php/exhibitor/login"],0,26);
-            @endif
-            stm_em();
-            </script>
-
-
-
-</td>
-</tr>
+      stm_ep();
+      stm_em();
+      //-->
+      </script>
+        </td>
+      </tr>
 <tr>
   <td bgcolor="white" width="940">
     <div align="center">

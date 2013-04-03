@@ -45,14 +45,14 @@
                 <label for="checkbox2"><input type="checkbox" style="display: none;"><span class="custom checkbox" id="invoiceSame" ></span> Billing Address same with Card Address</label>
               </div>
 
-              {{ $form->textarea('billing_address','Billing Address.req','',array('class'=>'text','id'=>'address_1','placeholder'=>'Billing Address')) }}
+              {{ $form->textarea('billing_address','Billing Address.req','',array('class'=>'text billingaddr','id'=>'address_1','placeholder'=>'Billing Address')) }}
 
               <div class="row">
                   <div class="eight columns">
-                      {{ $form->text('billing_city','','',array('class'=>'text','id'=>'billing_city','placeholder'=>'City')) }}
+                      {{ $form->text('billing_city','','',array('class'=>'text billingaddr','id'=>'billing_city','placeholder'=>'City')) }}
                   </div>
                   <div class="three columns">
-                      {{ $form->text('billing_zip','','',array('class'=>'text','id'=>'billing_zip','placeholder'=>'ZIP Code')) }}
+                      {{ $form->text('billing_zip','','',array('class'=>'text billingaddr','id'=>'billing_zip','placeholder'=>'ZIP Code')) }}
                   </div>
               </div>
 
@@ -194,48 +194,25 @@ $(function() {
   $("#s2id_field_country").select2("val", "Indonesia");
 
   function fillsame(){
-    var companyName = $("#companyName").val();
-    var companyNPWP = $("#companyNPWP").val();
-    var companyPhoneCountry = $("#companyPhoneCountry").val();
-    var companyPhoneArea = $("#companyPhoneArea").val();
-    var companyPhone = $("#companyPhone").val();
-
-
-    var companyFaxCountry = $("#companyFaxCountry").val();
-    var companyFaxArea = $("#companyFaxArea").val();
-    var companyFax = $("#companyFax").val();
-    var companyAddress_1 = $("#address_1").val();
-    var companyAddress_2 = $("#address_2").val();
+    
+    var cardaddress = $("#address").val();
     var companyCity = $("#city").val();
     var companyZip = $("#zip").val();
-    var companyCountry = $("#s2id_field_country").select2("val");
+    
 
-    $("#companyNameInv").val(companyName);
-    $("#companyNPWPInv").val(companyNPWP);
-
-    $("#companyPhoneInvCountry").val(companyPhoneCountry);
-    $("#companyPhoneInvArea").val(companyPhoneArea);
-    $("#companyPhoneInv").val(companyPhone);
-
-
-    $("#companyFaxInvCountry").val(companyFaxCountry);
-    $("#companyFaxInvArea").val(companyFaxArea);
-    $("#companyFaxInv").val(companyFax);
-
-    $("#addressInv_1").val(companyAddress_1);
-    $("#addressInv_2").val(companyAddress_2);
-    $("#cityInv").val(companyCity);
-    $("#zipInv").val(companyZip);
-    $("#s2id_field_countryInvoice").select2("val", companyCountry);
+    $("#address_1").val(cardaddress);
+    $("#billing_city").val(companyCity);
+    $("#billing_zip").val(companyZip);
+    
   }
 
   function resetinput(){
-    $('.invAdress')
+    $('.billingaddr')
      .not(':button, :submit, :reset, :hidden')
      .val('')
      .removeAttr('checked')
      .removeAttr('selected');
-      $("#s2id_field_countryInvoice").select2("val", "");
+     
   }
 
   $("#invoiceSame").live("click", function(){

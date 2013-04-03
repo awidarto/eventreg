@@ -9,7 +9,8 @@ body{
 
 .card-template-area{
 	position: relative;
-	
+	width:315px;
+	height:196px;
 	/*margin-left:7px;
 	margin-top:2px;*/
 	
@@ -22,8 +23,8 @@ body{
 }
 .barcodearea{
 	position: absolute;
-	top: 35px;
-	right: -12px;
+	top: 26px;
+	right: -25px;
 	
 	text-align: center;
 }
@@ -63,12 +64,12 @@ background: #fff;
 
 }
 #preview-card{
-	width:293px;
+	width:315px;
 	display: block;
 }
 .cardtemplate{
-	width:307px;
-	height:193px;
+	width:315px;
+	height:196px;
 }
 .barcodeimage{
 	width:155px;
@@ -82,7 +83,11 @@ background: #fff;
 			<h1 class="companyname"><?php echo $profile['company'];?></h1>
 		</div>
 		<div class="barcodearea">
-			<img class="barcodeimage" src="{{URL::to('barcode/'.$profile['registrationnumber'].'?'.time() )}}" />
+			<?php
+			$barcode = new Code39();
+			$onlyconsonants = str_replace("-", "", $profile['registrationnumber']);
+			echo $barcode->draw($onlyconsonants);?>
+			<!--<img class="barcodeimage" src="{{URL::to('barcode/'.$profile['registrationnumber'].'?'.time() )}}" />-->
 			<span class="barcodetext">{{ $profile['registrationnumber'] }}</span>
 		</div>
 	</div>

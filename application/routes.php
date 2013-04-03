@@ -50,14 +50,20 @@ Route::get('cps',function(){
     $getvar = Input::all();
     //no_invoice=123123&amount=10000.00&statuscode=00
     $att = new Attendee();
-    if(Request::server('http_referer') == Config::get('kickstart.payment_host')){
+    //$gatewayhost = get_domain(Request::server('http_referer'));
+    $gatewayhost = get_domain(Request::server('http_referer'));
+    //$gatewayhost = 'dyandratiket.com';
+    if($gatewayhost == Config::get('kickstart.payment_host')){
         if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
             if(isset($getvar['no_invoice'])){
-                $attendee = $att->get(array('registrationnumber'=>$getvar['no_invoice']));
+                $attendee = $att->get(array('regsequence'=>$getvar['no_invoice']));
                 if(isset($attendee['conventionPaymentStatus'])){
-                    $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
-                    //return Response::json(array('status'=>'OK','description'=>$attendee['firstname'].'record not exist'));
-                    return Redirect::to('register/checkoutsuccess');
+                    //$att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
+                    //if(isset($attendee['golfPaymentStatus'])){
+                    //    $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('golfPaymentStatus'=>'paid')));
+                    //}
+                    return Response::json(array('status'=>'OK','description'=>Request::ip().'record not exist'));
+                    //return Redirect::to('register/checkoutsuccess');
                 }else{
                     return Redirect::to('register/checkoutfailed');
                     //return Response::json(array('status'=>'ERR','description'=>'record not exist'));
@@ -71,14 +77,31 @@ Route::get('cps',function(){
             return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
         }        
     }else{
-        return Response::json(array('status'=>'ERR','description'=>'invalid gateway host : '.Request::server('http_referer')));
+        return Response::json(array('status'=>'ERR','description'=>'invalid gateway host : '));
     }
 });
 
 Route::get('barcode/(:any)',function($text){
     $barcode = new Barcode();
+<<<<<<< HEAD
     $barcode->make($text,'code39',40);
     return $barcode->render('gif');
+=======
+    $barcode->make($text,'code39',45);
+    return $barcode->render('jpg');
+});
+
+Route::get('barcode128/(:any)',function($text){
+    $barcode = new Code128();
+    $barcode->draw($text);
+    return View::make('bartest')->with('text',$text);
+});
+
+Route::get('barcode39/(:any)',function($text){
+    $barcode = new Code39();
+    $barcode->draw($text);
+    return View::make('bartest')->with('text',$text);
+>>>>>>> 657a5dea80781796325361fe51facfd8dda14205
 });
 
 Route::get('bartest/(:any)',function($text){

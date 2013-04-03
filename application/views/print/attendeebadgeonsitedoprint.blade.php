@@ -22,7 +22,7 @@ body{
 }
 .barcodearea{
 	position: absolute;
-	top: 35px;
+	top: 26px;
 	right: -12px;
 	
 	text-align: center;
@@ -67,7 +67,7 @@ background: #fff;
 	display: block;
 }
 .cardtemplate{
-	width:307px;
+	width:309px;
 	height:193px;
 }
 .barcodeimage{
