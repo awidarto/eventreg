@@ -96,7 +96,10 @@ Route::get('barcode128/(:any)',function($text){
 Route::get('barcode39/(:any)',function($text){
     $barcode = new Code39();
     $barcode->draw($text);
-    return View::make('bartest')->with('text',$text);
+
+    $barcode->render();
+
+    //return View::make('bartest')->with('text',$text);
 });
 
 Route::get('bartest/(:any)',function($text){
