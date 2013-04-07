@@ -3,11 +3,25 @@
 
 @section('content')
 
+@if($profile['conventionPaymentStatus'] == 'unpaid')
+<div class="row">
+	<div>
+		<p>You have not made any payment yet. Would you like to :
+		{{ HTML::link('payment/convention','Confirm your transfer payment',array('class'=>'paymentButton seven'))}}
+		{{ HTML::link('register/checkout','Make payment using Credit Card',array('class'=>'paymentButton seven'))}}		
+		</p>
+	</div>
+</div>
+
+@endif
+
 <h4 class="headIpaSite">My Profile</h4>
 <div class="row">
 	<div class="profileContent">
 		<div class="ten columns">
 			<h5 class="headIpaSite">{{ $profile['firstname'].' '.$profile['lastname'] }}</h5>
+
+
 			<table class="profile-info">
 				<tr>
 					<td class="detail-title">Registration Number</td>
