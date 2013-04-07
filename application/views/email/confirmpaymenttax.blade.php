@@ -12,7 +12,7 @@ switch ($regtype) {
         break;
     case 'SD':
         $totalIDRtax = 0.10*$data['regSD'];
-		$totalIDR = $data['regPD']+$totalIDRtax;
+		$totalIDR = $data['regSD']+$totalIDRtax;
 		$totalUSDtax = '';
 		$totalUSD = '';
         break;
