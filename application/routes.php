@@ -51,8 +51,8 @@ Route::get('cps',function(){
     //no_invoice=123123&amount=10000.00&statuscode=00
     $att = new Attendee();
     //$gatewayhost = get_domain(Request::server('http_referer'));
-    //$gatewayhost = get_domain(Request::server('http_referer'));
-    $gatewayhost = 'dyandratiket.com';
+    $gatewayhost = get_domain(Request::server('http_referer'));
+    //$gatewayhost = 'dyandratiket.com';
     if($gatewayhost == Config::get('kickstart.payment_host')){
         if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
             if(isset($getvar['no_invoice'])){
