@@ -11,24 +11,24 @@
 |
 | Let's respond to a simple GET request to http://example.com/hello:
 |
-|		Route::get('hello', function()
-|		{
-|			return 'Hello World!';
-|		});
+|       Route::get('hello', function()
+|       {
+|           return 'Hello World!';
+|       });
 |
 | You can even respond to more than one URI:
 |
-|		Route::post(array('hello', 'world'), function()
-|		{
-|			return 'Hello World!';
-|		});
+|       Route::post(array('hello', 'world'), function()
+|       {
+|           return 'Hello World!';
+|       });
 |
 | It's easy to allow URI wildcards using (:num) or (:any):
 |
-|		Route::put('hello/(:any)', function($name)
-|		{
-|			return "Welcome, $name.";
-|		});
+|       Route::put('hello/(:any)', function($name)
+|       {
+|           return "Welcome, $name.";
+|       });
 |
 */
 
@@ -57,27 +57,72 @@ Route::get('cps',function(){
         if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
             if(isset($getvar['no_invoice'])){
                 $attendee = $att->get(array('regsequence'=>$getvar['no_invoice']));
-                if(isset($attendee['conventionPaymentStatus'])){
-                    //$att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
-                    //if(isset($attendee['golfPaymentStatus'])){
-                    //    $att->update(array('registrationnumber'=>$getvar['no_invoice']),array('$set'=>array('golfPaymentStatus'=>'paid')));
-                    //}
-                    return Response::json(array('status'=>'OK','description'=>Request::ip().'record not exist'));
-                    //return Redirect::to('register/checkoutsuccess');
+
+                if(isset($attendee['conventionPaymentStatus'])) {
+                    $regtype = $attendee['regtype'];
+
+                    
+                    // if golf false
+                    if(isset($attendee['conventionPaymentStatus']) && $attendee['golfPaymentStatus']=='-' ) {
+                        
+                        $att->update(array('regsequence'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
+
+                        if($regtype=='PD' || $regtype=='SD'){
+                            $body = View::make('email.confirmpaymenttax')->with('data',$attendee)->render();
+                        }else{
+                            $body = View::make('email.confirmpayment')->with('data',$attendee)->render();
+                        }
+
+                        Message::to($attendee['email'])
+                        ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
+                        ->cc(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
+                        ->subject('CONFIRMATION OF REGISTRATION - Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$attendee['registrationnumber'].')')
+                        ->body( $body )
+                        ->html(true)
+                        ->send();
+                    
+                    }else{
+
+                        $att->update(array('regsequence'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid','golfPaymentStatus'=>'paid')));
+
+                        if($regtype=='PD' || $regtype=='SD'){
+                            $body = View::make('email.confirmpaymentalltax')->with('data',$attendee)->render();
+                        }else{
+                            $body = View::make('email.confirmpaymentall')->with('data',$attendee)->render();
+                        }
+
+                        Message::to($attendee['email'])
+                        ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
+                        ->cc(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
+                        ->subject('CONFIRMATION OF REGISTRATION - Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$attendee['registrationnumber'].')')
+                        ->body( $body )
+                        ->html(true)
+                        ->send();
+                    
+                    }
+                    
+                    //return Response::json(array('status'=>'OK','description'=>Request::ip().'record not exist'));
+                    return Redirect::to('register/checkoutsuccess');
+
                 }else{
                     return Redirect::to('register/checkoutfailed');
                     //return Response::json(array('status'=>'ERR','description'=>'record not exist'));
                 }
+
             }else{
+                
                 return Redirect::to('register/checkoutfailed');
-                return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
+                //return Response::json(array('status'=>'ERR','description'=>'incomplete parameter'));
             }
+
         }else{
             return Redirect::to('register/checkoutfailed');
-            return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
-        }        
+            //return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
+        }
+
     }else{
-        return Response::json(array('status'=>'ERR','description'=>'invalid gateway host : '));
+        return Redirect::to('register/checkoutfailed');
+        //return Response::json(array('status'=>'ERR','description'=>'invalid gateway host : '));
     }
 });
 
@@ -127,7 +172,8 @@ Route::get('payment/(:any)',array('uses'=>'register@payment'));
 Route::post('payment/(:any)',array('uses'=>'register@payment'));
 
 Route::get('export/report/(:any)',array('uses'=>'export@report'));
-Route::get('exhibitor/printbadgeonsite/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite'));
+Route::get('exhibitor/printbadgeonsite/(:all)/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite'));
+Route::get('exhibitor/newprintbadgeonsite/(:all)/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@newprintbadgeonsite'));
 Route::get('exhibitor/printbadgeonsite2/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite2'));
 
 
@@ -169,7 +215,7 @@ Route::get('/',  function(){
 
 Route::get('hashme/(:any)',function($mypass){
 
-	print Hash::make($mypass);
+    print Hash::make($mypass);
 });
 
 Route::get('companylist',function(){
@@ -190,18 +236,18 @@ Route::get('pdftest',array('uses'=>'import@pdftest'));
 
 Route::get('login', function()
 {
-	return View::make('auth.login');
+    return View::make('auth.login');
 });
 
 Route::post('login', function()
 {
-	// get POST data
+    // get POST data
     $username = Input::get('username');
     $password = Input::get('password');
 
     if ( $userdata = Auth::attempt(array('username'=>$username, 'password'=>$password)) )
     {
-    	//print_r($userdata);
+        //print_r($userdata);
         // we are now logged in, go to home
         return Redirect::to('/');
 
@@ -271,7 +317,7 @@ Route::get('passwd', array('before'=>'auth',function(){
 
 Route::post('passwd', function()
 {
-	// get POST data
+    // get POST data
     $newpass = Input::get('pass');
     $chkpass = Input::get('chkpass');
 
@@ -279,7 +325,7 @@ Route::post('passwd', function()
     {
 
         if(Auth::changepass($newpass)){
-			return Redirect::to('user')->with('notify_success','Password changed.');        	
+            return Redirect::to('user')->with('notify_success','Password changed.');            
         }
 
     }
@@ -296,8 +342,8 @@ Route::post('passwd', function()
 
 
 Route::get('logout',function(){
-	Auth::logout();
-	return Redirect::to('/');
+    Auth::logout();
+    return Redirect::to('/');
 });
 
 Route::get('requests',array('before'=>'auth','uses'=>'requests@incoming'));
@@ -333,12 +379,12 @@ Route::get('document',array('before'=>'auth','uses'=>'document@index'));
 
 Event::listen('404', function()
 {
-	return Response::error('404');
+    return Response::error('404');
 });
 
 Event::listen('500', function()
 {
-	return Response::error('500');
+    return Response::error('500');
 });
 
 
@@ -356,36 +402,36 @@ Event::listen('500', function()
 |
 | First, define a filter:
 |
-|		Route::filter('filter', function()
-|		{
-|			return 'Filtered!';
-|		});
+|       Route::filter('filter', function()
+|       {
+|           return 'Filtered!';
+|       });
 |
 | Next, attach the filter to a route:
 |
-|		Router::register('GET /', array('before' => 'filter', function()
-|		{
-|			return 'Hello World!';
-|		}));
+|       Router::register('GET /', array('before' => 'filter', function()
+|       {
+|           return 'Hello World!';
+|       }));
 |
 */
 
 Route::filter('before', function()
 {
-	// Do stuff before every request to your application...
+    // Do stuff before every request to your application...
 });
 
 Route::filter('after', function($response)
 {
-	// Do stuff after every request to your application...
+    // Do stuff after every request to your application...
 });
 
 Route::filter('csrf', function()
 {
-	if (Request::forged()) return Response::error('500');
+    if (Request::forged()) return Response::error('500');
 });
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to('login');
+    if (Auth::guest()) return Redirect::to('login');
 });

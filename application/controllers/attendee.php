@@ -523,9 +523,8 @@ class Attendee_Controller extends Base_Controller {
 					    ->body( $body )
 					    ->html(true)
 					    ->send();
-					    
-					$result = array('status'=>'OK','data'=>'CONTENTDELETED');
 				}
+				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
 			}else{
 				Event::fire('paymentstatus.update',array('id'=>$id,'result'=>'FAILED'));
 				$result = array('status'=>'ERR','data'=>'DELETEFAILED');
@@ -552,7 +551,6 @@ class Attendee_Controller extends Base_Controller {
 
 			if($user->update(array('_id'=>$_id),array('$set'=>array('golfPaymentStatus'=>$paystatus)))){
 				Event::fire('paymentstatusgolf.update',array('id'=>$id,'result'=>'OK'));
-				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
 				//mail to registrant about payment updated
 				//if only set to paid to send email
 				if($paystatus == 'paid'){
@@ -572,6 +570,7 @@ class Attendee_Controller extends Base_Controller {
 					    ->html(true)
 					    ->send();
 				}
+				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
 			}else{
 				Event::fire('paymentstatusgolf.update',array('id'=>$id,'result'=>'FAILED'));
 				$result = array('status'=>'ERR','data'=>'DELETEFAILED');
@@ -599,7 +598,7 @@ class Attendee_Controller extends Base_Controller {
 			if($user->update(array('_id'=>$_id),array('$set'=>array('golfPaymentStatus'=>$paystatus,'conventionPaymentStatus'=>$paystatus)))){
 				Event::fire('paymentstatusgolf.update',array('id'=>$id,'result'=>'OK'));
 				Event::fire('paymentstatus.update',array('id'=>$id,'result'=>'OK'));
-				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
+				
 				//mail to registrant about payment updated
 				//if only set to paid to send email
 				if($paystatus == 'paid'){
@@ -620,6 +619,7 @@ class Attendee_Controller extends Base_Controller {
 					    ->html(true)
 					    ->send();
 				}
+				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
 			}else{
 				Event::fire('paymentstatusgolfconvention.update',array('id'=>$id,'result'=>'FAILED'));
 				$result = array('status'=>'ERR','data'=>'DELETEFAILED');
@@ -1851,6 +1851,10 @@ class Attendee_Controller extends Base_Controller {
 				->with('ConfCount',$ConfCount)
 				->with('normalRate',$normalRate)
 				->with('title','Update Field');
+	}
+
+	public function get_action_sample(){
+		\Laravel\CLI\Command::run(array('notify'));
 	}
 
 }

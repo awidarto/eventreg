@@ -286,6 +286,7 @@ class Register_Controller extends Base_Controller {
 				
 				if($message->insert($messagedata)){
 
+
 					$body = View::make('email.regsuccess')
 						->with('data',$data)
 						->with('fromadmin','yes')
@@ -299,6 +300,23 @@ class Register_Controller extends Base_Controller {
 					    ->body( $body )
 					    ->html(true)
 					    ->send();
+
+					//saveto outbox
+					/*$outbox = new Outbox();
+
+					$outboxdata['from'] = Config::get('eventreg.reg_admin_email');
+					$outboxdata['to'] = $data['email'];
+					$outboxdata['cc'] = Config::get('eventreg.reg_admin_email');
+					$outboxdata['bcc'] = '';
+					$outboxdata['subject'] = 'Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$data['registrationnumber'].')';
+					$outboxdata['body'] = $body;
+					$outboxdata['status'] = 'unsent';
+
+					$outboxdata['createdDate'] = new MongoDate();
+					$outboxdata['lastUpdate'] = new MongoDate();
+
+					$outbox->insert($outboxdata);*/
+					
 				}
 
 		    	return Redirect::to('register-success')->with('notify_success',Config::get('site.register_success'));
