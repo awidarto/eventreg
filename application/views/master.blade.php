@@ -28,7 +28,9 @@
     {{ HTML::style('content/css/icomoon.css') }}
     {{ HTML::style('css/smart_wizard.css') }}
     {{ HTML::style('content/css/app.css') }}
-    <!--{{ HTML::style('content/css/bootstrap-modal.css') }}-->
+    @if(Auth::user()->role == 'onsite' || Auth::user()->role == 'cashier')
+      {{ HTML::style('content/css/bootstrap-modal.css') }}
+    @endif
 
 
     {{ HTML::style('css/jquery-datatables/TableTools.css')}}
@@ -140,8 +142,10 @@
   {{ HTML::script('scripts/holder.js') }}
   {{ HTML::script('js/pnu.js') }}
   
-  <!--{{ HTML::script('js/bootstrap-modalmanager.js') }}
-  {{ HTML::script('js/bootstrap-modal.js') }}-->
+  @if(Auth::user()->role == 'onsite' || Auth::user()->role == 'cashier'){
+    {{ HTML::script('js/bootstrap-modalmanager.js') }}
+    {{ HTML::script('js/bootstrap-modal.js') }}
+  @endif;
  
  <script type="text/javascript">
     $(".metro").metro();

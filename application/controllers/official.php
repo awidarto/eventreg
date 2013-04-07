@@ -270,8 +270,17 @@ class Official_Controller extends Base_Controller {
 
 			$user = new Official();
 
-			if($user->insert($data)){
-		    	return Redirect::to('official')->with('notify_success',Config::get('site.register_success'));
+
+
+			if($obj = $user->insert($data)){
+
+				if(Auth::user()->role == 'onsite'){
+					$_id = $obj['_id']->__toString();
+					return Redirect::to('official/printbadgeonsitedoprint/'.$_id)->with('notify_success',Config::get('site.register_success'));
+				}else{
+					return Redirect::to('official')->with('notify_success',Config::get('site.register_success'));
+				}
+
 			}else{
 		    	return Redirect::to('official')->with('notify_success',Config::get('site.register_failed'));
 			}
@@ -752,32 +761,16 @@ class Official_Controller extends Base_Controller {
 		return View::make('pop.docview')->with('profile',$doc);
 	}
 
-	public function get_fileview($id){
-		$_id = new MongoId($id);
-
-		$official = new Document();
-
-		$doc = $official->get(array('_id'=>$_id));
-
-		//$file = URL::to(Config::get('kickstart.storage').$id.'/'.$doc['docFilename']);
-
-		$file = URL::base().'/storage/'.$id.'/'.$doc['docFilename'];
-
-		return View::make('pop.fileview')->with('doc',$doc)->with('href',$file);
-	}
-
-	public function get_approve($id){
+	public function get_printbadgeonsitedoprint($id){
 		$id = new MongoId($id);
 
-		$official = new Document();
+		$attendee = new Official();
 
-		$doc = $official->get(array('_id'=>$id));
+		$doc = $attendee->get(array('_id'=>$id));
 
-		$form = new Formly();
+		return View::make('print.officialbadgeonsitedoprint')
+		->with('profile',$doc);
+	}
 
-		$file = URL::base().'/storage/'.$id.'/'.$doc['docFilename'];
-		
-		return View::make('pop.approval')->with('doc',$doc)->with('form',$form)->with('href',$file);
-	}	
 
 }

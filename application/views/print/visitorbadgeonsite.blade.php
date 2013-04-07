@@ -60,6 +60,7 @@ position: absolute;
 bottom: 0px;
 left: 46px;
 background: #fff;
+padding:0 5px;
 
 }
 #preview-card{

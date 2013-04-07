@@ -29,6 +29,21 @@ Event::listen('attendee.create',function($id,$newpass,$picemail,$picname){
             ->with('fromadmin','yes')
             ->render();
 
+        //saveto outbox
+        /*$outbox = new Outbox();
+
+        $outboxdata['from'] = Config::get('eventreg.reg_admin_email');
+        $outboxdata['to'] = $data['email'];
+        $outboxdata['cc'] = Config::get('eventreg.reg_admin_email').','.$picemail;
+        $outboxdata['bcc'] = '';
+        $outboxdata['subject'] = 'Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$data['registrationnumber'].')';
+        $outboxdata['body'] = $body;
+        $outboxdata['status'] = 'unsent';
+        $outboxdata['createdDate'] = new MongoDate();
+        $outboxdata['lastUpdate'] = new MongoDate();
+
+        $outbox->insert($outboxdata);*/
+
         Message::to($data['email'])
             ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
             ->cc($picemail, $picname)
@@ -97,6 +112,23 @@ Event::listen('attendee.createformadmin',function($id,$newpass,$paymentstatus){
             ->with('paymentstatus',$paymentstatus)
             ->render();
 
+            //saveto outbox
+            /*$outbox = new Outbox();
+
+            $outboxdata['from'] = Config::get('eventreg.reg_admin_email');
+            $outboxdata['to'] = $data['email'];
+            $outboxdata['cc'] = Config::get('eventreg.reg_admin_email');
+            $outboxdata['bcc'] = '';
+            $outboxdata['subject'] = 'Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$data['registrationnumber'].')';
+            $outboxdata['body'] = $body;
+            $outboxdata['status'] = 'unsent';
+
+            $outboxdata['createdDate'] = new MongoDate();
+            $outboxdata['lastUpdate'] = new MongoDate();
+
+            $outbox->insert($outboxdata);*/
+
+
             Message::to($data['email'])
                 ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
                 ->cc(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
@@ -123,6 +155,19 @@ Event::listen('attendee.update',function($id,$newpass){
         ->with('passwordRandom',$newpass)
         ->with('fromadmin','yes')
         ->render();
+
+    /*$outbox = new Outbox();
+
+    $outboxdata['from'] = Config::get('eventreg.reg_admin_email');
+    $outboxdata['to'] = $data['email'];
+    $outboxdata['cc'] = '';
+    $outboxdata['bcc'] = '';
+    $outboxdata['subject'] = 'Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$data['registrationnumber'].')';
+    $outboxdata['body'] = $body;
+    $outboxdata['status'] = 'unsent';
+
+    $outboxdata['createdDate'] = new MongoDate();
+    $outboxdata['lastUpdate'] = new MongoDate();*/
 
     Message::to($data['email'])
         ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
@@ -283,6 +328,7 @@ Event::listen('exhibition.postoperationalform',function($id,$exhibitorid){
 
 });
 
+/*
 Event::listen('document.create',function($id, $result){
     $activity = new Activity();
 
@@ -384,7 +430,6 @@ Event::listen('document.share',function($id,$sharer_id,$shareto){
 });
 
 
-//Project events
 
 Event::listen('project.create',function($id, $result){
     $activity = new Activity();
@@ -497,6 +542,6 @@ Event::listen('request.approval',function($id,$approvalby){
 
 Event::listen('send.message',function($from,$to,$subject){
 	
-});
+});*/
 
 ?>

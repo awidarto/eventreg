@@ -105,8 +105,8 @@ return array(
 		'pinsupervisorexhibitor'=>'123456',
 
 		'exhibitorassistanttype'=>array(
-			'freepassname'=>'f',
-			'boothassistant'=>'b',
+			'freepassname'=>'m',
+			'boothassistant'=>'h',
 			'addboothname'=>'a',
 		),
 

@@ -1,6 +1,7 @@
 @layout('blank')
 
 @section('content')
+
 {{ HTML::style('css/fontcard.css')}}
 <style type="text/css">
 body{
@@ -33,6 +34,7 @@ body{
 	position: absolute;
 	top: 23px;
 	right: 5px;
+	
 	text-align: center;
 }
 .card-template-area .fullname{
@@ -63,12 +65,12 @@ margin: 0 auto;
 text-align: center;
 margin-top: 5px;
 font-size: 7px;
-padding:0 5px;
 font-family: Helvetica,Arial,Serif;
 position: absolute;
 bottom: -1px;
 left: 46px;
 background: #fff;
+padding:0 5px;
 
 }
 #preview-card{
@@ -85,10 +87,14 @@ background: #fff;
 </style>
 <div id="preview-card">
 	<div class="card-template-area">
-		{{ HTML::image('images/idcard-template-attendee4.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		@if($profile['type']=='freepassname')
+			{{ HTML::image('images/idcard-template-exhibitor1.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		@else
+			{{ HTML::image('images/idcard-template-exhibitor2.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		@endif
 		<div class="headarea">
-			<p class="fullname"><?php echo $profile['firstname'].' '.$profile['lastname'];?>
-			<small class="companyname"><?php echo $profile['company'];?></p>
+			<p class="fullname"><?php echo $profile['name'];?>
+			<small class="companyname"><?php echo $profile['companyname'];?></p>
 		</div>
 		<div class="barcodearea">
 			<?php
@@ -100,5 +106,6 @@ background: #fff;
 		</div>
 	</div>
 </div>
+
 
 @endsection
