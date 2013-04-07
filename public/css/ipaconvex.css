@@ -688,3 +688,14 @@ table.cpcontact thead tr td{
   width: 60px;
   
 }
+
+
+a.paymentButton {
+  display:block;
+  padding:10px;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
