@@ -728,7 +728,11 @@ class Import_Controller extends Base_Controller {
 
 						if($attendee->update(array('email'=>$tocommit['email']),array('$set'=>$tocommit))){
 
-							Event::fire('attendee.update',array($attobj['_id'],$plainpass,$pic['email'],$pic['firstname'].$pic['lastname']));
+							if($plainpass!='nochange'){
+								Event::fire('attendee.update',array($attobj['_id'],$plainpass,$pic['email'],$pic['firstname'].$pic['lastname']));
+							}else{
+								Event::fire('attendee.update',array($attobj['_id'],$plainpass,$pic['email'],$pic['firstname'].$pic['lastname']));
+							}
 
 							//if($data['sendattendee'] == 'Yes'){
 							//	// send message to each attendee
@@ -1037,6 +1041,21 @@ class Import_Controller extends Base_Controller {
 					->with('pic',$pic)
 					->with('attendee',$commitedobj)
 					->render();
+
+				/*$outbox = new Outbox();
+
+	            $outboxdata['from'] = Config::get('eventreg.reg_admin_email');
+	            $outboxdata['to'] = $pic['email'];
+	            $outboxdata['cc'] = Config::get('eventreg.reg_admin_email');
+	            $outboxdata['bcc'] = '';
+	            $outboxdata['subject'] = 'Registration Summary – '.$pic['company'];
+	            $outboxdata['body'] = $body;
+	            $outboxdata['status'] = 'unsent';
+
+	            $outboxdata['createdDate'] = new MongoDate();
+	            $outboxdata['lastUpdate'] = new MongoDate();
+
+	            $outbox->insert($outboxdata);*/
 
 
 				Message::to($pic['email'])

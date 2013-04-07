@@ -1469,10 +1469,28 @@ class Onsite_Controller extends Base_Controller {
 
 		$document = new Attendee();
 
+		$towords = new Numberwords();
+
 		$doc = $document->get(array('_id'=>$id));
 
 		return View::make('pop.attendeeview')
 		->with('ajaxprintbadge',URL::to('onsite/printbadgecount'))
+		->with('towords',$towords)
+		->with('profile',$doc);
+	}
+
+	public function get_attendee2($id){
+		$id = new MongoId($id);
+
+		$document = new Attendee();
+
+		$towords = new Numberwords();
+
+		$doc = $document->get(array('_id'=>$id));
+
+		return View::make('pop.attendeeview2')
+		->with('ajaxprintbadge',URL::to('onsite/printbadgecount'))
+		->with('towords',$towords)
 		->with('profile',$doc);
 	}
 
@@ -1518,7 +1536,7 @@ class Onsite_Controller extends Base_Controller {
 		}
 
 		return View::make('pop.exhibitorview')
-		->with('ajaxprintbadge',URL::to('onsite/printbadgecount'))
+		->with('ajaxprintbadgeexhibitor',URL::to('onsite/printbadgecountexhibitor'))
 		->with('data',$user_form)
 		->with('booth',$booth)
 		->with('boothassistantdata',$boothassistantdata)
@@ -1583,7 +1601,7 @@ class Onsite_Controller extends Base_Controller {
 					
 					if($objs = $boothassistant->update(array('_id'=>$obj['_id']),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$regnumberall,$type.$typeid.'timestamp'=>new MongoDate() ))) ){
 
-						$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'),'importedtime'=>date('d-m-Y'));
+						$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'),'importedtime'=>date('d-m-Y'),'regnumber'=>$regnumberall);
 					}
 				}
 
@@ -1594,7 +1612,7 @@ class Onsite_Controller extends Base_Controller {
 				
 				if($objs = $boothassistant->update(array('_id'=>$_id),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$regnumberall,$type.$typeid.'timestamp'=>new MongoDate() ))) ){
 											
-					$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'),'importedtime'=>date('d-m-Y'));	
+					$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'),'importedtime'=>date('d-m-Y'),'regnumber'=>$regnumberall);	
 				}
 				
 				
@@ -1654,6 +1672,47 @@ class Onsite_Controller extends Base_Controller {
 
 		print json_encode($result);
 	}
+
+
+	public function post_printbadgecountexhibitor(){
+		
+		$exhibitorid = Input::get('exhibitorid');
+		$type = Input::get('type');
+		
+		
+		$data = new Boothassistant();
+
+		if(is_null($exhibitorid)){
+
+			$result = array('status'=>'ERR','data'=>'NOID');
+		
+		}else{
+
+			
+			//find exhibitor
+			$boothdata = $data->get(array('exhibitorid'=>$exhibitorid));
+
+
+			if(isset($boothdata[$type.'print'])){
+				$dataprintcount = $boothdata[$type.'print'];
+				$toadd = $dataprintcount+1;
+				if($data->update(array('_id'=>$boothdata['_id']),array('$set'=>array($type.'print'=>$toadd)))){
+					$result = array('status'=>'OK','data'=>'DELETEFAILED');
+				}else{
+					//Event::fire('paymentstatusgolfconvention.update',array('id'=>$id,'result'=>'FAILED'));
+					$result = array('status'=>'ERR','data'=>'DELETEFAILED');
+				}
+			}else{
+				$_id = $boothdata['_id'];
+				if($data->update(array('_id'=>$boothdata['_id']),array('$set'=>array($type.'print'=>1)))){
+					$result = array('status'=>'OK','data'=>'DELETEFAILED');
+				}
+			}
+		}
+		
+		print json_encode($result);
+	}
+
 
 	public function post_printbadgecountvisitor(){
 		$id = Input::get('id');

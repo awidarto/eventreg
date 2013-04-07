@@ -187,6 +187,20 @@ setlocale(LC_MONETARY, "en_US");
 					<td class="detail-info">{{ $profile['country']  }}</td>
 					
 				</tr>
+
+				<tr>
+					<td class="detail-title">Notes on Sites</td>
+					<td>:</td>
+					<?php
+					
+						//$countries = Config::get('country.countries');
+					?>
+					
+					<td class="detail-info">{{ $profile['country']  }}</td>
+					
+				</tr>
+
+
 				
 			</table>
 
@@ -321,7 +335,7 @@ setlocale(LC_MONETARY, "en_US");
 				</div>
 				<div class="ratepreview">
 					<h3 id="currencypreview">USD</h3>
-					<h1 id="totalpreview">-</h1>
+					<h1 class="totalpreview">-</h1>
 				</div>
 
 			  </div>
@@ -352,17 +366,17 @@ $(document).ready(function() {
 
 	}*/
 	
-	//totalfee = 5000000;
+	totalfee = 5000000;
 
 	//show hide idr or dolar based on payment type
-	/*$('.statuspayment').change(function(){
+	$('.statuspayment').change(function(){
 		var selected = $(this).val();
 		if(selected == 'paid'){
-			$('#totalpreview').html(totalfee);
+			$('.totalpreview').text(totalfee);
 		}elseif(selected == 'unpaid'){
-			$('#totalpreview').html('');
+			$('.totalpreview').text('');
 		}
-	});*/
+	});
 
 
 	$('.paymentvia').change(function() {

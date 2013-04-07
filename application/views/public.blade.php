@@ -152,6 +152,9 @@
                               @if(Auth::attendee()->golf == 'Yes')
                               <p style="padding-left:7px;"><img src="http://www.ipaconvex.com/images/arrow1.jpg" border="0" align="absmiddle" style="margin-right:5px ">{{ HTML::link('payment/golf','Golf Payment Confirmation')}}</p>
                               @endif
+                              @if(Auth::attendee()->conventionPaymentStatus == 'unpaid' || Auth::attendee()->golfPaymentStatus == 'unpaid')
+                              <p style="padding-left:7px;"><img src="http://www.ipaconvex.com/images/arrow1.jpg" border="0" align="absmiddle" style="margin-right:5px ">{{ HTML::link('register/checkout','Make payment using Credit Card')}}</p>
+                              @endif
                             @else
                               <p style="padding-left:7px;"><img src="http://www.ipaconvex.com/images/arrow1.jpg" border="0" align="absmiddle" style="margin-right:5px ">{{ HTML::link('exhibitor/profile','My Profile')}}</p>
 

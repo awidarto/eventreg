@@ -135,11 +135,11 @@
 					              <td class="passname">{{ $boothassistantdata['freepassname'.$i.''] }}</td>
 				                  <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['freepassname'.$i.'timestamp']->sec) }}</td>
 				                  @if(isset($boothassistantdata['freepassname'.$i.'print']))
-				                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual" id="freepassname{{ $i }}"  data-toggle="modal" href="#stack2" ><span class="formstatus" id="" >already printed {{ $boothassistantdata['freepassname'.$i.'print']}}</span></a></td>
+				                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual reprintbadge" id="freepassname{{ $i }}"  data-toggle="modal"><span class="formstatus" id="freepassname{{ $i }}" >already printed {{ $boothassistantdata['freepassname'.$i.'print']}}</span></a></td>
 				                  @else
 				                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual printbadge" rel="printbadgefreepassname{{ $i }}" id="freepassname{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="freepassname{{ $i }}" > Print this data</span></a></td>
 				                  @endif
-				                  	<td><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['freepassname'.$i.'regnumber']}}/{{$boothassistantdata['freepassname'.$i.'']}}/{{ $exhibitor['company'] }}" id="printbadgefreepassname{{ $i }}"  style="display:none;" class="span12"></iframe></td>
+				                  	<td><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['freepassname'.$i.'regnumber']}}/{{$boothassistantdata['freepassname'.$i.'']}}/{{ $exhibitor['company'] }}/ba1/" id="printbadgefreepassname{{ $i }}"  style="display:none;" class="span12"></iframe></td>
 					            </tr>
 					          @endfor
 				        </tbody>
@@ -170,11 +170,11 @@
 				              <td class="passname">{{ $boothassistantdata['boothassistant'.$i.''] }}</td>
 			                  <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['freepassname'.$i.'timestamp']->sec) }}</td>
 			                  @if(isset($boothassistantdata['boothassistant'.$i.'print']))
-			                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual" id="freepassname{{ $i }}"  data-toggle="modal" href="#stack2" ><span class="formstatus" id="" >already printed {{ $boothassistantdata['freepassname'.$i.'print']}}</span></a></td>
+			                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual reprintbadge" id="freepassname{{ $i }}"  data-toggle="modal" href="#" ><span class="formstatus" id="" >already printed {{ $boothassistantdata['freepassname'.$i.'print']}}</span></a></td>
 			                  @else
 			                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual printbadge" id="boothassist{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="boothassist{{ $i }}" > Print this data</span></a></td>
 			                  @endif
-			                  <td><iframe src="{{ URL::to('exhibitor/printbadgeonsite2/') }}{{$boothassistantdata['boothassistant'.$i.'regnumber']}}/{{$boothassistantdata['boothassistant'.$i.'']}}/{{ $exhibitor['company'] }}" id="printbadgeboothassist{{ $i }}"  style="display:none;" class="span12"></iframe></td>
+			                  <td><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['boothassistant'.$i.'regnumber']}}/{{$boothassistantdata['boothassistant'.$i.'']}}/{{ $exhibitor['company'] }}/ba2/" id="printbadgeboothassist{{ $i }}"  style="display:none;" class="span12"></iframe></td>
 				            </tr>
 
 			        	@endfor
@@ -258,28 +258,52 @@
   </div>
 </div>
 
-<?php	
+<?php
 	
-	$ajaxprintbadge = (isset($ajaxprintbadge))?$ajaxprintbadge:'/';
-	$userid = $exhibitor['_id']->__toString();
+	$ajaxprintbadgeexhibitor = (isset($ajaxprintbadgeexhibitor))?$ajaxprintbadgeexhibitor:'/';
 	
 ?>
 <script type="text/javascript">
-$('#submitpin').click(function(){
+var alreadyprintid = '';
+
+//print
+$('.reprintbadge').click(function(e){
+	window.alreadyprintid = e.target.id;
+	alert(window.alreadyprintid);
+	$('#stack2').modal('show');
+	
+});
+
+$('#submitpin').click(function(e){
 	
 	var pintrue = '{{ Config::get("eventreg.pinsupervisorexhibitor") }}';
 	var pinvalue = $('#supervisorpin').val();
+	alert(alreadyprintid);
+	
+
 	if(pinvalue == pintrue){
-		$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}'}, function(data) {
+		
+		var _id = 'printbadge'+window.alreadyprintid;
+		var exhibitorid = '{{ $exhibitor['_id']->__toString() }}';
+		var type=window.alreadyprintid;
+		
+		
+		$.post('{{ URL::to($ajaxprintbadgeexhibitor) }}',{'exhibitorid':exhibitorid,'type':type}, function(data) {
 			if(data.status == 'OK'){
-				//var pframe = document.getElementById('print_frame');
-				//var pframeWindow = pframe.contentWindow;
-				//pframeWindow.print();
+
+				var pframe = document.getElementById(_id);
+				var pframeWindow = pframe.contentWindow;
+				pframeWindow.print();
+				
 				$('#supervisorpin').val('');
 				$('#stack2').modal('hide');
+				window.alreadyprintid ='';
 
+			}else{
+				alert('Error, please try again');
 			}
 		},'json');
+
 	}else{
 		alert("Wrong PIN, please try again");
 	}
@@ -329,6 +353,12 @@ $('#submitaddbooth').click(function(){
 	}else if(boothvalue == asstype.boothassistant){
 		//chekcfirst
 		if(boothassistslot>0){
+			var ifID = document.getElementById('printbadgenew');
+			if(ifID!=null|| ifID.length>0){
+				ifID.remove();
+			}
+			
+			
 			$('#stack3').modal('show');
 			current_type = 'boothassistant';
 			current_type_id = current_type_id_boothassist+1;
@@ -338,6 +368,10 @@ $('#submitaddbooth').click(function(){
 	}else if(boothvalue == asstype.addboothname){
 		//chekcfirst
 		if(addboothslot>0){
+			var ifID = document.getElementById('printbadgenew');
+			if(ifID!=null || ifID.length>0){
+				ifID.remove();
+			}
 			$('#stack3').modal('show');
 			current_type = 'addboothname';
 			current_type_id = '<?php echo $addboothassistantcount +1;?>';
@@ -370,7 +404,22 @@ $('#submitaddassist').click(function(){
 	    	if(data.status == 'OK'){
 	        	$('#submitaddassist').text('Submit');
 				$('#submitaddassist').attr("disabled", false);
+				//add iframe
+    			$('<iframe />', {
+				    name: 'myFrame',
+				    id:   'printbadgenew',
+				    style: 'display:none;',
+				    src: '{{ URL::to("exhibitor/newprintbadgeonsite") }}/'+data.regnumber+'/'+current_pass_name+'/{{ $exhibitor["company"] }}/'+current_type
+				}).appendTo('#stack3');
+    			//print
+    			var pframe = document.getElementById('printbadgenew');
+				var pframeWindow = pframe.contentWindow;
+				pframeWindow.print();
+
+				
+
 	        	$('#stack3').modal('hide');
+
 	        	$('#statusnotif').prepend('<div class="alert alert-info fade in">' +
       			'Updated!<button type="button" class="close" data-dismiss="alert">&nbsp;</button>' +
     			'</div>');
@@ -402,7 +451,13 @@ $('#submitaddassist').click(function(){
 			        $('#boothassistleft').text(boothassistslot);
     			}
 
-    			current_type_id = 0;
+    			
+    			
+    			
+
+				current_type_id = 0;
+    			
+
 
 	      	}else{
 	    		alert('Error, cannot proccess data, please try again');  		
@@ -414,14 +469,29 @@ $('#submitaddassist').click(function(){
   
 });
 
+<?php
+	
+	$ajaxprintbadgeexhibitor = (isset($ajaxprintbadgeexhibitor))?$ajaxprintbadgeexhibitor:'/';
+	
+?>
 
 //print
 $('.printbadge').click(function(e){
-	var _id = 'printbadge'+e.target.id;
 	
-	var pframe = document.getElementById(_id);
-	var pframeWindow = pframe.contentWindow;
-	pframeWindow.print();
+	var _id = 'printbadge'+e.target.id;
+	var exhibitorid = '{{ $exhibitor['_id']->__toString() }}';
+	var type=e.target.id;
+	
+	
+	$.post('{{ URL::to($ajaxprintbadgeexhibitor) }}',{'exhibitorid':exhibitorid,'type':type}, function(data) {
+		if(data.status == 'OK'){
+			var pframe = document.getElementById(_id);
+			var pframeWindow = pframe.contentWindow;
+			pframeWindow.print();
+		}else{
+			alert('Error, please try again');
+		}
+	},'json');	
 	
 });
 

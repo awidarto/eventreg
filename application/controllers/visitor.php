@@ -239,6 +239,7 @@ class Visitor_Controller extends Base_Controller {
 	    	'lastname' => 'required',
 	    	'email' => 'required|email|unique:attendee',
 	        'company' => 'required',
+	        'formnumber' => 'required',
 	    );
 
 	    $validation = Validator::make($input = Input::all(), $rules);

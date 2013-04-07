@@ -9,6 +9,10 @@ table{
 table td{
 	padding:8px;
 }
+span.currency{
+	display: inline-block;
+	width: 40px;
+}
 </style>
 <?php
 
@@ -25,7 +29,7 @@ $totalUSD = $data['totalUSD']+$totalUSDtax;
 
 		<div style="position:relative;display:inline-block;float:left;margin:0 10px 10px 0;">{{ HTML::image('images/ipa-logo.jpg','badge_bg',array('class'=>'cardtemplate','style'=>'width:70px;')) }}</div>
 		<div style="width:80%;position:relative;display:inline-block;float:left;">
-			<h2 style="display:inline-block;margin:15px 0 0 4px;">RECEIPT</h2><br/>
+			<h2 style="display:inline-block;margin:15px 0 0 7px;">&nbsp;</h2><br/>
 			<h3 style="display:inline-block;margin:0 0 0 4px;">THE 37TH IPA CONVENTION AND EXHIBITION 2013</h3><br/>
 			<h5 style="display:inline-block;margin:0 0 0 4px;">JAKARTA CONVENTION CENTER, 15-17 MAY 2013</h5>
 		</div>
@@ -33,7 +37,7 @@ $totalUSD = $data['totalUSD']+$totalUSDtax;
 	<div style="clear:both;"></div>
 	<hr/>
 	<div style="width:100%;position:relative;display:block;float:left;font-size:10px;">
-		
+		<h2 style="margin:0 auto;padding:5px 0;text-align:center;font-size:18px;">RECEIPT</h2>
 		<div style="width:100%;position:relative;display:inline-block;float:left;">
 			<table style="font-size:11px;margin-top:6px;">
 			<tr style="vertical-align: top;margin:5px 0;">
@@ -56,7 +60,7 @@ $totalUSD = $data['totalUSD']+$totalUSDtax;
 					}
 					?>
 					<?php 
-					if($data['address_2']!='-'){
+					if($data['address_2']!='-' || $data['address_2']!=''){
 						echo $data['address_2'];
 						echo '<br/>';
 					}
@@ -96,16 +100,28 @@ $totalUSD = $data['totalUSD']+$totalUSDtax;
 			<tr style="vertical-align: top;margin:5px 0;">
 				<td>Amount:</td>
 				<td>:</td>
-				<td>(IDR) <strong>{{ formatrp($totalIDR) }}</strong>
-					<br/>
-					(USD) --
+				<td><p><span class="currency">(IDR)</span> <strong class="idrnominal"></strong></p>
+					
+					<p><span class="currency">(USD)</span><strong class="usdnominal"></strong></p>
 				</td>
 			</tr>
 
 			<tr style="vertical-align: top;margin:5px 0;">
 				<td>Say in Word:</td>
 				<td>:</td>
-				<td><i>Four million and four hundred thousand rupiahs</i></td>
+				<td><i class="sayinwords"></i></td>
+			</tr>
+
+			<tr style="vertical-align: top;margin:5px 0;">
+				<td>Payment Method:</td>
+				<td>:</td>
+				<td><span class="imagecheckcash"></span>&nbsp;&nbsp;Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="imagecheckcc"></span>&nbsp;&nbsp;Credit Card</td>
+			</tr>
+
+			<tr style="vertical-align: top;margin:5px 0;">
+				<td>Disclaimer</td>
+				<td>:</td>
+				<td>There is no refund after payment made</td>
 			</tr>
 			
 
@@ -117,17 +133,18 @@ $totalUSD = $data['totalUSD']+$totalUSDtax;
 
 	<div style="clear:both;"></div>
 	
+	
 
 	<div style="clear:both;"></div>
 	
 
 </div>
-<div style="width:32%;position:absolute;display:block; right:20px; bottom:10px;font-family:Helvetica,Arial,Sans-serif;font-size:10px;">
+<div style="width:32%;margin-top:-15px;float:right;margin-right:40px;display:block;font-family:Helvetica,Arial,Sans-serif;font-size:10px;">
 	<p>Jakarta, <?php echo date('l jS F Y');?></p>
 	<br/>
 	<br/>
 	<br/>
-	<p style="margin-bottom:0;"><span style="border-bottom:1px solid #000;width:80%;display:block;">KANIA ANISIA</span><span>Finance & Accounting Dept.</span></p>
+	<p style="margin-bottom:0;"><span style="border-bottom:1px solid #000;width:35%;display:block;">KANIA ANISIA</span><span>Finance & Accounting Dept.</span></p>
 	
 	
 </div>

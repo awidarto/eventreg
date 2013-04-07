@@ -58,6 +58,7 @@ font-size: 5px;
 font-family: Helvetica,Arial,Serif;
 position: absolute;
 bottom: 0px;
+padding:0 5px;
 left: 46px;
 background: #fff;
 
