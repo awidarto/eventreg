@@ -158,6 +158,8 @@
         <div class="clear"></div>
 
         @include('partials.operationalform.step2')
+
+       
         
     </div>
   </div>

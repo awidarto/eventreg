@@ -162,6 +162,8 @@
 
         @include('partials.operationalform.step2')
         
+       
+
     </div>
   </div>
 

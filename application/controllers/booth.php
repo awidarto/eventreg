@@ -65,7 +65,7 @@ class Booth_Controller extends Base_Controller {
 			return View::make('tables.simple2')
 				->with('title','Exhibitors')
 				->with('newbutton','New Exhibitors')
-				->with('disablesort','0,1,10')
+				->with('disablesort','0,1,8,9,10')
 				->with('addurl','exhibitor/add')
 				->with('colclass',$colclass)
 				->with('searchinput',$searchinput)
@@ -93,11 +93,11 @@ class Booth_Controller extends Base_Controller {
 	{
 
 
-		$fields = array('boothno','hallname','length','width','size','hallname');
+		$fields = array('boothno','hallname','length','width','size','hallname','freepassslot');
 
-		$rel = array('like','like','like');
+		$rel = array('like','like','like','like');
 
-		$cond = array('both','both','both');
+		$cond = array('both','both','both','both');
 
 		$pagestart = Input::get('iDisplayStart');
 		$pagelength = Input::get('iDisplayLength');
