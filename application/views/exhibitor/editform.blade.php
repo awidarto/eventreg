@@ -165,8 +165,7 @@
 
               @include('partials.operationalform.step2')
 
-              <div class="clear"></div>
-              <a href="#" class="buttonNext">Submit Form 1</a>
+             
               
           </div>
         </div>
