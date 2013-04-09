@@ -139,7 +139,7 @@ class Attendee_Controller extends Base_Controller {
 	{
 
 
-		$fields = array('registrationnumber','createdDate','email','firstname','lastname','company','regtype','country','conventionPaymentStatus','golfPaymentStatus');
+		$fields = array('registrationnumber','createdDate','email','firstname','lastname','company','regtype','country','conventionPaymentStatus','golfPaymentStatus','golfPaymentStatus');
 
 		$rel = array('like','like','like','like','like','like','like','like');
 
