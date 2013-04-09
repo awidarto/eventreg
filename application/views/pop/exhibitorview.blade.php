@@ -69,7 +69,7 @@
 			  $boothassistantcount = 0;
 			  $addboothassistantcount = 0;
 
-			  if($sizebooth >= 9 && $sizebooth <= 18){
+			  /*if($sizebooth >= 9 && $sizebooth < 18){
 			    $pass = 2;
 			  }else if($sizebooth >= 18 && $sizebooth < 27){
 			    $pass = 4;
@@ -81,8 +81,15 @@
 			    $pass = 10;
 			  }else{
 			    $pass = 10;
-			  }
+			  }*/
 
+			  $pass = $booth['freepassslot'];
+
+			  if(isset($exhibitor['overridefreepassname'])){
+			  	$pass = $exhibitor['overridefreepassname'];
+			  }else{
+			  	$pass = $pass;
+			  }
 
 			  for($i=1;$i<$pass+1;$i++){
 			    if(isset($boothassistantdata['freepassname'.$i.''])){
@@ -132,14 +139,14 @@
 					          @for($i=1;$i<=$freepasscount;$i++)
 					            <tr>
 					              <td>{{ $i }}. </td>
-					              <td class="passname">{{ $boothassistantdata['freepassname'.$i.''] }}</td>
+					              <td class="passname"><div class="boothasstName" id="freepassname{{ $i }}" rel="{{$boothassistantdata['freepassname'.$i.'regnumber']}}" type="ba1">{{ $boothassistantdata['freepassname'.$i.''] }}</div></td>
 				                  <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['freepassname'.$i.'timestamp']->sec) }}</td>
 				                  @if(isset($boothassistantdata['freepassname'.$i.'print']))
 				                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual reprintbadge" id="freepassname{{ $i }}"  data-toggle="modal"><span class="formstatus" id="freepassname{{ $i }}" >already printed {{ $boothassistantdata['freepassname'.$i.'print']}}</span></a></td>
 				                  @else
 				                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual printbadge" rel="printbadgefreepassname{{ $i }}" id="freepassname{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="freepassname{{ $i }}" > Print this data</span></a></td>
 				                  @endif
-				                  	<td><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['freepassname'.$i.'regnumber']}}/{{$boothassistantdata['freepassname'.$i.'']}}/{{ $exhibitor['company'] }}/ba1/" id="printbadgefreepassname{{ $i }}"  style="display:none;" class="span12"></iframe></td>
+				                  	<td id="iframefreepassname{{ $i }}"><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['freepassname'.$i.'regnumber']}}/{{$boothassistantdata['freepassname'.$i.'']}}/{{ $exhibitor['company'] }}/ba1/" id="printbadgefreepassname{{ $i }}"  style="display:none;" class="span12"></iframe></td>
 					            </tr>
 					          @endfor
 				        </tbody>
@@ -243,6 +250,7 @@
   </div>
 </div>
 
+
 <div id="stack3" class="modal hide fade" tabindex="1" data-focus-on="input:first">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -253,6 +261,21 @@
     <input type="text" id="addboothnameinput" data-tabindex="1" class="span5">
     <br/>
     <button class="btn" data-toggle="modal" id="submitaddassist" href="#">Submit</button>
+  </div>
+  <div class="modal-footer">
+  </div>
+</div>
+
+<div id="stack4" class="modal hide fade" tabindex="1" data-focus-on="input:first">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h3>Input PIN</h3>
+  </div>
+  <div class="modal-body">
+    
+    <input type="password" id="supervisorpinadd" data-tabindex="1">
+    <br/>
+    <button class="btn" data-toggle="modal" id="submitpinadd" href="#">Submit</button>
   </div>
   <div class="modal-footer">
   </div>
@@ -269,16 +292,34 @@ var alreadyprintid = '';
 //print
 $('.reprintbadge').click(function(e){
 	window.alreadyprintid = e.target.id;
-	alert(window.alreadyprintid);
+	
 	$('#stack2').modal('show');
 	
 });
+
+$('#submitpinadd').click(function(e){
+	
+	var pintrue = '{{ Config::get("eventreg.pinsupervisorexhibitor") }}';
+	var pinvalue = $('#supervisorpinadd').val();
+	
+	
+
+	if(pinvalue == pintrue){
+		
+		$('#stack3').modal('show');
+
+	}else{
+		alert("Wrong PIN, please try again");
+	}
+
+});
+
+
 
 $('#submitpin').click(function(e){
 	
 	var pintrue = '{{ Config::get("eventreg.pinsupervisorexhibitor") }}';
 	var pinvalue = $('#supervisorpin').val();
-	alert(alreadyprintid);
 	
 
 	if(pinvalue == pintrue){
@@ -310,11 +351,12 @@ $('#submitpin').click(function(e){
 
 });
 
+
 var asstype = <?php print json_encode(Config::get("eventreg.exhibitorassistanttype"));?>;
 //checking Slot	
 
 var boothassslot = '{{ 10-$boothassistantcount; }}';
-var addboothslot = '{{ $data['totaladdbooth']-$addboothassistantcount; }}';
+var addboothslot = '{{ $data["totaladdbooth"]-$addboothassistantcount; }}';
 
 
 var current_type = 0;
@@ -330,6 +372,7 @@ var companypicemail = '<?php echo $exhibitor['email'];?>';
 var hallname        = '<?php echo $exhibitor['hall'];?>';
 var boothname       = '<?php echo $exhibitor['booth'];?>';
 var current_pass_name = '';
+var overrideslotbothass = '';
 
 
 $('#submitaddbooth').click(function(){
@@ -344,17 +387,37 @@ $('#submitaddbooth').click(function(){
 	if(boothvalue == asstype.freepassname){
 		//chekcfirst
 		if(frepassslot>0){
+
+			var ifID = document.getElementById('printbadgenew');
+			overrideslotbothass = 'false';
+
+			if(ifID!=null){
+				ifID.remove();
+			}
+
 			$('#stack3').modal('show');
 			current_type = 'freepassname';
 			current_type_id = current_type_id_freepass+1;
+
 		}else{
-			alert('Cannot add more data, this exhibitor already have '+current_type_id_freepass+' record')
+			var confirmadd = confirm('Limit reached, this exhibitor already have '+current_type_id_freepass+' record, do you still want to add data ?');
+			if (confirmadd==true){
+
+  				$('#stack4').modal('show');
+  				overrideslotbothass = 'true';
+				current_type = 'freepassname';
+				current_type_id = current_type_id_freepass+1;
+
+  			}else{
+  				
+  			}
 		}
 	}else if(boothvalue == asstype.boothassistant){
 		//chekcfirst
 		if(boothassistslot>0){
 			var ifID = document.getElementById('printbadgenew');
-			if(ifID!=null|| ifID.length>0){
+			
+			if(ifID!=null){
 				ifID.remove();
 			}
 			
@@ -369,7 +432,7 @@ $('#submitaddbooth').click(function(){
 		//chekcfirst
 		if(addboothslot>0){
 			var ifID = document.getElementById('printbadgenew');
-			if(ifID!=null || ifID.length>0){
+			if(ifID!=null){
 				ifID.remove();
 			}
 			$('#stack3').modal('show');
@@ -391,6 +454,7 @@ $('#submitaddassist').click(function(){
     <?php
 
       $ajaxonsiteBoothAssistant = (isset($ajaxonsiteBoothAssistant))?$ajaxonsiteBoothAssistant:'/';
+      $ajaxoverrideentryboothass = (isset($ajaxoverrideentryboothass))?$ajaxoverrideentryboothass:'/';
     ?>
     if(current_type =='0' || current_pass_name==''){
     	
@@ -398,6 +462,11 @@ $('#submitaddassist').click(function(){
 
 	}else{
 	 	$.post('{{ URL::to($ajaxonsiteBoothAssistant) }}',{'exhibitorid':exhibitorid,'companyname':companyname,'companypic':companypic,'companypicemail':companypicemail,'hallname':hallname,'boothname':boothname,'type':current_type,'typeid':current_type_id,'passname':current_pass_name}, function(data) {
+	    	
+	    	if( overrideslotbothass == 'true'){
+	    		$.post('{{ URL::to($ajaxoverrideentryboothass) }}',{'exhibitorid':exhibitorid,'type':current_type,'typeid':current_type_id});
+	    	}
+
 	    	$('#submitaddassist').text('Processing..');
 			$('#submitaddassist').attr("disabled", true);
 	      	
@@ -419,6 +488,10 @@ $('#submitaddassist').click(function(){
 				
 
 	        	$('#stack3').modal('hide');
+
+	        	if(overrideslotbothass == 'true'){
+	        		$('#stack4').modal('hide');
+	        	}
 
 	        	$('#statusnotif').prepend('<div class="alert alert-info fade in">' +
       			'Updated!<button type="button" class="close" data-dismiss="alert">&nbsp;</button>' +
@@ -472,6 +545,7 @@ $('#submitaddassist').click(function(){
 <?php
 	
 	$ajaxprintbadgeexhibitor = (isset($ajaxprintbadgeexhibitor))?$ajaxprintbadgeexhibitor:'/';
+
 	
 ?>
 
@@ -495,8 +569,51 @@ $('.printbadge').click(function(e){
 	
 });
 
+$(document).ready(function() {
+	//$('.boothasstName').click(function(e){
+
+		$('.boothasstName').editable('{{ URL::to("onsite/editboothassname") }}', { 
+		    indicator : 'Saving...',
+		    name   : 'new_value',
+		    id : 'elementid',
+		    //data   : '{"unpaid":"Unpaid","paid":"Paid","free":"Free"}',
+		    type   : 'textarea',
+		    style   : 'display: inline',
+		    submit : 'OK',
+		    event  : "dblclick",
+
+		    callback : function(value, settings) {
+		    	
+		    	var regnumber = $(this).attr('rel');
+		    	var idelement = $(this).attr('id');
+		    	var type = $(this).attr('type');
+		    	
+
+		    	console.log(regnumber+idelement+type+value);
+		    	//remove iframe first
+		    	var ifIDS = document.getElementById('printbadge'+idelement);
+				if(ifIDS!=null){
+					ifIDS.remove();
+
+					$('<iframe />', {
+					    name: 'myFrame',
+					    id:   'printbadge'+idelement,
+					    style: 'display:none;',
+					    src: '{{ URL::to("exhibitor/newprintbadgeonsite") }}/'+regnumber+'/'+value+'/{{ $exhibitor["company"] }}/'+type
+					}).appendTo('#iframe'+idelement);
+	    			
+
+				}
+		 	},
 
 
+
+		 	submitdata : {dataid: '<?php echo $boothassistantdata["_id"];?>'}
+		    
+
+		});
+	//});
+});
 </script>
 
 

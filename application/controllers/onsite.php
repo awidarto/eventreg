@@ -1504,6 +1504,7 @@ class Onsite_Controller extends Base_Controller {
 
 		return View::make('pop.newboothassist')
 		->with('ajaxexhibitorcheck',URL::to('onsite/ajaxexhibitorcheck'))
+		->with('ajaxonsitefreeadd',URL::to('onsite/freeaddboothasst'))
 		->with('form',$form);
 		
 		//->with('profile',$doc);
@@ -1541,6 +1542,7 @@ class Onsite_Controller extends Base_Controller {
 		->with('booth',$booth)
 		->with('boothassistantdata',$boothassistantdata)
 		->with('ajaxonsiteBoothAssistant',URL::to('onsite/addboothassistant'))
+		->with('ajaxoverrideentryboothass',URL::to('onsite/overideboothassistant'))
 		->with('ajaxprintbadge',URL::to('onsite/printbadgecount'))
 		->with('id',$id)
 		->with('exhibitor',$exhibitorprofile);
@@ -1583,7 +1585,7 @@ class Onsite_Controller extends Base_Controller {
 			}
 			$reg_number[0] = 'A';
 			$reg_number[1] = $data['role'];
-			$reg_number[2] = '00';
+			//$reg_number[2] = '00';
 
 			$seq = new Sequence();
 
@@ -1624,6 +1626,112 @@ class Onsite_Controller extends Base_Controller {
 		}
 
 		print json_encode($result);
+	}
+
+	public function post_freeaddboothasst(){
+
+		$exhibitorid = Input::get('exhibitorid');
+		$exhibitorname = Input::get('companyname');
+		$nameboothasst = Input::get('passname');
+		
+		$data['companyname'] = $exhibitorname;
+		$data['exhibitorid'] = $exhibitorid;
+		$data['role'] = 'BA2';
+		$data['name'] = $nameboothasst;
+		$data['creator'] = Auth::user()->fullname;
+		$data['creatorid'] = Auth::user()->id;
+
+		
+
+
+		$reg_number[0] = 'A';
+		$reg_number[1] = $data['role'];
+		//$reg_number[2] = '00';
+
+		$seq = new Sequence();
+
+		$rseq = $seq->find_and_modify(array('_id'=>'boothassistant'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
+
+		$reg_number[] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
+
+		$regnumberall = implode('-',$reg_number);
+
+		$data['registrationnumber'] = $regnumberall;
+
+		$addboothass = new Boothassistantonsite();
+
+		if($obj = $addboothass->insert($data) ){
+			$result = array('status'=>'OK','regnumber'=>$regnumberall);
+		}else{
+			$result = array('status'=>'ERR');
+		}
+
+		print json_encode($result);
+
+	}
+
+
+	public function post_overideboothassistant(){
+		
+		//we can considering already have record
+		$exhibitorid = Input::get('exhibitorid');
+		
+		$type = Input::get('type');
+		$typeid = Input::get('typeid');
+		$typeid = intval($typeid);
+		
+		
+
+		$exhibitor = new Exhibitor();
+
+		if(is_null($exhibitorid)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		
+		}else{
+
+			$_id = new MongoId($exhibitorid);
+
+			if($objs = $exhibitor->update(array('_id'=>$_id),array('$set'=>array('override'.$type=>$typeid))) ){
+				$result = array('status'=>'OK');
+			}
+			
+
+			
+		}
+
+		print json_encode($result);
+	}
+
+
+	public function post_editboothassname(){
+		$id = Input::get('dataid');
+		$name = Input::get('new_value');
+		$boothid = Input::get('elementid');
+		
+		//$displaytax = Input::get('foo');
+
+		$user = new Boothassistant();
+
+		if(is_null($id)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$_id = new MongoId($id);
+
+			$boothass = $user->get(array('_id'=>$_id));
+			$company = $boothass[$boothid.'regnumber'];
+
+			if($obj = $user->update(array('_id'=>$_id),array('$set'=>array($boothid=>$name)))){
+				
+				$result = $name;
+				
+			}else{
+				
+				$result = array('status'=>'ERR','data'=>'DELETEFAILED');
+			}
+		}
+
+		return $result;
 	}
 
 	public function get_visitor($id){

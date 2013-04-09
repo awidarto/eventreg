@@ -751,7 +751,7 @@ class Import_Controller extends Base_Controller {
 					}else if($type == 'exhibitor'){
 
 
-						if($attendee->update(array('firstname'=>$tocommit['firstname'],'lastname'=>$tocommit['lastname']),array('$set'=>$tocommit))){
+						if($attobj = $attendee->update(array('firstname'=>$tocommit['firstname'],'lastname'=>$tocommit['lastname']),array('$set'=>$tocommit))){
 
 							Event::fire($type.'.update',array($attobj['_id'],$plainpass,$pic['email'],$pic['firstname'].$pic['lastname']));
 

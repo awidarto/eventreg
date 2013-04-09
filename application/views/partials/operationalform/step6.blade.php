@@ -44,7 +44,7 @@
        
         $sizebooth = $booth['size'];
 
-        if($sizebooth >= 9 && $sizebooth <= 18){
+        /*if($sizebooth >= 9 && $sizebooth <= 18){
           $pass = 2;
         }else if($sizebooth >= 18 && $sizebooth < 27){
           $pass = 4;
@@ -56,7 +56,8 @@
           $pass = 10;
         }else{
           $pass = 10;
-        }
+        }*/
+        $pass = $booth['freepassslot'];
         
       ?>
       <p><strong>If your booth size in between those explained numbers, kindly ask your Hall Coordinator for assistance.</strong></p>

@@ -33,9 +33,11 @@
             
             <li>{{ HTML::link('official','Officials')}}</li>
             <li>{{ HTML::link('exhibitor','Exhibitors')}}</li>
+            <li>{{ HTML::link('booth','Booth')}}</li>
 
         @elseif( Auth::user()->role == 'exhibitionadmin' )
             <li>{{ HTML::link('exhibitor','Exhibitors')}}</li>
+            <li>{{ HTML::link('booth','Booth')}}</li>
             <li>{{ HTML::link('visitor','Visitors')}}</li>
             
             <li>{{ HTML::link('official','Officials')}}</li>

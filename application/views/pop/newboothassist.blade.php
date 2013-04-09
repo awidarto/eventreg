@@ -14,7 +14,8 @@
 		
 		{{ $form->hidden('exhibitorid','',array('id'=>'exhibitorid'))}}
         {{ $form->text('exhibitor','Company Name ( autocomplete, use company name to search ).req','',array('id'=>'exhibitorName','class'=>'auto_exhibitor span8'))}}
-        <button class="btn update">Update</button>
+        {{ $form->text('name','Input Full Name.req','',array('id'=>'boothnameinput','class'=>' span8'))}}
+        <button class="btn update" id="submitaddassistant">Submit</button>
 		
 	</div>
 	<div class="modal-body" id="loaddata">
@@ -26,13 +27,63 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
-$('.auto_exhibitor').autocomplete({
-			source: base + 'ajax/exhibitor',
-			select: function(event, ui){
-				$('#exhibitorid').val(ui.item.id);
-				hallId = $('#exhibitorid').val();
-			}
-		});
+	$('.auto_exhibitor').autocomplete({
+		source: base + 'ajax/exhibitor',
+		select: function(event, ui){
+			$('#exhibitorid').val(ui.item.id);
+			hallId = $('#exhibitorid').val();
+		}
+	});
+});
+
+
+$('#submitaddassistant').click(function(){
+    var current_pass_name = $('#boothnameinput').val();
+    var companyname = $('#exhibitorName').val();
+    var exhibitorid = $('#exhibitorid').val();
+    var current_type = 'addboothname';
+
+    <?php
+      $ajaxonsitefreeadd = (isset($ajaxonsitefreeadd))?$ajaxonsitefreeadd:'/';
+    ?>
+    if(current_pass_name==''){
+    	
+	    alert('Error, cannot proccess data, please try again');
+
+	}else{
+	 	$.post('{{ URL::to($ajaxonsitefreeadd) }}',{'exhibitorid':exhibitorid,'companyname':companyname,'passname':current_pass_name}, function(data) {
+	    	
+	    	
+
+	    	$('#submitaddassistant').text('Processing..');
+			$('#submitaddassistant').attr("disabled", true);
+	      	
+	    	if(data.status == 'OK'){
+	        	$('#submitaddassistant').text('Submit');
+				$('#submitaddassistant').attr("disabled", false);
+				//add iframe
+    			$('<iframe />', {
+				    name: 'myFrame',
+				    id:   'printbadgenewfree',
+				    style: 'display:none;',
+				    src: '{{ URL::to("exhibitor/newprintbadgeonsite") }}/'+data.regnumber+'/'+current_pass_name+'/'+companyname+'/'+current_type
+				}).appendTo('#ajax-modal');
+    			//print
+    			var pframe = document.getElementById('printbadgenewfree');
+				var pframeWindow = pframe.contentWindow;
+				pframeWindow.print();
+
+	        	$('#ajax-modal').modal('hide');
+    			
+
+	      	}else{
+	    		alert('Error, cannot proccess data, please try again');  		
+	      	}
+	    },'json');
+	 	
+	}
+	return false;
+  
 });
 </script>
 @endsection

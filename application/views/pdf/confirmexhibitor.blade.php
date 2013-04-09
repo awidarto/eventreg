@@ -129,7 +129,7 @@ td.detailsitem{
 
 	$sizebooth = $booth['size'];
 
-    if($sizebooth >= 9 && $sizebooth <= 18){
+    /*if($sizebooth >= 9 && $sizebooth <= 18){
       $pass = 2;
     }else if($sizebooth >= 18 && $sizebooth <= 27){
       $pass = 4;
@@ -141,7 +141,8 @@ td.detailsitem{
       $pass = 10;
     }else{
       $pass = 10;
-    }
+    }*/
+    $pass = $booth['freepassslot'];
 
     //count freepass
     for($i=1;$i<$pass+1;$i++){

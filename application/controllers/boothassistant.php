@@ -253,7 +253,7 @@ class Boothassistant_Controller extends Base_Controller {
 			}
 			$reg_number[0] = 'A';
 			$reg_number[1] = $data['role'];
-			$reg_number[2] = '00';
+			//$reg_number[2] = '00';
 
 			$seq = new Sequence();
 
@@ -297,88 +297,7 @@ class Boothassistant_Controller extends Base_Controller {
 		print json_encode($result);
 	}
 
-	public function post_paystatus(){
-		$id = Input::get('id');
-		$paystatus = Input::get('paystatus');
-
-		$user = new Boothassistant();
-
-		if(is_null($id)){
-			$result = array('status'=>'ERR','data'=>'NOID');
-		}else{
-
-			$_id = new MongoId($id);
-
-
-			if($user->update(array('_id'=>$_id),array('$set'=>array('conventionPaymentStatus'=>$paystatus)))){
-				Event::fire('paymentstatus.update',array('id'=>$id,'result'=>'OK'));
-				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
-				//mail to registrant about payment updated
-				//if only set to paid to send email
-				if($paystatus == 'paid'){
-					$data = $user->get(array('_id'=>$_id));
-
-					$body = View::make('email.confirmpayment')->with('data',$data)->render();
-
-
-					Message::to($data['email'])
-					    ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
-					    ->cc(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
-					    ->subject('CONFIRMATION OF REGISTRATION - Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$data['registrationnumber'].')')
-					    ->body( $body )
-					    ->html(true)
-					    ->send();
-				}
-			}else{
-				Event::fire('paymentstatus.update',array('id'=>$id,'result'=>'FAILED'));
-				$result = array('status'=>'ERR','data'=>'DELETEFAILED');				
-			}
-		}
-
-		print json_encode($result);
-	}
-
-
-	public function post_paystatusgolf(){
-		$id = Input::get('id');
-		$paystatus = Input::get('paystatusgolf');
-
-		$user = new Boothassistant();
-
-		if(is_null($id)){
-			$result = array('status'=>'ERR','data'=>'NOID');
-		}else{
-
-			$_id = new MongoId($id);
-
-
-			if($user->update(array('_id'=>$_id),array('$set'=>array('golfPaymentStatus'=>$paystatus)))){
-				Event::fire('paymentstatusgolf.update',array('id'=>$id,'result'=>'OK'));
-				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
-				//mail to registrant about payment updated
-				//if only set to paid to send email
-				if($paystatus == 'paid'){
-					$data = $user->get(array('_id'=>$_id));
-
-					$body = View::make('email.confirmpaymentgolf')->with('data',$data)->render();
-
-
-					Message::to($data['email'])
-					    ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
-					    ->cc(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
-					    ->subject('CONFIRMATION OF REGISTRATION (GOLF)- Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$data['registrationnumber'].')')
-					    ->body( $body )
-					    ->html(true)
-					    ->send();
-				}
-			}else{
-				Event::fire('paymentstatusgolf.update',array('id'=>$id,'result'=>'FAILED'));
-				$result = array('status'=>'ERR','data'=>'DELETEFAILED');				
-			}
-		}
-
-		print json_encode($result);
-	}
+	
 
 
 	public function post_setformstatus(){

@@ -55,34 +55,35 @@ class Booth_Controller extends Base_Controller {
 
 		$btn_add_to_group = '<span class=" add_to_group" id="add_to_group">'.$action_selection.'</span>';
 
-		$heads = array('#',$select_all,'Booth No','Width','Height','Size','');
+		$heads = array('#',$select_all,'Booth No.','Length','Width','Size','Hall','Free exhibitor pass','','','');
 
-		$searchinput = array(false,false,'Booth No','Width','Height','Size',false);
+		$searchinput = array(false,false,'Booth No.',false,false,false,'Hall',false,false,false,false,false);
 
-		$colclass = array('','span1','span3','span1','span3','span3','span1','span1','');
+		$colclass = array('','span1','span3','span3','span3','span3','','');
 
-		if(Auth::user()->role == 'root' || Auth::user()->role == 'super'){
-			return View::make('tables.simple')
-				->with('title','Master Data')
-				->with('newbutton','New Visitor')
-				->with('disablesort','0,1,9')
-				->with('addurl','booth/add')
+		if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'onsite' || Auth::user()->role == 'exhibitionadmin'){
+			return View::make('tables.simple2')
+				->with('title','Exhibitors')
+				->with('newbutton','New Exhibitors')
+				->with('disablesort','0,1,10')
+				->with('addurl','exhibitor/add')
 				->with('colclass',$colclass)
 				->with('searchinput',$searchinput)
 				->with('ajaxsource',URL::to('booth'))
-				->with('ajaxdel',URL::to('booth/del'))
-				->with('ajaxpay',URL::to('booth/paystatus'))
-				->with('ajaxformstatus',URL::to('booth/setformstatus'))
-				->with('ajaxpaygolf',URL::to('booth/paystatusgolf'))
-				->with('ajaxpaygolfconvention',URL::to('booth/paystatusgolfconvention'))
-				->with('printsource',URL::to('booth/printbadge'))
+				->with('ajaxdel',URL::to('exhibitor/del'))
+				->with('ajaxpay',URL::to('exhibitor/paystatus'))
+				->with('ajaxformstatus',URL::to('exhibitor/setformstatus'))
+				->with('ajaxpaygolf',URL::to('exhibitor/paystatusgolf'))
+				->with('ajaxpaygolfconvention',URL::to('exhibitor/paystatusgolfconvention'))
+				->with('printsource',URL::to('exhibitor/printbadge'))
+				->with('ajaxexhibitorsendmail',URL::to('exhibitor/sendmail'))
 				->with('form',$form)
 				->with('crumb',$this->crumb)
 				->with('heads',$heads)
-				->nest('row','booth.rowdetail');
+				->nest('row','exhibitor.rowdetail');
 		}else{
-			return View::make('booth.restricted')
-							->with('title',$title);			
+			return View::make('exhibitor.restricted')
+							->with('title','Exhibitors');			
 		}
 	}
 
@@ -92,11 +93,11 @@ class Booth_Controller extends Base_Controller {
 	{
 
 
-		$fields = array('boothno','width','height','size');
+		$fields = array('boothno','hallname','length','width','size','hallname');
 
-		$rel = array('like','like','like','like');
+		$rel = array('like','like','like');
 
-		$cond = array('both','both','both','both','both','both','both','both','both');
+		$cond = array('both','both','both');
 
 		$pagestart = Input::get('iDisplayStart');
 		$pagelength = Input::get('iDisplayLength');
@@ -117,6 +118,7 @@ class Booth_Controller extends Base_Controller {
 			{
 
 				$hilite_item = Input::get('sSearch_'.$idx);
+
 				$hilite[] = $hilite_item;
 				$hilite_replace[] = '<span class="hilite">'.$hilite_item.'</span>';
 
@@ -137,7 +139,7 @@ class Booth_Controller extends Base_Controller {
 
 		//print_r($q)
 
-		$booth = new Booth();
+		$exhibitor = new Booth();
 
 		/* first column is always sequence number, so must be omitted */
 		$fidx = Input::get('iSortCol_0');
@@ -151,14 +153,14 @@ class Booth_Controller extends Base_Controller {
 			$sort_dir = (Input::get('sSortDir_0') == 'asc')?1:-1;
 		}
 
-		$count_all = $booth->count();
+		$count_all = $exhibitor->count();
 
 		if(count($q) > 0){
-			$booths = $booth->find($q,array(),array($sort_col=>$sort_dir),$limit);
-			$count_display_all = $booth->count($q);
+			$exhibitors = $exhibitor->find($q,array(),array($sort_col=>$sort_dir),$limit);
+			$count_display_all = $exhibitor->count($q);
 		}else{
-			$booths = $booth->find(array(),array(),array($sort_col=>$sort_dir),$limit);
-			$count_display_all = $booth->count();
+			$exhibitors = $exhibitor->find(array(),array(),array($sort_col=>$sort_dir),$limit);
+			$count_display_all = $exhibitor->count();
 		}
 
 		$aadata = array();
@@ -167,41 +169,34 @@ class Booth_Controller extends Base_Controller {
 
 		$counter = 1 + $pagestart;
 
-		foreach ($booths as $doc) {
+		foreach ($exhibitors as $doc) {
 
-			$extra = $doc;
+			
+			
+			
 
 			$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
 
-			if(isset($doc['formstatus'])){
-				if($doc['formstatus'] == 'submitted'){
-					$formstatus = '<span class="fontRed fontBold paymentStatusTable">'.$doc['formstatus'].'</span>';
-				}elseif ($doc['formstatus'] == 'approved') {
-					$formstatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['formstatus'].'</span>';
-				}else{
-					$formstatus = '<span class="fontGray fontBold paymentStatusTable">'.$doc['formstatus'].'</span>';
-				}
-			}else{
-				$formstatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['formstatus'].'</span>';
-			}
+			
+
+			
 
 			$aadata[] = array(
 				$counter,
 				$select,
-				(isset($doc['registrationnumber']))?$doc['registrationnumber']:'',
-				date('Y-m-d', $doc['createdDate']->sec),
-				$doc['email'],
-				'<span class="expander" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
-				$doc['lastname'],
-				$doc['company'],
-				$doc['country'],
-				$formstatus,
-				'<a class="icon-"  ><i>&#xe1b0;</i><span class="formstatus" id="'.$doc['_id'].'" > Set Form Status</span>'.
-				'<a class="icon-"  ><i>&#x0035;</i><span class="viewform" id="'.$doc['_id'].'" rel="viewform"> View Form</span>'.
-				'<a class="icon-"  href="'.URL::to('booth/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
-				'<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$doc['_id'].'" >Delete</span>',
 				
-				'extra'=>$extra
+				
+				$doc['boothno'],
+				$doc['length'],
+				$doc['width'],
+				$doc['size'],
+				$doc['hallname'],
+				$doc['freepassslot'],
+				'',
+				'',
+				'<a class="icon-"  href="'.URL::to('booth/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Booth</span>'
+				
+				
 			);
 			$counter++;
 		}
@@ -533,7 +528,7 @@ class Booth_Controller extends Base_Controller {
 		$this->crumb->add('booth/edit/'.$id,$user_profile['registrationnumber'],false);
 
 		return View::make('booth.edit')
-					->with('user',$user_profile)
+					->with('data',$user_profile)
 					->with('form',$form)
 					->with('crumb',$this->crumb)
 					->with('title','Edit Booth');
@@ -546,7 +541,10 @@ class Booth_Controller extends Base_Controller {
 		//print_r(Session::get('permission'));
 
 	    $rules = array(
-	        'email'  => 'required'
+	        'boothno'  => 'required',
+	        'width'  => 'required',
+	        'length'  => 'required',
+	        'freepassslot'  => 'required'
 	    );
 
 	    $validation = Validator::make($input = Input::all(), $rules);
@@ -561,36 +559,14 @@ class Booth_Controller extends Base_Controller {
 	    	
 			$id = new MongoId($data['id']);
 			$data['lastUpdate'] = new MongoDate();
-			$data['role'] = 'EXH';
+			
 			
 			unset($data['csrf_token']);
 			unset($data['id']);
 
 			$user = new Booth();
 
-			if(isset($data['registrationnumber']) && $data['registrationnumber'] != ''){
-				$reg_number = explode('-',$data['registrationnumber']);			
-
-				$reg_number[0] = 'E';
-				$reg_number[1] = $data['role'];
-				$reg_number[2] = '00';
-
-
-			}else if($data['registrationnumber'] == ''){
-				$reg_number = array();
-				$seq = new Sequence();
-				$rseq = $seq->find_and_modify(array('_id'=>'visitor'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
-
-				$reg_number[0] = 'E';
-				$reg_number[1] = $data['role'];
-				$reg_number[2] = '00';
-
-				$reg_number[3] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
-			}
-
-
-			$data['registrationnumber'] = implode('-',$reg_number);
-			
+			$data['size'] = $data['length']*$data['width'];
 			
 			if($user->update(array('_id'=>$id),array('$set'=>$data))){
 		    	return Redirect::to('booth')->with('notify_success','Booth saved successfully');
@@ -719,6 +695,51 @@ class Booth_Controller extends Base_Controller {
 			$idhall = $n['hall_id'];
 			$hallidmongo = new MongoId($idhall);
 			$booth->update(array('_id'=>$_id),array('$set'=>array('hall_id'=>$hallidmongo)));
+		}
+		
+
+		return true;
+	}
+
+	public function get_makehallname() {
+		$booth = new Booth;
+		$hall = new Hall;
+
+		$booths = $booth->find();
+
+		foreach ($booths as $n) {
+			$_id = $n['_id'];
+			$idhall = $n['hall_id'];
+			$hallidmongo = new MongoId($idhall);
+			$hallselected = $hall->get(array('_id'=>$hallidmongo));
+			$hallname = $hallselected['name'];
+			$booth->update(array('_id'=>$_id),array('$set'=>array('hallname'=>$hallname)));
+		}
+		
+
+		return true;
+	}
+
+
+	public function get_slotfreeid() {
+		$booth = new Booth;
+
+
+		$booths = $booth->find();
+
+		foreach ($booths as $n) {
+			$_id = $n['_id'];
+			$idhall = $n['size'];
+
+			$freeslot = round(($n['size']/9)*2);
+
+			if($freeslot>10){
+				$freeslot =10;
+			}else{
+				$freeslot =$freeslot;
+			}
+
+			$booth->update(array('_id'=>$_id),array('$set'=>array('freepassslot'=>$freeslot)));
 		}
 		
 

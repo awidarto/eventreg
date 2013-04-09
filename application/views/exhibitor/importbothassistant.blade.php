@@ -8,7 +8,7 @@
   $freepasscount = 0;
   $boothassistantcount = 0;
 
-  if($sizebooth >= 9 && $sizebooth <= 18){
+  /*if($sizebooth >= 9 && $sizebooth <= 18){
     $pass = 2;
   }else if($sizebooth >= 18 && $sizebooth < 27){
     $pass = 4;
@@ -20,8 +20,9 @@
     $pass = 10;
   }else{
     $pass = 10;
-  }
-
+  }*/
+  $pass = $booth['freepassslot'];
+  
   for($i=1;$i<$pass+1;$i++){
     if($data['freepassname'.$i.'']!=''){
       $freepasscount++;

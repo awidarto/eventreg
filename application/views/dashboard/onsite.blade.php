@@ -837,7 +837,7 @@
 		  }, 1000);
 		});
 		 
-		$modal.on('click', '.update', function(){
+		/*$modal.on('click', '.update', function(){
 			var current_exhibitor_id = $('#exhibitorid').val();
 		  	$modal.modal('loading');
 		  	setTimeout(function(){
@@ -850,7 +850,7 @@
 					}
 				},'json');
 		  	}, 1000);
-		});
+		});*/
 		
 
     });
