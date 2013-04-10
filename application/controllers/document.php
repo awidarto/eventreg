@@ -570,8 +570,8 @@ class Document_Controller extends Base_Controller {
 		$this->crumb->add('document/type/'.$type,'Document');
 		$this->crumb->add('document/type/'.$type,depttitle($type));
 
-		$heads = array('#','Title','Created','Last Update','Creator','Access','Attachment','Tags','Action');
-		$searchinput = array(false,'title','created','last update','creator','access','filename','tags',false);
+		$heads = array('#','Title','Created','Last Update','Creator','Access','Folder','Attachment','Tags','Action');
+		$searchinput = array(false,'title','created','last update','creator','access','folder','filename','tags',false);
 
 		$dept = Config::get('kickstart.department');
 
@@ -630,11 +630,11 @@ class Document_Controller extends Base_Controller {
 	public function post_type($type = null)
 	{
 
-		$fields = array('title','createdDate','lastUpdate','creatorName','docFilename','docTag');
+		$fields = array('title','createdDate','lastUpdate','creatorName','docCategory','docFilename','docTag');
 
-		$rel = array('like','like','like','like','like','like');
+		$rel = array('like','like','like','like','like','like','like');
 
-		$cond = array('both','both','both','both','both','both');
+		$cond = array('both','both','both','both','both','both','both');
 
 		$pagestart = Input::get('iDisplayStart');
 		$pagelength = Input::get('iDisplayLength');
@@ -767,6 +767,7 @@ class Document_Controller extends Base_Controller {
 				isset($doc['lastUpdate'])?date('Y-m-d H:i:s', $doc['lastUpdate']->sec):'',
 				$doc['creatorName'],
 				isset($doc['access'])?ucfirst($doc['access']):'',
+				ucfirst($doc['docCategory']),
 				isset($doc['docFilename'])?'<span class="fileview" id="'.$doc['_id'].'">'.$doc['docFilename'].'</span>':'',
 				$tags,
 				$edit.$del
