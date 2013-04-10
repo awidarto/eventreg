@@ -28,12 +28,12 @@
                     <div class="span6"></div>
                 </div>
 
-                {{ $form->text('formnumber','Form No.req','',array('class'=>'text span8','id'=>'mobile')) }}
+                {{ $form->text('formnumber','Form No','',array('class'=>'text span8','id'=>'mobile')) }}
 
                 {{ $form->text('firstname','First Name.req','',array('class'=>'text span8','id'=>'firstname')) }}
                 
                 {{ $form->text('lastname','Last Name.req','',array('class'=>'text span8','id'=>'lastname')) }}
-                {{ $form->text('email','Email.req','',array('class'=>'text span8','id'=>'email')) }}
+                {{ $form->text('email','Email','',array('class'=>'text span8','id'=>'email')) }}
 
                 
 
@@ -68,7 +68,7 @@
   $('select').select2({
     width : 'resolve'
   });
-  $("#s2id_field_country").select2("val", "Indonesia");
+  $("#s2id_field_country").select2("val", "-");
 
   $('#field_role').change(function(){
       //alert($('#field_role').val());

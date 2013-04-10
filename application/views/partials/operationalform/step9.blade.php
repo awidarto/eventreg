@@ -1,4 +1,11 @@
-<h2 class="StepTitle">BOOTH PROGRAM SCHEDULE</h2>   
+<h2 class="StepTitle">BOOTH PROGRAM SCHEDULE</h2>
+
+    @if(isset($data['submitform8']))
+      <div class="alert alert-warning insideform">
+        Form #8 already submitted .
+      </div>
+      <div class="disableforminput">
+    @endif
     <div id="boothcontractor">
       <br/>
       <p>In order to ensure the best possible environment for exhibitors and attendees, please indicate here-below the activities that you intend to hold during the exhibition</p>
@@ -67,4 +74,11 @@
       </div>      
       <br/>
       <br/>
+      @if(!isset($data['submitform8']) || $data['submitform8']!='true')
+        <div class="clear"></div>
+        <a href="#" id="submitform8" class="buttonSubmitIndividual">Submit Form 8</a>
+      @endif
     </div>
+    @if(isset($data['submitform8']))
+      </div>
+    @endif

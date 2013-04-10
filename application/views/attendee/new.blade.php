@@ -113,6 +113,7 @@
 
         </fieldset>
 
+        @if($golfcount < Config::get('eventreg.golfquota'))
         <fieldset>
             <legend>Golf Tournament on 12 May 2013</legend>
 
@@ -127,6 +128,7 @@
                 </div>
 
         </fieldset>
+        @endif
         <fieldset>
             <legend>FOC (Free Of Charge)</legend>
 

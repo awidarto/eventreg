@@ -1,4 +1,12 @@
-<h2 class="StepTitle">FASCIA NAME (STANDARD BOOTH ONLY)</h2>   
+<h2 class="StepTitle">FASCIA NAME (STANDARD BOOTH ONLY)</h2>
+
+@if(isset($data['submitform4']))
+  <div class="alert alert-warning insideform">
+    Form #4 already submitted .
+  </div>
+  <div class="disableforminput">
+@endif
+
 <div id="boothcontractor">
   <br/>
   <p>If your company wishes to order standard booth construction (standard shell scheme), the package will include:</p>
@@ -26,4 +34,12 @@
   <small>* Please inform us if you have special enquiries for your standard shell scheme. Additional / custom requirements will be charged separately</small>
   <br/>
   <br/>
+  @if(!isset($data['submitform4']) || $data['submitform4']!='true')
+    <div class="clear"></div>
+    <a href="#" id="submitform4" class="buttonSubmitIndividual">Submit Form 4</a>
+  @endif
 </div> 
+
+@if(isset($data['submitform4']))
+  </div>
+@endif

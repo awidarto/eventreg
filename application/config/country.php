@@ -3,6 +3,7 @@
 return array(
 
 	'countries' => array(
+		'-' 									=> 'Select Country',
 		'Andorra' 									=> 'Andorra',
 		'United Arab Emirates' 									=> 'United Arab Emirates',
 		'Afghanistan' 									=> 'Afghanistan',

@@ -552,6 +552,129 @@ class Export_Controller extends Base_Controller {
 	}
 
 
+	public function get_boothassistant($boothassistantdata_id,$exhibitorid){
+
+		$boothassistantdata = new Boothassistant();
+		$ex = new Exhibitor();
+		$booths = new Booth();
+		$formData = new Operationalform();
+
+
+		
+		$_id = new MongoId($boothassistantdata_id);
+		$_exhibitorid = new MongoId($exhibitorid);
+
+		//find user first
+		$data = $boothassistantdata->get(array('_id'=>$_id));
+		$exhibitor = $ex->get(array('_id'=>$_exhibitorid));
+		$user_form = $formData->get(array('userid'=>$exhibitorid));
+
+		$booth = '';
+
+
+		if(isset($exhibitor['boothid'])){
+			$_boothID = new MongoId($exhibitor['boothid']);
+			$booth = $booths->get(array('_id'=>$_boothID));
+		}
+
+		$freepasscount = 0;
+		$boothassistantcount = 0;
+		$addboothassistantcount = 0;
+		
+		$pass = $booth['freepassslot'];
+
+		if(isset($exhibitor['overridefreepassname'])){
+			$pass = $exhibitor['overridefreepassname'];
+		}else{
+			$pass = $pass;
+		}
+
+		for($i=1;$i<$pass+1;$i++){
+			if(isset($data['freepassname'.$i.''])){
+		  		$freepasscount++;
+			}
+		}
+
+		for($i=1;$i<11;$i++){
+		    if(isset($data['boothassistant'.$i.''])){
+		      $boothassistantcount++;
+		    }
+		}
+
+		for($i=1;$i<=$user_form['totaladdbooth'];$i++){
+		  	if(isset($data['addboothname'.$i.''])){
+		      $addboothassistantcount++;
+		    }
+		}
+
+		//return View::make('print.exhibitorbadgeall')
+		
+		//->with('profile',$data)
+		//->with('booth',$booth)
+		//->with('exhibitorid',$exhibitorid)
+		//->with('exhibitor',$exhibitor);
+
+		$filename = 'Boothassistantdata_'.$exhibitor['company'].'_'.date('Ymd_his',time()).'.csv';
+
+		$header['Cache-Control'] = "must-revalidate, post-check=0, pre-check=0";
+		$header['Content-Description'] = "File Transfer";
+		$header['Content-type'] = "text/csv";
+		$header['Content-Disposition'] = "attachment; filename=".$filename;
+		$header['Expires'] = "0";
+		$header['Pragma'] = "public";
+
+		
+		$result[] = 'Registration Number :'.$exhibitor['registrationnumber'];
+		$result[] = 'Company :'.$exhibitor['company'];
+		$result[] = 'Hall :'.$exhibitor['hall'];
+		$result[] = 'Booth :'.$exhibitor['booth'];
+		$result[] = '';
+		$result[] = '';
+		$result[] = '';
+		$result[] = 'EXHIBITOR PASS HOLDERS (FREE)';
+		$result[] = '';
+		
+		
+
+		for($i=1;$i<=$freepasscount;$i++){
+			$inarray[0] = $i;
+			$inarray[1] = $data['freepassname'.$i.''];
+			$result[] = implode(',',$inarray);
+		}
+
+		$result[] = '';
+		$result[] = 'FREE ADDITIONAL EXHIBITOR PASS HOLDERS';
+		$result[] = '';
+
+		
+		for($i=1;$i<=$boothassistantcount;$i++){
+			$inarray[0] = $i;
+			$inarray[1] = $data['boothassistant'.$i.''];
+			$result[] = implode(',',$inarray);
+		}
+
+		$result[] = '';
+		$result[] = 'ADDITIONAL EXHIBITOR PASS (PAYABLE)';
+		$result[] = '';
+
+		
+		for($i=1;$i<=$addboothassistantcount;$i++){
+			$inarray[0] = $i;
+			$inarray[1] = $data['addboothname'.$i.''];
+			$result[] = implode(',',$inarray);
+		}
+
+
+		
+
+
+		$result = implode("\r\n",$result);
+		return Response::make($result,'200',$header);
+	    
+
+	}
+
+
 }
 
 ?>

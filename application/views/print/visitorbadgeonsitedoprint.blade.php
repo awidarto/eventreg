@@ -87,7 +87,11 @@ padding:0 5px;
 </style>
 <div id="preview-card">
 	<div class="card-template-area">
-		{{ HTML::image('images/idcard-template-visitor.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		@if($profile['role']=='VIP' || $profile['role']=='VVIP')
+			{{ HTML::image('images/idcard-template-vip.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		@else
+			{{ HTML::image('images/idcard-template-visitor2.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		@endif
 		<div class="headarea">
 			<p class="fullname"><?php echo $profile['firstname'].' '.$profile['lastname'];?>
 			<small class="companyname"><?php echo $profile['company'];?></p>

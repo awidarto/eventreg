@@ -36,8 +36,8 @@ class Onsite_Controller extends Base_Controller {
 
 
 	public function __construct(){
-		$this->crumb = new Breadcrumb();
-		$this->crumb->add('onsite','Dashboard');
+		//$this->crumb = new Breadcrumb();
+		//$this->crumb->add('onsite','Dashboard');
 
 		date_default_timezone_set('Asia/Jakarta');
 		$this->filter('before','auth');
@@ -1633,13 +1633,21 @@ class Onsite_Controller extends Base_Controller {
 		$exhibitorid = Input::get('exhibitorid');
 		$exhibitorname = Input::get('companyname');
 		$nameboothasst = Input::get('passname');
+		$type = Input::get('type');
 		
 		$data['companyname'] = $exhibitorname;
 		$data['exhibitorid'] = $exhibitorid;
-		$data['role'] = 'BA2';
+
+		if($type == 'freepassname'){
+			$data['role'] = 'BA1';
+		}else{
+			$data['role'] = 'BA2';
+		}	
+
 		$data['name'] = $nameboothasst;
 		$data['creator'] = Auth::user()->fullname;
 		$data['creatorid'] = Auth::user()->id;
+		$data['type'] = $type;
 
 		
 
@@ -1856,32 +1864,33 @@ class Onsite_Controller extends Base_Controller {
 	}
 
 
-	public function get_fileview($id){
-		$_id = new MongoId($id);
 
-		$document = new Document();
 
-		$doc = $document->get(array('_id'=>$_id));
+	public function get_report()
+	{
 
-		//$file = URL::to(Config::get('kickstart.storage').$id.'/'.$doc['docFilename']);
+		$visitor = new Visitor();
+	    
 
-		$file = URL::base().'/storage/'.$id.'/'.$doc['docFilename'];
+		$stat['VS'] = $visitor->count(array('role'=>'VS'));
 
-		return View::make('pop.fileview')->with('doc',$doc)->with('href',$file);
-	}
+		$stat['VIP'] = $visitor->count(array('role'=>'VIP'));
 
-	public function get_approve($id){
-		$id = new MongoId($id);
+		$stat['VVIP'] = $visitor->count(array('role'=>'VVIP'));
 
-		$document = new Document();
+		$stat['OC'] = $visitor->count(array('role'=>'OC'));
 
-		$doc = $document->get(array('_id'=>$id));
-
-		$form = new Formly();
-
-		$file = URL::base().'/storage/'.$id.'/'.$doc['docFilename'];
+		$stat['Visitor'] = $visitor->count();
+		$this->crumb = new Breadcrumb();
+		$this->crumb->add('','On Site Report');
 		
-		return View::make('pop.approval')->with('doc',$doc)->with('form',$form)->with('href',$file);
+		
+
+		return View::make('onsite.report')
+			->with('title','On site Report')
+			->with('stat',$stat)
+			
+			->with('crumb',$this->crumb);
 	}	
 
 }

@@ -14,9 +14,18 @@
   </div>
 
   <div id="step-2">
-    <h2 class="StepTitle">ELECTRICITY INSTALLATION</h2>
+    @if(isset($data['submitform1']))
+        <div class="alert alert-warning insideform">
+          Form #1 already submitted .
+        </div>
+    @endif
+
     <div id="page-wrap">
-        <table id="order-table">
+        @if(isset($data['submitform1']))
+        <div class="disableforminput">
+        @endif
+
+          <table id="order-table">
             <tr>
                  <th>No.</th>
                  <th>ELECTRICITY</th> 
@@ -161,85 +170,98 @@
         <div class="clear"></div>
 
         @include('partials.operationalform.step2')
-        
-       
 
+        @if(isset($data['submitform1']))
+          </div>
+        @endif
     </div>
   </div>
 
   <div id="step-3">
-        <h2 class="StepTitle">TELEPHONE INSTALLATION</h2>
-        <div id="page-wrap">
-            <table id="order-table">
-                <tr>
-                     <th>No.</th>
-                     <th>TELEPHONE TYPE</th> 
-                     <th>PRICE/UNIT</th>
-                     <th>QUANTITY</th>
-                     <th style="padding-right: 30px;">SUB TOTAL (USD)</th> 
-                </tr>
-                <tr class="odd">
-                    <td>1</td>
-                    <td class="product-title"><strong>Dial 9</strong><br/>
-                    • Service coverage: local call only (within Jakarta).<br/>
-                    • Price includes call credit & installation.
-                    </td>
-                    <td class="price-per-pallet">USD <span>225</span></td>
-                    <td class="num-pallets"><input type="text" class="num-pallets-input-phone" id="sparkle-num-pallets" name="phone1" value="{{$data['phone1']}}"></input></td>
-                    <td class="row-total"><input type="text" class="row-total-input-phone" id="sparkle-row-total" disabled="disabled" value="{{$data['rowphone1']}}"></input>
-                      <input type="hidden" class="row-total-input" id="" name="rowphone1" value="{{$data['rowphone1']}}"></input>
-                    </td>
-                </tr>
-                <tr class="even">
-                    <td>2</td>
-                    <td class="product-title"><Strong>Hotline</strong><br/>
-                    • Service coverage: local, national, mobile phone, credit or debit card authorization.<br/>
-                    • Commonly used for EDC / credit card purchasing.<br/>
-                    • Price includes call credit & installation.<br/>
-                    • Call back is not applicable.<br/></td>
-                    
-                    <td class="price-per-pallet">USD <span>358</span></td>
-                    <td class="num-pallets"><input type="text" class="num-pallets-input-phone" id="turface-mvp-num-pallets" name="phone2" value="{{$data['phone2']}}"></input></td>
-                    <td class="row-total"><input type="text" class="row-total-input-phone" id="turface-mvp-row-total" disabled="disabled" value="{{$data['rowphone2']}}"></input>
-                      <input type="hidden" class="row-total-input" id="" name="rowphone2" value="{{$data['rowphone2']}}"></input>
-                    </td>
-                </tr>
-                
-            </table>
-
-            <table class="total-table">
-              <tr class="hideTable">
-                <td class="grayTable alignRight">Total (USD)</td>
-                <td class="result">USD <span id="subTotalPhone">{{$data['phonesubtotal']}}</span></td>
-                <input type="hidden" class="" id="phonesubtotal" name="phonesubtotal" value="{{$data['phonesubtotal']}}"></input>
-              </tr>
-              <tr class="hideTable">
-                <td class="grayTable alignRight">Late Order Surcharge 30%</td>
-                <td class="result">USD</td>
-                <input type="hidden" class="" id="" name="phonelate" value="{{$data['phonelate']}}"></input>
-              </tr>
-              <tr class="hideTable">
-                <td class="grayTable alignRight">On-Site Order Surcharge 50%</td>
-                <td class="result">USD</td>
-                <input type="hidden" class="" id="" name="phoneonsite" value="{{$data['phoneonsite']}}"></input>
-              </tr>
-              <tr class="hideTable">
-                <td class="grayTable alignRight">PPn (VAT) Tax 10%</td>
-                <td class="result">USD<span id="faxTotalPhone">{{$data['phonetax']}}</span></td>
-                <input type="hidden" class="" id="phonetax" name="phonetax" value="{{$data['phonetax']}}"></input>
-              </tr>
-              <tr>
-                <td class="grayTable alignRight">Grand Total</td>
-                <td class="result">USD<span id="grandTotalPhone">{{$data['phonegrandtotal']}}</span></td>
-                <input type="hidden" class="" id="phonegrandtotal" name="phonegrandtotal" value="{{$data['phonegrandtotal']}}"></input>
-              </tr>
-            </table>
-            
-            <div class="clear"></div>
-
-            @include('partials.operationalform.step3')
-            
+    <h2 class="StepTitle">TELEPHONE INSTALLATION</h2>
+    @if(isset($data['submitform2']))
+        <div class="alert alert-warning insideform">
+          Form #2 already submitted .
         </div>
+    @endif
+    <div id="page-wrap">
+    @if(isset($data['submitform2']))
+    <div class="disableforminput">
+    @endif
+    <table id="order-table">
+        <tr>
+             <th>No.</th>
+             <th>TELEPHONE TYPE</th> 
+             <th>PRICE/UNIT</th>
+             <th>QUANTITY</th>
+             <th style="padding-right: 30px;">SUB TOTAL (USD)</th> 
+        </tr>
+        <tr class="odd">
+            <td>1</td>
+            <td class="product-title"><strong>Dial 9</strong><br/>
+            • Service coverage: local call only (within Jakarta).<br/>
+            • Price includes call credit & installation.
+            </td>
+            <td class="price-per-pallet">USD <span>225</span></td>
+            <td class="num-pallets"><input type="text" class="num-pallets-input-phone" id="sparkle-num-pallets" name="phone1" value="{{$data['phone1']}}"></input></td>
+            <td class="row-total"><input type="text" class="row-total-input-phone" id="sparkle-row-total" disabled="disabled" value="{{$data['rowphone1']}}"></input>
+              <input type="hidden" class="row-total-input" id="" name="rowphone1" value="{{$data['rowphone1']}}"></input>
+            </td>
+        </tr>
+        <tr class="even">
+            <td>2</td>
+            <td class="product-title"><Strong>Hotline</strong><br/>
+            • Service coverage: local, national, mobile phone, credit or debit card authorization.<br/>
+            • Commonly used for EDC / credit card purchasing.<br/>
+            • Price includes call credit & installation.<br/>
+            • Call back is not applicable.<br/></td>
+            
+            <td class="price-per-pallet">USD <span>358</span></td>
+            <td class="num-pallets"><input type="text" class="num-pallets-input-phone" id="turface-mvp-num-pallets" name="phone2" value="{{$data['phone2']}}"></input></td>
+            <td class="row-total"><input type="text" class="row-total-input-phone" id="turface-mvp-row-total" disabled="disabled" value="{{$data['rowphone2']}}"></input>
+              <input type="hidden" class="row-total-input" id="" name="rowphone2" value="{{$data['rowphone2']}}"></input>
+            </td>
+        </tr>
+        
+    </table>
+
+    <table class="total-table">
+      <tr class="hideTable">
+        <td class="grayTable alignRight">Total (USD)</td>
+        <td class="result">USD <span id="subTotalPhone">{{$data['phonesubtotal']}}</span></td>
+        <input type="hidden" class="" id="phonesubtotal" name="phonesubtotal" value="{{$data['phonesubtotal']}}"></input>
+      </tr>
+      <tr class="hideTable">
+        <td class="grayTable alignRight">Late Order Surcharge 30%</td>
+        <td class="result">USD</td>
+        <input type="hidden" class="" id="" name="phonelate" value="{{$data['phonelate']}}"></input>
+      </tr>
+      <tr class="hideTable">
+        <td class="grayTable alignRight">On-Site Order Surcharge 50%</td>
+        <td class="result">USD</td>
+        <input type="hidden" class="" id="" name="phoneonsite" value="{{$data['phoneonsite']}}"></input>
+      </tr>
+      <tr class="hideTable">
+        <td class="grayTable alignRight">PPn (VAT) Tax 10%</td>
+        <td class="result">USD<span id="faxTotalPhone">{{$data['phonetax']}}</span></td>
+        <input type="hidden" class="" id="phonetax" name="phonetax" value="{{$data['phonetax']}}"></input>
+      </tr>
+      <tr>
+        <td class="grayTable alignRight">Grand Total</td>
+        <td class="result">USD<span id="grandTotalPhone">{{$data['phonegrandtotal']}}</span></td>
+        <input type="hidden" class="" id="phonegrandtotal" name="phonegrandtotal" value="{{$data['phonegrandtotal']}}"></input>
+      </tr>
+    </table>
+    
+    <div class="clear"></div>
+
+    @include('partials.operationalform.step3')
+
+    @if(isset($data['submitform2']))
+    </div>
+    @endif
+
+    </div>
   </div>
 
   <div id="step-4">
@@ -334,6 +356,14 @@
       
       <br/>
       <br/>
+      @if(!isset($data['submitform7']) || $data['submitform7']!='true')
+        <div class="clear"></div>
+        <a href="#" id="submitform7" class="buttonSubmitIndividual">Submit Form 7</a>
+      @endif
+
+      @if(isset($data['submitform7']))
+        </div>
+      @endif
     </div>                     
   </div>
 
@@ -343,7 +373,15 @@
 
   <div id="step-10">
     <h2 class="StepTitle">ADVERTISING</h2>
+    @if(isset($data['submitform9']))
+        <div class="alert alert-warning insideform">
+          Form #9 already submitted .
+        </div>
+    @endif
     <div id="page-wrap">
+        @if(isset($data['submitform9']))
+          <div class="disableforminput">
+        @endif
         <table id="order-table">
             <tr>
                  <th>No.</th>
@@ -393,12 +431,23 @@
           </tr>
         </table>
         @include('partials.operationalform.step10')
+        @if(isset($data['submitform9']))
+          </div>
+        @endif
     </div>
   </div>
 
   <div id="step-11">
-    <h2 class="StepTitle">FURNITURE RENTAL</h2>   
+    <h2 class="StepTitle">FURNITURE RENTAL</h2>
+    @if(isset($data['submitform10']))
+        <div class="alert alert-warning insideform">
+          Form #10 already submitted .
+        </div>
+    @endif
     <div id="boothcontractor">
+      @if(isset($data['submitform10']))
+        <div class="disableforminput">
+      @endif
       <br/>
       <p>Please fill in the box with the quantity of your order:</p>
       <div class="clear"></div>
@@ -526,12 +575,23 @@
       <br/>
       @include('partials.operationalform.step11') 
       <br/>
+      @if(isset($data['submitform10']))
+        </div>
+      @endif
     </div>                     
   </div> 
 
   <div id="step-12">
     <h2 class="StepTitle">INTERNET CONNECTION</h2>
+    @if(isset($data['submitform11']))
+        <div class="alert alert-warning insideform">
+          Form #11 already submitted .
+        </div>
+    @endif
     <div id="page-wrap">
+        @if(isset($data['submitform11']))
+          <div class="disableforminput">
+        @endif
         <table id="order-table">
             <tr>
                  <th>INTERNET CONNECTION (CABLE)</th>
@@ -601,13 +661,23 @@
         <div class="clear"></div>
 
         @include('partials.operationalform.step12')
-        
+        @if(isset($data['submitform11']))
+          </div>
+        @endif
     </div>
   </div>
 
   <div id="step-13">
     <h2 class="StepTitle">KIOSK RENTAL</h2>
+    @if(isset($data['submitform12']))
+        <div class="alert alert-warning insideform">
+          Form #12 already submitted .
+        </div>
+    @endif
     <div id="page-wrap">
+        @if(isset($data['submitform12']))
+          <div class="disableforminput">
+        @endif
         <table id="order-table">
             <tr>
                  <th>KIOSK RENTAL</th>
@@ -681,7 +751,9 @@
           </tr>
         </table>
         @include('partials.operationalform.step13')
-        
+        @if(isset($data['submitform12']))
+          </div>
+        @endif
     </div>
   </div>
 
@@ -698,6 +770,15 @@
           transitionEffect: 'slideleft',
           keyNavigation: false,
           enableAllSteps: true
+        });
+
+        //disable input
+        $(".disableforminput input").each(function() {
+         var valString = $(this).val();
+         $(this).attr('disabled','disabled');
+         if(valString!=0 && valString!=''){
+          $(this).addClass('inputhightlights');
+         }
         });
         
 
@@ -731,7 +812,112 @@
      
             $('#text_counter').text('Characters left: ' + left);
         });
-  }); 
+
+        //
+        
+  });
+
+  //submit individual
+  $('#submitform1').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform1").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+
+  $('#submitform2').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform2").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+
+  $('#submitform3').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform3").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+  $('#submitform4').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform4").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+  $('#submitform5').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform5").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+  $('#submitform6').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform6").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+  $('#submitform7').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform7").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+  $('#submitform8').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform8").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+  $('#submitform9').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform9").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+  $('#submitform10').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform10").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+  $('#submitform11').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform11").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+  $('#submitform12').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform12").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      frm.submit();
+  });
+  
+
 </script>
 {{ HTML::script('js/edit_order.js') }}
 

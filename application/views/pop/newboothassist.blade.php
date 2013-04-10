@@ -10,9 +10,10 @@
 		<br/>
 		<br/>
 		<br/>
-		<h3 id="myModalLabel">Please Input detail company first:</h3>
+		<h3 id="myModalLabel">Please Input data:</h3>
 		
 		{{ $form->hidden('exhibitorid','',array('id'=>'exhibitorid'))}}
+		{{ $form->text('code','Voucher Code.req','',array('id'=>'codebooth','class'=>'span4'))}}
         {{ $form->text('exhibitor','Company Name ( autocomplete, use company name to search ).req','',array('id'=>'exhibitorName','class'=>'auto_exhibitor span8'))}}
         {{ $form->text('name','Input Full Name.req','',array('id'=>'boothnameinput','class'=>' span8'))}}
         <button class="btn update" id="submitaddassistant">Submit</button>
@@ -41,8 +42,10 @@ $('#submitaddassistant').click(function(){
     var current_pass_name = $('#boothnameinput').val();
     var companyname = $('#exhibitorName').val();
     var exhibitorid = $('#exhibitorid').val();
-    var current_type = 'addboothname';
+    var codebooth = $('#codebooth').val().toUpperCase();
 
+    
+    
     <?php
       $ajaxonsitefreeadd = (isset($ajaxonsitefreeadd))?$ajaxonsitefreeadd:'/';
     ?>
@@ -50,8 +53,20 @@ $('#submitaddassistant').click(function(){
     	
 	    alert('Error, cannot proccess data, please try again');
 
+	}else if(codebooth !='K' && codebooth!='M' && codebooth!='H'){
+		alert('Error, wrong voucher code, please try again');
 	}else{
-	 	$.post('{{ URL::to($ajaxonsitefreeadd) }}',{'exhibitorid':exhibitorid,'companyname':companyname,'passname':current_pass_name}, function(data) {
+		if(codebooth == 'K'){
+			var current_type = 'addboothname';
+		}else if(codebooth == 'M'){
+
+			var current_type = 'freepassname';
+
+		}else if(codebooth == 'H'){
+			var current_type = 'boothassistant';
+		}
+
+	 	$.post('{{ URL::to($ajaxonsitefreeadd) }}',{'exhibitorid':exhibitorid,'companyname':companyname,'passname':current_pass_name,'type':current_type}, function(data) {
 	    	
 	    	
 

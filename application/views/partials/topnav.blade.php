@@ -28,13 +28,15 @@
         @endif        
 
 
-        @if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'onsite' )
+        @if(Auth::user()->role == 'root' || Auth::user()->role == 'super' )
             <li>{{ HTML::link('visitor','Visitors')}}</li>
             
             <li>{{ HTML::link('official','Officials')}}</li>
             <li>{{ HTML::link('exhibitor','Exhibitors')}}</li>
             <li>{{ HTML::link('booth','Booth')}}</li>
-
+        @elseif(Auth::user()->role == 'onsite')
+            <li>{{ HTML::link('onsite/report','Onsite Report')}}</li>
+            
         @elseif( Auth::user()->role == 'exhibitionadmin' )
             <li>{{ HTML::link('exhibitor','Exhibitors')}}</li>
             <li>{{ HTML::link('booth','Booth')}}</li>

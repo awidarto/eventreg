@@ -5,7 +5,7 @@
 	<div style="width:100%;position:relative;display:block;">
 		<div style="position:relative;display:inline-block;float:left;margin:0 30px 20px 0;">{{ HTML::image('images/ipa-logo.jpg','ipalogo',array('class'=>'')) }}</div>
 		<div style="width:80%;position:relative;display:inline-block;float:left;">
-			<h2 style="display:inline-block;margin:15px 0 0 7px;">CONFIRMATION OF OPERATIONAL FORMS</h2><br/>
+			<h2 style="display:inline-block;margin:15px 0 0 7px;">CONFIRMATION OF OPERATIONAL FORM #{{$formnumber}}</h2><br/>
 			<h3 style="display:inline-block;margin:0 0 0 4px;">THE 37TH IPA CONVENTION AND EXHIBITION 2013</h3><br/>
 			<h5 style="display:inline-block;margin:0 0 0 4px;">JAKARTA CONVENTION CENTER, 15-17 MAY 2013</h5>
 		</div>
@@ -20,7 +20,7 @@
 
 	Please check again if this reciept is match your needs.<br/>
 
-	Please print the form, sign and email this form to your Hall Coordinator<br/>
+	Please signed this confirmation letter and send it back to the organizer.<br/>
 
 	After we receive the confirmation letter, we will send you an invoice and payment information.<br/>
 	</p>

@@ -773,7 +773,7 @@ class Exhibitor_Controller extends Base_Controller {
 					->with('id',$id)
 					->with('ajaxImportBoothAssistant',URL::to('boothassistant/individual'))
 					->with('crumb',$this->crumb)
-					->with('title','Import Booth Assistanf for '.$userdata['company'].', '.$userdata['registrationnumber']);
+					->with('title','Import Booth Assistant for '.$userdata['company'].', '.$userdata['registrationnumber']);
 
 	}
 
@@ -1219,6 +1219,40 @@ class Exhibitor_Controller extends Base_Controller {
 		->with('profile',$data);
 	}
 
+	public function get_printbadgeall($boothassistantdata_id,$exhibitorid){
+		
+		$boothassistantdata = new Boothassistant();
+		$ex = new Exhibitor();
+		$booths = new Booth();
+		$formData = new Operationalform();
+		
+		$_id = new MongoId($boothassistantdata_id);
+		$_exhibitorid = new MongoId($exhibitorid);
+
+		//find user first
+		$data = $boothassistantdata->get(array('_id'=>$_id));
+		$exhibitor = $ex->get(array('_id'=>$_exhibitorid));
+		$user_form = $formData->get(array('userid'=>$exhibitorid));
+
+		$booth = '';
+
+
+		if(isset($exhibitor['boothid'])){
+			$_boothID = new MongoId($exhibitor['boothid']);
+			$booth = $booths->get(array('_id'=>$_boothID));
+		}
+
+		return View::make('print.exhibitorbadgeall')
+		
+		->with('profile',$data)
+		->with('booth',$booth)
+		->with('user_form',$user_form)
+		->with('exhibitorid',$exhibitorid)
+		->with('exhibitor',$exhibitor);
+	}
+
+	
+
 	public function get_newprintbadgeonsite($registrationnumber,$name,$companyname,$type){
 		$data = Input::get();
 		$data['name'] = $name;
@@ -1238,6 +1272,76 @@ class Exhibitor_Controller extends Base_Controller {
 		return View::make('print.exhibitorbadgeonsite2')
 		
 		->with('profile',$data);
+	}
+
+	public function post_editboothassname(){
+		$bootdataid = Input::get('bootdataid');
+		$operationalformid = Input::get('operationalformid');
+		$name = Input::get('new_value');
+		$boothid = Input::get('elementid');
+		
+		//$displaytax = Input::get('foo');
+
+		$boothdata = new Boothassistant();
+
+		$operationalform = new Operationalform();
+
+		if(is_null($bootdataid)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$_operationalid = new MongoId($operationalformid);
+			$_boothid = new MongoId($bootdataid);
+
+			
+			
+
+			if($obj = $operationalform->update(array('_id'=>$_operationalid),array('$set'=>array($boothid=>$name)))){
+				if($bootdataid!=''){
+					$boothdata->update(array('_id'=>$_boothid),array('$set'=>array($boothid=>$name)));
+				}
+				$result = $name;
+				
+			}else{
+				
+				$result = array('status'=>'ERR','data'=>'DELETEFAILED');
+			}
+		}
+
+		return $result;
+	}
+
+
+	public function post_addboothassname(){
+		$bootdataid = Input::get('bootdataid');
+		$operationalformid = Input::get('operationalformid');
+		$name = Input::get('new_value');
+		$boothid = Input::get('elementid');
+		
+		//$displaytax = Input::get('foo');
+
+		$boothdata = new Boothassistant();
+
+		$operationalform = new Operationalform();
+
+		if(is_null($bootdataid)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$_operationalid = new MongoId($operationalformid);
+			$_boothid = new MongoId($bootdataid);
+
+			if($obj = $operationalform->update(array('_id'=>$_operationalid),array('$set'=>array($boothid=>$name)))){
+				
+				$result = $name;
+				
+			}else{
+				
+				$result = array('status'=>'ERR','data'=>'DELETEFAILED');
+			}
+		}
+
+		return $result;
 	}
 
 }

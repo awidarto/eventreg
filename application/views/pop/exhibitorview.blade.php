@@ -174,14 +174,14 @@
 			        	@for($i=1;$i<=$boothassistantcount;$i++)
 				            <tr>
 				              <td>{{ $i }}. </td>
-				              <td class="passname">{{ $boothassistantdata['boothassistant'.$i.''] }}</td>
+				              <td class="passname"><div class="boothasstName" id="boothassistant{{ $i }}" rel="{{$boothassistantdata['boothassistant'.$i.'regnumber']}}" type="ba2">{{ $boothassistantdata['boothassistant'.$i.''] }}</div></td>
 			                  <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['freepassname'.$i.'timestamp']->sec) }}</td>
 			                  @if(isset($boothassistantdata['boothassistant'.$i.'print']))
-			                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual reprintbadge" id="freepassname{{ $i }}"  data-toggle="modal" href="#" ><span class="formstatus" id="" >already printed {{ $boothassistantdata['freepassname'.$i.'print']}}</span></a></td>
+			                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual reprintbadge" id="boothassistant{{ $i }}"  data-toggle="modal" href="#" ><span class="formstatus" id="boothassistant{{ $i }}" >already printed {{ $boothassistantdata['boothassistant'.$i.'print']}}</span></a></td>
 			                  @else
-			                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual printbadge" id="boothassist{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="boothassist{{ $i }}" > Print this data</span></a></td>
+			                  	<td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- importidividual printbadge" id="boothassistant{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="boothassistant{{ $i }}" > Print this data</span></a></td>
 			                  @endif
-			                  <td><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['boothassistant'.$i.'regnumber']}}/{{$boothassistantdata['boothassistant'.$i.'']}}/{{ $exhibitor['company'] }}/ba2/" id="printbadgeboothassist{{ $i }}"  style="display:none;" class="span12"></iframe></td>
+			                  <td id="iframeboothassistant{{ $i }}"><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['boothassistant'.$i.'regnumber']}}/{{$boothassistantdata['boothassistant'.$i.'']}}/{{ $exhibitor['company'] }}/ba2/" id="printbadgeboothassistant{{ $i }}"  style="display:none;" class="span12"></iframe></td>
 				            </tr>
 
 			        	@endfor
@@ -212,7 +212,7 @@
 
 				            <tr>
 				              <td>{{ $i }}. </td>
-				              <td class="passname">{{ $boothassistantdata['addboothname'.$i.''] }}</td>			              
+				              <td class="passname"><div class="boothasstName" id="addboothname{{ $i }}" rel="{{$boothassistantdata['addboothname'.$i.'regnumber']}}" type="ba2">{{ $boothassistantdata['addboothname'.$i.''] }}</div></td>			              
 			                  <td class="aligncenter action" >Imported on {{ date('d-m-Y',  $boothassistantdata['addboothname'.$i.'timestamp']->sec) }}</td>
 			                  <td id="status_addboothname{{ $i }}" class="align-center status"><span class="icon- fontGreen existtrue">&#xe20c;</span></td>
 				            </tr>

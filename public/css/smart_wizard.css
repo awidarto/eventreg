@@ -234,6 +234,23 @@
   box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset;
   color: #fff;  
 }
+.swMain .buttonSubmitIndividual {
+  display:block;
+  float:right;
+  margin:5px 3px 10px 3px;
+  padding:5px;
+  text-decoration: none;
+  text-align: center;
+  font: bold 13px Verdana, Arial, Helvetica, sans-serif;
+  width:150px;
+  color:#FFF;
+  background: #b60002;
+  border: 1px solid #1e728c;
+  -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset;
+  -moz-box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset;
+  color: #fff;  
+}
 .swMain .buttonDisabled {
   color:#F8F8F8  !important;
   background-color: #CCCCCC !important;
@@ -263,7 +280,7 @@
   text-decoration: none;
   text-align: center;
   font: bold 13px Verdana, Arial, Helvetica, sans-serif;
-  width:100px;
+  width:120px;
   color:#FFF;
   outline-style:none;
   background-color: #5da423;

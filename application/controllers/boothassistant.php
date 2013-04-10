@@ -267,27 +267,22 @@ class Boothassistant_Controller extends Base_Controller {
 			if(!isset($datafind)){
 				
 				if($obj = $boothassistant->insert($data)){
-					
-					
 
 					if($objs = $boothassistant->update(array('_id'=>$obj['_id']),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$regnumberall,$type.$typeid.'timestamp'=>new MongoDate() ))) ){
-
-						$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'));	
+						$idtostring = $obj['_id']->__toString();
+						$result = array('status'=>'OK','message'=>'<span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;Imported on '.date('d-m-Y'),'regnumber'=>$regnumberall,'boothid'=>$idtostring);	
 					}
 				}
 
 			}else{
 
 				$_id = $datafind['_id'];
-				
+				$idtostring = $datafind['_id']->__toString();
 				
 				if($objs = $boothassistant->update(array('_id'=>$_id),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$regnumberall,$type.$typeid.'timestamp'=>new MongoDate() ))) ){
 											
-					$result = array('status'=>'OK','message'=>'Imported on '.date('d-m-Y'));	
+					$result = array('status'=>'OK','message'=>'<span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;Imported on '.date('d-m-Y'),'regnumber'=>$regnumberall,'boothid'=>$idtostring);	
 				}
-				
-				
-				
 				
 			}
 
