@@ -339,6 +339,8 @@
             </div>
         </fieldset>
 
+      @else
+        {{ $form->hidden('golf','No')}}
       @endif
 
       <fieldset>
