@@ -35,7 +35,7 @@ return array(
 	|	'encryption' =>	'ssl',
 	*/
 
-	/*'transports' => array(
+	'transports' => array(
 
 		'smtp' => array(
 			'host'       =>	'mail.dyandra.com', 
@@ -51,9 +51,9 @@ return array(
 
 		'mail',
 
-	),*/
+	),
 
-	'transports' => array(
+	/*'transports' => array(
 
 		'smtp' => array(
 			'host'       =>	'smtp.gmail.com', 
@@ -69,5 +69,5 @@ return array(
 
 		'mail',
 
-	),
+	),*/
 );
