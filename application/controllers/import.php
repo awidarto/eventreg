@@ -84,6 +84,7 @@ class Import_Controller extends Base_Controller {
 		$this->crumb->add('import/preview','Preview');
 
 		if($type == 'exhibitor'){
+			
 			$import = new Import();
 
 			$_importid = new MongoId($id);
@@ -379,7 +380,7 @@ class Import_Controller extends Base_Controller {
 			'aaData'=>$aadata,
 			'qrs'=>$q
 		);
-
+		
 		return Response::json($result);
 	}
 

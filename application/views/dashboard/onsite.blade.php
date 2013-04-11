@@ -127,7 +127,7 @@
 			         <div class="image-wrapper">
 			            <span class="icon icon-users"></span>
 			         </div>
-			         <span class="app-label">Register  Booth Assist</span>
+			         <span class="app-label">Register  Exhibitor Pass</span>
 			      </a>
 
 			      <a class="tile app bg-color-red" href="{{ URL::to('onsite/report') }}">

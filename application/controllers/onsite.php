@@ -1649,9 +1649,6 @@ class Onsite_Controller extends Base_Controller {
 		$data['creatorid'] = Auth::user()->id;
 		$data['type'] = $type;
 
-		
-
-
 		$reg_number[0] = 'A';
 		$reg_number[1] = $data['role'];
 		//$reg_number[2] = '00';
@@ -1687,7 +1684,6 @@ class Onsite_Controller extends Base_Controller {
 		$type = Input::get('type');
 		$typeid = Input::get('typeid');
 		$typeid = intval($typeid);
-		
 		
 
 		$exhibitor = new Exhibitor();

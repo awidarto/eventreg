@@ -143,7 +143,7 @@ class Attendee_Controller extends Base_Controller {
 
 		$rel = array('like','like','like','like','like','like','like','like');
 
-		$cond = array('both','both','both','both','both','both','both','both','both');
+		$cond = array('both','both','both','both','both','both','both','both');
 
 		$pagestart = Input::get('iDisplayStart');
 		$pagelength = Input::get('iDisplayLength');
