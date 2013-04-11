@@ -712,6 +712,8 @@ class Attendee_Controller extends Base_Controller {
 			$this->crumb->add('attendee/type/'.$type,depttitle($type));
 			$this->crumb->add('attendee/add','New Attendee');
 		}
+
+		$attendee = new Attendee();
 		$golfcount = $attendee->count(array('golf'=>'Yes'));
 
 		$form = new Formly();
