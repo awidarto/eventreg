@@ -17,14 +17,14 @@
 
     <h2 class="StepTitle">ELECTRICITY INSTALLATION</h2>
 
-    @if(isset($data['submitform1']))
+    @if(isset($data['submitform1']) && $data['submitform1'] == 'true' )
         <div class="alert alert-warning insideform">
           Form #1 already submitted .
         </div>
     @endif
 
     <div id="page-wrap">
-        @if(isset($data['submitform1']))
+        @if(isset($data['submitform1']) && $data['submitform1'] == 'true')
         <div class="disableforminput">
         @endif
         <table id="order-table">
@@ -169,7 +169,7 @@
 
         @include('partials.operationalform.step2')
 
-        @if(isset($data['submitform1']))
+        @if(isset($data['submitform1']) && $data['submitform1'] == 'true' )
           </div>
         @endif
         
@@ -178,14 +178,14 @@
 
   <div id="step-3">
     <h2 class="StepTitle">TELEPHONE INSTALLATION</h2>
-    @if(isset($data['submitform2']))
+    @if(isset($data['submitform2']) && $data['submitform2'] == 'true')
         <div class="alert alert-warning insideform">
           Form #2 already submitted .
         </div>
     @endif
     <div id="page-wrap">
 
-        @if(isset($data['submitform2']))
+        @if(isset($data['submitform2']) && $data['submitform2'] == 'true')
         <div class="disableforminput">
         @endif
         <table id="order-table">
@@ -256,7 +256,7 @@
         <div class="clear"></div>
         @include('partials.operationalform.step3')
 
-        @if(isset($data['submitform2']))
+        @if(isset($data['submitform2']) && $data['submitform2'] == 'true')
         </div>
         @endif
         
@@ -356,7 +356,7 @@
         <a href="#" id="submitform7" class="buttonSubmitIndividual">Submit Form 7</a>
       @endif
 
-      @if(isset($data['submitform7']))
+      @if(isset($data['submitform7']) && $data['submitform7'] == 'true')
         </div>
       @endif
   </div>
@@ -370,13 +370,13 @@
   <div id="step-10">
     
     <h2 class="StepTitle">ADVERTISING</h2>
-    @if(isset($data['submitform9']))
+    @if(isset($data['submitform9']) && $data['submitform9'] == 'true')
         <div class="alert alert-warning insideform">
           Form #9 already submitted .
         </div>
     @endif
     <div id="page-wrap">
-        @if(isset($data['submitform9']))
+        @if(isset($data['submitform9']) && $data['submitform9'] == 'true')
           <div class="disableforminput">
         @endif
         <table id="order-table">
@@ -433,7 +433,7 @@
         </table>
         
         @include('partials.operationalform.step10')
-        @if(isset($data['submitform9']))
+        @if(isset($data['submitform9']) && $data['submitform9'] == 'true')
           </div>
         @endif
         
@@ -442,13 +442,13 @@
 
   <div id="step-11">
     <h2 class="StepTitle">FURNITURE RENTAL</h2>
-    @if(isset($data['submitform10']))
+    @if(isset($data['submitform10']) && $data['submitform10'] == 'true')
         <div class="alert alert-warning insideform">
           Form #10 already submitted .
         </div>
     @endif
     <div id="boothcontractor">
-      @if(isset($data['submitform10']))
+      @if(isset($data['submitform10']) && $data['submitform10'] == 'true')
         <div class="disableforminput">
       @endif
       <br/>
@@ -570,7 +570,7 @@
       <br/>
       @include('partials.operationalform.step11')  
       <br/>
-      @if(isset($data['submitform10']))
+      @if(isset($data['submitform10']) && $data['submitform10'] == 'true')
         </div>
       @endif
     </div>                     
@@ -578,13 +578,13 @@
 
   <div id="step-12">
     <h2 class="StepTitle">INTERNET CONNECTION</h2>
-    @if(isset($data['submitform11']))
+    @if(isset($data['submitform11']) && $data['submitform11'] == 'true')
         <div class="alert alert-warning insideform">
           Form #11 already submitted .
         </div>
     @endif
     <div id="page-wrap">
-        @if(isset($data['submitform11']))
+        @if(isset($data['submitform11']) && $data['submitform11'] == 'true')
           <div class="disableforminput">
         @endif
         <table id="order-table">
@@ -657,7 +657,7 @@
         </table>
         @include('partials.operationalform.step12')
 
-        @if(isset($data['submitform11']))
+        @if(isset($data['submitform11']) && $data['submitform11'] == 'true')
           </div>
         @endif
         
@@ -666,13 +666,13 @@
 
   <div id="step-13">
     <h2 class="StepTitle">KIOSK RENTAL</h2>
-    @if(isset($data['submitform12']))
+    @if(isset($data['submitform12']) && $data['submitform12'] == 'true')
         <div class="alert alert-warning insideform">
           Form #12 already submitted .
         </div>
     @endif
     <div id="page-wrap">
-        @if(isset($data['submitform12']))
+        @if(isset($data['submitform12']) && $data['submitform12'] == 'true')
           <div class="disableforminput">
         @endif
         <table id="order-table">
@@ -749,7 +749,7 @@
         </table>
         @include('partials.operationalform.step13')
 
-        @if(isset($data['submitform12']))
+        @if(isset($data['submitform12']) && $data['submitform12'] == 'true')
           </div>
         @endif
     </div>

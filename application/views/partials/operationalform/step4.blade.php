@@ -1,12 +1,12 @@
 <h2 class="StepTitle">BOOTH CONTRACTOR (SPECIAL DESIGN ONLY)</h2>
   
-  @if(isset($data['submitform3']))
+  @if(isset($data['submitform3']) && $data['submitform3'] == 'true')
       <div class="alert alert-warning insideform">
         Form #3 already submitted .
       </div>
   @endif   
   <div id="boothcontractor">
-    @if(isset($data['submitform3']))
+    @if(isset($data['submitform3']) && $data['submitform3'] == 'true')
       <div class="disableforminput">
     @endif
     <br/>
@@ -57,7 +57,7 @@
       <a href="#" id="submitform3" class="buttonSubmitIndividual">Submit Form 3</a>
     @endif
 
-    @if(isset($data['submitform3']))
+    @if(isset($data['submitform3']) && $data['submitform3'] == 'true')
       </div>
     @endif
 

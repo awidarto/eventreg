@@ -189,6 +189,27 @@
 	</div>
 </div>
 
+
+<div id="updateFormStatusindividual" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<h3 id="myModalLabel">Update Individual Form Status</h3>
+	</div>
+	<div class="modal-body">
+
+		<label>Select form no:</label>
+		{{ Form::select('formno', Config::get('eventreg.formindividualno'),null,array('id'=>'formnoindividual'))}}
+
+		<label>Select status:</label>
+		{{ Form::select('formstatus', Config::get('eventreg.formindividualstatus'),null,array('id'=>'formindividualstatusselect'))}}
+
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="saveformstatusindividual">Save</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	</div>
+</div>
+
 <div id="updatePaymentGolf" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -697,6 +718,59 @@
 			},'json');
 		});
 
+		
+
+		$('#saveformstatusindividual').click(function(){
+			
+			var status = $('#formindividualstatusselect').val();
+			var formno = $('#formnoindividual').val();
+
+
+			
+
+			<?php
+
+				$ajaxformstatusindividual = (isset($ajaxformstatusindividual))?$ajaxformstatusindividual:'/';
+			?>
+
+			if( status!='-' && formno!='-'){
+				$('#saveformstatusindividual').text('Processing..');
+				$('#saveformstatusindividual').attr("disabled", true);	
+				$.post('{{ URL::to($ajaxformstatusindividual) }}',{'id':current_pay_id,'formstatus': status,'formno':formno}, function(data) {
+					if(data.status == 'OK'){
+						//redraw table
+						oTable.fnStandingRedraw();
+						
+						//$('#paystatusindicator').html('Payment status updated');
+						$('#saveformstatusindividual').text('Submit');
+						$('#saveformstatusindividual').attr("disabled", false);	
+						
+						$('#formindividualstatusselect').val('-');
+						$('#formnoindividual').val('-');
+
+						$('#updateFormStatusindividual').modal('toggle');
+
+					}else if(data.status == 'NODATA'){
+						alert(data.data);
+						$('#saveformstatusindividual').text('Submit');
+						$('#saveformstatusindividual').attr("disabled", false);	
+						
+						$('#formindividualstatusselect').val('-');
+						$('#formnoindividual').val('-');
+					}else{
+						alert('Error, please try again');
+						$('#saveformstatusindividual').text('Submit');
+						$('#saveformstatusindividual').attr("disabled", false);	
+						
+						$('#formindividualstatusselect').val('-');
+						$('#formnoindividual').val('-');
+					}
+				},'json');
+			}else{
+				alert('Please select form number and status');
+			}
+		});
+
 		$('#savepaystatusGolf').click(function(){
 			var paystat = $('#paystatusselectgolf').val();
 			var taxdisplaystatus = $('#taxdisplaystatusGolf').val();
@@ -932,6 +1006,15 @@
 				current_pay_id = _id;
 
 				$('#updateFormStatus').modal();
+
+		   	}
+
+		   	if ($(e.target).is('.formstatusindiv')) {
+				var _id = e.target.id;
+
+				current_pay_id = _id;
+
+				$('#updateFormStatusindividual').modal();
 
 		   	}
 

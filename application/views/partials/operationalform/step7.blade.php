@@ -1,6 +1,6 @@
 <h2 class="StepTitle">ADDITIONAL EXHIBITOR PASS (FREE)</h2>
 
-@if(isset($data['submitform6']))
+@if(isset($data['submitform6']) && $data['submitform6'] == 'true')
   <div class="alert alert-warning insideform">
     Form #6 already submitted .
   </div>
@@ -43,6 +43,6 @@
     <a href="#" id="submitform6" class="buttonSubmitIndividual">Submit Form 6</a>
   @endif
 </div> 
-@if(isset($data['submitform6']))
+@if(isset($data['submitform6']) && $data['submitform6'] == 'true')
   </div>
 @endif

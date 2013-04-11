@@ -1,6 +1,6 @@
 <h2 class="StepTitle">ADDITIONAL EXHIBITOR PASS (PAYABLE)</h2>   
 
-@if(isset($data['submitform7']))
+@if(isset($data['submitform7']) && $data['submitform7'] == 'true')
   <div class="alert alert-warning insideform">
     Form #7 already submitted .
   </div>

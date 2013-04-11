@@ -98,6 +98,28 @@ return array(
 			'boothconfirm'=>'Convention & Golf Payment Confirmation',*/
 		),
 
+		'formindividualstatus'=>array(
+			'-'=>'Status',
+			'open'=>'Open',
+			'true'=>'Submitted',
+		),
+
+		'formindividualno'=>array(
+			'-'=>'Form No.',
+			'1'=>'1',
+			'2'=>'2',
+			'3'=>'3',
+			'4'=>'4',
+			'5'=>'5',
+			'6'=>'6',
+			'7'=>'7',
+			'8'=>'8',
+			'9'=>'9',
+			'10'=>'10',
+			'12'=>'11',
+			'12'=>'12',
+		),
+
 		'golfquota'=>80,
 
 		'pinsupervisorconvention'=>'12345',

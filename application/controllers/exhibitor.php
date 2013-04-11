@@ -55,11 +55,11 @@ class Exhibitor_Controller extends Base_Controller {
 
 		$btn_add_to_group = '<span class=" add_to_group" id="add_to_group">'.$action_selection.'</span>';
 
-		$heads = array('#',$select_all,'Reg. Number','Reg. Date','Email','Hall','First Name','Last Name','Company','Country','Form Status','');
+		$heads = array('#',$select_all,'Reg. Number','Reg. Date','Email','Hall','First Name','Last Name','Company','Country','Form Status','Indv Form Status','');
 
-		$searchinput = array(false,false,'Reg Number','Reg. Date','Email','Hall','First Name','Last Name','Company','Country',false,false);
+		$searchinput = array(false,false,'Reg Number','Reg. Date','Email','Hall','First Name','Last Name','Company','Country',false,false,false);
 
-		$colclass = array('','span1','span3','span1','span3','span3','span1','span1','span1','','','','');
+		$colclass = array('','span1','span3','span1','span3','span3','span1','span1','span1','','','','','');
 
 		if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'onsite' || Auth::user()->role == 'exhibitionadmin'){
 			return View::make('tables.simple')
@@ -73,6 +73,7 @@ class Exhibitor_Controller extends Base_Controller {
 				->with('ajaxdel',URL::to('exhibitor/del'))
 				->with('ajaxpay',URL::to('exhibitor/paystatus'))
 				->with('ajaxformstatus',URL::to('exhibitor/setformstatus'))
+				->with('ajaxformstatusindividual',URL::to('exhibitor/setformstatusindividual'))
 				->with('ajaxpaygolf',URL::to('exhibitor/paystatusgolf'))
 				->with('ajaxpaygolfconvention',URL::to('exhibitor/paystatusgolfconvention'))
 				->with('printsource',URL::to('exhibitor/printbadge'))
@@ -172,19 +173,104 @@ class Exhibitor_Controller extends Base_Controller {
 
 			$extra = $doc;
 
+			//find operational form
+			$opform = new Operationalform();
+
+			$iduser = $doc['_id']->__toString();
+			$user_form = $opform->get(array('userid'=>$iduser));
+
 			$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
 
 			if(isset($doc['formstatus'])){
 				if($doc['formstatus'] == 'submitted'){
 					$formstatus = '<span class="fontRed fontBold paymentStatusTable">'.$doc['formstatus'].'</span>';
+					
 				}elseif ($doc['formstatus'] == 'approved') {
 					$formstatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['formstatus'].'</span>';
 				}else{
 					$formstatus = '<span class="fontGray fontBold paymentStatusTable">'.$doc['formstatus'].'</span>';
+					
 				}
 			}else{
 				$formstatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['formstatus'].'</span>';
 			}
+
+			if(isset($user_form)){
+				if(isset($user_form['submitform1']) && $user_form['submitform1']=='true'){
+					$form1='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form1='open';
+				}
+				if(isset($user_form['submitform2']) && $user_form['submitform2']=='true'){
+					$form2='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form3='open';
+				}
+				if(isset($user_form['submitform3']) && $user_form['submitform3']=='true'){
+					$form3='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form3='open';
+				}
+				if(isset($user_form['submitform4']) && $user_form['submitform4']=='true'){
+					$form4='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form4='open';
+				}
+				if(isset($user_form['submitform5']) && $user_form['submitform5']=='true'){
+					$form5='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form5='open';
+				}
+				if(isset($user_form['submitform6']) && $user_form['submitform6']=='true'){
+					$form6='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form6='open';
+				}
+				if(isset($user_form['submitform7']) && $user_form['submitform7']=='true'){
+					$form7='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form7='open';
+				}
+				if(isset($user_form['submitform8']) && $user_form['submitform8']=='true'){
+					$form8='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form8='open';
+				}
+				if(isset($user_form['submitform9']) && $user_form['submitform9']=='true'){
+					$form9='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form9='open';
+				}
+				if(isset($user_form['submitform10']) && $user_form['submitform10']=='true'){
+					$form10='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form10='open';
+				}
+				if(isset($user_form['submitform11']) && $user_form['submitform11']=='true'){
+					$form11='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form11='open';
+				}
+				if(isset($user_form['submitform12']) && $user_form['submitform12']=='true'){
+					$form12='<span style="color:#bc1c48;">submitted</span>';
+				}else{
+					$form12='open';
+				}
+			}else{
+				$form1 ='open';
+				$form2 ='open';
+				$form3 ='open';
+				$form4 ='open';
+				$form5 ='open';
+				$form6 ='open';
+				$form7 ='open';
+				$form8 ='open';
+				$form9 ='open';
+				$form10 ='open';
+				$form11 ='open';
+				$form12 ='open';
+			}
+				
 
 			if(isset($doc['emailregsent']) && ($doc['emailregsent']!=0)){
 				$rowResendMessage = '<a class="icon-"  ><i style="color:#bc1c48;">&#xe165;</i><span class="sendexhibitregistmail" id="'.$doc['_id'].'" style="color:#bc1c48;">Send Email Reg</span>';
@@ -210,8 +296,22 @@ class Exhibitor_Controller extends Base_Controller {
 				$doc['company'],
 				$doc['country'],
 				$formstatus,
+				'#1:&nbsp;'.$form1.'</br>'.
+				'#2:&nbsp;'.$form2.'</br>'.
+				'#3:&nbsp;'.$form3.'</br>'.
+				'#4:&nbsp;'.$form4.'</br>'.
+				'#5:&nbsp;'.$form5.'</br>'.
+				'#6:&nbsp;'.$form6.'</br>'.
+				'#7:&nbsp;'.$form7.'</br>'.
+				'#8:&nbsp;'.$form8.'</br>'.
+				'#9:&nbsp;'.$form9.'</br>'.
+				'#10:&nbsp;'.$form10.'</br>'.
+				'#11:&nbsp;'.$form11.'</br>'.
+				'#12:&nbsp;'.$form12.'</br>',
+
 				$rowResendMessage.
 				'<a class="icon-"  ><i>&#xe1b0;</i><span class="formstatus" id="'.$doc['_id'].'" > Set Form Status</span>'.
+				'<a class="icon-"  ><i>&#x0038;</i><span class="formstatusindiv" id="'.$doc['_id'].'" > Set Ind. Form Stat.</span>'.
 				'<a class="icon-"  ><i>&#x0035;</i><span class="viewform" id="'.$doc['_id'].'" rel="viewform"> View Form</span>'.
 				$rowEditform.
 				'<a class="icon-"  href="'.URL::to('exhibitor/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
@@ -385,7 +485,37 @@ class Exhibitor_Controller extends Base_Controller {
 		print json_encode($result);
 	}
 
+	public function post_setformstatusindividual(){
+		
+		$id = Input::get('id');
+		$formstatus = Input::get('formstatus');
+		$formno = Input::get('formno');
 
+		$user = new Operationalform();
+
+		if(is_null($id)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			//get first 
+			$data = $user->get(array('userid'=>$id));
+
+			if(isset($data)){
+				if($user->update(array('userid'=>$id),array('$set'=>array('submitform'.$formno=>$formstatus)))){
+					
+					$result = array('status'=>'OK','data'=>'CONTENTDELETED');
+					
+				}else{
+					
+					$result = array('status'=>'ERR','data'=>'DELETEFAILED');				
+				}
+			}else{
+				$result = array('status'=>'NODATA','data'=>'There\'s no data to set');
+			}
+		}
+
+		print json_encode($result);
+	}
 	
 
 

@@ -1,6 +1,6 @@
 <h2 class="StepTitle">FASCIA NAME (STANDARD BOOTH ONLY)</h2>
 
-@if(isset($data['submitform4']))
+@if(isset($data['submitform4']) && $data['submitform4'] == 'true')
   <div class="alert alert-warning insideform">
     Form #4 already submitted .
   </div>
@@ -40,6 +40,6 @@
   @endif
 </div> 
 
-@if(isset($data['submitform4']))
+@if(isset($data['submitform4'])&& $data['submitform4'] == 'true')
   </div>
 @endif

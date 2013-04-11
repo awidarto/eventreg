@@ -1,6 +1,6 @@
 <h2 class="StepTitle">BOOTH PROGRAM SCHEDULE</h2>
 
-    @if(isset($data['submitform8']))
+    @if(isset($data['submitform8']) && $data['submitform8'] == 'true')
       <div class="alert alert-warning insideform">
         Form #8 already submitted .
       </div>
@@ -79,6 +79,6 @@
         <a href="#" id="submitform8" class="buttonSubmitIndividual">Submit Form 8</a>
       @endif
     </div>
-    @if(isset($data['submitform8']))
+    @if(isset($data['submitform8']) && $data['submitform8'] == 'true')
       </div>
     @endif
