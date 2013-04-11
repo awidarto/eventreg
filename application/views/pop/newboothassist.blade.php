@@ -84,9 +84,14 @@ $('#submitaddassistant').click(function(){
 				    src: '{{ URL::to("exhibitor/newprintbadgeonsite") }}/'+data.regnumber+'/'+current_pass_name+'/'+companyname+'/'+current_type
 				}).appendTo('#ajax-modal');
     			//print
-    			var pframe = document.getElementById('printbadgenewfree');
-				var pframeWindow = pframe.contentWindow;
-				pframeWindow.print();
+
+    			setTimeout(function() {
+				    var pframe = document.getElementById('printbadgenewfree');
+					var pframeWindow = pframe.contentWindow;
+					pframeWindow.print();
+				}, 1500);
+
+    			
 
 	        	$('#ajax-modal').modal('hide');
     			
