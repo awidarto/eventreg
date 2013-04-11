@@ -97,9 +97,15 @@
 			         </div>
 			      </a>
 				-->
-			      <a class="tile app bg-color-blueDark" href="{{ URL::to('visitor/add') }}">
+				  <a class="tile app bg-color-redDark" href="{{ URL::to('official/add') }}">
 			         <div class="image-wrapper">
-			            <span class="icon icon-user-2"></span>
+			            <span class="icon icon-user-3"></span>
+			         </div>
+			         <span class="app-label">Register New Official</span>
+			      </a>
+			      <a class="tile app bg-color-greenDark" href="{{ URL::to('visitor/add') }}">
+			         <div class="image-wrapper">
+			            <span class="icon icon-user"></span>
 			         </div>
 			         <span class="app-label">Register New Visitor</span>
 			      </a>
@@ -115,18 +121,20 @@
 			      </a>
 				-->
 
-			      <a class="tile app bg-color-blueDark" href="{{ URL::to('official/add') }}">
-			         <div class="image-wrapper">
-			            <span class="icon icon-user-2"></span>
-			         </div>
-			         <span class="app-label">Register New Official</span>
-			      </a>
+			      
 
-			      <a id="boothaddnew" class="tile app bg-color-blueDark boothadd" href="#">
+			      <a id="boothaddnew" class="tile app bg-color-orange boothadd" href="#">
 			         <div class="image-wrapper">
-			            <span class="icon icon-user-2"></span>
+			            <span class="icon icon-users"></span>
 			         </div>
 			         <span class="app-label">Register  Booth Assist</span>
+			      </a>
+
+			      <a class="tile app bg-color-red" href="{{ URL::to('onsite/report') }}">
+			         <div class="image-wrapper">
+			            <span class="icon icon-stats-up"></span>
+			         </div>
+			         <span class="app-label">On site Report</span>
 			      </a>
 
 			   </div>

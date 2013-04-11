@@ -361,6 +361,11 @@ color: #222222;
   color: #fff;
 }
 
+.insideform{
+  margin-top: 10px;
+  width: 100%;
+}
+
 .details-expand h4{
   border-bottom: 1px solid #afafaf;
   margin-bottom: 7px;

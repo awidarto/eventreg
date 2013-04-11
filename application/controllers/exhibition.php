@@ -363,9 +363,126 @@ class Exhibition_Controller extends Base_Controller {
 		$savebtn = $data['btnSave'];
 		$formstatus = $data['formstatus'];
 		
-		if($savebtn == 'true'){
+		
+
+		
+
+		if(isset($data['submitform1'])){
+			$submitform1 = $data['submitform1'];
+		}else{
+			$submitform1 ='';
+		}
+
+		if(isset($data['submitform2'])){
+			$submitform2 = $data['submitform2'];
+		}else{
+			$submitform2 ='';
+		}
+
+		if(isset($data['submitform3'])){
+			$submitform3 = $data['submitform3'];
+		}else{
+			$submitform3 ='';
+		}
+		if(isset($data['submitform4'])){
+			$submitform4 = $data['submitform4'];
+		}else{
+			$submitform4 ='';
+		}
+		if(isset($data['submitform5'])){
+			$submitform5 = $data['submitform5'];
+		}else{
+			$submitform5 ='';
+		}
+		if(isset($data['submitform6'])){
+			$submitform6 = $data['submitform6'];
+		}else{
+			$submitform6 ='';
+		}
+		if(isset($data['submitform7'])){
+			$submitform7 = $data['submitform7'];
+		}else{
+			$submitform7 ='';
+		}
+		if(isset($data['submitform8'])){
+			$submitform8 = $data['submitform8'];
+		}else{
+			$submitform8 ='';
+		}
+		if(isset($data['submitform9'])){
+			$submitform9 = $data['submitform9'];
+		}else{
+			$submitform9 ='';
+		}
+		if(isset($data['submitform10'])){
+			$submitform10 = $data['submitform10'];
+		}else{
+			$submitform10 ='';
+		}
+		if(isset($data['submitform11'])){
+			$submitform11 = $data['submitform11'];
+		}else{
+			$submitform11 ='';
+		}
+		if(isset($data['submitform12'])){
+			$submitform12 = $data['submitform12'];
+		}else{
+			$submitform12 ='';
+		}
+
+
+		if($savebtn == 'true' && $submitform1 != 'true' && $submitform2 != 'true' && $submitform3 != 'true' && $submitform4 != 'true' && $submitform5 != 'true' && $submitform6 != 'true' && $submitform7 != 'true' && $submitform8 != 'true' && $submitform9 != 'true' && $submitform10 != 'true' && $submitform11 != 'true' && $submitform12 != 'true'){
 			$formstatus = 'saved';
 			$redirectto = 'exhibition/formsaved';
+		}else if($submitform1 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/1';
+
+		}else if($submitform2 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/2';
+
+		}else if($submitform3 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/3';
+
+		}else if($submitform4 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/4';
+
+		}else if($submitform5 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/5';
+
+		}else if($submitform6 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/6';
+
+		}else if($submitform7 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/7';
+
+		}else if($submitform8 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/8';
+
+		}else if($submitform9 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/9';
+
+		}else if($submitform10 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/10';
+
+		}else if($submitform11 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/11';
+
+		}else if($submitform12 == 'true'){
+			$formstatus = 'saved';
+			$redirectto = 'exhibition/formindividualsubmit/12';
+
+
 		}else{
 			$formstatus = 'submitted';
 			$redirectto = 'exhibition/formsubmitted';
@@ -381,9 +498,48 @@ class Exhibition_Controller extends Base_Controller {
 
 			$ex = $exhibitor->get(array('_id'=>$_id));
 
-			if($ex['formstatus']!='saved'){
-				Event::fire('exhibition.postoperationalform',array($obj['_id'],$user_id));
+			if(isset($data['submitform1'])){
+				Event::fire('exhibition.postoperationalform',array(1,$obj['_id'],$user_id));
+
+			}else if (isset($data['submitform2'])) {
+				Event::fire('exhibition.postoperationalform',array(2,$obj['_id'],$user_id));
+				
+			}else if (isset($data['submitform3'])) {
+				Event::fire('exhibition.postoperationalform',array(3,$obj['_id'],$user_id));
+				
+			}else if (isset($data['submitform4'])) {
+				Event::fire('exhibition.postoperationalform',array(4,$obj['_id'],$user_id));
+				
+			}else if (isset($data['submitform5'])) {
+				Event::fire('exhibition.postoperationalform',array(5,$obj['_id'],$user_id));
+				
+			}else if (isset($data['submitform6'])) {
+				Event::fire('exhibition.postoperationalform',array(6,$obj['_id'],$user_id));
+				
+			}else if (isset($data['submitform7'])) {
+				Event::fire('exhibition.postoperationalform',array(7,$obj['_id'],$user_id));
+				
+			}else if (isset($data['submitform8'])) {
+				Event::fire('exhibition.postoperationalform',array(8,$obj['_id'],$user_id));
+				
+			}else if (isset($data['submitform9'])) {
+				Event::fire('exhibition.postoperationalform',array(9,$obj['_id'],$user_id));
+				
+			}else if (isset($data['submitform10'])) {
+				Event::fire('exhibition.postoperationalform',array(10,$obj['_id'],$user_id));
+				
+			}else if (isset($data['submitform11'])) {
+				Event::fire('exhibition.postoperationalform',array(11,$obj['_id'],$user_id));
+				
+			}else if (isset($data['submitform12'])) {
+				Event::fire('exhibition.postoperationalform',array(12,$obj['_id'],$user_id));
+				
 			}
+			else if ($ex['formstatus']!='saved') {
+				Event::fire('exhibition.postoperationalform',array('all',$obj['_id'],$user_id));
+				
+			}
+			
 
 			
 			return Redirect::to($redirectto)->with('notify_success',Config::get('site.register_success'));
@@ -491,20 +647,135 @@ class Exhibition_Controller extends Base_Controller {
 
 
 			$savebtn = $data['btnSave'];
-			
-			
-			if($savebtn == 'true'){
+
+			if(isset($data['submitform1'])){
+				$submitform1 = $data['submitform1'];
+			}else{
+				$submitform1 ='';
+			}
+
+			if(isset($data['submitform2'])){
+				$submitform2 = $data['submitform2'];
+			}else{
+				$submitform2 ='';
+			}
+
+			if(isset($data['submitform3'])){
+				$submitform3 = $data['submitform3'];
+			}else{
+				$submitform3 ='';
+			}
+			if(isset($data['submitform4'])){
+				$submitform4 = $data['submitform4'];
+			}else{
+				$submitform4 ='';
+			}
+			if(isset($data['submitform5'])){
+				$submitform5 = $data['submitform5'];
+			}else{
+				$submitform5 ='';
+			}
+			if(isset($data['submitform6'])){
+				$submitform6 = $data['submitform6'];
+			}else{
+				$submitform6 ='';
+			}
+			if(isset($data['submitform7'])){
+				$submitform7 = $data['submitform7'];
+			}else{
+				$submitform7 ='';
+			}
+			if(isset($data['submitform8'])){
+				$submitform8 = $data['submitform8'];
+			}else{
+				$submitform8 ='';
+			}
+			if(isset($data['submitform9'])){
+				$submitform9 = $data['submitform9'];
+			}else{
+				$submitform9 ='';
+			}
+			if(isset($data['submitform10'])){
+				$submitform10 = $data['submitform10'];
+			}else{
+				$submitform10 ='';
+			}
+			if(isset($data['submitform11'])){
+				$submitform11 = $data['submitform11'];
+			}else{
+				$submitform11 ='';
+			}
+			if(isset($data['submitform12'])){
+				$submitform12 = $data['submitform12'];
+			}else{
+				$submitform12 ='';
+			}
+
+
+	
+			if($savebtn == 'true' && $submitform1 != 'true' && $submitform2 != 'true' && $submitform3 != 'true' && $submitform4 != 'true' && $submitform5 != 'true' && $submitform6 != 'true' && $submitform7 != 'true' && $submitform8 != 'true' && $submitform9 != 'true' && $submitform10 != 'true' && $submitform11 != 'true' && $submitform12 != 'true'){
 				$formstatus = 'saved';
 				$redirectto = 'exhibition/formsaved';
+			}else if($submitform1 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/1';
+
+			}else if($submitform2 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/2';
+
+			}else if($submitform3 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/3';
+
+			}else if($submitform4 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/4';
+
+			}else if($submitform5 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/5';
+
+			}else if($submitform6 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/6';
+
+			}else if($submitform7 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/7';
+
+			}else if($submitform8 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/8';
+
+			}else if($submitform9 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/9';
+
+			}else if($submitform10 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/10';
+
+			}else if($submitform11 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/11';
+
+			}else if($submitform12 == 'true'){
+				$formstatus = 'saved';
+				$redirectto = 'exhibition/formindividualsubmit/12';
+
+
 			}else{
 				$formstatus = 'submitted';
 				$redirectto = 'exhibition/formsubmitted';
 				
 			}
 
+
+
 			unset($savebtn);
 
-			if($operationalform->update(array('_id'=>$id),array('$set'=>$data))){
+			if($obj = $operationalform->update(array('_id'=>$id),array('$set'=>$data))){
 
 				$userid = Auth::exhibitor()->id;
 
@@ -513,9 +784,47 @@ class Exhibition_Controller extends Base_Controller {
 				$exhibitor->update(array('_id'=>$_id),array('$set'=>array('formstatus'=>$formstatus)));
 
 				$ex = $exhibitor->get(array('_id'=>$_id));
+	
+				if(isset($data['submitform1'])){
+					Event::fire('exhibition.postoperationalform',array(1,$id,$_id));
 
-				if($ex['formstatus']!='saved'){
-					Event::fire('exhibition.postoperationalform',array($id,$_id));
+				}else if (isset($data['submitform2'])) {
+					Event::fire('exhibition.postoperationalform',array(2,$id,$_id));
+					
+				}else if (isset($data['submitform3'])) {
+					Event::fire('exhibition.postoperationalform',array(3,$id,$_id));
+					
+				}else if (isset($data['submitform4'])) {
+					Event::fire('exhibition.postoperationalform',array(4,$id,$_id));
+					
+				}else if (isset($data['submitform5'])) {
+					Event::fire('exhibition.postoperationalform',array(5,$id,$_id));
+					
+				}else if (isset($data['submitform6'])) {
+					Event::fire('exhibition.postoperationalform',array(6,$id,$_id));
+					
+				}else if (isset($data['submitform7'])) {
+					Event::fire('exhibition.postoperationalform',array(7,$id,$_id));
+					
+				}else if (isset($data['submitform8'])) {
+					Event::fire('exhibition.postoperationalform',array(8,$id,$_id));
+					
+				}else if (isset($data['submitform9'])) {
+					Event::fire('exhibition.postoperationalform',array(9,$id,$_id));
+					
+				}else if (isset($data['submitform10'])) {
+					Event::fire('exhibition.postoperationalform',array(10,$id,$_id));
+					
+				}else if (isset($data['submitform11'])) {
+					Event::fire('exhibition.postoperationalform',array(11,$id,$_id));
+					
+				}else if (isset($data['submitform12'])) {
+					Event::fire('exhibition.postoperationalform',array(12,$id,$_id));
+					
+				}
+				else if ($ex['formstatus']!='saved') {
+					Event::fire('exhibition.postoperationalform',array('all',$id,$user_id));
+					
 				}
 
 				
@@ -604,6 +913,19 @@ class Exhibition_Controller extends Base_Controller {
 					->with('form',$form)
 					->with('crumb',$this->crumb)
 					->with('title','Sucessfully saved your form');
+
+	}
+
+
+	public function get_formindividualsubmit($formno){
+
+		$this->crumb->add('exhibition','Exhibition');
+
+		$form = new Formly();
+		return View::make('exhibition.formsaved')
+					->with('form',$form)
+					->with('crumb',$this->crumb)
+					->with('title','Sucessfully submited form #'.$formno.' check your email for the detail');
 
 	}
 

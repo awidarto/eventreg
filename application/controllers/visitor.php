@@ -231,16 +231,21 @@ class Visitor_Controller extends Base_Controller {
 
 
 	public function post_add(){
-
+		$data = Input::get();
 		//print_r(Session::get('permission'));
-
-	    $rules = array(
-	        'firstname' => 'required',
-	    	'lastname' => 'required',
-	    	'email' => 'required|email|unique:attendee',
-	        'company' => 'required',
-	        'formnumber' => 'required',
-	    );
+		if($data['role'] == 'VIP' || $data['role'] == 'VVIP'){
+		    $rules = array(
+		        'firstname' => 'required'
+		    );
+		    
+		}else{
+			$rules = array(
+		        'firstname' => 'required',
+		    	
+		        'company' => 'required',
+		        
+		    );
+		}
 
 	    $validation = Validator::make($input = Input::all(), $rules);
 
@@ -250,7 +255,7 @@ class Visitor_Controller extends Base_Controller {
 
 	    }else{
 
-			$data = Input::get();
+			
 	    	
 			unset($data['csrf_token']);
 
@@ -261,7 +266,7 @@ class Visitor_Controller extends Base_Controller {
 
 			$reg_number[0] = 'A';
 			$reg_number[1] = $data['role'];
-			$reg_number[2] = '00';
+			// /$reg_number[2] = '00';
 
 			$seq = new Sequence();
 

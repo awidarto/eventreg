@@ -16,7 +16,17 @@
   <div id="step-2">
 
     <h2 class="StepTitle">ELECTRICITY INSTALLATION</h2>
+
+    @if(isset($data['submitform1']))
+        <div class="alert alert-warning insideform">
+          Form #1 already submitted .
+        </div>
+    @endif
+
     <div id="page-wrap">
+        @if(isset($data['submitform1']))
+        <div class="disableforminput">
+        @endif
         <table id="order-table">
             <tr>
                  <th>No.</th>
@@ -159,14 +169,25 @@
 
         @include('partials.operationalform.step2')
 
-       
+        @if(isset($data['submitform1']))
+          </div>
+        @endif
         
     </div>
   </div>
 
   <div id="step-3">
     <h2 class="StepTitle">TELEPHONE INSTALLATION</h2>
+    @if(isset($data['submitform2']))
+        <div class="alert alert-warning insideform">
+          Form #2 already submitted .
+        </div>
+    @endif
     <div id="page-wrap">
+
+        @if(isset($data['submitform2']))
+        <div class="disableforminput">
+        @endif
         <table id="order-table">
             <tr>
                  <th>No.</th>
@@ -234,6 +255,10 @@
         
         <div class="clear"></div>
         @include('partials.operationalform.step3')
+
+        @if(isset($data['submitform2']))
+        </div>
+        @endif
         
         
     </div>
@@ -256,8 +281,9 @@
   </div>
 
   <div id="step-8">
-    
-      @include('partials.operationalform.step8')    
+      
+      @include('partials.operationalform.step8')
+
       <table id="order-table">
           <tr>
                <th>Price/UNIT</th>
@@ -325,16 +351,34 @@
       
       <br/>
       <br/>
-    </div>                     
+      @if(!isset($data['submitform7']) || $data['submitform7']!='true')
+        <div class="clear"></div>
+        <a href="#" id="submitform7" class="buttonSubmitIndividual">Submit Form 7</a>
+      @endif
+
+      @if(isset($data['submitform7']))
+        </div>
+      @endif
   </div>
+</div>
+  
 
   <div id="step-9">
     @include('partials.operationalform.step9')
   </div>  
 
   <div id="step-10">
+    
     <h2 class="StepTitle">ADVERTISING</h2>
+    @if(isset($data['submitform9']))
+        <div class="alert alert-warning insideform">
+          Form #9 already submitted .
+        </div>
+    @endif
     <div id="page-wrap">
+        @if(isset($data['submitform9']))
+          <div class="disableforminput">
+        @endif
         <table id="order-table">
             <tr>
                  <th>No.</th>
@@ -388,14 +432,25 @@
           </tr>
         </table>
         
-        @include('partials.operationalform.step10') 
+        @include('partials.operationalform.step10')
+        @if(isset($data['submitform9']))
+          </div>
+        @endif
         
     </div>
   </div>
 
   <div id="step-11">
-    <h2 class="StepTitle">FURNITURE RENTAL</h2>   
+    <h2 class="StepTitle">FURNITURE RENTAL</h2>
+    @if(isset($data['submitform10']))
+        <div class="alert alert-warning insideform">
+          Form #10 already submitted .
+        </div>
+    @endif
     <div id="boothcontractor">
+      @if(isset($data['submitform10']))
+        <div class="disableforminput">
+      @endif
       <br/>
       <p>Please fill in the box with the quantity of your order:</p>
       <div class="clear"></div>
@@ -513,14 +568,25 @@
       <br/>
       <br/>
       <br/>
-       @include('partials.operationalform.step11')  
+      @include('partials.operationalform.step11')  
       <br/>
+      @if(isset($data['submitform10']))
+        </div>
+      @endif
     </div>                     
   </div>
 
   <div id="step-12">
     <h2 class="StepTitle">INTERNET CONNECTION</h2>
+    @if(isset($data['submitform11']))
+        <div class="alert alert-warning insideform">
+          Form #11 already submitted .
+        </div>
+    @endif
     <div id="page-wrap">
+        @if(isset($data['submitform11']))
+          <div class="disableforminput">
+        @endif
         <table id="order-table">
             <tr>
                  <th>INTERNET CONNECTION (CABLE)</th>
@@ -590,14 +656,25 @@
           </tr>
         </table>
         @include('partials.operationalform.step12')
-        
+
+        @if(isset($data['submitform11']))
+          </div>
+        @endif
         
     </div>
   </div>
 
   <div id="step-13">
     <h2 class="StepTitle">KIOSK RENTAL</h2>
+    @if(isset($data['submitform12']))
+        <div class="alert alert-warning insideform">
+          Form #12 already submitted .
+        </div>
+    @endif
     <div id="page-wrap">
+        @if(isset($data['submitform12']))
+          <div class="disableforminput">
+        @endif
         <table id="order-table">
             <tr>
                  <th>KIOSK RENTAL</th>
@@ -671,6 +748,10 @@
           </tr>
         </table>
         @include('partials.operationalform.step13')
+
+        @if(isset($data['submitform12']))
+          </div>
+        @endif
     </div>
   </div>
 
@@ -687,6 +768,106 @@
           transitionEffect: 'slideleft',
           keyNavigation: false,
           enableAllSteps: true
+        });
+
+        //submit individual
+        $('#submitform1').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform1").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
+        });
+
+        $('#submitform2').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform2").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
+        });
+
+        $('#submitform3').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform3").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
+        });
+        $('#submitform4').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform4").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
+        });
+        $('#submitform5').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform5").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
+        });
+        $('#submitform6').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform6").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
+        });
+        $('#submitform7').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform7").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
+        });
+        $('#submitform8').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform8").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
+        });
+        $('#submitform9').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform9").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
+        });
+        $('#submitform10').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform10").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
+        });
+        $('#submitform11').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform11").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
+        });
+        $('#submitform12').click(function(e){
+            var frm = $('form');
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+            var input = $("<input>").attr("type", "hidden").attr("name", "submitform12").val("true");
+            $('#operationalformexhibitor').append($(input));
+            $('#operationalformexhibitor').append($(input2));
+            frm.submit();
         });
         
 

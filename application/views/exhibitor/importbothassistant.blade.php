@@ -6,7 +6,11 @@
        
   $sizebooth = $booth['size'];
   $freepasscount = 0;
+  $freepassnameregistered = 0;
   $boothassistantcount = 0;
+
+  $boothassistantdata_id  = isset($boothassistantdata['_id'])?$boothassistantdata['_id']:'';
+
 
   /*if($sizebooth >= 9 && $sizebooth <= 18){
     $pass = 2;
@@ -24,15 +28,19 @@
   $pass = $booth['freepassslot'];
   
   for($i=1;$i<$pass+1;$i++){
-    if($data['freepassname'.$i.'']!=''){
+    if(isset($data['freepassname'.$i.''])){
       $freepasscount++;
+    }
+    if($data['freepassname'.$i.'']!=''){
+      $freepassnameregistered++;
     }
   }
 
   for($i=1;$i<11;$i++){
-    if($data['boothassistant'.$i.'']!=''){
+    if(isset($data['boothassistant'.$i.''])){
       $boothassistantcount++;
     }
+    
   }
 
 
@@ -45,14 +53,12 @@
   <div class="span12">
       <hr/>
       <div class="buttonlistimportboothassis">
-        <span class="btn btn-info"><span class="icon-">&#xe1dd;</span>&nbsp;Import All Free Exhibitor's Data</span>
-        <span class="btn btn-success"><span class="icon-">&#xe1dd;</span>&nbsp;Import All Free Add. Exhibitor's Data</span>
-        <span class="btn btn-primary"><span class="icon-">&#xe1dd;</span>&nbsp;Import All Payable Add. Exhibitor's Data</span>
-        <span class="btn btn-danger"><span class="icon-">&#xe1dd;</span>&nbsp;Import All Pass Holder Data</span>
+        <a class="btn btn-info" id="printall" href="{{URL::to('exhibitor/printbadgeall')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe14c;</span>&nbsp;Print All Data</a>
+        <a class="btn btn-success" id="" href="{{URL::to('export/boothassistant')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe1dd;</span>&nbsp;Import as .csv</a>
       </div>
       <br/>
       <br/>
-      <legend>EXHIBITOR’S PASS HOLDERS (FREE)<small>{{ $freepasscount.' name registered from '.$pass.' slot available'}}</small></legend>
+      <legend>EXHIBITOR’S PASS HOLDERS (FREE)<small>{{ $freepassnameregistered.' name registered from '.$pass.' slot available'}}</small></legend>
       <table id="order-table">
         <thead>
           <tr>
@@ -68,16 +74,23 @@
             
             <tr>
               <td>{{ $i }}. </td>
-              <td class="passname">{{ $data['freepassname'.$i.''] }}</td>
-
               @if(isset($boothassistantdata['freepassname'.$i.'']))
-                  <td class="aligncenter action" >Imported on {{ date('d-m-Y',  $boothassistantdata['freepassname'.$i.'timestamp']->sec) }}</td>
-                  <td id="status_freepassname{{ $i }}" class="align-center status"><span class="icon- fontGreen existtrue">&#xe20c;</span></td>
-                
+                <td class="passname"><div class="boothasstName alreadyimport" id="freepassname{{ $i }}" rel="{{$boothassistantdata['freepassname'.$i.'regnumber']}}" type="freepassname">{{ $data['freepassname'.$i.''] }}</div></td>
+              @elseif($data['freepassname'.$i.'']=='')
+                <td class="passname"><div class="boothasstNameaddOnly" id="freepassname{{ $i }}" rel="" type="freepass"><span class="fontRed">Double click to add..</div></div></td>
+              @else
+                <td class="passname"><div class="" id="freepassname{{ $i }}" >{{ $data['freepassname'.$i.''] }}</div></td>
+              @endif
+              @if(isset($boothassistantdata['freepassname'.$i.'']))
+                  <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['freepassname'.$i.'timestamp']->sec) }}</td>
+                  <td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- printbadge" id="freepassname{{ $i }}" type="freepassname" typeid="{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="freepassname{{ $i }}" > Print this data</span></a></td>
+                  <td id="iframefreepassname{{ $i }}"><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['freepassname'.$i.'regnumber']}}/{{$boothassistantdata['freepassname'.$i.'']}}/{{ $userdata['company'] }}/ba1/" id="printbadgefreepassname{{ $i }}"  style="display:none;" class="span12"></iframe></td>
               @else
               <td id="status_freepassname{{ $i }}" class="align-center status"></td>
               <td class="align-center action"><a class="icon- importidividual" id="freepassname{{ $i }}" type="freepassname" typeid="{{ $i }}"><i>&#xe20b;</i><span class="formstatus" id="" > Import this data</span></a></td>
+              <td id="iframefreepassname{{ $i }}"></td>
               @endif
+
               
             </tr>
           @endfor
@@ -101,18 +114,28 @@
 
             <tr>
               <td>{{ $i }}. </td>
-              <td class="passname">{{ $data['boothassistant'.$i.''] }}</td>
+              @if(isset($boothassistantdata['boothassistant'.$i.'']))
+                <td class="passname"><div class="boothasstName alreadyimport" id="boothassistant{{ $i }}" rel="{{$boothassistantdata['boothassistant'.$i.'regnumber']}}" type="boothassistant">{{ $data['boothassistant'.$i.''] }}</div></td>
+              @elseif($data['boothassistant'.$i.'']=='')
+                <td class="passname"><div class="boothasstNameaddOnly" id="boothassistant{{ $i }}" rel="" type="boothassistant"><span class="fontRed">Double click to add..</div></div></td>
+              @else
+                <td class="passname"><div class="" id="boothassistant{{ $i }}" >{{ $data['boothassistant'.$i.''] }}</div></td>
+              @endif
 
               @if(isset($boothassistantdata['boothassistant'.$i.'']))
-                  <td class="aligncenter action" >Imported on {{ date('d-m-Y',  $boothassistantdata['boothassistant'.$i.'timestamp']->sec) }}</td>
-                  <td id="status_boothassistant{{ $i }}" class="align-center status"><span class="icon- fontGreen existtrue">&#xe20c;</span></td>
-                
+                  <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['boothassistant'.$i.'timestamp']->sec) }}</td>
+                  <td id="status_boothassistant{{ $i }}" class="align-center status"><a class="icon- printbadge" id="boothassistant{{ $i }}" type="boothassistant" typeid="{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="boothassistant{{ $i }}" > Print this data</span></a></td>
+                  <td id="iframeboothassistant{{ $i }}"><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['boothassistant'.$i.'regnumber']}}/{{$boothassistantdata['boothassistant'.$i.'']}}/{{ $userdata['company'] }}/ba2/" id="printbadgeboothassistant{{ $i }}"  style="display:none;" class="span12"></iframe></td>
               @else
               <td id="status_boothassistant{{ $i }}" class="align-center status"></td>
               <td class="align-center action"><a class="icon- importidividual" id="boothassistant{{ $i }}" type="boothassistant" typeid="{{ $i }}"><i>&#xe20b;</i><span class="formstatus" id="" > Import this data</span></a></td>
+              <td id="iframeboothassistant{{ $i }}"></td>
               @endif
+
               
             </tr>
+
+            
 
           @endfor
           
@@ -157,8 +180,12 @@
   </div>
 </div>
 
+
 <script>
-$(document).ready(function(){
+  
+  <?php
+    $boothassistantdata_id  = isset($boothassistantdata['_id'])?$boothassistantdata['_id']:'';
+  ?>
 
   var current_type = '';
   var current_type_id = 0;
@@ -177,11 +204,13 @@ $(document).ready(function(){
     current_type = $(this).attr('type');
     current_type_id = $(this).attr('typeid');
     var current_pass_name = $(this).parent().parent().find('td.passname').text();
-    
+    var boothassistantdataid = '{{$boothassistantdata_id}}';
+
     
     <?php
 
       $ajaxImportBoothAssistant = (isset($ajaxImportBoothAssistant))?$ajaxImportBoothAssistant:'/';
+
     ?>
     $.post('{{ URL::to($ajaxImportBoothAssistant) }}',{'exhibitorid':exhibitorid,'companyname':companyname,'companypic':companypic,'companypicemail':companypicemail,'hallname':hallname,'boothname':boothname,'type':current_type,'typeid':current_type_id,'passname':current_pass_name}, function(data) {
       
@@ -190,16 +219,109 @@ $(document).ready(function(){
       
 
       if(data.status == 'OK'){
-        thisitem.parent().append('<span class="icon- fontGreen existtrue">&#xe20c;</span>');
-        thisitem.remove();
+        if(boothassistantdataid == ''){
+          //append to printbadgeall
+          $('#printall').attr('href','{{URL::to("exhibitor/printbadgeall")}}/'+data.boothid+'/{{$userdata["_id"]}}')
+        }
+        thisitem.html('<i>&#xe14c;</i><span id="'+current_type+current_type_id+'">Print this data</span>');
+        thisitem.removeClass('importidividual');
+        thisitem.addClass('printbadge');
+        //thisitem.remove();
         $('#'+current_id).html(data.message);
+        thisitem.parent().parent().find('td.passname div').addClass('boothasstName');
         
+        $('<iframe />', {
+              name: 'myFrame'+current_type+current_type_id,
+              id:   'printbadge'+current_type+current_type_id,
+              style: 'display:none;',
+              src: '{{ URL::to("exhibitor/newprintbadgeonsite") }}/'+data.regnumber+'/'+current_pass_name+'/'+companyname+'/'+current_type
+          }).appendTo('#iframe'+current_type+current_type_id);
+
       }
     },'json');
   });
 
+
+$('body').on('click', '.boothasstName', function(){
+  $('.boothasstName').editable('{{ URL::to("exhibitor/editboothassname") }}', { 
+      indicator : 'Saving...',
+      name   : 'new_value',
+      id : 'elementid',
+      //data   : '{"unpaid":"Unpaid","paid":"Paid","free":"Free"}',
+      type   : 'textarea',
+      style   : 'display: inline',
+      submit : 'OK',
+      event  : "dblclick",
+
+      callback : function(value, settings) {
+        
+        var regnumber = $(this).attr('rel');
+        var idelement = $(this).attr('id');
+        var type = $(this).attr('type');
+        
+
+        
+        //remove iframe first
+        var ifIDS = document.getElementById('printbadge'+idelement);
+        console.log(ifIDS);
+        if(ifIDS!=null){
+          ifIDS.remove();
+
+          $('<iframe />', {
+              name: 'myFrame'+idelement,
+              id:   'printbadge'+idelement,
+              style: 'display:none;',
+              src: '{{ URL::to("exhibitor/newprintbadgeonsite") }}/'+regnumber+'/'+value+'/{{ $userdata["company"] }}/'+type
+          }).appendTo('#iframe'+idelement);
+
+        }
+    },
+    <?php
+      $boothassistantdata_id  = isset($boothassistantdata['_id'])?$boothassistantdata['_id']:'';
+    ?>
+
+    submitdata : {bootdataid: '<?php echo $boothassistantdata_id;?>',operationalformid:'<?php echo $data["_id"];?>'}
+      
+
+  });
+
+  //print
+
+  
+});
+
+$('.boothasstNameaddOnly').editable('{{ URL::to("exhibitor/addboothassname") }}', { 
+    indicator : 'Saving...',
+    name   : 'new_value',
+    id : 'elementid',
+    //data   : '{"unpaid":"Unpaid","paid":"Paid","free":"Free"}',
+    type   : 'textarea',
+    style   : 'display: inline',
+    submit : 'OK',
+    event  : "dblclick",
+
+    callback : function(value, settings) {
+      
+      
+      var idelement = $(this).attr('id');
+      var type = $(this).attr('type');
+      
+  },
   
 
+  submitdata : {bootdataid: '<?php echo $boothassistantdata_id;?>',operationalformid:'<?php echo $data["_id"];?>'}
+    
+
+});
+$('body').on('click', '.printbadge', function(e){
+  
+    var _id = 'printbadge'+e.target.id;
+
+    var pframe = document.getElementById(_id);
+    var pframeWindow = pframe.contentWindow;
+    pframeWindow.print();
+    e.preventDefault();
+    
 });
 </script>
 

@@ -8,7 +8,7 @@ return array(
 			//'exhibitor' => 'Exhibitor'
 			),
 		'officials' => array(
-			'COM'=>'Commitee',
+			'COM'=>'Committee',
 			'BOD'=>'Board of Director IPA',
 			'MDA'=>'Media',
 			'ORG'=>'Organizer',
@@ -18,7 +18,6 @@ return array(
 			//'BA150'=>'Booth Assistant 150',
 			'SVO'=>'Student Volunteer',
 			'SCR'=>'Security',
-			'VIP'=>'VIP'
 			//'OTS'=>'On-Site Technical Support',
 			//'ECP'=>'EC Participant',
 			//'TAP'=>'Technical Assistant Pre-Event'

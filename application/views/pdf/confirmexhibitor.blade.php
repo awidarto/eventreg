@@ -236,7 +236,7 @@ td.detailsitem{
 			<td>Sub-Total (US$)</td>
 		</tr>
 		<tr class="contentrow">
-			<td>Electricity Instalation</td>
+			<td>Electricity Installation</td>
 			<td class="aligncenter">
 				@if( $data['electricsubtotal']!='' && $data['electricsubtotal']!=0)
 					Y
@@ -638,7 +638,7 @@ td.detailsitem{
 	<div id="terms">
 		<ul >
 			<li > - Please check again if this reciept is match your needs</li>
-			<li > - Please signed this confirmation letter and send it back to the organizer</li>
+			<li > - Please print the form, sign and email this form to your Hall Coordinator</li>
 			<li > - After we receive the confirmation letter, we will send you the invoice</li>
 		</ul>
 		

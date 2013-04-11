@@ -73,6 +73,9 @@ function removeName(klass) {
 // DOM READY
 $(function() {
 
+    //submit form 1
+    
+
     var inc = 1;
 
     $(".product-title").each(function() {
