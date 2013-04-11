@@ -128,7 +128,10 @@
                 </div>
 
         </fieldset>
+        @else
+            {{ $form->hidden('golf','No')}}
         @endif
+        
         <fieldset>
             <legend>FOC (Free Of Charge)</legend>
 

@@ -712,11 +712,12 @@ class Attendee_Controller extends Base_Controller {
 			$this->crumb->add('attendee/type/'.$type,depttitle($type));
 			$this->crumb->add('attendee/add','New Attendee');
 		}
-
+		$golfcount = $attendee->count(array('golf'=>'Yes'));
 
 		$form = new Formly();
 		return View::make('attendee.new')
 					->with('form',$form)
+					->with('golfcount',$golfcount)
 					->with('type',$type)
 					->with('crumb',$this->crumb)
 					->with('title','New Attendee');
