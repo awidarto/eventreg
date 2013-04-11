@@ -23,11 +23,16 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
     @include('partials.operationalform.headform')
 
     <div id="step-1">
-        @include('partials.operationalform.step1')
+        @include('partials.operationalform.step1-nobtn')
     </div>
 
     <div id="step-2">
       <h2 class="StepTitle">ELECTRICITY INSTALLATION</h2>
+      @if(isset($data['submitform1']) && $data['submitform1'] == 'true' )
+        <div class="alert alert-warning insideform">
+          Form #1 already submitted .
+        </div>
+      @endif
       <div id="page-wrap">
           <table id="order-table">
               <tr>
@@ -160,13 +165,18 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
           
           <div class="clear"></div>
 
-          @include('partials.operationalform.step2')
+          @include('partials.operationalform.step2-nobtn')
           
       </div>
     </div>
 
     <div id="step-3">
           <h2 class="StepTitle">TELEPHONE INSTALLATION</h2>
+          @if(isset($data['submitform2']) && $data['submitform2'] == 'true')
+              <div class="alert alert-warning insideform">
+                Form #2 already submitted .
+              </div>
+          @endif
           <div id="page-wrap">
               <table id="order-table">
                   <tr>
@@ -235,30 +245,30 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
               
               <div class="clear"></div>
 
-              @include('partials.operationalform.step3')
+              @include('partials.operationalform.step3-nobtn')
               
           </div>
     </div>
 
     <div id="step-4">
-        @include('partials.operationalform.step4')
+        @include('partials.operationalform.step4-nobtn')
     </div>
 
     <div id="step-5">
-      @include('partials.operationalform.step5')            
+      @include('partials.operationalform.step5-nobtn')            
     </div>
 
     <div id="step-6">
-      @include('partials.operationalform.step6')
+      @include('partials.operationalform.step6-nobtn')
                           
     </div>
 
     <div id="step-7">
-      @include('partials.operationalform.step7')                  
+      @include('partials.operationalform.step7-nobtn')                  
     </div>
     
     <div id="step-8">
-      @include('partials.operationalform.step8')
+      @include('partials.operationalform.step8-nobtn')
 
         <table id="order-table">
             <tr>
@@ -336,11 +346,16 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
     </div>
 
     <div id="step-9">
-      @include('partials.operationalform.step9')                  
+      @include('partials.operationalform.step9-nobtn')                  
     </div>
 
     <div id="step-10">
       <h2 class="StepTitle">ADVERTISING</h2>
+      @if(isset($data['submitform9']) && $data['submitform9'] == 'true')
+          <div class="alert alert-warning insideform">
+            Form #9 already submitted .
+          </div>
+      @endif
       <div id="page-wrap">
           <table id="order-table">
               <tr>
@@ -390,12 +405,17 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
               <input type="hidden" class="" id="advertgrandtotal" name="advertgrandtotal" value="{{ $data['advertgrandtotal'] }}"></input>
             </tr>
           </table>
-          @include('partials.operationalform.step10')
+          @include('partials.operationalform.step10-nobtn')
       </div>
     </div>
 
     <div id="step-11">
-      <h2 class="StepTitle">FURNITURE RENTAL</h2>   
+      <h2 class="StepTitle">FURNITURE RENTAL</h2>
+      @if(isset($data['submitform10']) && $data['submitform10'] == 'true')
+          <div class="alert alert-warning insideform">
+            Form #10 already submitted .
+          </div>
+      @endif   
       <div id="boothcontractor">
         <br/>
         <p>Please fill in the box with the quantity of your order:</p>
@@ -522,13 +542,19 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
         <br/>
         <br/>
         <br/>
-        @include('partials.operationalform.step11') 
+        @include('partials.operationalform.step11-nobtn') 
         <br/>
       </div>                     
     </div> 
 
     <div id="step-12">
       <h2 class="StepTitle">INTERNET CONNECTION</h2>
+      @if(isset($data['submitform11']) && $data['submitform11'] == 'true')
+          <div class="alert alert-warning insideform">
+            Form #11 already submitted .
+          </div>
+      @endif
+
       <div id="page-wrap">
           <table id="order-table">
               <tr>
@@ -598,13 +624,19 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
           
           <div class="clear"></div>
 
-          @include('partials.operationalform.step12')
+          @include('partials.operationalform.step12-nobtn')
           
       </div>
     </div>
 
     <div id="step-13">
       <h2 class="StepTitle">KIOSK RENTAL</h2>
+      @if(isset($data['submitform12']) && $data['submitform12'] == 'true')
+          <div class="alert alert-warning insideform">
+            Form #12 already submitted .
+          </div>
+      @endif
+
       <div id="page-wrap">
           <table id="order-table">
               <tr>
@@ -678,7 +710,7 @@ $path = $dir.'/confirmexhibitor'.$id.'.pdf';
               <input type="hidden" name="kioskgrandtotal" id="kioskgrandtotal" value="{{ $data['kioskgrandtotal'] }}"></input>
             </tr>
           </table>
-          @include('partials.operationalform.step13')
+          @include('partials.operationalform.step13-nobtn')
           
       </div>
     </div>
