@@ -695,7 +695,7 @@ td.detailsitem{
 						<strong>TOTAL PAYMENT</strong><br/>
 					</td>
 					<td class="alignright">
-						@if ($data['addboothsubtotal']!='' && $data['addboothsubtotal']!= 0)
+						@if ($data['furnituresubtotal']!='' && $data['furnituresubtotal']!= 0)
 							<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['furnituresubtotal']) }}</strong>
 						@else
 							<strong><span style="float:left;">USD </span></strong>	
