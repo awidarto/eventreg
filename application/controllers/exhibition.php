@@ -823,7 +823,7 @@ class Exhibition_Controller extends Base_Controller {
 					
 				}
 				else if ($ex['formstatus']!='saved') {
-					Event::fire('exhibition.postoperationalform',array('all',$id,$user_id));
+					Event::fire('exhibition.postoperationalform',array('all',$id,$_id));
 					
 				}
 

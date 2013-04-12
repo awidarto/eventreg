@@ -1,5 +1,9 @@
 @layout('publicnoside')
 @section('content')
+<div class="statusformindividualsubmit">
+
+</div>
+<div class="clear"></div>
 <div class="tableHeader">
     <h3>{{$title}}</h3>
 </div>
@@ -769,6 +773,8 @@
           keyNavigation: false,
           enableAllSteps: true
         });
+        
+        var statusformsubmitalert = '<div class="alert alert-warning">Submitting your form, please wait..</div>';
 
         //submit individual
         $('#submitform1').click(function(e){
@@ -778,6 +784,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
 
         $('#submitform2').click(function(e){
@@ -787,6 +794,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
 
         $('#submitform3').click(function(e){
@@ -796,6 +804,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
         $('#submitform4').click(function(e){
             var frm = $('form');
@@ -804,6 +813,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
         $('#submitform5').click(function(e){
             var frm = $('form');
@@ -812,6 +822,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
         $('#submitform6').click(function(e){
             var frm = $('form');
@@ -820,6 +831,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
         $('#submitform7').click(function(e){
             var frm = $('form');
@@ -828,6 +840,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
         $('#submitform8').click(function(e){
             var frm = $('form');
@@ -836,6 +849,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
         $('#submitform9').click(function(e){
             var frm = $('form');
@@ -844,6 +858,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
         $('#submitform10').click(function(e){
             var frm = $('form');
@@ -852,6 +867,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
         $('#submitform11').click(function(e){
             var frm = $('form');
@@ -860,6 +876,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
         $('#submitform12').click(function(e){
             var frm = $('form');
@@ -868,6 +885,7 @@
             $('#operationalformexhibitor').append($(input));
             $('#operationalformexhibitor').append($(input2));
             frm.submit();
+            $('.statusformindividualsubmit').append(statusformsubmitalert);
         });
         
 

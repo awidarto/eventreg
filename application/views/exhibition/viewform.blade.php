@@ -330,6 +330,11 @@
         
         <br/>
         <br/>
+        
+
+        @if(isset($data['submitform7']) && $data['submitform7'] == 'true')
+          </div>
+        @endif
       </div>                     
     </div>
 
@@ -676,7 +681,7 @@
               <input type="hidden" name="kioskgrandtotal" id="kioskgrandtotal" value="{{ $data['kioskgrandtotal'] }}"></input>
             </tr>
           </table>
-          @include('partials.operationalform.step13')
+          @include('partials.operationalform.step13-nobtn')
           
       </div>
     </div>
