@@ -42,6 +42,8 @@ return array(
 		'reg_finance_email'=>'conventionipa2013@dyandra.com',
 		'reg_finance_name'=>'37th IPA Convex Finance',
 
+
+
 		'emailpichall'=>array(
 			'mainlobby1'=>array('email'=>'trisa@dyandra.com','name'=>'Trisa'),
 			'mainlobby2'=>array('email'=>'rachel.pardede@dyandra.com','name'=>'Rachel'),
@@ -61,6 +63,12 @@ return array(
 			'cancel'=>'Cancel',
 			'free'=>'Free of Charge'
 		),
+
+		'systemstatus'=>array(
+			'operationalform'=>'closed'
+			
+		),
+
 		
 		'resendemailtype'=>array(
 			'email.regsuccess'=>'Registration',

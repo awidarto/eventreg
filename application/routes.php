@@ -138,6 +138,11 @@ Route::get('barcode128/(:any)',function($text){
     return View::make('bartest')->with('text',$text);
 });
 
+Route::get('maintenance',function(){
+    
+    return View::make('maintenance');
+});
+
 Route::get('barcode39/(:any)',function($text){
     $barcode = new Code39();
     $barcode->draw($text);
