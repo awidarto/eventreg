@@ -333,7 +333,7 @@ Event::listen('exhibition.postoperationalform',function($type,$id,$exhibitorid){
     if($type == 'all'){
         Message::to($user['email'])
             ->from(Config::get('eventreg.reg_exhibitor_admin_email'), Config::get('eventreg.reg_exhibitor_admin_name'))
-            >cc($cc1['email'],$cc1['name'])
+            ->cc($cc1['email'],$cc1['name'])
             ->cc($cc2['email'],$cc2['name'])
             ->subject('CONFIRMATION OF OPERATIONAL FORMS - Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$user['registrationnumber'].')')
             ->body( $body )
