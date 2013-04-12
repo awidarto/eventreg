@@ -204,7 +204,7 @@ class Exhibitor_Controller extends Base_Controller {
 				if(isset($user_form['submitform2']) && $user_form['submitform2']=='true'){
 					$form2='<span style="color:#bc1c48;">submitted</span>';
 				}else{
-					$form3='open';
+					$form2='open';
 				}
 				if(isset($user_form['submitform3']) && $user_form['submitform3']=='true'){
 					$form3='<span style="color:#bc1c48;">submitted</span>';
