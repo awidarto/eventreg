@@ -607,7 +607,7 @@ $(function() {
       if(strtotime($dateA) > strtotime($earlybirddate)):
       ?>
         //alert($('.field_golfType:checked').val());
-        if($('.field_golfType:checked').val() == 'No'){
+        /*if($('.field_golfType:checked').val() == 'No'){*/
           $('#feeRegUSD').text('550');
           $('#feeRegIDR').text('-');
           $('#feeGolf').text('-');
@@ -615,7 +615,7 @@ $(function() {
           $('#totalIDR').text('-');
           $('#totalUSDInput').val('550');
           $('#totalIDRInput').val('-');
-        }else{
+        /*}else{
           //alert($('.field_golfType:checked').val());
           $('#feeRegUSD').text('550');
           $('#feeRegIDR').text('-');
@@ -625,10 +625,10 @@ $(function() {
           $('#totalUSDInput').val('550');
           $('#totalIDRInput').val('2.500.000');
           
-        }
+        }*/
       <?php else:?>
         //alert($('.field_golfType:checked').val());
-        if($('.field_golfType:checked').val() == 'No'){
+        /*if($('.field_golfType:checked').val() == 'No'){*/
           $('#feeRegUSD').text('500');
           $('#feeRegIDR').text('-');
           $('#feeGolf').text('-');
@@ -636,7 +636,7 @@ $(function() {
           $('#totalIDR').text('-');
           $('#totalUSDInput').val('500');
           $('#totalIDRInput').val('-');
-        }else{
+        /*}else{
           //alert($('.field_golfType:checked').val());
           $('#feeRegUSD').text('500');
           $('#feeRegIDR').text('-');
@@ -646,7 +646,7 @@ $(function() {
           $('#totalUSDInput').val('500');
           $('#totalIDRInput').val('2.500.000');
           
-        }
+        }*/
       <?php endif;?>
     }
 
