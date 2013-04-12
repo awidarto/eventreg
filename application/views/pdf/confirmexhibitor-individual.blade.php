@@ -637,14 +637,22 @@ td.detailsitem{
 						<strong>TOTAL PAYMENT</strong><br/>
 					</td>
 					<td class="alignright">
+						@if ($data['electricsubtotal']!='' || $data['electricsubtotal']!= 0)
 						<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['electricsubtotal']) }}</strong>
+						@else
+						<strong><span style="float:left;">USD </span></strong>
+						@endif
 					</td>
 				@elseif($formnumber == 2)
 					<td colspan="3">
 						<strong>TOTAL PAYMENT</strong><br/>
 					</td>
 					<td class="alignright">
-						<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['phonesubtotal']) }}</strong>
+						@if ($data['phonesubtotal']!='' && $data['phonesubtotal']!= 0)
+							<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['phonesubtotal']) }}</strong>
+						@else
+							<strong><span style="float:left;">USD </span></strong>
+						@endif
 					</td>
 				@elseif($formnumber == 3)
 					
@@ -661,7 +669,11 @@ td.detailsitem{
 						<strong>TOTAL PAYMENT</strong><br/>
 					</td>
 					<td class="alignright">
-						<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['addboothsubtotal']) }}</strong>
+						@if ($data['addboothsubtotal']!='' && $data['addboothsubtotal']!= 0)
+							<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['addboothsubtotal']) }}</strong>
+						@else
+							<strong><span style="float:left;">USD </span></strong>
+						@endif	
 					</td>
 
 				@elseif($formnumber == 8)
@@ -671,7 +683,11 @@ td.detailsitem{
 						<strong>TOTAL PAYMENT</strong><br/>
 					</td>
 					<td class="alignright">
-						<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['advertsubtotal']) }}</strong>
+						@if ($data['advertsubtotal']!='' && $data['advertsubtotal']!= 0)
+							<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['advertsubtotal']) }}</strong>
+						@else
+							<strong><span style="float:left;">USD </span></strong>	
+						@endif
 					</td>
 				
 				@elseif($formnumber == 10)
@@ -679,21 +695,35 @@ td.detailsitem{
 						<strong>TOTAL PAYMENT</strong><br/>
 					</td>
 					<td class="alignright">
-						<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['furnituresubtotal']) }}</strong>
+						@if ($data['addboothsubtotal']!='' && $data['addboothsubtotal']!= 0)
+							<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['furnituresubtotal']) }}</strong>
+						@else
+							<strong><span style="float:left;">USD </span></strong>	
+						@endif
 					</td>
 				@elseif($formnumber == 11)
 					<td colspan="3">
 						<strong>TOTAL PAYMENT</strong><br/>
 					</td>
 					<td class="alignright">
-						<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['internetsubtotal']) }}</strong>
+						@if ($data['internetsubtotal']!='' && $data['internetsubtotal']!= 0)
+							<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['internetsubtotal']) }}</strong>
+						@else
+							<strong><span style="float:left;">USD </span></strong>	
+						@endif
+						
 					</td>
 				@elseif($formnumber == 12)
 					<td colspan="3">
 						<strong>TOTAL PAYMENT</strong><br/>
 					</td>
 					<td class="alignright">
-						<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['kiosksubtotal']) }}</strong>
+						@if ($data['kiosksubtotal']!='' && $data['kiosksubtotal']!= 0)
+							<strong><span style="float:left;">USD </span>{{ money_format(" %!n ", $data['kiosksubtotal']) }}</strong>
+						@else
+							<strong><span style="float:left;">USD </span></strong>	
+						@endif
+						
 					</td>
 				@endif
 

@@ -1,6 +1,3 @@
-<?php 
-	
-?>
 <div style="width:100%;position:relative;display:block;font-family:Helvetica,Arial,Sans-serif;font-size:13px;">
 	<div style="width:100%;position:relative;display:block;">
 		<div style="position:relative;display:inline-block;float:left;margin:0 30px 20px 0;">{{ HTML::image('images/ipa-logo.jpg','ipalogo',array('class'=>'')) }}</div>
