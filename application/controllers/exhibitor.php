@@ -1474,4 +1474,53 @@ class Exhibitor_Controller extends Base_Controller {
 		return $result;
 	}
 
+	public function get_generatepdfoperationalform($exhid,$formno){
+
+
+
+		$data = Input::get();
+		
+		$data['exhbid'] = $exhid;
+		$data['formno'] = $formno;
+
+		$ex = new Exhibitor();
+		$op = new Operationalform();
+
+		$_id = new MongoId($exhid);
+		
+		$user = $ex->get(array('_id'=>$_id));
+		$data = $op->get(array('userid'=>$exhid));
+
+		$regnumber = $user['registrationnumber'];
+
+	    if($formno == 'all'){
+	        $doc = View::make('pdf.confirmexhibitor')
+	                ->with('data',$data)
+	                ->with('user',$user)
+	                ->render();
+	    }else{
+	        $doc = View::make('pdf.confirmexhibitor-individual')
+	                ->with('data',$data)
+	                ->with('user',$user)
+	                ->with('formnumber',$formno)
+	                ->render();
+	    }
+	    
+	    $pdf = new Pdf();
+
+	    $pdf->make($doc);
+
+	    $newdir = realpath(Config::get('kickstart.storage'));
+
+	    $path = $newdir.'/operationalforms/confirmexhibitor'.$regnumber.'form-'.$formno.'.pdf';
+
+	    $pdf->render();
+
+	    $pdf->save($path);
+
+	    return View::make('adminnotif')
+	    ->with('title','Success')
+		->with('data','Successfully created <strong>form-'.$formno.'</strong> for <strong>'.$regnumber.'</strong><br/> Now you can download the form in admin area');
+	}
+
 }

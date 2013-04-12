@@ -1005,3 +1005,15 @@ table.onsite {
 #print_frame{
 	background-color: red;
 }
+
+.download-list-form{
+	position: absolute;
+	top: 15px;
+	right: 100px;
+}
+.download-list-form a{
+	float: right;
+	margin-left: 50px;
+	text-align: center;
+	width: 30px;
+}

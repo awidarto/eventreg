@@ -8,10 +8,60 @@
 
 $dir = URL::base().'/storage/operationalforms';
 $id = $userdata['registrationnumber'];
-$path = $dir.'/confirmexhibitor'.$id.'.pdf'; 
+$path = $dir.'/confirmexhibitor'.$id.'form-all.pdf'; 
+$path1 = $dir.'/confirmexhibitor'.$id.'form-1.pdf'; 
+$path2 = $dir.'/confirmexhibitor'.$id.'form-2.pdf'; 
+$path3 = $dir.'/confirmexhibitor'.$id.'form-3.pdf'; 
+$path4 = $dir.'/confirmexhibitor'.$id.'form-4.pdf'; 
+$path5 = $dir.'/confirmexhibitor'.$id.'form-5.pdf'; 
+$path6 = $dir.'/confirmexhibitor'.$id.'form-6.pdf'; 
+$path7 = $dir.'/confirmexhibitor'.$id.'form-7.pdf'; 
+$path8 = $dir.'/confirmexhibitor'.$id.'form-8.pdf'; 
+$path9 = $dir.'/confirmexhibitor'.$id.'form-9.pdf'; 
+$path10 = $dir.'/confirmexhibitor'.$id.'form-10.pdf'; 
+$path11 = $dir.'/confirmexhibitor'.$id.'form-11.pdf'; 
+$path12 = $dir.'/confirmexhibitor'.$id.'form-12.pdf'; 
 
 ?>
-<a class="actionright icon-" href="{{ $path }}" target="_blank"><i>&#x0052;</i> <span>download form</span></a>
+<div class="download-list-form">
+  <a class=" icon-" href="{{ $path }}" target="_blank"><i>&#x0052;</i> <span>download form-all</span></a>
+  @if(isset($data['submitform1']) && $data['submitform1'] == 'true' )
+  <a class=" icon-" href="{{ $path1 }}" target="_blank"><i>&#x0052;</i> <span>download form #1</span></a>
+  @endif
+  @if(isset($data['submitform2']) && $data['submitform2'] == 'true' )
+  <a class=" icon-" href="{{ $path2 }}" target="_blank"><i>&#x0052;</i> <span>download form #2</span></a>
+  @endif
+  @if(isset($data['submitform3']) && $data['submitform3'] == 'true' )
+  <a class=" icon-" href="{{ $path3 }}" target="_blank"><i>&#x0052;</i> <span>download form #3</span></a>
+  @endif
+  @if(isset($data['submitform4']) && $data['submitform4'] == 'true' )
+  <a class=" icon-" href="{{ $path4 }}" target="_blank"><i>&#x0052;</i> <span>download form #4</span></a>
+  @endif
+  @if(isset($data['submitform5']) && $data['submitform5'] == 'true' )
+  <a class=" icon-" href="{{ $path5 }}" target="_blank"><i>&#x0052;</i> <span>download form #5</span></a>
+  @endif
+  @if(isset($data['submitform6']) && $data['submitform6'] == 'true' )
+  <a class=" icon-" href="{{ $path6 }}" target="_blank"><i>&#x0052;</i> <span>download form #6</span></a>
+  @endif
+  @if(isset($data['submitform7']) && $data['submitform7'] == 'true' )
+  <a class=" icon-" href="{{ $path7 }}" target="_blank"><i>&#x0052;</i> <span>download form #7</span></a>
+  @endif
+  @if(isset($data['submitform8']) && $data['submitform8'] == 'true' )
+  <a class=" icon-" href="{{ $path8 }}" target="_blank"><i>&#x0052;</i> <span>download form #8</span></a>
+  @endif
+  @if(isset($data['submitform9']) && $data['submitform9'] == 'true' )
+  <a class=" icon-" href="{{ $path9 }}" target="_blank"><i>&#x0052;</i> <span>download form #9</span></a>
+  @endif
+  @if(isset($data['submitform10']) && $data['submitform10'] == 'true' )
+  <a class=" icon-" href="{{ $path10 }}" target="_blank"><i>&#x0052;</i> <span>download form #10</span></a>
+  @endif
+  @if(isset($data['submitform11']) && $data['submitform11'] == 'true' )
+  <a class=" icon-" href="{{ $path11 }}" target="_blank"><i>&#x0052;</i> <span>download form #11</span></a>
+  @endif
+  @if(isset($data['submitform12']) && $data['submitform12'] == 'true' )
+  <a class=" icon-" href="{{ $path12 }}" target="_blank"><i>&#x0052;</i> <span>download form #12</span></a>
+  @endif
+</div>
 <div class="row-fluid">
   <div class="adminview span12">
     

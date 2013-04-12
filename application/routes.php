@@ -181,6 +181,8 @@ Route::get('exhibitor/printbadgeonsite/(:all)/(:all)/(:all)/(:all)',array('uses'
 Route::get('exhibitor/newprintbadgeonsite/(:all)/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@newprintbadgeonsite'));
 Route::get('exhibitor/printbadgeonsite2/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite2'));
 
+Route::get('exhibitor/generatepdfoperationalform/(:all)/(:all)',array('uses'=>'exhibitor@createpdfoperationalform'));
+
 
 Route::get('reset',array('uses'=>'register@reset'));
 Route::post('reset',array('uses'=>'register@reset'));
@@ -199,6 +201,7 @@ Route::get('paymentsubmitted',array('as'=>'register/paymentsubmitted','uses'=>'r
 Route::get('register-success',array('as'=>'register/success','uses'=>'register@success'));
 Route::get('register-landing',array('as'=>'register/landing','uses'=>'register@landing'));
 Route::get('register-group',array('as'=>'register/group','uses'=>'register@group'));
+
 
 /*
 Route::get('/',  function(){
