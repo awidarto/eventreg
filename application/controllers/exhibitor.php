@@ -55,9 +55,9 @@ class Exhibitor_Controller extends Base_Controller {
 
 		$btn_add_to_group = '<span class=" add_to_group" id="add_to_group">'.$action_selection.'</span>';
 
-		$heads = array('#',$select_all,'Reg. Number','Reg. Date','Email','Hall','First Name','Last Name','Company','Country','Form Status','Indv Form Status','');
+		$heads = array('#',$select_all,'Reg. Number','Reg. Date','Email','Hall','Booth No','First Name','Last Name','Company','Country','Form Status','Indv Form Status','');
 
-		$searchinput = array(false,false,'Reg Number','Reg. Date','Email','Hall','First Name','Last Name','Company','Country',false,false,false);
+		$searchinput = array(false,false,'Reg Number','Reg. Date','Email','Hall',false,'First Name','Last Name','Company','Country',false,false,false);
 
 		$colclass = array('','span1','span3','span1','span3','span3','span1','span1','span1','','','','','');
 
@@ -65,7 +65,7 @@ class Exhibitor_Controller extends Base_Controller {
 			return View::make('tables.simple')
 				->with('title','Exhibitors')
 				->with('newbutton','New Exhibitors')
-				->with('disablesort','0,1,10')
+				->with('disablesort','0,1,6,10')
 				->with('addurl','exhibitor/add')
 				->with('colclass',$colclass)
 				->with('searchinput',$searchinput)
@@ -284,6 +284,17 @@ class Exhibitor_Controller extends Base_Controller {
 				$rowEditform = '<a class="icon-"  ><i>&#x0025;</i><span class="editform" id="'.$doc['_id'].'" rel="editform"> Edit Form</span>';
 			}
 
+			//both no
+			$boothid = $doc['boothid'];
+
+			$booth_id = new MongoId($boothid);
+
+			//find booth
+			$booth = new Booth();
+
+			$boothno = $booth->get(array('_id'=>$booth_id));
+			$boothname = $boothno['boothno'];
+
 			$aadata[] = array(
 				$counter,
 				$select,
@@ -291,6 +302,7 @@ class Exhibitor_Controller extends Base_Controller {
 				date('Y-m-d', $doc['createdDate']->sec),
 				$doc['email'],
 				$doc['hall'],
+				$boothname,
 				'<span class="expander" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
 				$doc['lastname'],
 				$doc['company'],
