@@ -199,7 +199,8 @@
   </div>
 </div>
 
-<div id="processingstat" class="dataTables_processing" style="visibility: hidden;">Processing...</div>
+<div id="processingstat" class="processing_stat" style="display:none;">Processing...</div>
+<div class="modal-backdrop fade in" style="opacity:0.5;display:none;"></div>
 <script>
   
   <?php
@@ -348,6 +349,8 @@ $('body').on('click', '.printbadge', function(e){
 
 $(document).ready(function(){
   var processingstat = $('#processingstat');
+  var backdrop = $('.modal-backdrop');
+  
   $('#importallexhibitor').click( function(){
       var idtoprocess = [];
       var currentidtoprocess = [];
@@ -402,6 +405,7 @@ $(document).ready(function(){
 
               // Do something with element i.
               processingstat.show();
+              backdrop.show();
 
               
             
@@ -413,12 +417,14 @@ $(document).ready(function(){
                 dothat++;
                 if(dothat >= totalSelected){
                   processingstat.hide();
+                  backdrop.hide();
+
                   alert("Succesfully imported "+totalSuccess+" data from "+totalSelected+ " selected data");
                   
                   <?php
                     $redirect = URL::to('exhibitor/importbothassistant/'.$exhibitorid);
                   ?>
-                  setTimeout("location.href = '<?php echo $redirect;?>';",1000);
+                  setTimeout("location.href = '<?php echo $redirect;?>';",500);
                   
                 }
 

@@ -316,6 +316,28 @@ span.error{
     border: 1px solid #6f6f6f;
     z-index: 10000;
 }
+
+.processing_stat{
+	width: 23px;
+	height: 27px;
+   	position: absolute;
+   	left: 50%;
+   	top: 30%; 
+   	margin-left: -60px;
+   	margin-top: -25px;
+	display: inline-block;
+	
+	background: transparent url("../img/progress-indeterminate-ring-light-small.gif") no-repeat 10px 7px;
+	padding-left: 37px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-right: 60px;
+	position: absolute;
+
+    background-color: #fff;
+    border: 1px solid #6f6f6f;
+    z-index: 10000;
+}
 .table-condensed td.details-expand{
 	background-color: #ebebeb;
 	position: relative;
