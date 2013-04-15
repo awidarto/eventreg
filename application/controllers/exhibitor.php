@@ -915,7 +915,7 @@ class Exhibitor_Controller extends Base_Controller {
 					->with('id',$id)
 					->with('ajaxImportBoothAssistant',URL::to('boothassistant/individual'))
 					->with('crumb',$this->crumb)
-					->with('title','Import Booth Assistant for '.$userdata['company'].', '.$userdata['registrationnumber']);
+					->with('title','Import Exhibitor\'s Pass for '.$userdata['company'].', '.$userdata['registrationnumber']);
 
 	}
 
