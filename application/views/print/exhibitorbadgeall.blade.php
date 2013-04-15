@@ -204,7 +204,7 @@ for($i=1;$i<=$user_form['totaladdbooth'];$i++){
 <?php
 $redirect = URL::to('exhibitor/importbothassistant/'.$exhibitorid);
 ?>
-setTimeout(window.print();,1500);
+setTimeout(window.print(),1500);
 
 setTimeout("location.href = '<?php echo $redirect;?>';",2500);
 	
