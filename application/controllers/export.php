@@ -639,6 +639,7 @@ class Export_Controller extends Base_Controller {
 		for($i=1;$i<=$freepasscount;$i++){
 			$inarray[0] = $i;
 			$inarray[1] = $data['freepassname'.$i.''];
+			$inarray[2] = $data['freepassname'.$i.'regnumber'];
 			$result[] = implode(',',$inarray);
 		}
 
@@ -650,6 +651,7 @@ class Export_Controller extends Base_Controller {
 		for($i=1;$i<=$boothassistantcount;$i++){
 			$inarray[0] = $i;
 			$inarray[1] = $data['boothassistant'.$i.''];
+			$inarray[2] = $data['boothassistant'.$i.'regnumber'];
 			$result[] = implode(',',$inarray);
 		}
 
