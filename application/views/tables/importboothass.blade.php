@@ -148,7 +148,10 @@
 
 				<script type="text/javascript">
 					$('#commit-trigger').click(function(){
-						$('#commit_form').submit();
+						var answer = confirm("Are you sure you want to import this data? Existing data will be replaced with this data");
+						if(answer){
+							$('#commit_form').submit();
+						}
 					});
 				</script>
 			@endif

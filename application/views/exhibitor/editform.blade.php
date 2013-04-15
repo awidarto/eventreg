@@ -1,8 +1,11 @@
 @layout('blank')
 @section('content')
-{{ HTML::script('js/jquery.smartWizard-2.0.min.js') }}
+{{ HTML::script('js/jquery.smartWizard-2.0.js') }}
 {{ HTML::script('js/edit_order.js') }}
 <div id="viewformcontainer">
+  <div class="statusformindividualsubmit">
+
+  </div>
   <div class="row-fluid">
     <div class="adminview span12">
       {{$form->open('exhibitor/editform','POST',array('class'=>'addAttendeeForm','id'=>'operationalformexhibitor'))}}
@@ -805,18 +808,14 @@
         
 
         $('.buttonNext').click(function () {
-          gotoTop();
+          //gotoTop();
         });
 
         $('.buttonPrevious').click(function () {
-          gotoTop();
+          //gotoTop();
         });
 
-        function gotoTop(){
-          $('body,html').animate({
-            scrollTop: 400
-          }, 0);
-        }
+        
         //character left
         var left = 26
         $('#text_counter').text('Characters left: ' + left);
@@ -838,7 +837,7 @@
 </script>
 
 <script>
-  var index = <?php echo $data['noaddpass'];?> ;
+  var index = '<?php echo $data['noaddpass'];?>';
   function addfield() {
     index++;
     var appendStr = '<tr>';
@@ -934,7 +933,7 @@ $('#totaladdboothinput').bind("focus blur change keyup", function(){
     
 
     $('.addboothrow').remove();
-    var totaladdboothrecent = <?php echo $data['totaladdbooth'];?>;
+    var totaladdboothrecent = '<?php echo $data['totaladdbooth'];?>';
     
     if((totalfieldsNum!=totaladdboothrecent)){
         for(var i=totaladdboothrecent; i<totalfieldsNum; i++){
@@ -948,7 +947,7 @@ $('#totaladdboothinput').bind("focus blur change keyup", function(){
             var stepContainerHeight = $('.stepContainer').height();
             $('#listaddboothedit').append(appendStr);
         }
-        var totalheight = window.stepContainerDefault+(60*totalfieldsNum);
+        var totalheight = window.stepContainerDefault+(70*totalfieldsNum);
         $('.stepContainer').css("height",totalheight);
         
     }else if(totalfieldsNum==totaladdboothrecent){
@@ -1001,6 +1000,153 @@ $('#totaladdboothinput').bind("focus blur change keyup", function(){
     $("#addboothgrandtotal").val(orderTotal);
 
   }
+
+  function gotoTop(){
+    $('.modal-body').animate({
+      scrollTop: 0
+    }, 200);
+  }
+
+  var statusformsubmitalert = '<div class="alert alert-warning">Submitting your form, please wait..</div>';
+  //submit individual
+  $('#submitform1').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform1").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+  });
+
+  $('#submitform2').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform2").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+
+  });
+
+  $('#submitform3').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform3").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+  });
+  $('#submitform4').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform4").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+  });
+  $('#submitform5').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform5").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+  });
+  $('#submitform6').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform6").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+  });
+  $('#submitform7').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform7").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+  });
+  $('#submitform8').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform8").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+  });
+  $('#submitform9').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform9").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+  });
+  $('#submitform10').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform10").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+  });
+  $('#submitform11').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform11").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+  });
+  $('#submitform12').click(function(e){
+      var frm = $('form');
+      var input2 = $("<input>").attr("type", "hidden").attr("name", "btnSave").val("true");
+      var input = $("<input>").attr("type", "hidden").attr("name", "submitform12").val("true");
+      $('#operationalformexhibitor').append($(input));
+      $('#operationalformexhibitor').append($(input2));
+      gotoTop();
+      frm.submit();
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+  });
+
+  $('#btnSaveOperational').click(function(e){
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+      gotoTop();
+      
+  });
+
+  $('.buttonFinish').click(function(e){
+      $('.statusformindividualsubmit').append(statusformsubmitalert);
+      gotoTop();
+      
+  });
+  
+  
+
 
 </script>
 

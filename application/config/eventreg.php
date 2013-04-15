@@ -65,7 +65,7 @@ return array(
 		),
 
 		'systemstatus'=>array(
-			'operationalform'=>'closed'
+			'operationalform'=>'open',
 			
 		),
 

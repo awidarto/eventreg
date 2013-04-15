@@ -53,11 +53,12 @@
   <div class="span12">
       <hr/>
       <div class="buttonlistimportboothassis" style="width:70%;display:inline-block;float:left;">
-        @if(Auth::user()->email == 'taufiq.ridha@gmail.com')
-        <btn class="btn btn-info" id="importallexhibitor" ><span class="icon-" style="width:40px;">&#x0056;&#x0054;</span>&nbsp;Import All Data</btn>
-        @endif
+       
         <a class="btn btn-info" id="printall" href="{{URL::to('exhibitor/printbadgeall')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe14c;</span>&nbsp;Print All Data</a>
-        <a class="btn btn-success" id="" href="{{URL::to('export/boothassistant')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe1dd;</span>&nbsp;Export as .csv</a>
+        <a class="btn btn-success" id="" href="{{URL::to('export/boothassistant')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe1dd;</span>&nbsp;Download data as .csv</a>
+        @if(Auth::user()->email == 'taufiq.ridha@gmail.com')
+          <btn class="btn btn-info" id="importallexhibitor" ><span class="icon-" style="width:40px;">&#x0056;&#x0054;</span>&nbsp;Import All Data</btn>
+        @endif
         
       </div>
       <div style="display:inline-block;width:30%;float:left;">
@@ -177,17 +178,27 @@
           @for($i=1;$i<=$data['totaladdbooth'];$i++)
 
             <tr>
+
               <td>{{ $i }}. </td>
-              <td class="passname">{{ $data['addboothname'.$i.''] }}</td>
 
               @if(isset($boothassistantdata['addboothname'.$i.'']))
-                  <td class="aligncenter action" >Imported on {{ date('d-m-Y',  $boothassistantdata['addboothname'.$i.'timestamp']->sec) }}</td>
-                  <td id="status_addboothname{{ $i }}" class="align-center status"><span class="icon- fontGreen existtrue">&#xe20c;</span></td>
-                
+                <td class="passname"><div class="boothasstName alreadyimport" id="addboothname{{ $i }}" rel="{{$boothassistantdata['addboothname'.$i.'regnumber']}}" type="addboothname">{{ $boothassistantdata['addboothname'.$i.''] }}</div></td>
+              @elseif($data['addboothname'.$i.'']=='')
+                <td class="passname"><div class="boothasstNameaddOnly" id="addboothname{{ $i }}" rel="" type="addbooth"><span class="fontRed">Double click to add..</div></div></td>
+              @else
+                <td class="passname"><div class="notimport" id="addboothname{{ $i }}" >{{ $data['addboothname'.$i.''] }}</div></td>
+              @endif
+              @if(isset($boothassistantdata['addboothname'.$i.'']))
+                  <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['addboothname'.$i.'timestamp']->sec) }}</td>
+                  <td id="status_addboothname{{ $i }}" class="align-center status"><a class="icon- printbadge" id="addboothname{{ $i }}" type="addboothname" typeid="{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="addboothname{{ $i }}" > Print this data</span></a></td>
+                  <td id="iframeaddboothname{{ $i }}"><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['addboothname'.$i.'regnumber']}}/{{$boothassistantdata['addboothname'.$i.'']}}/{{ $userdata['company'] }}/ba2/" id="printbadgeaddboothname{{ $i }}"  style="display:none;" class="span12"></iframe></td>
               @else
               <td id="status_addboothname{{ $i }}" class="align-center status"></td>
               <td class="align-center action"><a class="icon- importidividual" id="addboothname{{ $i }}" type="addboothname" typeid="{{ $i }}"><i>&#xe20b;</i><span class="formstatus" id="" > Import this data</span></a></td>
+              <td id="iframeaddboothname{{ $i }}"></td>
               @endif
+
+              
               
             </tr>
             

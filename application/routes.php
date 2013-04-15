@@ -196,6 +196,8 @@ Route::get('exhibitor/resetlanding',array('uses'=>'exhibition@resetlanding'));
 Route::get('exhibitor/operationalform',array('uses'=>'exhibition@operationalform'));
 Route::post('exhibitor/operationalform',array('uses'=>'exhibition@operationalform'));
 
+Route::get('exhibition/operationalform',array('uses'=>'exhibitor@operationalform'));
+
 
 Route::get('paymentsubmitted',array('as'=>'register/paymentsubmitted','uses'=>'register@paymentsubmitted'));
 Route::get('register-success',array('as'=>'register/success','uses'=>'register@success'));

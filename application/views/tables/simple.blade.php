@@ -12,7 +12,12 @@
 </div>
 -->
 <div class="span12">
-   
+	
+   @if (Session::has('notify_operationalform'))
+        <div class="alert alert-error">
+             {{Session::get('notify_operationalform')}}
+        </div>
+    @endif
 
     <div class="row-fluid">
        <div class="span12">
@@ -1075,6 +1080,26 @@
 		   	}
 
 		   	if ($(e.target).is('.editform')) {
+				
+				var _id = e.target.id;
+				var _rel = $(e.target).attr('rel');
+				var url = '{{ URL::base() }}' + '/exhibitor/' + _rel + '/' + _id;
+				
+
+				//var url = $(this).attr('url');
+			    //var modal_id = $(this).attr('data-controls-modal');
+			    setTimeout(function() {
+				    $("#editformModal .modal-body").load(url);
+				}, 1000);
+			    
+				
+				
+				$('#editformModal').modal();
+
+		   	}
+
+
+		   	if ($(e.target).is('.fillform')) {
 				
 				var _id = e.target.id;
 				var _rel = $(e.target).attr('rel');

@@ -663,6 +663,7 @@ class Export_Controller extends Base_Controller {
 		for($i=1;$i<=$addboothassistantcount;$i++){
 			$inarray[0] = $i;
 			$inarray[1] = $data['addboothname'.$i.''];
+			$inarray[2] = $data['addboothname'.$i.'regnumber'];
 			$result[] = implode(',',$inarray);
 		}
 

@@ -292,10 +292,17 @@ class Exhibition_Controller extends Base_Controller {
 	}
 
 	public function get_operationalform(){
+		$sytemstat = Config::get('eventreg.systemstatus');
+		$operationalformsystemstat = $sytemstat['operationalform'];
+
+		if($operationalformsystemstat == 'closed'){
+			return View::make('exhibition.operationalformclosed');
+		}
 		if(!Auth::exhibitor()){
 			return Redirect::to('exhibition/login');
 		}
 
+		
 		$exhibitor = new Exhibitor();
 		$booths = new Booth();
 		
@@ -322,6 +329,9 @@ class Exhibition_Controller extends Base_Controller {
 					->with('title','Operational Form');
 
 	}
+
+
+	
 
 
 	public function post_operationalform(){
@@ -557,6 +567,13 @@ class Exhibition_Controller extends Base_Controller {
 	}
 
 	public function get_editform(){
+
+		$sytemstat = Config::get('eventreg.systemstatus');
+		$operationalformsystemstat = $sytemstat['operationalform'];
+
+		if($operationalformsystemstat == 'closed'){
+			return View::make('exhibition.operationalformclosed');
+		}
 
 		//$this->crumb->add('user/edit','Edit',false);
 		$formoperational = new Operationalform();
@@ -836,6 +853,14 @@ class Exhibition_Controller extends Base_Controller {
 		    	return Redirect::to('exhibitor/profile/')->with('notify_success','Exhibitor saving failed');
 			}
 		}
+	}
+
+
+	public function get_operationalformclosed(){
+		
+		return View::make('exhibition.operationalformclosed')
+					->with('title','Sorry');
+
 	}
 
 	public function get_readform(){

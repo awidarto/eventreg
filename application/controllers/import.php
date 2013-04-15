@@ -1670,6 +1670,112 @@ class Import_Controller extends Base_Controller {
 
 					}
 
+
+					//ADDITIONAL EXHIBITOR PASS PAY
+
+					$xls3 = $excel->loadboothass($filepath,$extension,'AddExhibitorPass(PAYABLE)');
+					
+
+					$rows3 = $xls3['cells'];
+
+					
+					$heads3 = $rows3[1];
+					
+
+					//print_r($heads);
+
+					$theads3 = array();
+					for($x = 0;$x < count($heads3);$x++){
+						if(trim($heads3[$x]) == ''){
+						}else{
+							$theads3[] = $heads3[$x];
+						}
+					}
+
+					$heads3 = $theads3;
+
+					//print_r($heads);
+
+					//remove first two lines
+					
+					$headindex3 = 1;
+					
+
+					for($i = 0;$i <= $headindex3;$i++){
+						array_shift($rows3);
+					}
+					
+
+					$trows3 = array();
+
+					for($x = 0;$x < count($rows3);$x++){
+						if(trim(implode('',$rows3[$x])) == ''){
+							unset($rows3[$x]);
+						}else{
+							$trows3[] = $rows3[$x];
+						}
+					}
+
+					//print_r($trows);
+
+					$rows3 = $trows3;
+
+					$inhead3 = array();
+
+					$chead3 = array();
+
+					foreach ($heads3 as $head) {
+						$label = str_replace(array('.','\''), '', $head);
+
+						$label = preg_replace('/[ ][ ]+/', ' ', $label);
+
+						$label = str_replace(array('/',' '), '_', $label);
+						$label = strtolower(trim($label));
+
+						$chead3[] = $label;
+					}
+
+					$inhead3['head_labels'] = $chead3;
+					$inhead3['cache_head'] = true;
+					$inhead3['cache_id'] = $c_id;
+					$inhead3['cache_commit'] = false;
+
+
+					//print_r($inhead);
+
+					$icache->insert($inhead3);
+					$countrow3 = 0;
+					foreach($rows3 as $row){
+
+						if(implode('',$row) != ''){
+							$countrow3++;
+							$ins3 = array();
+							for($i = 0; $i < count($heads3); $i++){
+
+								$label = str_replace(array('.','\''), '', $heads3[$i]);
+								$label = preg_replace('/[ ][ ]+/', ' ', $label);
+
+								$label = str_replace(array('/',' '), '_', $label);
+
+								$label = strtolower(trim($label));
+
+								$ins3[$label] = $row[$i];
+							}
+
+							$ins3['cache_head'] = false;
+							$ins3['cache_id'] = $c_id;
+							$ins3['cache_commit'] = false;
+							$ins3['typebooth'] = 'addboothname';
+							$ins3['typeboothid'] = $countrow3;
+							
+
+							//print_r($ins);
+
+							$icache->insert($ins3);
+						}
+
+					}
+
 				}
 
 				Event::fire('import.create',array('id'=>$newobj['_id'],'result'=>'OK','department'=>Auth::user()->department,'creator'=>Auth::user()->id));
@@ -1825,6 +1931,7 @@ class Import_Controller extends Base_Controller {
 		$q = array('cache_head'=>false,'cache_id'=>$id,'cache_commit'=>false);
 		$q1 = array('cache_head'=>false,'cache_id'=>$id,'cache_commit'=>false,'typebooth'=>'freepassname');
 		$q2 = array('cache_head'=>false,'cache_id'=>$id,'cache_commit'=>false,'typebooth'=>'boothassistant');
+		$q3 = array('cache_head'=>false,'cache_id'=>$id,'cache_commit'=>false,'typebooth'=>'addboothname');
 
 		$hilite = array();
 		$hilite_replace = array();
@@ -1873,6 +1980,7 @@ class Import_Controller extends Base_Controller {
 		if(count($q) > 0){
 			$attendees = $attendee->find($q1,array(),array($sort_col=>$sort_dir),$limit);
 			$attendees2 = $attendee->find($q2,array(),array($sort_col=>$sort_dir),$limit);
+			$attendees3 = $attendee->find($q3,array(),array($sort_col=>$sort_dir),$limit);
 			$count_display_all = $attendee->count($q);
 		}else{
 			$attendees = $attendee->find(array(),array(),array($sort_col=>$sort_dir),$limit);
@@ -1962,6 +2070,53 @@ class Import_Controller extends Base_Controller {
 		$aadata[] = array('','','<strong>ADD. EXHIBITOR PASS (FREE)</strong>','');
 
 		foreach ($attendees2 as $doc) {
+
+			$extra = $doc;
+
+
+			$adata = array();
+
+			for($i = 0; $i < count($fields); $i++){
+
+				if(in_array($doc[$fields[$i]], $email_arrays)){
+					$adata[$i] = '<span class="duplicateemail">'.$doc[$fields[$i]].'</spam>';
+				}else{
+					$adata[$i] = $doc[$fields[$i]];
+				}
+
+			}
+
+			//print_r($adata);
+
+
+			$select = $form->checkbox('sel[]','',$doc['_id'],false,array('id'=>$doc['_id'],'class'=>'selector'));
+
+			
+				
+			$compindex = 'fullname';
+				
+
+			if(in_array($doc[$compindex], $email_arrays)){
+				$override = $form->checkbox('over[]','',$doc['_id'],'',array('id'=>'over_'.$doc['_id'],'class'=>'overselector'));
+				$exist = $form->hidden('existing[]',$doc['_id']);
+			}else{
+				$override = '';
+				$exist = '';
+			}
+
+			$adata = array_merge(array($select,$override.''.$exist),$adata);
+
+			$adata['extra'] = $extra;
+
+			$aadata[] = $adata;
+
+			$counter++;
+		}
+
+
+		$aadata[] = array('','','<strong>ADD. EXHIBITOR PASS (PAYABLE)</strong>','');
+
+		foreach ($attendees3 as $doc) {
 
 			$extra = $doc;
 
@@ -2193,7 +2348,7 @@ class Import_Controller extends Base_Controller {
 
 			return Redirect::to('import/previewimportexhbitorpass/'.$importid.'/'.$data['exhibitorid'])->with('notify_success','Committing '.$commit_count.' record(s)');
 		}else{
-			return Redirect::to('import/preview/'.$importid)->with('notify_success','No entry selected to commit');
+			return Redirect::to('import/previewimportexhbitorpass/'.$importid.'/'.$data['exhibitorid'])->with('notify_success','No entry selected to commit');
 		}
 
 	}
