@@ -424,6 +424,9 @@ return array(
 		),
 
 
+		
+
+
 		'exhibitor_map'=>array(
 
 			'first_name'=>'firstname',
@@ -448,6 +451,17 @@ return array(
 			'no'=>'no',
 			'first_name'=>'first_name',
 			'last_name'=>'last_name',
+		),
+
+		'boothpass_valid_heads'=>array(
+			'no',
+			'fullname',
+		),
+
+		'boothpass_valid_head_selects'=>array(
+			'unmapped'=>'unmapped',
+			'no'=>'no',
+			'fullname'=>'fullname',
 		),
 
 		'attendee_valid_heads'=>array(

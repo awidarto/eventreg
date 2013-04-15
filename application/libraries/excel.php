@@ -70,6 +70,67 @@ class Excel
         return $xls_array;
     }
 
+
+    public function loadboothass($filename, $ext = 'xls',$sheetname){
+
+        if( $ext == 'xlsx'){
+            $objReader = new PHPExcel_Reader_Excel2007();
+        }else{
+            $objReader = new PHPExcel_Reader_Excel5();
+        }
+
+        //$objReader->setReadDataOnly(true);
+        $objPHPExcel = $objReader->load($filename);
+
+        $xls_array = array();
+        $cell_array = array();
+
+        $numrows = 0;
+        $numcols = 0;
+
+        $last_col = '';
+        $last_row = '';
+
+
+        foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
+            //echo '- ' . $worksheet->getTitle() . "\r\n";
+
+            if(preg_match('/Template/', $worksheet->getTitle()) OR $worksheet->getTitle() == $sheetname){
+
+                foreach ($worksheet->getRowIterator() as $row) {
+                    //echo '    - Row number: ' . $row->getRowIndex() . "\r\n";
+
+                    $last_row = $row->getRowIndex();
+
+
+                    $cellIterator = $row->getCellIterator();
+                    $cellIterator->setIterateOnlyExistingCells(false); // Loop all cells, even if it is not set
+                    $numcols = 0;
+                    foreach ($cellIterator as $cell) {
+                        $cell_array[$numrows][$numcols] = $cell->getCalculatedValue() ;
+                        $numcols++;
+                        $last_col = $cell->getCoordinate();
+                    }
+
+                    $numrows++;
+                }
+
+            }
+
+        }
+
+        $xls_array['numRows'] = $numrows - 1;
+        $xls_array['numCols'] = $numcols - 1;
+
+        $xls_array['lastRow'] = $last_row;
+        $xls_array['lastCol'] = $last_col;
+
+
+        $xls_array['cells'] = $cell_array;
+
+        return $xls_array;
+    }
+
     public function _load($filename){
         $objPHPExcel = PHPExcel_IOFactory::load($filename);
 

@@ -28,18 +28,18 @@
   $pass = $booth['freepassslot'];
   
   for($i=1;$i<$pass+1;$i++){
-    if(isset($data['freepassname'.$i.''])){
+    //if(isset($data['freepassname'.$i.''])){
       $freepasscount++;
-    }
+    //}
     if($data['freepassname'.$i.'']!=''){
       $freepassnameregistered++;
     }
   }
 
   for($i=1;$i<11;$i++){
-    if(isset($data['boothassistant'.$i.''])){
+    //if(isset($data['boothassistant'.$i.''])){
       $boothassistantcount++;
-    }
+    //}
     
   }
 
@@ -52,10 +52,26 @@
 <div class="row-fluid" id="importboothassis">
   <div class="span12">
       <hr/>
-      <div class="buttonlistimportboothassis">
+      <div class="buttonlistimportboothassis" style="width:70%;display:inline-block;float:left;">
         <a class="btn btn-info" id="printall" href="{{URL::to('exhibitor/printbadgeall')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe14c;</span>&nbsp;Print All Data</a>
-        <a class="btn btn-success" id="" href="{{URL::to('export/boothassistant')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe1dd;</span>&nbsp;Import as .csv</a>
+        <a class="btn btn-success" id="" href="{{URL::to('export/boothassistant')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe1dd;</span>&nbsp;Export as .csv</a>
+        
       </div>
+      <div style="display:inline-block;width:30%;float:left;">
+        {{$form->open_for_files('import/previewimportexhbitorpass/'.$userdata['_id'],'POST',array('class'=>'custom'))}}
+        <label>Import excel file</label>
+        <input style="width:10%;display:inline-block;float:left;" id="field_docupload" type="file" name="docupload">
+        
+        {{ $form->hidden('email',$userdata['email'])}}
+
+        {{ $form->hidden('firstname',$userdata['firstname'])}}
+        {{ $form->hidden('firstname',$userdata['lastname'])}}
+        
+        {{ Form::submit('Submit excel',array('class'=>'button','style'=>'display:inline-block;float:left;'))}}&nbsp;&nbsp;
+        {{$form->close()}}
+      </div>
+      <div class="clear"></div>
+      <br/>
       <br/>
       <br/>
       <legend>EXHIBITOR’S PASS HOLDERS (FREE)<small>{{ $freepassnameregistered.' name registered from '.$pass.' slot available'}}</small></legend>
@@ -75,7 +91,7 @@
             <tr>
               <td>{{ $i }}. </td>
               @if(isset($boothassistantdata['freepassname'.$i.'']))
-                <td class="passname"><div class="boothasstName alreadyimport" id="freepassname{{ $i }}" rel="{{$boothassistantdata['freepassname'.$i.'regnumber']}}" type="freepassname">{{ $data['freepassname'.$i.''] }}</div></td>
+                <td class="passname"><div class="boothasstName alreadyimport" id="freepassname{{ $i }}" rel="{{$boothassistantdata['freepassname'.$i.'regnumber']}}" type="freepassname">{{ $boothassistantdata['freepassname'.$i.''] }}</div></td>
               @elseif($data['freepassname'.$i.'']=='')
                 <td class="passname"><div class="boothasstNameaddOnly" id="freepassname{{ $i }}" rel="" type="freepass"><span class="fontRed">Double click to add..</div></div></td>
               @else
@@ -115,7 +131,7 @@
             <tr>
               <td>{{ $i }}. </td>
               @if(isset($boothassistantdata['boothassistant'.$i.'']))
-                <td class="passname"><div class="boothasstName alreadyimport" id="boothassistant{{ $i }}" rel="{{$boothassistantdata['boothassistant'.$i.'regnumber']}}" type="boothassistant">{{ $data['boothassistant'.$i.''] }}</div></td>
+                <td class="passname"><div class="boothasstName alreadyimport" id="boothassistant{{ $i }}" rel="{{$boothassistantdata['boothassistant'.$i.'regnumber']}}" type="boothassistant">{{ $boothassistantdata['boothassistant'.$i.''] }}</div></td>
               @elseif($data['boothassistant'.$i.'']=='')
                 <td class="passname"><div class="boothasstNameaddOnly" id="boothassistant{{ $i }}" rel="" type="boothassistant"><span class="fontRed">Double click to add..</div></div></td>
               @else

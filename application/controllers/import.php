@@ -1362,6 +1362,842 @@ class Import_Controller extends Base_Controller {
 
 	}
 
+
+	public function post_previewimportexhbitorpass($exid = null)
+	{
+
+		//print_r(Session::get('permission'));
+		$back = 'import/previewimportexhbitorpass';
+
+		
+			
+	    $rules = array(
+	        
+	    );			
+
+			
+		
+	    $validation = Validator::make($input = Input::all(), $rules);
+
+	    if($validation->fails()){
+
+	    	return Redirect::to('import/'.$type.'/'.$exid)->with_errors($validation)->with_input(Input::all());
+
+
+	    }else{
+
+			$data = Input::get();
+
+	    	//print_r($data);
+
+			//pre save transform
+			unset($data['csrf_token']);
+
+			$data['createdDate'] = new MongoDate();
+			$data['lastUpdate'] = new MongoDate();
+			$data['creatorName'] = Auth::user()->fullname;
+			$data['creatorId'] = Auth::user()->id;
+
+			
+
+
+			$docupload = Input::file('docupload');
+
+			$docupload['uploadTime'] = new MongoDate();
+
+			$docupload['name'] = fixfilename($docupload['name']);
+
+			$data['docFilename'] = $docupload['name'];
+
+			$data['docFiledata'] = $docupload;
+
+			$data['docFileList'][] = $docupload;
+
+			$document = new Import();
+
+			$newobj = $document->insert($data);
+
+
+			if($newobj){
+
+
+				if($docupload['name'] != ''){
+
+					$newid = $newobj['_id']->__toString();
+
+					
+					$newdir = realpath(Config::get('kickstart.storage')).'/imports/boothass/'.$newid;
+					
+
+
+					Input::upload('docupload',$newdir,$docupload['name']);
+
+				}
+
+				if($newobj['docFilename'] != ''){
+
+					$icache = new Importcache();
+
+					$c_id = $newobj['_id']->__toString();
+
+					
+					$filepath = Config::get('kickstart.storage').'/imports/boothass/'.$c_id.'/'.$newobj['docFilename'];
+					
+
+					$excel = new Excel();
+
+					$extension = File::extension($filepath);
+
+					
+					//EXHIBITOR PASS (FREE)
+					$xls = $excel->loadboothass($filepath,$extension,'ExhibitorPass');
+
+
+
+
+					$rows = $xls['cells'];
+
+					
+					$heads = $rows[7];
+					
+
+					//print_r($heads);
+
+					$theads = array();
+					for($x = 0;$x < count($heads);$x++){
+						if(trim($heads[$x]) == ''){
+						}else{
+							$theads[] = $heads[$x];
+						}
+					}
+
+					$heads = $theads;
+
+					//print_r($heads);
+
+					//remove first two lines
+					
+					$headindex = 7;
+					
+
+					for($i = 0;$i <= $headindex;$i++){
+						array_shift($rows);
+					}
+					//array_shift($rows);
+					//unset($rows[0]);
+					//unset($rows[1]);
+
+
+					//print_r($rows);
+
+					//remove empty line arrays
+					$trows = array();
+					for($x = 0;$x < count($rows);$x++){
+						if(trim(implode('',$rows[$x])) == ''){
+							unset($rows[$x]);
+						}else{
+							$trows[] = $rows[$x];
+						}
+					}
+
+					//print_r($trows);
+
+					$rows = $trows;
+
+					$inhead = array();
+
+					$chead = array();
+
+					foreach ($heads as $head) {
+						$label = str_replace(array('.','\''), '', $head);
+
+						$label = preg_replace('/[ ][ ]+/', ' ', $label);
+
+						$label = str_replace(array('/',' '), '_', $label);
+						$label = strtolower(trim($label));
+
+						$chead[] = $label;
+					}
+
+					$inhead['head_labels'] = $chead;
+					$inhead['cache_head'] = true;
+					$inhead['cache_id'] = $c_id;
+					$inhead['cache_commit'] = false;
+
+
+					//print_r($inhead);
+
+					$icache->insert($inhead);
+					$countrow = 0;
+					foreach($rows as $row){
+						$countrow++;
+						if(implode('',$row) != ''){
+							$ins = array();
+							for($i = 0; $i < count($heads); $i++){
+
+								$label = str_replace(array('.','\''), '', $heads[$i]);
+								$label = preg_replace('/[ ][ ]+/', ' ', $label);
+
+								$label = str_replace(array('/',' '), '_', $label);
+
+								$label = strtolower(trim($label));
+
+								$ins[$label] = $row[$i];
+							}
+
+							$ins['cache_head'] = false;
+							$ins['cache_id'] = $c_id;
+							$ins['cache_commit'] = false;
+							$ins['typebooth'] = 'freepassname';
+							$ins['typeboothid'] = $countrow;
+							
+
+							//print_r($ins);
+
+							$icache->insert($ins);
+						}
+
+					}
+
+
+					//ADDITIONAL EXHIBITOR PASS FREE
+
+					$xls2 = $excel->loadboothass($filepath,$extension,'AdditionalExhibitorPass');
+					
+
+					$rows2 = $xls2['cells'];
+
+					
+					$heads2 = $rows2[1];
+					
+
+					//print_r($heads);
+
+					$theads2 = array();
+					for($x = 0;$x < count($heads2);$x++){
+						if(trim($heads2[$x]) == ''){
+						}else{
+							$theads2[] = $heads2[$x];
+						}
+					}
+
+					$heads2 = $theads2;
+
+					//print_r($heads);
+
+					//remove first two lines
+					
+					$headindex2 = 1;
+					
+
+					for($i = 0;$i <= $headindex2;$i++){
+						array_shift($rows2);
+					}
+					//array_shift($rows);
+					//unset($rows[0]);
+					//unset($rows[1]);
+
+
+					//print_r($rows);
+
+					//remove empty line arrays
+					$trows2 = array();
+					for($x = 0;$x < count($rows2);$x++){
+						if(trim(implode('',$rows2[$x])) == ''){
+							unset($rows2[$x]);
+						}else{
+							$trows2[] = $rows2[$x];
+						}
+					}
+
+					//print_r($trows);
+
+					$rows2 = $trows2;
+
+					$inhead2 = array();
+
+					$chead2 = array();
+
+					foreach ($heads2 as $head) {
+						$label = str_replace(array('.','\''), '', $head);
+
+						$label = preg_replace('/[ ][ ]+/', ' ', $label);
+
+						$label = str_replace(array('/',' '), '_', $label);
+						$label = strtolower(trim($label));
+
+						$chead2[] = $label;
+					}
+
+					$inhead2['head_labels'] = $chead2;
+					$inhead2['cache_head'] = true;
+					$inhead2['cache_id'] = $c_id;
+					$inhead2['cache_commit'] = false;
+
+
+					//print_r($inhead);
+
+					$icache->insert($inhead2);
+					$countrow2 = 0;
+					foreach($rows2 as $row){
+
+						if(implode('',$row) != ''){
+							$countrow2++;
+							$ins2 = array();
+							for($i = 0; $i < count($heads2); $i++){
+
+								$label = str_replace(array('.','\''), '', $heads2[$i]);
+								$label = preg_replace('/[ ][ ]+/', ' ', $label);
+
+								$label = str_replace(array('/',' '), '_', $label);
+
+								$label = strtolower(trim($label));
+
+								$ins2[$label] = $row[$i];
+							}
+
+							$ins2['cache_head'] = false;
+							$ins2['cache_id'] = $c_id;
+							$ins2['cache_commit'] = false;
+							$ins2['typebooth'] = 'boothassistant';
+							$ins2['typeboothid'] = $countrow2;
+							
+
+							//print_r($ins);
+
+							$icache->insert($ins2);
+						}
+
+					}
+
+				}
+
+				Event::fire('import.create',array('id'=>$newobj['_id'],'result'=>'OK','department'=>Auth::user()->department,'creator'=>Auth::user()->id));
+
+				
+				$back = $back.'/'.$newobj['_id'].'/'.$exid;
+				
+
+		    	return Redirect::to($back)->with('notify_success','Document uploaded successfully');
+			}else{
+				Event::fire('import.create',array('id'=>$id,'result'=>'FAILED'));
+		    	return Redirect::to($back)->with('notify_success','Document upload failed');
+			}
+
+	    }
+
+
+	}
+
+
+	public function get_previewimportexhbitorpass($id,$exid)
+	{
+
+		
+
+		
+			
+		$import = new Import();
+
+		$_importid = new MongoId($id);
+		$_exhibitorid = new MongoId($exid);
+
+		$exhibitor = $import->get(array('_id'=>$_importid));
+
+		$exobj = new Exhibitor();
+
+		$exhibitordata = $exobj->get(array('_id'=>$_exhibitorid));
+
+		$form = new Formly($exhibitor);
+
+		$this->crumb->add('exhibitor/importbothassistant/'.$exid,'Exhibitor Pass');
+
+		$this->crumb->add('exhibitor/importbothassistant/'.$exid,$exhibitordata['company']);
+
+		
+
+		$imp = new Importcache();
+
+		$ihead = $imp->get(array('cache_id'=>$id, 'cache_head'=>true));
+
+		$heads = array();
+
+		//$colclass = array('span3','span3','span3','span1','span1','span1','','','','','','','');
+
+		$colclass = array();
+
+		$cnt = 0;
+
+		$searchinput = array();
+
+
+		$select_all = $form->checkbox('select_all','','',false,array('id'=>'select_all'));
+
+		$override_all = $form->checkbox('override_all','','',false,array('id'=>'override_all'));
+
+		
+		$valid_heads = 'eventreg.boothpass_valid_heads';
+		$valid_heads_select = 'eventreg.boothpass_valid_head_selects';
+		
+
+		foreach ($ihead['head_labels'] as $h) {
+
+			$hidden_head = $form->hidden('mapped_'.$cnt,$h);
+
+			$heads[$cnt] = $h.$hidden_head;
+
+			$searchinput[$cnt] = $form->select('map_'.$cnt,'',Config::get($valid_heads_select),$h);
+			if(!in_array($h, Config::get($valid_heads))){
+				$heads[$cnt] = '<span class="invalidhead">'.$heads[$cnt].'</span>';
+
+			}else{
+
+			}
+
+			$cnt++;
+		}
+
+
+		$head_count = count($heads);
+
+		$colclass = array_merge(array('',''),$colclass);
+
+		$searchinput = array_merge(array($select_all,$override_all),$searchinput);
+
+		$heads = array_merge(array('Select','Override'),$heads);
+
+		
+		$ajaxsource = URL::to('import/loaderexhbitorpass/'.$id);
+		$commiturl = 'import/commit/'.$id.'/exhbitorpass';
+		$disablesort = '0,1';
+		
+
+		return View::make('tables.importboothass')
+			->with('title','Data Preview')
+			->with('newbutton','Commit Import')
+			->with('disablesort',$disablesort)
+			->with('addurl','')
+			->with('commiturl',$commiturl)
+			->with('importid',$id)
+			->with('reimporturl','import')
+			->with('doneurl','exhibitor/importbothassistant/'.$exid)
+			->with('form',$form)
+			->with('head_count',$head_count)
+			->with('colclass',$colclass)
+			->with('searchinput',$searchinput)
+			->with('ajaxsource',$ajaxsource)
+			->with('ajaxdel',URL::to('attendee/del'))
+			->with('crumb',$this->crumb)
+			->with('heads',$heads)
+			->with('type','exhibitorpass')
+			->with('exhibitor',$exhibitor)
+			->with('exhibitordata',$exhibitordata)
+			
+			->nest('row','attendee.rowdetail');
+	}
+
+
+	public function post_loaderexhbitorpass($id,$type = null)
+	{
+
+		$imp = new Importcache();
+
+		$ihead = $imp->get(array('cache_id'=>$id, 'cache_head'=>true));
+
+		$fields = $ihead['head_labels'];
+
+
+		//$fields = array('registrationnumber','firstname','lastname','email','company','position','mobile','companyphone','companyfax','createdDate','lastUpdate');
+
+		$rel = array('like','like','like','like','like','like','like','like','like','like');
+
+		$cond = array('both','both','both','both','both','both','both','both','both','both');
+
+		$pagestart = Input::get('iDisplayStart');
+		$pagelength = Input::get('iDisplayLength');
+
+		$limit = array($pagelength, $pagestart);
+
+		$defsort = 1;
+		$defdir = -1;
+
+		$idx = 0;
+		$q = array('cache_head'=>false,'cache_id'=>$id,'cache_commit'=>false);
+		$q1 = array('cache_head'=>false,'cache_id'=>$id,'cache_commit'=>false,'typebooth'=>'freepassname');
+		$q2 = array('cache_head'=>false,'cache_id'=>$id,'cache_commit'=>false,'typebooth'=>'boothassistant');
+
+		$hilite = array();
+		$hilite_replace = array();
+
+		foreach($fields as $field){
+			if(Input::get('sSearch_'.$idx))
+			{
+
+				$hilite_item = Input::get('sSearch_'.$idx);
+				$hilite[] = $hilite_item;
+				$hilite_replace[] = '<span class="hilite">'.$hilite_item.'</span>';
+
+				if($rel[$idx] == 'like'){
+					if($cond[$idx] == 'both'){
+						$q[$field] = new MongoRegex('/'.Input::get('sSearch_'.$idx).'/i');
+					}else if($cond[$idx] == 'before'){
+						$q[$field] = new MongoRegex('/^'.Input::get('sSearch_'.$idx).'/i');
+					}else if($cond[$idx] == 'after'){
+						$q[$field] = new MongoRegex('/'.Input::get('sSearch_'.$idx).'$/i');
+					}
+				}else if($rel[$idx] == 'equ'){
+					$q[$field] = Input::get('sSearch_'.$idx);
+				}
+			}
+			$idx++;
+		}
+
+		//print_r($q)
+
+		$attendee = new Importcache();
+
+		/* first column is always sequence number, so must be omitted */
+		$fidx = Input::get('iSortCol_0');
+		if($fidx == 0){
+			$fidx = $defsort;
+			$sort_col = $fields[$fidx];
+			$sort_dir = $defdir;
+		}else{
+			$fidx = ($fidx > 0)?$fidx - 1:$fidx;
+			$sort_col = $fields[$fidx];
+			$sort_dir = (Input::get('sSortDir_0') == 'asc')?1:-1;
+		}
+
+		$count_all = $attendee->count();
+
+		if(count($q) > 0){
+			$attendees = $attendee->find($q1,array(),array($sort_col=>$sort_dir),$limit);
+			$attendees2 = $attendee->find($q2,array(),array($sort_col=>$sort_dir),$limit);
+			$count_display_all = $attendee->count($q);
+		}else{
+			$attendees = $attendee->find(array(),array(),array($sort_col=>$sort_dir),$limit);
+			$count_display_all = $attendee->count();
+		}
+
+		
+		
+		$attending = new Official();
+		
+
+		$email_arrays = array();
+
+		foreach($attendees as $e){
+			$email_arrays[] = array('fullname'=>$e['fullname']);
+		}
+
+		//print_r($email_arrays);
+		if(!empty($email_arrays)){
+			$email_check = $attending->find(array('$or'=>$email_arrays),array('name'=>1,'_id'=>-1));
+			$email_arrays = array();
+
+			foreach($email_check as $ec){
+				$email_arrays[] = $ec['fullname'];
+			}
+
+		}else{
+			$email_arrays = array();
+		}
+
+
+		//print_r($email_arrays);
+
+
+		$aadata = array();
+
+		$form = new Formly();
+
+		$counter = 1 + $pagestart;
+
+		$aadata[] = array('','','<strong>EXHIBITOR PASS (FREE)</strong>','');
+
+		foreach ($attendees as $doc) {
+
+			$extra = $doc;
+
+
+			$adata = array();
+
+			for($i = 0; $i < count($fields); $i++){
+
+				if(in_array($doc[$fields[$i]], $email_arrays)){
+					$adata[$i] = '<span class="duplicateemail">'.$doc[$fields[$i]].'</spam>';
+				}else{
+					$adata[$i] = $doc[$fields[$i]];
+				}
+
+			}
+
+			//print_r($adata);
+
+
+			$select = $form->checkbox('sel[]','',$doc['_id'],false,array('id'=>$doc['_id'],'class'=>'selector'));
+
+			
+				
+			$compindex = 'fullname';
+				
+
+			if(in_array($doc[$compindex], $email_arrays)){
+				$override = $form->checkbox('over[]','',$doc['_id'],'',array('id'=>'over_'.$doc['_id'],'class'=>'overselector'));
+				$exist = $form->hidden('existing[]',$doc['_id']);
+			}else{
+				$override = '';
+				$exist = '';
+			}
+
+			$adata = array_merge(array($select,$override.''.$exist),$adata);
+
+			$adata['extra'] = $extra;
+
+			$aadata[] = $adata;
+
+			$counter++;
+		}
+
+		$aadata[] = array('','','<strong>ADD. EXHIBITOR PASS (FREE)</strong>','');
+
+		foreach ($attendees2 as $doc) {
+
+			$extra = $doc;
+
+
+			$adata = array();
+
+			for($i = 0; $i < count($fields); $i++){
+
+				if(in_array($doc[$fields[$i]], $email_arrays)){
+					$adata[$i] = '<span class="duplicateemail">'.$doc[$fields[$i]].'</spam>';
+				}else{
+					$adata[$i] = $doc[$fields[$i]];
+				}
+
+			}
+
+			//print_r($adata);
+
+
+			$select = $form->checkbox('sel[]','',$doc['_id'],false,array('id'=>$doc['_id'],'class'=>'selector'));
+
+			
+				
+			$compindex = 'fullname';
+				
+
+			if(in_array($doc[$compindex], $email_arrays)){
+				$override = $form->checkbox('over[]','',$doc['_id'],'',array('id'=>'over_'.$doc['_id'],'class'=>'overselector'));
+				$exist = $form->hidden('existing[]',$doc['_id']);
+			}else{
+				$override = '';
+				$exist = '';
+			}
+
+			$adata = array_merge(array($select,$override.''.$exist),$adata);
+
+			$adata['extra'] = $extra;
+
+			$aadata[] = $adata;
+
+			$counter++;
+		}
+
+		$result = array(
+			'sEcho'=> Input::get('sEcho'),
+			'iTotalRecords'=>$count_all,
+			'iTotalDisplayRecords'=> $count_display_all,
+			'aaData'=>$aadata,
+			'qrs'=>$q
+		);
+		
+		return Response::json($result);
+	}
+
+
+
+	public function post_commitboothass($importid){
+
+		
+
+		$data = Input::all();
+
+		
+
+		$importsession = new Import();
+
+		$_imid = new MongoId($importid);
+
+		//$pic = $importsession->get(array('_id'=>$_imid));
+
+		if(isset($data['sel'])){
+
+			$commitedobj = array();
+
+			$idvals = array();
+
+			foreach ($data['sel'] as $idval) {
+				$_id = new MongoId($idval);
+				$idvals[] = array('_id'=>$_id);
+			}
+
+			$icache = new Importcache();
+
+			$commitobj = $icache->find(array('$or'=>$idvals));
+
+			//print_r($commitobj);
+			
+			$ba = new Boothassistant();
+
+			//check first if has data booth ass
+
+			$datafind = $ba->get(array('exhibitorid'=>$data['exhibitorid']));
+			
+
+			//print_r($i2o);
+
+			$commit_count = 0;
+
+			if(!isset($datafind)){
+				//first create boothass collection
+				$tocommit['exhibitorid']=$data['exhibitorid'];
+				$tocommit['companyname']  = $data['companyname'];
+				$tocommit['companypic']  = $data['companypic'];
+				$tocommit['companyemail']  = $data['companyemail'];
+				$tocommit['hallname']  = $data['hallname'];
+				$tocommit['boothname']  = $data['boothname'];
+
+				if($obj = $ba->insert($tocommit)){
+
+					foreach($commitobj as $comobj){
+						
+						$passname = $comobj['fullname'];
+						
+						$cacheid = $comobj['cache_id'];
+						$cacheobj = $comobj['_id'];
+						$type = $comobj['typebooth'];
+						$typeid = $comobj['no'];
+
+						if($type == 'freepassname'){
+							$role = 'BA1';
+						}else{
+							$role = 'BA2';
+						}
+
+						$reg_number = array();
+
+						$reg_number[1][0] = 'A';
+						$reg_number[1][1] = $role;
+
+						$seq = new Sequence();
+
+						$rseq = $seq->find_and_modify(array('_id'=>'boothassistant'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
+
+						//$reg_number[3] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
+
+						$regsequence = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
+
+						$reg_number[1][3] = $regsequence;
+
+
+						$comobj['regnumberall'] = implode('-',$reg_number[1]);
+
+						
+						//$tocommitobj['createdDate'] = new MongoDate();
+							
+						
+						if($objs = $ba->update(array('_id'=>$obj['_id']),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$comobj['regnumberall'],$type.$typeid.'timestamp'=>new MongoDate(),$type.$typeid.'cache_id'=>$cacheid,$type.$typeid.'cache_obj'=>$cacheobj ))) ){
+
+							$commitedobj[] = $tocommit;
+
+							$icache->update(array('_id'=>$cacheobj),array('$set'=>array('cache_commit'=>true)));
+
+							$commit_count++;
+						}
+
+					}
+				}
+			}else{
+
+				$_id = $datafind['_id'];
+				$idtostring = $datafind['_id']->__toString();
+				$countregnumber = 0;
+
+				foreach($commitobj as $comobj){
+						
+						$passname = $comobj['fullname'];
+						
+						$cacheid = $comobj['cache_id'];
+						$cacheobj = $comobj['_id'];
+						$type = $comobj['typebooth'];
+						$typeid = $comobj['no'];
+
+						//check first if has data
+						
+
+						if(!isset($datafind[$type.$typeid])){
+
+						
+							if($type == 'freepassname'){
+								$role = 'BA1';
+							}else{
+								$role = 'BA2';
+							}
+
+							$reg_number = array();
+
+							$reg_number[1][0] = 'A';
+							$reg_number[1][1] = $role;
+
+							$seq = new Sequence();
+
+							$rseq = $seq->find_and_modify(array('_id'=>'boothassistant'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
+
+							//$reg_number[3] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
+
+							$regsequence = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
+
+							$reg_number[1][3] = $regsequence;
+
+
+							$comobj['regnumberall'] = implode('-',$reg_number[1]);
+
+								
+							
+							if($objs = $ba->update(array('_id'=>$_id),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$comobj['regnumberall'],$type.$typeid.'timestamp'=>new MongoDate(),$type.$typeid.'cache_id'=>$cacheid,$type.$typeid.'cache_obj'=>$cacheobj ))) ){
+
+								//$commitedobj[] = $tocommit;
+
+								$icache->update(array('_id'=>$cacheobj),array('$set'=>array('cache_commit'=>true)));
+
+								$commit_count++;
+							}
+						}else{
+							//dont updateregnumber
+							if($objs = $ba->update(array('_id'=>$_id),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'timestamp'=>new MongoDate(),$type.$typeid.'cache_id'=>$cacheid,$type.$typeid.'cache_obj'=>$cacheobj ))) ){
+
+								//$commitedobj[] = $tocommit;
+
+								$icache->update(array('_id'=>$cacheobj),array('$set'=>array('cache_commit'=>true)));
+
+								$commit_count++;
+							}
+						}
+
+					}
+			}
+
+			
+
+			return Redirect::to('import/previewimportexhbitorpass/'.$importid.'/'.$data['exhibitorid'])->with('notify_success','Committing '.$commit_count.' record(s)');
+		}else{
+			return Redirect::to('import/preview/'.$importid)->with('notify_success','No entry selected to commit');
+		}
+
+	}
+
 }
 
 ?>
