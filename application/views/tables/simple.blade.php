@@ -710,7 +710,7 @@
 					$('#saveformstatus').text('Save');
 					$('#saveformstatus').attr("disabled", false);	
 					
-					$('#formstatusselect').val('open');
+					$('#formstatusselect').val('revision');
 
 					$('#updateFormStatus').modal('toggle');
 

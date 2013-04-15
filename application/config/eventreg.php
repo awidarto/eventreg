@@ -93,7 +93,7 @@ return array(
 		),
 
 		'formstatus'=>array(
-			'open'=>'Open',
+			
 			'revision'=>'Revision',
 			'approved'=>'Approved',
 			'paid'=>'Paid'

@@ -53,6 +53,9 @@
   <div class="span12">
       <hr/>
       <div class="buttonlistimportboothassis" style="width:70%;display:inline-block;float:left;">
+        @if(Auth::user()->email == 'taufiq.ridha@gmail.com')
+        <btn class="btn btn-info" id="importallexhibitor" ><span class="icon-" style="width:40px;">&#x0056;&#x0054;</span>&nbsp;Import All Data</btn>
+        @endif
         <a class="btn btn-info" id="printall" href="{{URL::to('exhibitor/printbadgeall')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe14c;</span>&nbsp;Print All Data</a>
         <a class="btn btn-success" id="" href="{{URL::to('export/boothassistant')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe1dd;</span>&nbsp;Export as .csv</a>
         
@@ -95,7 +98,7 @@
               @elseif($data['freepassname'.$i.'']=='')
                 <td class="passname"><div class="boothasstNameaddOnly" id="freepassname{{ $i }}" rel="" type="freepass"><span class="fontRed">Double click to add..</div></div></td>
               @else
-                <td class="passname"><div class="" id="freepassname{{ $i }}" >{{ $data['freepassname'.$i.''] }}</div></td>
+                <td class="passname"><div class="notimport" id="freepassname{{ $i }}" >{{ $data['freepassname'.$i.''] }}</div></td>
               @endif
               @if(isset($boothassistantdata['freepassname'.$i.'']))
                   <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['freepassname'.$i.'timestamp']->sec) }}</td>
@@ -135,7 +138,7 @@
               @elseif($data['boothassistant'.$i.'']=='')
                 <td class="passname"><div class="boothasstNameaddOnly" id="boothassistant{{ $i }}" rel="" type="boothassistant"><span class="fontRed">Double click to add..</div></div></td>
               @else
-                <td class="passname"><div class="" id="boothassistant{{ $i }}" >{{ $data['boothassistant'.$i.''] }}</div></td>
+                <td class="passname"><div class="notimport" id="boothassistant{{ $i }}" >{{ $data['boothassistant'.$i.''] }}</div></td>
               @endif
 
               @if(isset($boothassistantdata['boothassistant'.$i.'']))
@@ -196,7 +199,7 @@
   </div>
 </div>
 
-
+<div id="processingstat" class="dataTables_processing" style="visibility: hidden;">Processing...</div>
 <script>
   
   <?php
@@ -245,6 +248,7 @@
         //thisitem.remove();
         $('#'+current_id).html(data.message);
         thisitem.parent().parent().find('td.passname div').addClass('boothasstName');
+        thisitem.parent().parent().find('td.passname div').removeClass('notimport');
         
         $('<iframe />', {
               name: 'myFrame'+current_type+current_type_id,
@@ -274,6 +278,7 @@ $('body').on('click', '.boothasstName', function(){
         var regnumber = $(this).attr('rel');
         var idelement = $(this).attr('id');
         var type = $(this).attr('type');
+
         
 
         
@@ -321,6 +326,7 @@ $('.boothasstNameaddOnly').editable('{{ URL::to("exhibitor/addboothassname") }}'
       
       var idelement = $(this).attr('id');
       var type = $(this).attr('type');
+      $(this).addClass('notimport');
       
   },
   
@@ -339,6 +345,113 @@ $('body').on('click', '.printbadge', function(e){
     e.preventDefault();
     
 });
+
+$(document).ready(function(){
+  var processingstat = $('#processingstat');
+  $('#importallexhibitor').click( function(){
+      var idtoprocess = [];
+      var currentidtoprocess = [];
+      var currenttypetoprocess = [];
+      var currenttypeidtoprocess = [];
+      var currentpassnametoprocess = [];
+
+      var totalSelected = 0;
+      var totalSuccess = 0; 
+      var dothat = 0;
+      var totalFailure = 0;
+      var value = 'blabla';
+
+      $('.notimport').each(function() {
+
+        var idRecord = $(this).attr('id');
+        idtoprocess.push(idRecord);
+
+        var thisitem = $(this);
+
+        var current_id = $(this).parent().parent().find('td.status').attr('id');
+        currentidtoprocess.push(current_id);
+
+        var current_type = $(this).parent().parent().find('td.action a').attr('type');
+        currenttypetoprocess.push(current_type);
+
+        var current_type_id = $(this).parent().parent().find('td.action a').attr('typeid');
+        currenttypeidtoprocess.push(current_type_id);
+
+        var current_pass_name = $(this).parent().parent().find('td.passname').text();
+        currentpassnametoprocess.push(current_pass_name);
+
+        //var boothassistantdataid = '{{$boothassistantdata_id}}';
+        
+        
+        
+        totalSelected++;
+      });
+      
+      if(totalSelected>0){
+
+        var answer = confirm("Are you sure you want to import "+totalSelected+" Exhibitor's pass for "+companyname+" ?");
+        
+        if (answer){
+
+          for (var i = 0; i < totalSelected; i++) {
+              element = idtoprocess[i];
+
+              elementcurrenttype = currenttypetoprocess[i];
+              elementcurrenttypeid = currenttypeidtoprocess[i];
+              elementcurrentpassname = currentpassnametoprocess[i];
+
+              // Do something with element i.
+              processingstat.show();
+
+              
+            
+              $.post('{{ URL::to($ajaxImportBoothAssistant) }}',{'exhibitorid':exhibitorid,'companyname':companyname,'companypic':companypic,'companypicemail':companypicemail,'hallname':hallname,'boothname':boothname,'type':elementcurrenttype,'typeid':elementcurrenttypeid,'passname':elementcurrentpassname}, function(data) {
+              
+              if(data.status == 'OK'){
+                
+                totalSuccess++;
+                dothat++;
+                if(dothat >= totalSelected){
+                  processingstat.hide();
+                  alert("Succesfully imported "+totalSuccess+" data from "+totalSelected+ " selected data");
+                  
+                  <?php
+                    $redirect = URL::to('exhibitor/importbothassistant/'.$exhibitorid);
+                  ?>
+                  setTimeout("location.href = '<?php echo $redirect;?>';",1000);
+                  
+                }
+
+              }else if(data.status == 'NOTFOUND'){
+                totalFailure++;
+                dothat++;
+              }else{
+                totalFailure++;
+                dothat++;
+              }
+             
+              console.log('Failure'+totalFailure);
+              console.log('Success'+totalSuccess);
+              console.log('process'+dothat);
+            
+            },'json');
+
+          }
+          
+        }else{
+          
+        }
+
+      }else{
+        alert('There\s no data to import')
+      }
+      
+      
+
+  });
+
+});
+
 </script>
 
 @endsection
