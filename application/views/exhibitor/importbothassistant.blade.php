@@ -389,7 +389,7 @@ $(document).ready(function(){
       
       if(totalSelected>0){
 
-        var answer = confirm("Are you sure you want to import "+totalSelected+" Exhibitor's pass for "+companyname+" ?");
+        var answer = confirm("Are you sure you want to import "+totalSelected+" data for "+companyname+" ?");
         
         if (answer){
 
