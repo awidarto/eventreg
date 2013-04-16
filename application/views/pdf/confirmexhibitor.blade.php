@@ -460,7 +460,7 @@ td.detailsitem{
 				Advertising
 			</td>
 			<td class="aligncenter">
-				@if( $data['advertsubtotal']!=0 && $data['advertsubtotal']!='')
+				@if( $data['advertgrandtotal']!=0 && $data['advertgrandtotal']!='')
 					Y
 				@else
 					N
@@ -469,7 +469,7 @@ td.detailsitem{
 			<td class="detailsitem">
 				<?php
 				
-				if( $data['advertsubtotal']!=''&& $data['advertsubtotal']!=0){
+				if( $data['advertgrandtotal']!=''&& $data['advertgrandtotal']!=0){
 
 					$toprint = $data['advert'].'&nbsp;&nbsp; x &nbsp;&nbsp;Hanging Banner Above the booth = &nbsp;&nbsp;$ '.$data['rowadvert'].'<br/>';
 					echo $toprint;
@@ -479,8 +479,8 @@ td.detailsitem{
 			</td>
 			<td class="alignright">
 				<span style="float:left;">USD </span><?php
-				if($data['advertsubtotal']!=0 && $data['advertsubtotal']!=''):
-					echo money_format(" %!n ", $data['advertsubtotal']);
+				if($data['advertgrandtotal']!=0 && $data['advertgrandtotal']!=''):
+					echo money_format(" %!n ", $data['advertgrandtotal']);
 				endif;?>
 			</td>
 		</tr>
