@@ -56,9 +56,9 @@
        
         <a class="btn btn-info" id="printall" href="{{URL::to('exhibitor/printbadgeall')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe14c;</span>&nbsp;Print All Data</a>
         <a class="btn btn-success" id="" href="{{URL::to('export/boothassistant')}}/{{$boothassistantdata_id}}/{{$userdata['_id']}}"><span class="icon-">&#xe1dd;</span>&nbsp;Download data as .csv</a>
-        @if(Auth::user()->email == 'taufiq.ridha@gmail.com')
+        
           <btn class="btn btn-info" id="importallexhibitor" ><span class="icon-" style="width:40px;">&#x0056;&#x0054;</span>&nbsp;Import All Data</btn>
-        @endif
+        
         
       </div>
       <div style="display:inline-block;width:30%;float:left;">

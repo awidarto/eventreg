@@ -279,11 +279,11 @@ class Exhibitor_Controller extends Base_Controller {
 			}
 
 			if($doc['formstatus']=='open'){
-				if(Auth::user()->email == 'taufiq.ridha@gmail.com'){
+				//if(Auth::user()->email == 'taufiq.ridha@gmail.com'){
 					$rowEditform = '<a class="icon-"  ><i>&#x0025;</i><span class="fillform" id="'.$doc['_id'].'" rel="fillform"> Fill Form</span>';
-				}else{
-					$rowEditform='';
-				}
+				//}else{
+				//	$rowEditform='';
+				//}
 			}else{
 				$rowEditform = '<a class="icon-"  ><i>&#x0025;</i><span class="editform" id="'.$doc['_id'].'" rel="editform"> Edit Form</span>';
 			}
