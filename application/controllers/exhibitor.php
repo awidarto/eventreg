@@ -2016,7 +2016,7 @@ class Exhibitor_Controller extends Base_Controller {
 
 	    $newdir = realpath(Config::get('kickstart.storage'));
 
-	    $path = $newdir.'/operationalforms/confirmexhibitor'.$regnumber.'form-'.$formno.'.pdf';
+	    $path = $newdir.'/operationalforms/confirmexhibitor'.$regnumber.'form-'.$formno.'-'.$idform.'.pdf';
 
 	    $pdf->render();
 
