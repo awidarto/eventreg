@@ -4,7 +4,15 @@
 @section('content')
 <div class="tableHeader">
 <h3>{{$title}}</h3>
-
+  <div class="attendeeNav">
+    <span><strong>Notes:</strong></span>
+    <br/>
+    <br/>
+    <ul style="margin-left:20px;">
+      <li style="padding-bottom:3px;;">Credit card charge: 3% + 2,200 IDR</li>
+      <li>Payment by credit card is normally charged in local currency. The exchange rate used for The 37th IPA Convex is USD 1 = IDR 9,800.</li>
+    </ul>
+  </div>
 </div>
 <div id="notifier">
 </div>

@@ -1450,7 +1450,7 @@ class Import_Controller extends Base_Controller {
 
 					
 					//EXHIBITOR PASS (FREE)
-					$xls = $excel->loadboothass($filepath,$extension,'ExhibitorPass');
+					$xls = $excel->loadboothass($filepath,$extension,'Exhibitor Pass');
 
 
 
@@ -1458,7 +1458,7 @@ class Import_Controller extends Base_Controller {
 					$rows = $xls['cells'];
 
 					
-					$heads = $rows[7];
+					$heads = $rows[1];
 					
 
 					//print_r($heads);
@@ -1477,7 +1477,7 @@ class Import_Controller extends Base_Controller {
 
 					//remove first two lines
 					
-					$headindex = 7;
+					$headindex = 1;
 					
 
 					for($i = 0;$i <= $headindex;$i++){
@@ -1562,7 +1562,7 @@ class Import_Controller extends Base_Controller {
 
 					//ADDITIONAL EXHIBITOR PASS FREE
 
-					$xls2 = $excel->loadboothass($filepath,$extension,'AdditionalExhibitorPass');
+					$xls2 = $excel->loadboothass($filepath,$extension,'Additional Exhibitor Pass');
 					
 
 					$rows2 = $xls2['cells'];
@@ -1673,7 +1673,7 @@ class Import_Controller extends Base_Controller {
 
 					//ADDITIONAL EXHIBITOR PASS PAY
 
-					$xls3 = $excel->loadboothass($filepath,$extension,'AddExhibitorPass(PAYABLE)');
+					$xls3 = $excel->loadboothass($filepath,$extension,'Additional Payable');
 					
 
 					$rows3 = $xls3['cells'];
