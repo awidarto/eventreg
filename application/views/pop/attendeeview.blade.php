@@ -320,8 +320,8 @@ setlocale(LC_MONETARY, "en_US");
 				    <button class="btn" data-toggle="modal" id="closestack3" href="#">Cancel</button>
 				</div>
 				<div class="ratepreview">
-					<h3 id="currencypreview">USD</h3>
-					<h1 id="totalpreview">-</h1>
+					<h3 id="currencypreview"></h3>
+					<h1 id="totalpreview"></h1>
 				</div>
 
 			  </div>
@@ -340,96 +340,17 @@ setlocale(LC_MONETARY, "en_US");
 	$paystat = $profile['conventionPaymentStatus'];
 ?>
 
-$(document).ready(function() {
-	
-	
 
-	/*var paystat = '<?php echo $paystat;?>';
-	
-	if((paystat != 'paid') && (paystat != 'free')){
-
-		$('#printstartcashier').attr('disabled', 'disabled');
-
-	}*/
-	
-	//totalfee = 5000000;
-
-	//show hide idr or dolar based on payment type
-	/*$('.statuspayment').change(function(){
-		var selected = $(this).val();
-		if(selected == 'paid'){
-			$('#totalpreview').html(totalfee);
-		}elseif(selected == 'unpaid'){
-			$('#totalpreview').html('');
-		}
-	});*/
-
-
-	$('.paymentvia').change(function() {
-		var selected = $(this).val();
-		if(selected == 'cc'){
-			//var charged = totalfee + ( 0.3 * totalfee);
-			//$('#totalpreview').html(charged);
-
-			$('.currencyselect').hide();
-			$('.currency').val('idr');
-		}else{
-			$('.currencyselect').show();
-			$('.currency').val('null');
-		}
-	});
-
-	$('.currencyselect').change(function() {
-		var selected = $(this).val();
-		if(selected == 'cc'){
-			$('#currencypreview').text('USD');
-		}
-	});
-
-	
- 	/*$('.convPayment').editable('{{ URL::to("attendee/paystatusconvonsite") }}', { 
-	    indicator : 'Saving...',
-	    name   : 'new_value',
-	    data   : '{"unpaid":"Unpaid","paid":"Paid","free":"Free"}',
-	    type   : 'select',
-	    submit : 'OK',
-	    style   : 'display: inline',
-	    callback : function(value, settings) {
-	    	console.log(value);
-	    	if(value =='"paid"'){
-	    		$('#stack3').modal('show');
-	    		//alert('Successfully change payment status, you can print the receipt now');
-	    		//$('#printstartcashier').removeAttr('disabled');     
-	    	}else{
-	    		$('#printstartcashier').attr('disabled', 'disabled');
-	    	}
-     	},
-	    submitdata : {userid: '<?php echo $userid;?>'}
-
-  	});*/
-});
 
 $('.dopayment').click(function(){
 	$('#stack3').modal('show');
-	/*$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}'}, function(data) {
-		if(data.status == 'OK'){
-			var pframe = document.getElementById('print_frame');
-			var pframeWindow = pframe.contentWindow;
-			pframeWindow.print();
-		}
-	},'json');*/
+	
 
 });
 
 $('#closestack3').click(function(){
 	$('#stack3').modal('hide');
-	/*$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}'}, function(data) {
-		if(data.status == 'OK'){
-			var pframe = document.getElementById('print_frame');
-			var pframeWindow = pframe.contentWindow;
-			pframeWindow.print();
-		}
-	},'json');*/
+	
 
 });
 
@@ -471,57 +392,164 @@ $('#printstartcashier').click(function(){
 });
 
 
+var PD_CASH_idrnominal = '5.500.000,00';
+var PD_CASH_idrwords = '{{ $towords->to_words(5500000,"en")}} Rupiahs';
+
+
+var PO_CASH_usdnominal = '550.00';
+var PO_CASH_usdwords = '{{ $towords->to_words(550,"en") }} US Dollars';
+
+var PO_CASH_idrnominal = '5.390.000,00';
+var PO_CASH_idrwords = '{{ $towords->to_words(5390000,"en") }} Rupiahs';
+
+
+var PD_CC_idrnominal = '5.665.000,00';
+var PD_CC_idwords = '{{ $towords->to_words(5665000,"en") }} Rupiahs';
+
+
+var PO_CC_idrnominal = '5.551.700,00';
+var PO_CC_idrwords = '{{ $towords->to_words(5551700,"en") }} Rupiahs';
+
+
+
+//student
+
+var SD_CASH_idrnominal = '440.000,00';
+var SD_CASH_idrwords = '{{ $towords->to_words(440000,"en") }} Rupiahs';
+
+var SD_CC_idrnominal = '453.200,00';
+var SD_CC_idrwords = '{{ $towords->to_words(453200,"en") }} Rupiahs';
+
+
+var SO_CASH_usdnominal = '120.00';
+var SO_CASH_usdwords = '{{ $towords->to_words(120,"en") }} US Dollars';
+
+var SO_CASH_idrnominal = '1.176.000,00';
+var SO_CASH_idrwords = '{{ $towords->to_words(1176000,"en") }} Rupiahs';
+
+var SO_CC_idrnominal = '1.211.280,00';
+var SO_CC_idrwords = '{{ $towords->to_words(1211800,"en") }} Rupiahs';
+
+
+
+$(document).ready(function() {
+
+
+	$('.paymentvia').change(function() {
+		var selected = $(this).val();
+		if(selected == 'cc'){
+			
+			$('.currencyselect').hide();
+			$('.currency').val('idr');
+			$('#currencypreview').text('IDR');
+		}else{
+			$('.currencyselect').show();
+			$('.currency').val('null');
+		}
+		calculate();
+
+	});
+
+	$('.currency').change(function() {
+		var selected = $(this).val();
+		
+		if(selected == 'cc'){
+			$('#currencypreview').text('USD');
+		}
+
+		if(selected == 'idr'){
+			$('#currencypreview').text('IDR');
+		}else if(selected == 'usd'){
+			$('#currencypreview').text('USD');
+		}
+		calculate();
+
+	});
+
+	var regtype = '{{$profile['regtype']}}';
+	function calculate(){
+
+		var curencypreview = $('#currencypreview');
+		var totalpreview = $('#totalpreview');
+		var paymentvia = $('.paymentvia').val();
+		var currency = $('.currency').val();
+
+		
+
+		if(regtype=='PD' && paymentvia=='cash' && currency == 'idr'){
+
+			
+			totalpreview.text(PD_CASH_idrnominal);
+
+		}else if(regtype=='PD' && paymentvia=='cash' && currency == 'usd'){
+
+			
+			totalpreview.text(PO_CASH_usdnominal);
+			
+
+		}else if(regtype=='PD' && paymentvia=='cc' && currency == 'idr'){
+			
+			totalpreview.text(PD_CC_idrnominal);
+			
+		
+		}else if(regtype=='PO' && paymentvia=='cash' && currency == 'usd'){
+			
+			totalpreview.text(PO_CASH_usdnominal);
+			
+
+		}else if(regtype=='PO' && paymentvia=='cc' && currency == 'idr'){
+
+			
+			totalpreview.text(PO_CC_idrnominal);
+			
+
+		}else if(regtype=='PO' && paymentvia=='cash' && currency == 'idr'){
+
+			
+			totalpreview.text(PO_CASH_idrnominal);
+			
+		}
+
+		else if(regtype=='SD' && paymentvia=='cash' && currency == 'idr'){
+
+			
+			totalpreview.text(SD_CASH_idrnominal);
+			
+
+		}else if(regtype=='SD' && paymentvia=='cc' && currency == 'idr'){
+			
+			totalpreview.text(SD_CC_idrnominal);
+			
+		
+		}else if(regtype=='SO' && paymentvia=='cash' && currency == 'usd'){
+			
+			totalpreview.text(SO_CASH_usdnominal);
+			
+
+		}else if(regtype=='SO' && paymentvia=='cc' && currency == 'idr'){
+
+			
+			totalpreview.text(SO_CC_idrnominal);
+			
+
+		}else if(regtype=='SO' && paymentvia=='cash' && currency == 'idr'){
+
+			
+			totalpreview.text(SO_CASH_idrnominal);
+			
+		}else{
+			totalpreview.text('');
+			curencypreview.text('');
+		}
+
+	}
+
+});
 
 //happened when submit
 $('#submitaddassist').click(function(){
 
 
-	var PD_CASH_idrnominal = '5.500.000,00';
-	var PD_CASH_idrwords = '{{ $towords->to_words(5500000,"en")}} Rupiahs';
-
-
-	var PO_CASH_usdnominal = '550.00';
-	var PO_CASH_usdwords = '{{ $towords->to_words(550,"en") }} US Dollars';
-
-	var PO_CASH_idrnominal = '5.390.000,00';
-	var PO_CASH_idrwords = '{{ $towords->to_words(5390000,"en") }} Rupiahs';
-
-
-	var PD_CC_idrnominal = '5.665.000,00';
-	var PD_CC_idwords = '{{ $towords->to_words(5665000,"en") }} Rupiahs';
-
-
-	var PO_CC_idrnominal = '5.551.700,00';
-	var PO_CC_idrwords = '{{ $towords->to_words(5551700,"en") }} Rupiahs';
-
-
-
-	//student
-
-	var SD_CASH_idrnominal = '440.000,00';
-	var SD_CASH_idrwords = '{{ $towords->to_words(440000,"en") }} Rupiahs';
-
-	var SD_CC_idrnominal = '453.200,00';
-	var SD_CC_idrwords = '{{ $towords->to_words(453200,"en") }} Rupiahs';
-
-
-	var SO_CASH_usdnominal = '120.00';
-	var SO_CASH_usdwords = '{{ $towords->to_words(120,"en") }} US Dollars';
-
-	var SO_CASH_idrnominal = '1.176.000,00';
-	var SO_CASH_idrwords = '{{ $towords->to_words(1176000,"en") }} Rupiahs';
-
-	var SO_CC_idrnominal = '1.211.280,00';
-	var SO_CC_idrwords = '{{ $towords->to_words(1211800,"en") }} Rupiahs';
-
-	//var SO_CASH_idrnominal = '5.390.000,00';
-	//var PO_CASH_idrwords = 'Five milion and t hundred and fifty-five rupiahs';
-
-
-
-
-
-	//find value status
 	var status = $('.statuspayment').val();
 	var paymentvia = $('.paymentvia').val();
 	var currency = $('.currency').val();
@@ -545,7 +573,6 @@ $('#submitaddassist').click(function(){
 	}else if(currency == 'null'){
 		alert('Please select currency');
 	}else{
-
 
 		//access iframe
 		if(regtype=='PD' && paymentvia=='cash' && currency == 'idr'){
