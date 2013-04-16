@@ -182,6 +182,7 @@ Route::get('exhibitor/newprintbadgeonsite/(:all)/(:all)/(:all)/(:all)',array('us
 Route::get('exhibitor/printbadgeonsite2/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite2'));
 
 Route::get('exhibitor/generatepdfoperationalform/(:all)/(:all)',array('uses'=>'exhibitor@createpdfoperationalform'));
+Route::get('exhibitor/generatepdfoperationalformbyid/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@createpdfoperationalformbyid'));
 
 
 Route::get('reset',array('uses'=>'register@reset'));
