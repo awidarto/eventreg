@@ -850,6 +850,31 @@ class Onsite_Controller extends Base_Controller {
 	}
 
 
+	public function get_addattendee($type = null){
+
+		if(is_null($type)){
+			//$this->crumb->add('attendee/add','New Attendee');
+		}else{
+			$this->crumb = new Breadcrumb();
+			$this->crumb->add('attendee/type/'.$type,'Attendee');
+
+			$this->crumb->add('attendee/type/'.$type,depttitle($type));
+			$this->crumb->add('attendee/add','New Attendee');
+		}
+
+		$attendee = new Attendee();
+		$golfcount = $attendee->count(array('golf'=>'Yes'));
+
+		$form = new Formly();
+		return View::make('pop.newattendee')
+					->with('form',$form)
+					->with('golfcount',$golfcount)
+					->with('type',$type)
+					->with('crumb',$this->crumb)
+					->with('title','New Attendee');
+
+	}
+
 	public function post_del(){
 		$id = Input::get('id');
 
@@ -875,7 +900,7 @@ class Onsite_Controller extends Base_Controller {
 	}
 
 
-	public function get_add($type = null){
+	/*public function get_add($type = null){
 
 		if(is_null($type)){
 			$this->crumb->add('document/add','New Document');
@@ -895,7 +920,7 @@ class Onsite_Controller extends Base_Controller {
 					->with('crumb',$this->crumb)
 					->with('title','New Document');
 
-	}
+	}*/
 
 	public function post_add($type = null){
 

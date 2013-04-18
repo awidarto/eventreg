@@ -48,7 +48,6 @@ Route::get('/',function(){
 
 Route::get('cps',function(){
     $getvar = Input::all();
-    //no_invoice=123123&amount=10000.00&statuscode=00
     $att = new Attendee();
     //$gatewayhost = get_domain(Request::server('http_referer'));
     $gatewayhost = get_domain(Request::server('http_referer'));
@@ -57,39 +56,34 @@ Route::get('cps',function(){
         if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
             if(isset($getvar['no_invoice'])){
                 $attendee = $att->get(array('regsequence'=>$getvar['no_invoice']));
-
+                /*$idatt = $attendee['_id']->__toString();
+                $co = new Checkout();
+                $datacount = $co->count(array('attendee_id'=>$idatt));
+                $dataresult = $co->find(array('attendee_id'=>$idatt),array(),array('_id'=> -1),array(1, $datacount-1));
+                return Response::json($dataresult);*/
                 if(isset($attendee['conventionPaymentStatus'])) {
                     $regtype = $attendee['regtype'];
 
-                    
                     // if golf false
                     if(isset($attendee['conventionPaymentStatus']) && $attendee['golfPaymentStatus']=='-' ) {
                         
-                        $att->update(array('regsequence'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid')));
-
-                        if($regtype=='PD' || $regtype=='SD'){
-                            $body = View::make('email.confirmpaymenttax')->with('data',$attendee)->render();
-                        }else{
-                            $body = View::make('email.confirmpayment')->with('data',$attendee)->render();
-                        }
+                        $att->update(array('regsequence'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'processing (cc)','payonline'=>'true')));
+                        
+                        $body = View::make('email.receiptcc')->with('data',$attendee)->render();
 
                         Message::to($attendee['email'])
                         ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
                         ->cc(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
-                        ->subject('CONFIRMATION OF REGISTRATION - Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$attendee['registrationnumber'].')')
+                        ->subject('ONLINE PAYMENT RECEIPT - Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$attendee['registrationnumber'].')')
                         ->body( $body )
                         ->html(true)
                         ->send();
                     
                     }else{
 
-                        $att->update(array('regsequence'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'paid','golfPaymentStatus'=>'paid')));
+                        $att->update(array('regsequence'=>$getvar['no_invoice']),array('$set'=>array('conventionPaymentStatus'=>'processing (cc)','golfPaymentStatus'=>'processing (cc)','payonline'=>'true')));
 
-                        if($regtype=='PD' || $regtype=='SD'){
-                            $body = View::make('email.confirmpaymentalltax')->with('data',$attendee)->render();
-                        }else{
-                            $body = View::make('email.confirmpaymentall')->with('data',$attendee)->render();
-                        }
+                        $body = View::make('email.receiptcc')->with('data',$attendee)->render();
 
                         Message::to($attendee['email'])
                         ->from(Config::get('eventreg.reg_admin_email'), Config::get('eventreg.reg_admin_name'))
@@ -101,12 +95,11 @@ Route::get('cps',function(){
                     
                     }
                     
-                    //return Response::json(array('status'=>'OK','description'=>Request::ip().'record not exist'));
                     return Redirect::to('register/checkoutsuccess');
 
                 }else{
                     return Redirect::to('register/checkoutfailed');
-                    //return Response::json(array('status'=>'ERR','description'=>'record not exist'));
+                    
                 }
 
             }else{
@@ -116,6 +109,7 @@ Route::get('cps',function(){
             }
 
         }else{
+            
             return Redirect::to('register/checkoutfailed');
             //return Response::json(array('status'=>'ERR','description'=>'incomplete parameter or transaction failed'));
         }

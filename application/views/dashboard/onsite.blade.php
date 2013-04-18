@@ -80,7 +80,7 @@
 			      </a>
 				-->
 
-			      <a class="tile app bg-color-blueDark" href="{{ URL::to('attendee/add') }}">
+			      <a class="tile app bg-color-blueDark" href="#" id="attendeeaddnew">
 			         <div class="image-wrapper">
 			            <span class="icon icon-user-2"></span>
 			         </div>
@@ -160,6 +160,22 @@
 </div>
 
 <div id="ajax-modal" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	
+	<div class="modal-header">
+		<button type="button" id="removeviewform" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<h3 id="myModalLabel">Register New Booth assistant</h3>
+		
+	</div>
+	<div class="modal-body" id="loaddata">
+		
+	</div>
+	
+	
+
+</div>
+
+
+<div id="ajax-modal2" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	
 	<div class="modal-header">
 		<button type="button" id="removeviewform" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -841,6 +857,20 @@
 		  setTimeout(function(){
 		     $modal.load('{{ URL::base() }}' + '/onsite/newboothassist', '', function(){
 		      $modal.modal();
+		    });
+		  }, 1000);
+		});
+
+
+		var $modal2 = $('#ajax-modal2');
+ 
+		$('#attendeeaddnew').on('click', function(){
+		  // create the backdrop and wait for next modal to be triggered
+		  $('body').modalmanager('loading');
+		 
+		  setTimeout(function(){
+		     $modal2.load('{{ URL::base() }}' + '/onsite/addattendee', '', function(){
+		      $modal2.modal();
 		    });
 		  }, 1000);
 		});

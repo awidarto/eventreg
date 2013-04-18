@@ -1039,3 +1039,7 @@ table.onsite {
 	text-align: center;
 	width: 30px;
 }
+
+#ajax-modal2 .modal-header{
+	padding: 2px 15px;
+}

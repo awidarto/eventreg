@@ -381,9 +381,12 @@ class Register_Controller extends Base_Controller {
 
 	    	$data = Input::get();
 
+
+
 	    	$paydata = $data;
 
 	    	$data['attendee_id'] = Auth::attendee()->id;
+	    	$data['createdDate'] = new MongoDate();
 
 	    	if($sess = $co->insert($data)){
 
