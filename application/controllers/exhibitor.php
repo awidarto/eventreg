@@ -94,7 +94,7 @@ class Exhibitor_Controller extends Base_Controller {
 	{
 
 
-		$fields = array('registrationnumber','createdDate','email','hall','firstname','lastname','company','country','formstatus');
+		$fields = array('registrationnumber','createdDate','email','hall','firstname','lastname','company','country','formstatus','formstatus','formstatus');
 
 		$rel = array('like','like','like','like','like','like','like','like','like');
 
