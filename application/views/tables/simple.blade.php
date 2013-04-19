@@ -1067,7 +1067,7 @@
 				
 				var _id = e.target.id;
 				var _rel = $(e.target).attr('rel');
-				var url = '{{ URL::base() }}' + '/exhibitor/' + _rel + '/' + _id;
+				var url = '{{ URL::base() }}' + 'index.php/exhibitor/' + _rel + '/' + _id;
 				
 
 				//var url = $(this).attr('url');
