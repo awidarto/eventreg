@@ -451,7 +451,7 @@ class Register_Controller extends Base_Controller {
 
 	    			case 'SD':
 
-						$convfee = Auth::attendee()->regPD;
+						$convfee = Auth::attendee()->regSD;
 	    				$item[] = 'Convention Type : Professional Domestic,'.$convfee.',1,'.$convfee;
 	    				$totalamount = $convfee;
 
