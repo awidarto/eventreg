@@ -452,7 +452,7 @@ class Register_Controller extends Base_Controller {
 	    			case 'SD':
 
 						$convfee = Auth::attendee()->regSD;
-	    				$item[] = 'Convention Type : Professional Domestic,'.$convfee.',1,'.$convfee;
+	    				$item[] = 'Convention Type : Student Domestic,'.$convfee.',1,'.$convfee;
 	    				$totalamount = $convfee;
 
 	    				$vat = Auth::attendee()->totalIDR * 0.1;
