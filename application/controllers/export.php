@@ -678,6 +678,80 @@ class Export_Controller extends Base_Controller {
 	}
 
 
+	public function get_allboothassistant(){
+
+		$boothassistantdata = new Boothassistant();
+
+		
+
+		$filename = 'Boothassistantdata_'.date('Ymd_his',time()).'.csv';
+
+		$header['Cache-Control'] = "must-revalidate, post-check=0, pre-check=0";
+		$header['Content-Description'] = "File Transfer";
+		$header['Content-type'] = "text/csv";
+		$header['Content-Disposition'] = "attachment; filename=".$filename;
+		$header['Expires'] = "0";
+		$header['Pragma'] = "public";
+
+		$dataresult = $boothassistantdata->find(array(),array(),array());
+		
+		foreach ($dataresult as $data) {
+
+			$result[] = 'Company :'.$data['companyname'];
+			$result[] = 'Hall :'.$data['hallname'];
+			$result[] = 'Booth :'.$data['boothname'];
+			$result[] = '';
+			$result[] = 'EXHIBITOR PASS HOLDERS (FREE)';
+			$result[] = '';
+			
+			for($i=1;$i<=10;$i++){
+				if(isset($data['freepassname'.$i.''])){
+					$inarray[0] = $i;
+					$inarray[1] = $data['freepassname'.$i.''];
+					$inarray[2] = $data['freepassname'.$i.'regnumber'];
+					$result[] = implode(',',$inarray);
+				}
+			}
+
+			$result[] = '';
+			$result[] = 'FREE ADDITIONAL EXHIBITOR PASS HOLDERS';
+			$result[] = '';
+
+			
+			for($i=1;$i<=10;$i++){
+				if(isset($data['boothassistant'.$i.''])){
+					$inarray[0] = $i;
+					$inarray[1] = $data['boothassistant'.$i.''];
+					$inarray[2] = $data['boothassistant'.$i.'regnumber'];
+					$result[] = implode(',',$inarray);
+				}
+			}
+
+			$result[] = '';
+			$result[] = 'ADDITIONAL EXHIBITOR PASS (PAYABLE)';
+			$result[] = '';
+
+			
+			for($i=1;$i<=10;$i++){
+				if(isset($data['addboothname'.$i.''])){
+					$inarray[0] = $i;
+					$inarray[1] = $data['addboothname'.$i.''];
+					$inarray[2] = $data['addboothname'.$i.'regnumber'];
+					$result[] = implode(',',$inarray);
+				}
+			}
+			$result[] = '';
+			$result[] = '';
+			$result[] = '';
+		}
+		
+		$result = implode("\r\n",$result);
+		return Response::make($result,'200',$header);
+	    
+
+	}
+
+
 }
 
 ?>
