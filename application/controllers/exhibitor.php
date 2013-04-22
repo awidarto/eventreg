@@ -331,7 +331,7 @@ class Exhibitor_Controller extends Base_Controller {
 				'<a class="icon-"  ><i>&#x0035;</i><span class="viewform" id="'.$doc['_id'].'" rel="viewform"> View Form</span>'.
 				$rowEditform.
 				'<a class="icon-"  href="'.URL::to('exhibitor/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
-				'<a class="icon-"  href="'.URL::to('exhibitor/importbothassistant/'.$doc['_id']).'"><i>&#xe1dd;</i><span>Import Booth Ass.</span>'.
+				'<a class="icon-"  href="'.URL::to('exhibitor/importbothassistant/'.$doc['_id']).'"><i>&#xe1dd;</i><span>Import Exh. pass.</span>'.
 				'<a class="icon-"  href="'.URL::to('import/exhibitor/'.$doc['_id']).'"><i>&#x0052;</i><span>Import Worker</span>'.
 				'<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$doc['_id'].'" >Delete</span>',
 				

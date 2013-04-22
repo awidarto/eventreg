@@ -60,7 +60,12 @@
     </div>
 
 </div>
-
+<br/>
+<br/>
+<div>
+  <a class="btn btn-success" id="" href="{{URL::to('export/allboothassistant')}}"><span class="icon-">&#xe1dd;</span>&nbsp;Export All Exhibitor's Pass</a>
+  
+</div>
 <hr />
 
 <div class="row right">
