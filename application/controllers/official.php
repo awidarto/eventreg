@@ -236,7 +236,8 @@ class Official_Controller extends Base_Controller {
 
 	    $rules = array(
 	        'firstname'  => 'required|max:150',
-	        'email' => 'required|email'
+	        'company'  => 'required',
+	        //'email' => 'required|email'
 	    );
 
 	    $validation = Validator::make($input = Input::all(), $rules);

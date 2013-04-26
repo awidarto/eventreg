@@ -20,13 +20,17 @@
 					<td class="detail-info">{{ $profile['email'] }}</td>
 				</tr>
 				
+				@if(isset($profile['mobile']))
 				<tr>
 					<td class="detail-title">Mobile Phone Number</td>
 					<td>:&nbsp;</td>
 					<td class="detail-info">
+						
 						{{ $profile['mobile'] }}
+
 					</td>
 				</tr>
+				@endif
 				
 			</table>
 			<table class="secondtable">
