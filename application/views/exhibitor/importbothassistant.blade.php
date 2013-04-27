@@ -223,7 +223,7 @@
   var current_id='';
   <?php $exhibitorid = $userdata['_id']->__toString();?>
   var exhibitorid     = '<?php echo $exhibitorid;?>';
-  var companyname     = '<?php echo $userdata['company'];?>';
+  var companyname     = "<?php echo $userdata["company"];?>";
   var companypic      = '<?php echo $userdata['firstname'].' '.$userdata['lastname'];?>';
   var companypicemail = '<?php echo $userdata['email'];?>';
   var hallname        = '<?php echo $userdata['hall'];?>';
@@ -304,8 +304,8 @@ $('body').on('click', '.boothasstName', function(){
               name: 'myFrame'+idelement,
               id:   'printbadge'+idelement,
               style: 'display:none;',
-              src: '{{ URL::to("exhibitor/newprintbadgeonsite") }}/'+regnumber+'/'+value+'/{{ $userdata["company"] }}/'+type
-          }).appendTo('#iframe'+idelement);
+              src: "{{ URL::to("exhibitor/newprintbadgeonsite") }}/"+regnumber+"/"+value+"/{{ $userdata["company"] }}/"+type
+          }).appendTo("#iframe"+idelement);
 
         }
     },
