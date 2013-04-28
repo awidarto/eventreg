@@ -15,6 +15,7 @@
 
         @if(Auth::user()->role == 'onsite')
             <li>{{ HTML::link('attendee','Attendees')}}</li>
+            <li>{{ HTML::link('visitor','Visitors')}}</li>
         @elseif(Auth::user()->role == 'exhibitionadmin')
 
         @elseif(Auth::user()->role == 'cashier')

@@ -5,7 +5,7 @@
 
 <div class="row-fluid">
 	
-			<h2>{{ $profile['firstname'].' '.$profile['lastname'] }}</h2>
+			<h2>{{ $profile['firstname'] }}</h2>
 			<table class="profile-info profilepopup">
 				<tr>
 					<td class="detail-title">Registration Number</td>

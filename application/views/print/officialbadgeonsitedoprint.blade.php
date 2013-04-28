@@ -31,7 +31,7 @@ body{
 }
 .barcodearea{
 	position: absolute;
-	top: 23px;
+	top: 17px;
 	right: 5px;
 	
 	text-align: center;
@@ -96,7 +96,12 @@ padding:0 5px;
 			{{ HTML::image('images/idcard-template-organizer.jpg','badge_bg',array('class'=>'cardtemplate')) }}
 		@elseif($profile['role']=='SCR')
 			{{ HTML::image('images/idcard-template-security.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		@elseif($profile['role']=='SVO')
+			{{ HTML::image('images/idcard-template-studentvol.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		@elseif($profile['role']=='SD')
+			{{ HTML::image('images/idcard-template-student.jpg','badge_bg',array('class'=>'cardtemplate')) }}
 		@endif
+
 		<div class="headarea">
 			<p class="fullname"><?php echo $profile['firstname'].' '.$profile['lastname'];?>
 			<small class="companyname"><?php echo $profile['company'];?></p>

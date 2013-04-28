@@ -49,13 +49,13 @@ class Visitor_Controller extends Base_Controller {
 
 		//print_r(Auth::user());
 
-		$heads = array('#','Reg Number','First Name','Last Name','Email','Company','Role','Mobile','Created','Last Update','Action');
+		$heads = array('#','Reg Number','Form Number','Full Name','Email','Company','Role','Created','Action');
 
-		$searchinput = array(false,'Reg Number','First Name','Last Name','Email','Company','Position','Role','Mobile','Created','Last Update',false);
+		$searchinput = array(false,'Reg Number','Form Number','Full Name','Email','Company','Role','Created',false);
 
 		$colclass = array('','span2','span1','span1','span3','span3','span1','span1','span1','span1','');
 
-		$searchinput = false; // no searchinput form on footer
+		
 
 		if(Auth::user()->role == 'root' || Auth::user()->role == 'super' || Auth::user()->role == 'onsite'|| Auth::user()->role == 'exhibitionadmin'){
 			return View::make('tables.simple')
@@ -84,7 +84,7 @@ class Visitor_Controller extends Base_Controller {
 	{
 
 
-		$fields = array('registrationnumber','firstname','lastname','email','company','role','mobile','createdDate','lastUpdate');
+		$fields = array('registrationnumber','formno','firstname','email','company','role','createdDate');
 
 		$rel = array('like','like','like','like','like','like','like','like','like');
 
@@ -162,15 +162,15 @@ class Visitor_Controller extends Base_Controller {
 
 			$aadata[] = array(
 				$counter,
+
 				(isset($doc['registrationnumber']))?$doc['registrationnumber']:'',
+				(isset($doc['formno']))?$doc['formno']:'',
 				'<span class="expander" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
-				$doc['lastname'],
 				$doc['email'],
 				$doc['company'],
 				$doc['role'],
-				$doc['mobile'],
 				date('Y-m-d H:i:s', $doc['createdDate']->sec),
-				isset($doc['lastUpdate'])?date('Y-m-d H:i:s', $doc['lastUpdate']->sec):'',
+				
 				'<a class="action icon-"  href="'.URL::to('visitor/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
 				'<a class="action icon-"  ><i>&#xe14c;</i><span class="action pbadge" id="'.$doc['_id'].'" >Print Badge</span>'.
 				'<a class="action icon-"><i>&#xe001;</i><span class="action del" id="'.$doc['_id'].'" >Delete</span>',
@@ -241,7 +241,8 @@ class Visitor_Controller extends Base_Controller {
 		}else{
 			$rules = array(
 		        'firstname' => 'required',
-		    	
+		        'formnumber1' => 'required',
+		        'formnumber2' => 'required',
 		        'company' => 'required',
 		        
 		    );
@@ -275,6 +276,28 @@ class Visitor_Controller extends Base_Controller {
 			$reg_number[] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
 
 			$data['registrationnumber'] = implode('-',$reg_number);
+
+			//make form no
+			$formno[0] = $data['formnumber1'];
+			$formno[1] = $data['formnumber2'];
+
+			$data['formno'] = implode('-',$formno);
+			
+
+			//create other
+
+			if($data['businessother']!=''){
+				$data['business'] = $data['businessother'];
+			}else{
+				unset($data['businessother']);
+			}
+
+			if($data['knowother']!=''){
+				$data['knowipa37'] = $data['knowother'];
+			}else{
+				unset($data['knowother']);
+			}
+
 
 			$user = new Visitor();
 

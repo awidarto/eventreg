@@ -1043,3 +1043,7 @@ table.onsite {
 #ajax-modal2 .modal-header{
 	padding: 2px 15px;
 }
+
+.questionare .select2-container{
+	margin-bottom: 10px;
+}

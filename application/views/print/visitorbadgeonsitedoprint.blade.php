@@ -32,7 +32,7 @@ body{
 }
 .barcodearea{
 	position: absolute;
-	top: 23px;
+	top: 17px;
 	right: 5px;
 	
 	text-align: center;
@@ -93,7 +93,7 @@ padding:0 5px;
 			{{ HTML::image('images/idcard-template-visitor2.jpg','badge_bg',array('class'=>'cardtemplate')) }}
 		@endif
 		<div class="headarea">
-			<p class="fullname"><?php echo $profile['firstname'].' '.$profile['lastname'];?>
+			<p class="fullname"><?php echo $profile['firstname'];?>
 			<small class="companyname"><?php echo $profile['company'];?></p>
 		</div>
 		<div class="barcodearea">

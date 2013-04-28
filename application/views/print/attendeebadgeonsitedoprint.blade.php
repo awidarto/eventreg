@@ -22,7 +22,7 @@ body{
 }
 .barcodearea{
 	position: absolute;
-	top: 26px;
+	top: 17px;
 	right: -12px;
 	
 	text-align: center;

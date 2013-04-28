@@ -10,6 +10,7 @@ return array(
 		'officials' => array(
 			'COM'=>'Committee',
 			'BOD'=>'Board of Director IPA',
+			'SD'=>'Student',
 			'MDA'=>'Media',
 			'ORG'=>'Organizer',
 			//'CTR'=>'Contractor',
@@ -17,6 +18,7 @@ return array(
 			//'BA30'=>'Booth Assistant 30',
 			//'BA150'=>'Booth Assistant 150',
 			'SVO'=>'Student Volunteer',
+
 			'SCR'=>'Security',
 			//'OTS'=>'On-Site Technical Support',
 			//'ECP'=>'EC Participant',
