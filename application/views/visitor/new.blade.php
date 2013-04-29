@@ -29,13 +29,13 @@
                 {{ $form->text('company','Company / Institution.req','',array('class'=>'text span6','id'=>'company')) }}
                 {{$form->select('role','Visitor Type',Config::get('eventreg.visitors'),array('class'=>'span12'))}}
 
-        </fieldset>
+       
 
     </div>
 
     <div class="span6">
 
-        <fieldset>
+        
             <legend>Additional Information</legend>
                 
                 {{ $form->text('email','Email','',array('class'=>'text span8','id'=>'email')) }}
@@ -53,7 +53,7 @@
                 </div>  
 
 
-        </fieldset>
+        
 
     </div>
 </div>
@@ -63,6 +63,7 @@
 <div class="row right">
 {{ Form::submit('Save',array('class'=>'button'))}}&nbsp;&nbsp;
 {{ Form::reset('Reset',array('class'=>'button'))}}
+</fieldset>
 </div>
 {{$form->close()}}
 

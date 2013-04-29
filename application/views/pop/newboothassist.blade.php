@@ -35,6 +35,12 @@ $(document).ready(function(){
 			hallId = $('#exhibitorid').val();
 		}
 	});
+	$(window).bind('keypress', function(e){
+	   if ( $( e.originalTarget ).is( ':input' ) && e.keyCode == 13 ) {
+	     $("#submitaddassistant").click();
+	     e.preventDefault();
+	   }
+	});
 });
 
 
@@ -104,5 +110,8 @@ $('#submitaddassistant').click(function(){
 	return false;
   
 });
+
+
+
 </script>
 @endsection

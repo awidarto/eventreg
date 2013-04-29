@@ -89,6 +89,8 @@ padding:0 5px;
 	<div class="card-template-area">
 		@if($profile['role']=='VIP' || $profile['role']=='VVIP')
 			{{ HTML::image('images/idcard-template-vip.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		@elseif($profile['role']=='MDA')
+			{{ HTML::image('images/idcard-template-media.jpg','badge_bg',array('class'=>'cardtemplate')) }}
 		@else
 			{{ HTML::image('images/idcard-template-visitor2.jpg','badge_bg',array('class'=>'cardtemplate')) }}
 		@endif

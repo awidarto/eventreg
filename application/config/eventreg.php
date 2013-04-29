@@ -11,7 +11,7 @@ return array(
 			'COM'=>'Committee',
 			'BOD'=>'Board of Director IPA',
 			'SD'=>'Student',
-			'MDA'=>'Media',
+			
 			'ORG'=>'Organizer',
 			//'CTR'=>'Contractor',
 			//'WRK'=>'Worker',
@@ -28,6 +28,7 @@ return array(
 			'VS'=>'Walk In Visitor',
 			'VIP'=>'VIP',
 			'VVIP'=>'VVIP',
+			'MDA'=>'Media',
 			'OC'=>'Other Complimentary'
 		),
 		'galadinner'=>1,

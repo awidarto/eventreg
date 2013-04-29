@@ -36,19 +36,19 @@
 
                 {{ $form->text('mobile','Mobile Phone Number','',array('class'=>'text span8','id'=>'mobile')) }}
 
-        </fieldset>
+        
 
     </div>
 
     <div class="span6">
 
-        <fieldset>
+        
             <legend>Company Information</legend>
                 {{ $form->text('company','Company / Institution.req','',array('class'=>'text span6','id'=>'company')) }}
 
                 {{$form->select('role','Official Role',Config::get('eventreg.officials'),array('class'=>'span12'))}}
 
-        </fieldset>
+        
 
     </div>
 </div>
@@ -58,6 +58,7 @@
 <div class="row right">
 {{ Form::submit('Save',array('class'=>'button'))}}&nbsp;&nbsp;
 {{ Form::reset('Reset',array('class'=>'button'))}}
+</fieldset>
 </div>
 {{$form->close()}}
 
