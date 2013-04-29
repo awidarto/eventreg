@@ -43,6 +43,17 @@
     
   }
 
+  $totalbayar = 0;
+
+  
+
+  if(isset($boothassistantdata['totaladdbooth'])){
+    $totalbayar =  $boothassistantdata['totaladdbooth'];
+  }else{
+    $totalbayar =  $data['totaladdbooth'];
+  }
+  
+
 
   
 ?>
@@ -175,7 +186,7 @@
           </tr>
         </thead>
         <tbody>
-          @for($i=1;$i<=$data['totaladdbooth'];$i++)
+          @for($i=1;$i<=$totalbayar;$i++)
 
             <tr>
 

@@ -2214,7 +2214,7 @@ class Import_Controller extends Base_Controller {
 			//print_r($i2o);
 
 			$commit_count = 0;
-
+			$typebayar = 0;
 			if(!isset($datafind)){
 				//first create boothass collection
 				$tocommit['exhibitorid']=$data['exhibitorid'];
@@ -2241,6 +2241,13 @@ class Import_Controller extends Base_Controller {
 							$role = 'BA2';
 						}
 
+						//count yang bayar
+						
+						if($comobj['typebooth'] == 'addboothname'){
+							$typebayar++;
+						}
+						
+
 						$reg_number = array();
 
 						$reg_number[1][0] = 'A';
@@ -2265,6 +2272,7 @@ class Import_Controller extends Base_Controller {
 						
 						if($objs = $ba->update(array('_id'=>$obj['_id']),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$comobj['regnumberall'],$type.$typeid.'timestamp'=>new MongoDate(),$type.$typeid.'cache_id'=>$cacheid,$type.$typeid.'cache_obj'=>$cacheobj ))) ){
 
+							$ba->update(array('_id'=>$obj['_id']),array('$set'=>array('totaladdbooth'=>$typebayar)));
 							$commitedobj[] = $tocommit;
 
 							$icache->update(array('_id'=>$cacheobj),array('$set'=>array('cache_commit'=>true)));
@@ -2272,76 +2280,94 @@ class Import_Controller extends Base_Controller {
 							$commit_count++;
 						}
 
+
+
 					}
+
+					
 				}
 			}else{
 
 				$_id = $datafind['_id'];
 				$idtostring = $datafind['_id']->__toString();
 				$countregnumber = 0;
+				$typebayar = 0;
 
 				foreach($commitobj as $comobj){
 						
-						$passname = $comobj['fullname'];
-						
-						$cacheid = $comobj['cache_id'];
-						$cacheobj = $comobj['_id'];
-						$type = $comobj['typebooth'];
-						$typeid = $comobj['no'];
+					$passname = $comobj['fullname'];
+					
+					$cacheid = $comobj['cache_id'];
+					$cacheobj = $comobj['_id'];
+					$type = $comobj['typebooth'];
+					$typeid = $comobj['no'];
 
-						//check first if has data
-						
-
-						if(!isset($datafind[$type.$typeid])){
-
-						
-							if($type == 'freepassname'){
-								$role = 'BA1';
-							}else{
-								$role = 'BA2';
-							}
-
-							$reg_number = array();
-
-							$reg_number[1][0] = 'A';
-							$reg_number[1][1] = $role;
-
-							$seq = new Sequence();
-
-							$rseq = $seq->find_and_modify(array('_id'=>'boothassistant'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
-
-							//$reg_number[3] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
-
-							$regsequence = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
-
-							$reg_number[1][3] = $regsequence;
-
-
-							$comobj['regnumberall'] = implode('-',$reg_number[1]);
-
-								
-							
-							if($objs = $ba->update(array('_id'=>$_id),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$comobj['regnumberall'],$type.$typeid.'timestamp'=>new MongoDate(),$type.$typeid.'cache_id'=>$cacheid,$type.$typeid.'cache_obj'=>$cacheobj ))) ){
-
-								//$commitedobj[] = $tocommit;
-
-								$icache->update(array('_id'=>$cacheobj),array('$set'=>array('cache_commit'=>true)));
-
-								$commit_count++;
-							}
-						}else{
-							//dont updateregnumber
-							if($objs = $ba->update(array('_id'=>$_id),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'timestamp'=>new MongoDate(),$type.$typeid.'cache_id'=>$cacheid,$type.$typeid.'cache_obj'=>$cacheobj ))) ){
-
-								//$commitedobj[] = $tocommit;
-
-								$icache->update(array('_id'=>$cacheobj),array('$set'=>array('cache_commit'=>true)));
-
-								$commit_count++;
-							}
-						}
-
+					//check first if has data
+					if($comobj['typebooth'] == 'addboothname'){
+						$typebayar++;
 					}
+
+					if(!isset($datafind[$type.$typeid])){
+
+					
+						if($type == 'freepassname'){
+							$role = 'BA1';
+						}else{
+							$role = 'BA2';
+						}
+						//count yang bayar
+						
+						
+
+						$reg_number = array();
+
+						$reg_number[1][0] = 'A';
+						$reg_number[1][1] = $role;
+
+						$seq = new Sequence();
+
+						$rseq = $seq->find_and_modify(array('_id'=>'boothassistant'),array('$inc'=>array('seq'=>1)),array('seq'=>1),array('new'=>true));
+
+						//$reg_number[3] = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
+
+						$regsequence = str_pad($rseq['seq'], 6, '0',STR_PAD_LEFT);
+
+						$reg_number[1][3] = $regsequence;
+
+
+						$comobj['regnumberall'] = implode('-',$reg_number[1]);
+
+							
+						
+						if($objs = $ba->update(array('_id'=>$_id),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'regnumber'=>$comobj['regnumberall'],$type.$typeid.'timestamp'=>new MongoDate(),$type.$typeid.'cache_id'=>$cacheid,$type.$typeid.'cache_obj'=>$cacheobj ))) ){
+
+							//$commitedobj[] = $tocommit;
+							
+
+							$icache->update(array('_id'=>$cacheobj),array('$set'=>array('cache_commit'=>true)));
+
+							$commit_count++;
+						}
+					}else{
+
+						//dont updateregnumber
+						if($objs = $ba->update(array('_id'=>$_id),array('$set'=>array($type.$typeid=>$passname,$type.$typeid.'timestamp'=>new MongoDate(),$type.$typeid.'cache_id'=>$cacheid,$type.$typeid.'cache_obj'=>$cacheobj ))) ){
+
+							//$commitedobj[] = $tocommit;
+							
+
+							$icache->update(array('_id'=>$cacheobj),array('$set'=>array('cache_commit'=>true)));
+
+							$commit_count++;
+						}
+					}
+
+					$ba->update(array('_id'=>$_id),array('$set'=>array('totaladdbooth'=>$typebayar)));
+
+				}
+
+				
+				
 			}
 
 			
