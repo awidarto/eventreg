@@ -1778,13 +1778,13 @@ class Import_Controller extends Base_Controller {
 
 				}
 
-				Event::fire('import.create',array('id'=>$newobj['_id'],'result'=>'OK','department'=>Auth::user()->department,'creator'=>Auth::user()->id));
+				//Event::fire('import.create',array('id'=>$newobj['_id'],'result'=>'OK','department'=>Auth::user()->department,'creator'=>Auth::user()->id));
 
 				
-				$back = $back.'/'.$newobj['_id'].'/'.$exid;
+				//$back = $back.'/'.$newobj['_id'].'/'.$exid;
 				
 
-		    	return Redirect::to($back)->with('notify_success','Document uploaded successfully');
+		    	return Redirect::to('exhibitor')->with('notify_success','Document upload failed');
 			}else{
 				Event::fire('import.create',array('id'=>$id,'result'=>'FAILED'));
 		    	return Redirect::to($back)->with('notify_success','Document upload failed');
