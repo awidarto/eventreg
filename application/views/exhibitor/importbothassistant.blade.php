@@ -104,15 +104,15 @@
           @for($i=1;$i<=$freepasscount;$i++)
             
             <tr>
-              <td>{{ $i }}. </td>
-              @if(isset($boothassistantdata['freepassname'.$i.'']))
-                <td class="passname"><div class="boothasstName alreadyimport" id="freepassname{{ $i }}" rel="{{$boothassistantdata['freepassname'.$i.'regnumber']}}" type="freepassname">{{ $boothassistantdata['freepassname'.$i.''] }}</div></td>
+              <td>{{ $i }}.</td>
+              @if(isset($boothassistantdata['freepassname'.$i.''])&& $boothassistantdata['freepassname'.$i.'']!='')
+                <td class="passname"><a class="icon- deleteexhibitor" id="" type="freepassname" typeid="7"><i id="freepassname{{ $i }}">&#xe03b;</i></a><div class="boothasstName alreadyimport" id="freepassname{{ $i }}" rel="{{$boothassistantdata['freepassname'.$i.'regnumber']}}" type="freepassname">{{ $boothassistantdata['freepassname'.$i.''] }}</div></td>
               @elseif($data['freepassname'.$i.'']=='')
                 <td class="passname"><div class="boothasstNameaddOnly" id="freepassname{{ $i }}" rel="" type="freepass"><span class="fontRed">Double click to add..</div></div></td>
               @else
                 <td class="passname"><div class="notimport" id="freepassname{{ $i }}" >{{ $data['freepassname'.$i.''] }}</div></td>
               @endif
-              @if(isset($boothassistantdata['freepassname'.$i.'']))
+              @if(isset($boothassistantdata['freepassname'.$i.'']) && $boothassistantdata['freepassname'.$i.'']!='')
                   <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['freepassname'.$i.'timestamp']->sec) }}</td>
                   <td id="status_freepassname{{ $i }}" class="align-center status"><a class="icon- printbadge" id="freepassname{{ $i }}" type="freepassname" typeid="{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="freepassname{{ $i }}" > Print this data</span></a></td>
                   <td id="iframefreepassname{{ $i }}"><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['freepassname'.$i.'regnumber']}}/{{$boothassistantdata['freepassname'.$i.'']}}/{{ $userdata['company'] }}/ba1/" id="printbadgefreepassname{{ $i }}"  style="display:none;" class="span12"></iframe></td>
@@ -145,15 +145,15 @@
 
             <tr>
               <td>{{ $i }}. </td>
-              @if(isset($boothassistantdata['boothassistant'.$i.'']))
-                <td class="passname"><div class="boothasstName alreadyimport" id="boothassistant{{ $i }}" rel="{{$boothassistantdata['boothassistant'.$i.'regnumber']}}" type="boothassistant">{{ $boothassistantdata['boothassistant'.$i.''] }}</div></td>
+              @if(isset($boothassistantdata['boothassistant'.$i.'']) && $boothassistantdata['boothassistant'.$i.'']!='')
+                <td class="passname"><a class="icon- deleteexhibitor" id="" type="boothassistant" typeid="7"><i id="boothassistant{{ $i }}">&#xe03b;</i></a><div class="boothasstName alreadyimport" id="boothassistant{{ $i }}" rel="{{$boothassistantdata['boothassistant'.$i.'regnumber']}}" type="boothassistant">{{ $boothassistantdata['boothassistant'.$i.''] }}</div></td>
               @elseif($data['boothassistant'.$i.'']=='')
                 <td class="passname"><div class="boothasstNameaddOnly" id="boothassistant{{ $i }}" rel="" type="boothassistant"><span class="fontRed">Double click to add..</div></div></td>
               @else
                 <td class="passname"><div class="notimport" id="boothassistant{{ $i }}" >{{ $data['boothassistant'.$i.''] }}</div></td>
               @endif
 
-              @if(isset($boothassistantdata['boothassistant'.$i.'']))
+              @if(isset($boothassistantdata['boothassistant'.$i.''])&& $boothassistantdata['boothassistant'.$i.'']!='')
                   <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['boothassistant'.$i.'timestamp']->sec) }}</td>
                   <td id="status_boothassistant{{ $i }}" class="align-center status"><a class="icon- printbadge" id="boothassistant{{ $i }}" type="boothassistant" typeid="{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="boothassistant{{ $i }}" > Print this data</span></a></td>
                   <td id="iframeboothassistant{{ $i }}"><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['boothassistant'.$i.'regnumber']}}/{{$boothassistantdata['boothassistant'.$i.'']}}/{{ $userdata['company'] }}/ba2/" id="printbadgeboothassistant{{ $i }}"  style="display:none;" class="span12"></iframe></td>
@@ -192,14 +192,14 @@
 
               <td>{{ $i }}. </td>
 
-              @if(isset($boothassistantdata['addboothname'.$i.'']))
-                <td class="passname"><div class="boothasstName alreadyimport" id="addboothname{{ $i }}" rel="{{$boothassistantdata['addboothname'.$i.'regnumber']}}" type="addboothname">{{ $boothassistantdata['addboothname'.$i.''] }}</div></td>
+              @if(isset($boothassistantdata['addboothname'.$i.''])&& $boothassistantdata['addboothname'.$i.'']!='')
+                <td class="passname"><a class="icon- deleteexhibitor" id="" type="addboothname" typeid="7"><i id="addboothname{{ $i }}">&#xe03b;</i></a><div class="boothasstName alreadyimport" id="addboothname{{ $i }}" rel="{{$boothassistantdata['addboothname'.$i.'regnumber']}}" type="addboothname">{{ $boothassistantdata['addboothname'.$i.''] }}</div></td>
               @elseif($data['addboothname'.$i.'']=='')
                 <td class="passname"><div class="boothasstNameaddOnly" id="addboothname{{ $i }}" rel="" type="addbooth"><span class="fontRed">Double click to add..</div></div></td>
               @else
                 <td class="passname"><div class="notimport" id="addboothname{{ $i }}" >{{ $data['addboothname'.$i.''] }}</div></td>
               @endif
-              @if(isset($boothassistantdata['addboothname'.$i.'']))
+              @if(isset($boothassistantdata['addboothname'.$i.''])&& $boothassistantdata['addboothname'.$i.'']!='')
                   <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['addboothname'.$i.'timestamp']->sec) }}</td>
                   <td id="status_addboothname{{ $i }}" class="align-center status"><a class="icon- printbadge" id="addboothname{{ $i }}" type="addboothname" typeid="{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="addboothname{{ $i }}" > Print this data</span></a></td>
                   <td id="iframeaddboothname{{ $i }}"><iframe src="{{ URL::to('exhibitor/printbadgeonsite/') }}{{$boothassistantdata['addboothname'.$i.'regnumber']}}/{{$boothassistantdata['addboothname'.$i.'']}}/{{ $userdata['company'] }}/ba2/" id="printbadgeaddboothname{{ $i }}"  style="display:none;" class="span12"></iframe></td>
@@ -366,6 +366,35 @@ $('body').on('click', '.printbadge', function(e){
     var pframeWindow = pframe.contentWindow;
     pframeWindow.print();
     e.preventDefault();
+    
+});
+
+$('body').on('click', '.deleteexhibitor', function(e){
+    
+    var type = e.target.id;
+
+    var boothassistantdataid = '{{$boothassistantdata_id}}';
+
+    <?php
+      $ajaxDeleteBoothAssistant = (isset($ajaxDeleteBoothAssistant))?$ajaxDeleteBoothAssistant:'/';
+    ?>
+
+    $.post('{{ URL::to($ajaxDeleteBoothAssistant) }}',{'dataid':boothassistantdataid,'type':type}, function(data) {
+
+      if(data.status == 'OK'){
+          alert("Succesfully deleted data, please wait browser wil redirect you");
+          <?php
+            $redirect = URL::to('exhibitor/importbothassistant/'.$exhibitorid);
+          ?>
+          setTimeout("location.href = '<?php echo $redirect;?>';",500);
+      }else{
+        alert("There's something error, please try again!");
+      }
+     
+    
+    },'json');
+
+    
     
 });
 

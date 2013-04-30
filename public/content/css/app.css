@@ -1047,3 +1047,13 @@ table.onsite {
 .questionare .select2-container{
 	margin-bottom: 10px;
 }
+
+td a.deleteexhibitor{
+	width:30px;
+	display: inline-block;
+	float: left;
+}
+td a.deleteexhibitor i{
+	font-size: 10px;
+	cursor: pointer;
+}

@@ -111,13 +111,13 @@ if(isset($exhibitor['overridefreepassname'])){
 }
 
 for($i=1;$i<$pass+1;$i++){
-	if(isset($profile['freepassname'.$i.''])){
+	if(isset($profile['freepassname'.$i.'']) && $profile['freepassname'.$i.'']!='' ){
   		$freepasscount++;
 	}
 }
 
 for($i=1;$i<11;$i++){
-    if(isset($profile['boothassistant'.$i.''])){
+    if(isset($profile['boothassistant'.$i.''])&& $profile['boothassistant'.$i.'']!=''){
       $boothassistantcount++;
     }
 }

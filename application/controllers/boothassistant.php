@@ -292,6 +292,44 @@ class Boothassistant_Controller extends Base_Controller {
 		print json_encode($result);
 	}
 
+
+	public function post_deleteindividual(){
+		
+		$dataid = Input::get('dataid');
+		$type = Input::get('type');
+		
+
+		$boothassistant = new Boothassistant();
+
+		if(is_null($dataid)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$_id = new MongoId($dataid);
+
+			$datafind = $boothassistant->get(array('_id'=>$_id));
+			
+
+			
+			if(isset($datafind)){
+				
+				if($objs = $boothassistant->update(array('_id'=>$datafind['_id']),array('$set'=>array($type=>'',$type.'timestamp'=>'','cache_id'=>'',$type.'cache_obj'=>''))) ){
+					
+					$result = array('status'=>'OK');	
+				}
+				
+
+			}else{
+
+				$result = array('status'=>'ERR','data'=>'NOID');
+			}
+
+			
+		}
+
+		print json_encode($result);
+	}
+
 	
 
 
