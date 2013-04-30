@@ -313,7 +313,7 @@ class Boothassistant_Controller extends Base_Controller {
 			
 			if(isset($datafind)){
 				
-				if($objs = $boothassistant->update(array('_id'=>$datafind['_id']),array('$set'=>array($type=>'',$type.'timestamp'=>'','cache_id'=>'',$type.'cache_obj'=>''))) ){
+				if($objs = $boothassistant->update(array('_id'=>$datafind['_id']),array('$set'=>array($type=>'',$type.'timestamp'=>''))) ){
 					
 					$result = array('status'=>'OK');	
 				}

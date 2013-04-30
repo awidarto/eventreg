@@ -44,6 +44,7 @@
   }
 
   $totalbayar = 0;
+  $totalbayarcount = 0;
 
   
 
@@ -52,6 +53,8 @@
   }else{
     $totalbayar =  $data['totaladdbooth'];
   }
+
+  
   
 
 
@@ -194,11 +197,14 @@
 
               @if(isset($boothassistantdata['addboothname'.$i.''])&& $boothassistantdata['addboothname'.$i.'']!='')
                 <td class="passname"><a class="icon- deleteexhibitor" id="" type="addboothname" typeid="7"><i id="addboothname{{ $i }}">&#xe03b;</i></a><div class="boothasstName alreadyimport" id="addboothname{{ $i }}" rel="{{$boothassistantdata['addboothname'.$i.'regnumber']}}" type="addboothname">{{ $boothassistantdata['addboothname'.$i.''] }}</div></td>
-              @elseif($data['addboothname'.$i.'']=='')
+              @elseif(isset($data['addboothname'.$i.'']) && $data['addboothname'.$i.'']=='')
                 <td class="passname"><div class="boothasstNameaddOnly" id="addboothname{{ $i }}" rel="" type="addbooth"><span class="fontRed">Double click to add..</div></div></td>
-              @else
+              @elseif(isset($data['addboothname'.$i.'']) && $data['addboothname'.$i.'']!='')
                 <td class="passname"><div class="notimport" id="addboothname{{ $i }}" >{{ $data['addboothname'.$i.''] }}</div></td>
+              @else
+                <td class="passname">-</td>
               @endif
+
               @if(isset($boothassistantdata['addboothname'.$i.''])&& $boothassistantdata['addboothname'.$i.'']!='')
                   <td class="aligncenter action" ><span class="icon- fontGreen existtrue">&#xe20c;</span>&nbsp;Imported on {{ date('d-m-Y',  $boothassistantdata['addboothname'.$i.'timestamp']->sec) }}</td>
                   <td id="status_addboothname{{ $i }}" class="align-center status"><a class="icon- printbadge" id="addboothname{{ $i }}" type="addboothname" typeid="{{ $i }}"><i>&#xe14c;</i><span class="formstatus" id="addboothname{{ $i }}" > Print this data</span></a></td>
@@ -378,21 +384,23 @@ $('body').on('click', '.deleteexhibitor', function(e){
     <?php
       $ajaxDeleteBoothAssistant = (isset($ajaxDeleteBoothAssistant))?$ajaxDeleteBoothAssistant:'/';
     ?>
+    var answer = confirm("Are you sure you want to delete this data?");
+    if(answer){
+      $.post('{{ URL::to($ajaxDeleteBoothAssistant) }}',{'dataid':boothassistantdataid,'type':type}, function(data) {
 
-    $.post('{{ URL::to($ajaxDeleteBoothAssistant) }}',{'dataid':boothassistantdataid,'type':type}, function(data) {
-
-      if(data.status == 'OK'){
-          alert("Succesfully deleted data, please wait browser wil redirect you");
-          <?php
-            $redirect = URL::to('exhibitor/importbothassistant/'.$exhibitorid);
-          ?>
-          setTimeout("location.href = '<?php echo $redirect;?>';",500);
-      }else{
-        alert("There's something error, please try again!");
-      }
-     
-    
-    },'json');
+        if(data.status == 'OK'){
+            alert("Succesfully deleted data, please wait browser wil redirect you");
+            <?php
+              $redirect = URL::to('exhibitor/importbothassistant/'.$exhibitorid);
+            ?>
+            setTimeout("location.href = '<?php echo $redirect;?>';",500);
+        }else{
+          alert("There's something error, please try again!");
+        }
+       
+      
+      },'json');
+    }
 
     
     

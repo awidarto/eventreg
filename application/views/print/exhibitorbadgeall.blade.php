@@ -123,7 +123,7 @@ for($i=1;$i<11;$i++){
 }
 
 $totalbayar = 0;
-
+$totalbayarcount = 0;
   
 
 if(isset($profile['totaladdbooth'])){
@@ -132,12 +132,13 @@ if(isset($profile['totaladdbooth'])){
 	$totalbayar =  $user_form['totaladdbooth'];
 }
 
-/*for($i=1;$i<=$user_form['totaladdbooth'];$i++){
-  	if(isset($profile['addboothname'.$i.''])){
-      $addboothassistantcount++;
-    }
-}*/
+for($i=1;$i<=$totalbayar;$i++){
 
+  	if(isset($profile['addboothname'.$i.''])&& $profile['addboothname'.$i.'']!=''){
+      $totalbayarcount++;
+    }
+
+}
 
 
 
@@ -188,7 +189,7 @@ if(isset($profile['totaladdbooth'])){
 
 
 <div class="addboothpaylist">
-@for($i=1;$i<=$totalbayar;$i++)
+@for($i=1;$i<=$totalbayarcount;$i++)
 	<div id="preview-card">
 		<div class="card-template-area">
 			{{ HTML::image('images/idcard-template-exhibitor2.jpg','badge_bg',array('class'=>'cardtemplate')) }}
