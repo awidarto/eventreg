@@ -69,6 +69,7 @@ return array(
 
 		'systemstatus'=>array(
 			'operationalform'=>'closed',
+			'conventionregistration'=>'closed',
 			
 		),
 

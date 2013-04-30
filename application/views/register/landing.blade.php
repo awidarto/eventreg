@@ -6,9 +6,9 @@
 <h3>{{$title}}</h3>
 </div>
 <!--{{ HTML::image('images/checked.png','checked',array('class'=>'check-icon','style'=>'float:left;')) }}-->
-<p>Please select registration type :</p>
+<!--<p>Please select registration type :</p>-->
 
-<p>{{ HTML::link('register','Individual Registration',array('class'=>'registIndividuType registType')).' '.HTML::link('register/group','Group Registration',array('class'=>'groupIndividuType registType')) }}
+<!--<p>{{ HTML::link('register','Individual Registration',array('class'=>'registIndividuType registType')).' '.HTML::link('register/group','Group Registration',array('class'=>'groupIndividuType registType')) }}-->
 
 </p>
 <br/>
@@ -38,5 +38,5 @@
     
 </div>
 
-<?php echo Request::server('http_referer');?>
+
 @endsection
