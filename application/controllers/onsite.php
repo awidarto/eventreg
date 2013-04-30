@@ -1165,6 +1165,7 @@ class Onsite_Controller extends Base_Controller {
 
 		return View::make('pop.attendeeview')
 		->with('ajaxprintbadge',URL::to('onsite/printbadgecount'))
+		->with('ajaxpaymentupdateonsite',URL::to('onsite/paymentupdate'))
 		->with('towords',$towords)
 		->with('profile',$doc);
 	}
@@ -1469,6 +1470,37 @@ class Onsite_Controller extends Base_Controller {
 				if($user->update(array('_id'=>$_id),array('$set'=>array('printbadge'=>1)))){
 					$result = array('status'=>'OK','data'=>'DELETEFAILED');
 				}
+			}
+		}
+
+		print json_encode($result);
+	}
+
+	public function post_paymentupdate(){
+		$id = Input::get('id');
+		$status = Input::get('status');
+
+		$user = new Attendee();
+
+		if(is_null($id)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$_id = new MongoId($id);
+
+			//find countbadge
+			$userdata = $user->get(array('_id'=>$_id));
+			if(isset($userdata['conventionPaymentStatus'])){
+				
+				if($user->update(array('_id'=>$_id),array('$set'=>array('conventionPaymentStatus'=>$status,'payonsite'=>'yes')))){
+					$result = array('status'=>'OK','data'=>'DELETEFAILED');
+				}else{
+					//Event::fire('paymentstatusgolfconvention.update',array('id'=>$id,'result'=>'FAILED'));
+					$result = array('status'=>'ERR','data'=>'ERROR WHILE PROCESSING');
+				}
+			}else{
+				
+				$result = array('status'=>'ERR','data'=>'DATA NOT FOUND');
 			}
 		}
 

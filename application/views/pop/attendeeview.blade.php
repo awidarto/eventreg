@@ -555,6 +555,7 @@ $('#submitaddassist').click(function(){
 	var currency = $('.currency').val();
 	var texttonominal='';
 	var texttowords='';
+	var userid = '{{$userid}}';
 
 	var regtype = '{{$profile['regtype']}}';
 
@@ -574,85 +575,94 @@ $('#submitaddassist').click(function(){
 		alert('Please select currency');
 	}else{
 
-		//access iframe
-		if(regtype=='PD' && paymentvia=='cash' && currency == 'idr'){
+		$.post('{{ URL::to($ajaxpaymentupdateonsite) }}',{'id':userid,'status':status}, function(data) {
 
-			usdnominalidrobject.text('--');
-			idrnominalidrobject.text(PD_CASH_idrnominal);
-			sayinwordsobject.text(PD_CASH_idrwords);
+	      if(data.status == 'OK'){
+			//access iframe
+			if(regtype=='PD' && paymentvia=='cash' && currency == 'idr'){
 
-		}else if(regtype=='PD' && paymentvia=='cc' && currency == 'idr'){
-			usdnominalidrobject.text('--');
-			idrnominalidrobject.text(PD_CC_idrnominal);
-			sayinwordsobject.text(PD_CC_idwords);
-		
-		}else if(regtype=='PO' && paymentvia=='cash' && currency == 'usd'){
+				usdnominalidrobject.text('--');
+				idrnominalidrobject.text(PD_CASH_idrnominal);
+				sayinwordsobject.text(PD_CASH_idrwords);
+
+			}else if(regtype=='PD' && paymentvia=='cc' && currency == 'idr'){
+				usdnominalidrobject.text('--');
+				idrnominalidrobject.text(PD_CC_idrnominal);
+				sayinwordsobject.text(PD_CC_idwords);
 			
-			usdnominalidrobject.text(PO_CASH_usdnominal);
-			idrnominalidrobject.text('--');
-			sayinwordsobject.text(PO_CASH_usdwords);
+			}else if(regtype=='PO' && paymentvia=='cash' && currency == 'usd'){
+				
+				usdnominalidrobject.text(PO_CASH_usdnominal);
+				idrnominalidrobject.text('--');
+				sayinwordsobject.text(PO_CASH_usdwords);
 
-		}else if(regtype=='PO' && paymentvia=='cc' && currency == 'idr'){
+			}else if(regtype=='PO' && paymentvia=='cc' && currency == 'idr'){
 
-			usdnominalidrobject.text('--');
-			idrnominalidrobject.text(PO_CC_idrnominal);
-			sayinwordsobject.text(PO_CC_idrwords);
+				usdnominalidrobject.text('--');
+				idrnominalidrobject.text(PO_CC_idrnominal);
+				sayinwordsobject.text(PO_CC_idrwords);
 
-		}else if(regtype=='PO' && paymentvia=='cash' && currency == 'idr'){
+			}else if(regtype=='PO' && paymentvia=='cash' && currency == 'idr'){
 
-			usdnominalidrobject.text('--');
-			idrnominalidrobject.text(PO_CASH_idrnominal);
-			sayinwordsobject.text(PO_CASH_idrwords);
-		}
+				usdnominalidrobject.text('--');
+				idrnominalidrobject.text(PO_CASH_idrnominal);
+				sayinwordsobject.text(PO_CASH_idrwords);
+			}
 
-		else if(regtype=='SD' && paymentvia=='cash' && currency == 'idr'){
+			else if(regtype=='SD' && paymentvia=='cash' && currency == 'idr'){
 
-			usdnominalidrobject.text('--');
-			idrnominalidrobject.text(SD_CASH_idrnominal);
-			sayinwordsobject.text(SD_CASH_idrwords);
+				usdnominalidrobject.text('--');
+				idrnominalidrobject.text(SD_CASH_idrnominal);
+				sayinwordsobject.text(SD_CASH_idrwords);
 
-		}else if(regtype=='SD' && paymentvia=='cc' && currency == 'idr'){
-			usdnominalidrobject.text('--');
-			idrnominalidrobject.text(SD_CC_idrnominal);
-			sayinwordsobject.text(SD_CC_idwords);
-		
-		}else if(regtype=='SO' && paymentvia=='cash' && currency == 'usd'){
+			}else if(regtype=='SD' && paymentvia=='cc' && currency == 'idr'){
+				usdnominalidrobject.text('--');
+				idrnominalidrobject.text(SD_CC_idrnominal);
+				sayinwordsobject.text(SD_CC_idwords);
 			
-			usdnominalidrobject.text(SO_CASH_usdnominal);
-			idrnominalidrobject.text('--');
-			sayinwordsobject.text(SO_CASH_usdwords);
+			}else if(regtype=='SO' && paymentvia=='cash' && currency == 'usd'){
+				
+				usdnominalidrobject.text(SO_CASH_usdnominal);
+				idrnominalidrobject.text('--');
+				sayinwordsobject.text(SO_CASH_usdwords);
 
-		}else if(regtype=='SO' && paymentvia=='cc' && currency == 'idr'){
+			}else if(regtype=='SO' && paymentvia=='cc' && currency == 'idr'){
 
-			usdnominalidrobject.text('--');
-			idrnominalidrobject.text(SO_CC_idrnominal);
-			sayinwordsobject.text(SO_CC_idrwords);
+				usdnominalidrobject.text('--');
+				idrnominalidrobject.text(SO_CC_idrnominal);
+				sayinwordsobject.text(SO_CC_idrwords);
 
-		}else if(regtype=='SO' && paymentvia=='cash' && currency == 'idr'){
+			}else if(regtype=='SO' && paymentvia=='cash' && currency == 'idr'){
 
-			usdnominalidrobject.text('--');
-			idrnominalidrobject.text(SO_CASH_idrnominal);
-			sayinwordsobject.text(SO_CASH_idrwords);
-		}
+				usdnominalidrobject.text('--');
+				idrnominalidrobject.text(SO_CASH_idrnominal);
+				sayinwordsobject.text(SO_CASH_idrwords);
+			}
 
-		var imagecheck = '√';
+			var imagecheck = '√';
 
-		if(paymentvia == 'cash'){
-			checkedimagecashobj.prepend(imagecheck);
-		}else if(paymentvia == 'cc'){
-			checkedimageccobj.prepend(imagecheck);
-		}
+			if(paymentvia == 'cash'){
+				checkedimagecashobj.prepend(imagecheck);
+			}else if(paymentvia == 'cc'){
+				checkedimageccobj.prepend(imagecheck);
+			}
 
-		$('#convpaymentstat').text(status);
+			$('#convpaymentstat').text(status);
 
-		var pframe = document.getElementById('print_frame');
-		var pframeWindow = pframe.contentWindow;
-		pframeWindow.print();
+			var pframe = document.getElementById('print_frame');
+			var pframeWindow = pframe.contentWindow;
+			pframeWindow.print();
 
-		$('#stack3').modal('hide');
-		//change button to print
-		$('#printstartcashier').show();
-		$('.dopayment').hide();
+			$('#stack3').modal('hide');
+			//change button to print
+			$('#printstartcashier').show();
+			$('.dopayment').hide();
+
+
+	      }else{
+	      	alert(data.data);
+	      }
+	    },'json');
 		
 	}
 
