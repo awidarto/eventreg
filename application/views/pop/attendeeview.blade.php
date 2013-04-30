@@ -187,6 +187,20 @@ setlocale(LC_MONETARY, "en_US");
 					<td class="detail-info">{{ $profile['country']  }}</td>
 					
 				</tr>
+
+				<tr>
+					<td class="detail-title">Pickup badge notes</td>
+					<td>:</td>
+					@if(isset($profile['badgepickupnotes']))
+					<td class="detail-info"><textarea class="text invAdress span10" id="badgepickupnotes" rows="4" name="notes" cols="50" style="font-size:11px;">{{$profile['badgepickupnotes'] }}</textarea>
+					@else
+					<td class="detail-info"><textarea class="text invAdress span10" id="badgepickupnotes" rows="4" name="notes" cols="50" style="font-size:11px;"></textarea>
+					@endif
+					</td>
+					
+				</tr>
+
+				
 				
 			</table>
 
@@ -355,7 +369,9 @@ $('#closestack3').click(function(){
 });
 
 $('#printstart').click(function(){
-	$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}'}, function(data) {
+	var badgepickupnotes = $("#badgepickupnotes").val();
+	
+	$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}','badgepickupnotes':badgepickupnotes}, function(data) {
 		if(data.status == 'OK'){
 			var pframe = document.getElementById('print_frame');
 			var pframeWindow = pframe.contentWindow;
@@ -369,8 +385,9 @@ $('#printstart').click(function(){
 $('#submitpin').click(function(){
 	var pintrue = '{{ Config::get("eventreg.pinsupervisorconvention") }}';
 	var pinvalue = $('#supervisorpin').val();
+	var badgepickupnotes = $("#badgepickupnotes").val();
 	if(pinvalue == pintrue){
-		$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}'}, function(data) {
+		$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}','badgepickupnotes':badgepickupnotes}, function(data) {
 			if(data.status == 'OK'){
 				var pframe = document.getElementById('print_frame');
 				var pframeWindow = pframe.contentWindow;

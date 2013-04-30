@@ -1446,6 +1446,7 @@ class Onsite_Controller extends Base_Controller {
 	public function post_printbadgecount(){
 		$id = Input::get('id');
 		
+		$badgepickupnotes = Input::get('badgepickupnotes');
 
 		$user = new Attendee();
 
@@ -1460,14 +1461,14 @@ class Onsite_Controller extends Base_Controller {
 			if(isset($userdata['printbadge'])){
 				$dataprintcount = $userdata['printbadge'];
 				$toadd = $dataprintcount+1;
-				if($user->update(array('_id'=>$_id),array('$set'=>array('printbadge'=>$toadd)))){
+				if($user->update(array('_id'=>$_id),array('$set'=>array('printbadge'=>$toadd,'badgepickupnotes'=>$badgepickupnotes)))){
 					$result = array('status'=>'OK','data'=>'DELETEFAILED');
 				}else{
 					//Event::fire('paymentstatusgolfconvention.update',array('id'=>$id,'result'=>'FAILED'));
 					$result = array('status'=>'ERR','data'=>'DELETEFAILED');
 				}
 			}else{
-				if($user->update(array('_id'=>$_id),array('$set'=>array('printbadge'=>1)))){
+				if($user->update(array('_id'=>$_id),array('$set'=>array('printbadge'=>1,'badgepickupnotes'=>$badgepickupnotes)))){
 					$result = array('status'=>'OK','data'=>'DELETEFAILED');
 				}
 			}
