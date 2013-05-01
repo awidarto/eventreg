@@ -25,7 +25,10 @@
   }else{
     $pass = 10;
   }*/
+  
   $pass = $booth['freepassslot'];
+
+  
   
   for($i=1;$i<$pass+1;$i++){
     //if(isset($data['freepassname'.$i.''])){
@@ -36,7 +39,14 @@
     }
   }
 
-  for($i=1;$i<11;$i++){
+  if($boothassistantdata['exhibitorid'] == "514c629e8dfa19db46000000"){
+    $boothassistantcounter = 20;
+  }else{
+    $boothassistantcounter = 11;
+  }
+
+  for($i=1;$i<$boothassistantcounter;$i++){
+
     //if(isset($data['boothassistant'.$i.''])){
       $boothassistantcount++;
     //}
