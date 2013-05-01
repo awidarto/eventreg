@@ -1860,4 +1860,29 @@ class Attendee_Controller extends Base_Controller {
 		\Laravel\CLI\Command::run(array('notify'));
 	}
 
+
+	public function get_deleteunpaid(){
+		
+		$attendee = new Attendee();
+		$condition  = array('conventionPaymentStatus'=>'unpaid');
+		$attendees = $attendee->find($condition, array(), array(),array());
+
+		
+		$deletedcount = 0;
+
+		foreach($attendees as $att){
+			$_id = $att['_id'];
+
+			if($attendee->delete(array('_id'=>$_id))){
+				$deletedcount++;
+			}
+			
+
+		}
+
+		return View::make('attendee.normalizeearly')
+				->with('changecount',$deletedcount)
+				->with('title','Normalize Early');		
+	}
+
 }
