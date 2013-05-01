@@ -39,7 +39,7 @@
     }
   }
 
-  if($boothassistantdata['exhibitorid'] == "514c629e8dfa19db46000000"){
+  if(isset($boothassistantdata['exhibitorid']) && $boothassistantdata['exhibitorid']== "514c629e8dfa19db46000000"){
     $boothassistantcounter = 20;
   }else{
     $boothassistantcounter = 11;
