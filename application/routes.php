@@ -32,7 +32,7 @@
 |
 */
 
-Route::controller(array('register','exhibition','report','booth','boothassistant','import','export','dashboard','onsite','attendee','exhibitor','official','visitor','user','message','search','activity','category','content','ajax'));
+Route::controller(array('register','exhibition','report','booth','boothassistant','import','export','dashboard','onsite','cashier','attendee','exhibitor','official','visitor','user','message','search','activity','category','content','ajax'));
 
 Route::get('/',function(){
     if(Auth::check()){

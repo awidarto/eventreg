@@ -221,146 +221,234 @@ class Onsite_Controller extends Base_Controller {
 
 		$counter = 1 + $pagestart;
 
-		$aadata[] = array('','<strong>Attendees</strong>','','','','','');
+		if(Auth::user()->role =='cashier'){
+			$aadata[] = array('','<strong>Attendees</strong>','','','','','');
 
-		foreach ($attendees as $doc) {
+			foreach ($attendees as $doc) {
 
-			$extra = $doc;
+				$extra = $doc;
 
-			$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
+				$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
 
-			if(isset($doc['conventionPaymentStatus'])){
-				if($doc['conventionPaymentStatus'] == 'unpaid'){
-					$paymentStatus = '<span class="fontRed fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
-				}elseif ($doc['conventionPaymentStatus'] == 'pending') {
-					$paymentStatus = '<span class="fontOrange fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
-				}elseif ($doc['conventionPaymentStatus'] == 'cancel') {
-					$paymentStatus = '<span class="fontGray fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+				if(isset($doc['conventionPaymentStatus'])){
+					if($doc['conventionPaymentStatus'] == 'unpaid'){
+						$paymentStatus = '<span class="fontRed fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+					}elseif ($doc['conventionPaymentStatus'] == 'pending') {
+						$paymentStatus = '<span class="fontOrange fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+					}elseif ($doc['conventionPaymentStatus'] == 'cancel') {
+						$paymentStatus = '<span class="fontGray fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
 
+					}else{
+						$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+					}
 				}else{
-					$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+					$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
 				}
-			}else{
-				$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
-			}
 
-			if(isset($doc['golfPaymentStatus'])){
-				if($doc['golfPaymentStatus'] == 'unpaid' && $doc['golf'] == 'Yes'){
-					$paymentStatusGolf = '<span class="fontRed fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
-				}elseif ($doc['golfPaymentStatus'] == 'pending') {
-					$paymentStatusGolf = '<span class="fontOrange fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
-				}elseif ($doc['golfPaymentStatus'] == 'cancel') {
-					$paymentStatusGolf = '<span class="fontGray fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
-				}elseif ($doc['golf'] == 'No') {
-					$paymentStatusGolf = '<span class="fontGray fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+				if(isset($doc['golfPaymentStatus'])){
+					if($doc['golfPaymentStatus'] == 'unpaid' && $doc['golf'] == 'Yes'){
+						$paymentStatusGolf = '<span class="fontRed fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+					}elseif ($doc['golfPaymentStatus'] == 'pending') {
+						$paymentStatusGolf = '<span class="fontOrange fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+					}elseif ($doc['golfPaymentStatus'] == 'cancel') {
+						$paymentStatusGolf = '<span class="fontGray fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+					}elseif ($doc['golf'] == 'No') {
+						$paymentStatusGolf = '<span class="fontGray fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+					}else{
+						$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+					}
 				}else{
-					$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+					$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
 				}
-			}else{
-				$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
-			}
 
-			if(isset($doc['golf'])){
-				if($doc['golf'] == 'Yes'){
-					$rowGolfAction = '<a class="icon-"  ><i>&#xe146;</i><span class="paygolf" id="'.$doc['_id'].'" >Golf Status</span>';
+				if(isset($doc['golf'])){
+					if($doc['golf'] == 'Yes'){
+						$rowGolfAction = '<a class="icon-"  ><i>&#xe146;</i><span class="paygolf" id="'.$doc['_id'].'" >Golf Status</span>';
+					}else{
+						$rowGolfAction = '';
+					}
 				}else{
 					$rowGolfAction = '';
 				}
-			}else{
-				$rowGolfAction = '';
-			}
 
-			if(isset($doc['golfPaymentStatus']) && isset($doc['conventionPaymentStatus'])){
+				if(isset($doc['golfPaymentStatus']) && isset($doc['conventionPaymentStatus'])){
 
-				if(($doc['golfPaymentStatus'] == 'pending' && $doc['conventionPaymentStatus'] == 'pending') || ($doc['golfPaymentStatus'] == 'unpaid' && $doc['conventionPaymentStatus'] == 'unpaid')){
-					$rowBoothAction = '<a class="icon-"  ><i>&#xe1e9;</i><span class="paygolfconvention" id="'.$doc['_id'].'" >Conv & Golf</span>';
+					if(($doc['golfPaymentStatus'] == 'pending' && $doc['conventionPaymentStatus'] == 'pending') || ($doc['golfPaymentStatus'] == 'unpaid' && $doc['conventionPaymentStatus'] == 'unpaid')){
+						$rowBoothAction = '<a class="icon-"  ><i>&#xe1e9;</i><span class="paygolfconvention" id="'.$doc['_id'].'" >Conv & Golf</span>';
+					}else{
+						$rowBoothAction = '';
+					}
 				}else{
-					$rowBoothAction = '';
+					$rowGolfAction = '';
 				}
-			}else{
-				$rowGolfAction = '';
+
+				//find message log
+
+				//$rowResendMessage = '';
+				//$messagelogs = $messagelog->find(array('user'=>$doc['_id']),array(),array(),array());
+				//if(count($messagelogs)>0){
+
+					$rowResendMessage = '<a class="icon-"  ><i>&#xe165;</i><span class="resendmail" id="'.$doc['_id'].'" >Resend Email</span>';
+				//}
+
+				$aadata[] = array(
+					$counter,
+					//$select,
+					date('Y-m-d', $doc['createdDate']->sec),
+					(isset($doc['registrationnumber']))?'<span class="pop attendee fontRed onsitetableclick" id="'.$doc['_id'].'">'.$doc['registrationnumber'].'</span>':'',
+					$doc['email'],
+					$doc['firstname'],
+					$doc['lastname'],
+					$doc['company'],
+					$doc['regtype'],
+					
+
+					'extra'=>$extra
+				);
+				$counter++;
+			}
+		}else{
+			$aadata[] = array('','<strong>Attendees</strong>','','','','','');
+
+			foreach ($attendees as $doc) {
+
+				$extra = $doc;
+
+				$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
+
+				if(isset($doc['conventionPaymentStatus'])){
+					if($doc['conventionPaymentStatus'] == 'unpaid'){
+						$paymentStatus = '<span class="fontRed fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+					}elseif ($doc['conventionPaymentStatus'] == 'pending') {
+						$paymentStatus = '<span class="fontOrange fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+					}elseif ($doc['conventionPaymentStatus'] == 'cancel') {
+						$paymentStatus = '<span class="fontGray fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+
+					}else{
+						$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['conventionPaymentStatus'].'</span>';
+					}
+				}else{
+					$paymentStatus = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
+				}
+
+				if(isset($doc['golfPaymentStatus'])){
+					if($doc['golfPaymentStatus'] == 'unpaid' && $doc['golf'] == 'Yes'){
+						$paymentStatusGolf = '<span class="fontRed fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+					}elseif ($doc['golfPaymentStatus'] == 'pending') {
+						$paymentStatusGolf = '<span class="fontOrange fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+					}elseif ($doc['golfPaymentStatus'] == 'cancel') {
+						$paymentStatusGolf = '<span class="fontGray fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+					}elseif ($doc['golf'] == 'No') {
+						$paymentStatusGolf = '<span class="fontGray fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+					}else{
+						$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['golfPaymentStatus'].'</span>';
+					}
+				}else{
+					$paymentStatusGolf = '<span class="fontGreen fontBold paymentStatusTable">'.$doc['paymentStatus'].'</span>';
+				}
+
+				if(isset($doc['golf'])){
+					if($doc['golf'] == 'Yes'){
+						$rowGolfAction = '<a class="icon-"  ><i>&#xe146;</i><span class="paygolf" id="'.$doc['_id'].'" >Golf Status</span>';
+					}else{
+						$rowGolfAction = '';
+					}
+				}else{
+					$rowGolfAction = '';
+				}
+
+				if(isset($doc['golfPaymentStatus']) && isset($doc['conventionPaymentStatus'])){
+
+					if(($doc['golfPaymentStatus'] == 'pending' && $doc['conventionPaymentStatus'] == 'pending') || ($doc['golfPaymentStatus'] == 'unpaid' && $doc['conventionPaymentStatus'] == 'unpaid')){
+						$rowBoothAction = '<a class="icon-"  ><i>&#xe1e9;</i><span class="paygolfconvention" id="'.$doc['_id'].'" >Conv & Golf</span>';
+					}else{
+						$rowBoothAction = '';
+					}
+				}else{
+					$rowGolfAction = '';
+				}
+
+				//find message log
+
+				//$rowResendMessage = '';
+				//$messagelogs = $messagelog->find(array('user'=>$doc['_id']),array(),array(),array());
+				//if(count($messagelogs)>0){
+
+					$rowResendMessage = '<a class="icon-"  ><i>&#xe165;</i><span class="resendmail" id="'.$doc['_id'].'" >Resend Email</span>';
+				//}
+
+				$aadata[] = array(
+					$counter,
+					//$select,
+					date('Y-m-d', $doc['createdDate']->sec),
+					(isset($doc['registrationnumber']))?'<span class="pop attendee fontRed onsitetableclick" id="'.$doc['_id'].'">'.$doc['registrationnumber'].'</span>':'',
+					$doc['email'],
+					$doc['firstname'],
+					$doc['lastname'],
+					$doc['company'],
+					$doc['regtype'],
+					
+
+					'extra'=>$extra
+				);
+				$counter++;
 			}
 
-			//find message log
+			$aadata[] = array('','<strong>Visitors</strong>','','','','','');
 
-			//$rowResendMessage = '';
-			//$messagelogs = $messagelog->find(array('user'=>$doc['_id']),array(),array(),array());
-			//if(count($messagelogs)>0){
+			foreach ($visitors as $doc) {
 
-				$rowResendMessage = '<a class="icon-"  ><i>&#xe165;</i><span class="resendmail" id="'.$doc['_id'].'" >Resend Email</span>';
-			//}
+				$extra = $doc;
 
-			$aadata[] = array(
-				$counter,
-				//$select,
-				date('Y-m-d', $doc['createdDate']->sec),
-				(isset($doc['registrationnumber']))?'<span class="pop attendee fontRed onsitetableclick" id="'.$doc['_id'].'">'.$doc['registrationnumber'].'</span>':'',
-				$doc['email'],
-				$doc['firstname'],
-				$doc['lastname'],
-				$doc['company'],
-				$doc['regtype'],
+				$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
+
 				
 
-				'extra'=>$extra
-			);
-			$counter++;
-		}
-
-		$aadata[] = array('','<strong>Visitors</strong>','','','','','');
-
-		foreach ($visitors as $doc) {
-
-			$extra = $doc;
-
-			$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
-
-			
-
-			$aadata[] = array(
-				$counter,
-				//$select,
-				date('Y-m-d', $doc['createdDate']->sec),
-				(isset($doc['registrationnumber']))?'<span class="pop visitor fontRed onsitetableclick" id="'.$doc['_id'].'">'.$doc['registrationnumber'].'</span>':'',
-				$doc['email'],
-				$doc['firstname'],
-				'',
-				$doc['company'],
-				'',
-				
-				'extra'=>$extra
-			);
-			$counter++;
-		}
+				$aadata[] = array(
+					$counter,
+					//$select,
+					date('Y-m-d', $doc['createdDate']->sec),
+					(isset($doc['registrationnumber']))?'<span class="pop visitor fontRed onsitetableclick" id="'.$doc['_id'].'">'.$doc['registrationnumber'].'</span>':'',
+					$doc['email'],
+					$doc['firstname'],
+					'',
+					$doc['company'],
+					'',
+					
+					'extra'=>$extra
+				);
+				$counter++;
+			}
 
 
-		$aadata[] = array('','<strong>Exhibitors</strong>','','','','','');
+			$aadata[] = array('','<strong>Exhibitors</strong>','','','','','');
 
-		foreach ($exhibitors as $doc) {
+			foreach ($exhibitors as $doc) {
 
-			$extra = $doc;
+				$extra = $doc;
 
-			$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
+				$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
 
-			
-
-			
-
-			$aadata[] = array(
-				$counter,
-				//$select,
-				date('Y-m-d', $doc['createdDate']->sec),
-				(isset($doc['registrationnumber']))?'<span class="pop exhibitorview fontRed onsitetableclick" id="'.$doc['_id'].'">'.$doc['registrationnumber'].'</span>':'',
-				$doc['email'],
-				'<span class="pop visitor" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
-				$doc['lastname'],
-				$doc['company'],
-				'',
 				
 
-				'extra'=>$extra
-			);
-			$counter++;
+				
+
+				$aadata[] = array(
+					$counter,
+					//$select,
+					date('Y-m-d', $doc['createdDate']->sec),
+					(isset($doc['registrationnumber']))?'<span class="pop exhibitorview fontRed onsitetableclick" id="'.$doc['_id'].'">'.$doc['registrationnumber'].'</span>':'',
+					$doc['email'],
+					'<span class="pop visitor" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
+					$doc['lastname'],
+					$doc['company'],
+					'',
+					
+
+					'extra'=>$extra
+				);
+				$counter++;
+			}
 		}
 
 		$result = array(
@@ -1166,6 +1254,7 @@ class Onsite_Controller extends Base_Controller {
 		return View::make('pop.attendeeview')
 		->with('ajaxprintbadge',URL::to('onsite/printbadgecount'))
 		->with('ajaxpaymentupdateonsite',URL::to('onsite/paymentupdate'))
+		->with('ajaxsavebadgenotes',URL::to('onsite/savebadgenotes'))
 		->with('towords',$towords)
 		->with('profile',$doc);
 	}
@@ -1477,9 +1566,41 @@ class Onsite_Controller extends Base_Controller {
 		print json_encode($result);
 	}
 
+	public function post_savebadgenotes(){
+		$id = Input::get('id');
+		
+		$badgepickupnotes = Input::get('badgepickupnotes');
+
+		$user = new Attendee();
+
+		if(is_null($id)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$_id = new MongoId($id);
+
+			//find countbadge
+			$userdata = $user->get(array('_id'=>$_id));
+			
+			if($user->update(array('_id'=>$_id),array('$set'=>array('badgepickupnotes'=>$badgepickupnotes)))){
+				$result = array('status'=>'OK','data'=>'DELETEFAILED');
+			}else{
+				$result = array('status'=>'ERR','data'=>'DELETEFAILED');
+			}
+			
+		}
+
+		print json_encode($result);
+	}
+	
+
 	public function post_paymentupdate(){
 		$id = Input::get('id');
 		$status = Input::get('status');
+		$paymentvia = Input::get('paymentvia');
+		$currency = Input::get('currency');
+		$totalidr = Input::get('totalidr');
+		$totalusd = Input::get('totalusd');
 
 		$user = new Attendee();
 
@@ -1493,8 +1614,23 @@ class Onsite_Controller extends Base_Controller {
 			$userdata = $user->get(array('_id'=>$_id));
 			if(isset($userdata['conventionPaymentStatus'])){
 				
-				if($user->update(array('_id'=>$_id),array('$set'=>array('conventionPaymentStatus'=>$status,'payonsite'=>'yes')))){
-					$result = array('status'=>'OK','data'=>'DELETEFAILED');
+				if($user->update(array('_id'=>$_id),array('$set'=>array('conventionPaymentStatus'=>$status,'payonsite'=>'yes','payonsite_paymentvia'=>$paymentvia,'payonsite_currency'=>$currency,'payonsite_totalidr'=>$totalidr,'payonsite_totalusd'=>$totalusd,'payonsite_paydate'=>new MongoDate()  )))){
+					//also record on cashier db
+					$cashierdb = new Cashier;
+					$datacashier['regnumber'] = $userdata['registrationnumber'];
+					$datacashier['participantname'] = $userdata['firstname'].' '.$userdata['lastname'];
+					$datacashier['regtype'] = $userdata['regtype'];
+					$datacashier['paymentvia'] = $paymentvia;
+					$datacashier['currency'] = $currency;
+					$datacashier['totalidr'] = $totalidr;
+					$datacashier['totalusd'] = $totalusd;
+					$datacashier['paymentdate'] = new MongoDate();
+					$datacashier['cashiername'] = Auth::user()->fullname;
+					$datacashier['cashierid'] = Auth::user()->id;
+
+					if($obj = $cashierdb->insert($datacashier)){
+						$result = array('status'=>'OK','data'=>'DELETEFAILED');
+					}
 				}else{
 					//Event::fire('paymentstatusgolfconvention.update',array('id'=>$id,'result'=>'FAILED'));
 					$result = array('status'=>'ERR','data'=>'ERROR WHILE PROCESSING');
@@ -1507,6 +1643,9 @@ class Onsite_Controller extends Base_Controller {
 
 		print json_encode($result);
 	}
+
+
+
 
 
 	public function post_printbadgecountexhibitor(){

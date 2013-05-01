@@ -41,13 +41,13 @@ setlocale(LC_MONETARY, "en_US");
 					<td class="detail-title">Registration  Type</td>
 					<td>:&nbsp;</td>
 					@if($profile['regtype'] == 'PO')
-						<td class="detail-info">Professional / Delegate Overseas</td>
+						<td class="detail-info"><strong>Professional / Delegate Overseas</strong></td>
 					@elseif($profile['regtype'] == 'PD')
-						<td class="detail-info">Professional / Delegate Domestic</td>
+						<td class="detail-info"><strong>Professional / Delegate Domestic</strong></td>
 					@elseif($profile['regtype'] == 'SD')
-						<td class="detail-info">Student Domestic</td>
+						<td class="detail-info"><strong>Student Domestic</strong></td>
 					@elseif($profile['regtype'] == 'SO')
-						<td class="detail-info">Student Overseas</td>
+						<td class="detail-info"><strong>Student Overseas</strong></td>
 					@endif					
 					
 				</tr>
@@ -188,6 +188,7 @@ setlocale(LC_MONETARY, "en_US");
 					
 				</tr>
 
+				@if(Auth::user()->role != 'cashier')
 				<tr>
 					<td class="detail-title">Pickup badge notes</td>
 					<td>:</td>
@@ -199,6 +200,7 @@ setlocale(LC_MONETARY, "en_US");
 					</td>
 					
 				</tr>
+				@endif
 
 				
 				
@@ -275,16 +277,17 @@ setlocale(LC_MONETARY, "en_US");
 					<br/>
 					<p>This user already {{$profile['printbadge']}} print the badge, please input PIN for re-print</p>
 					<input type="password" id="supervisorpin"></input><br/><button class="btn btn-info" value="Submit" id="submitpin">Submit for reprint</button>
-					<!--<button class="printonsite btn btn-info" id="printstart" disabled="disabled"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>-->
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="savebadgenotes btn btn-info" id="savebadgenotes"><i class="icon-">&#xe0c3;</i>&nbsp;&nbsp;Save pickup badge notes</button>
 					<iframe src="{{ URL::to('attendee/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 				@elseif($profile['conventionPaymentStatus']=='unpaid')
 					<br/>
 					<p>Unpaid user, please input PIN for print the badge</p>
 					<input type="password" id="supervisorpin"></input><br/><button class="btn btn-info" value="Submit" id="submitpin">Submit for print</button>
-					<!--<button class="printonsite btn btn-info" id="printstart" disabled="disabled"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>-->
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="savebadgenotes btn btn-info" id="savebadgenotes"><i class="icon-">&#xe0c3;</i>&nbsp;&nbsp;Save pickup badge notes</button>
 					<iframe src="{{ URL::to('attendee/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 				@else
 					<button class="printonsite btn btn-info" id="printstart"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>
+					<button class="savebadgenotes btn btn-info" id="savebadgenotes" style="margin-top: 40px;"><i class="icon-">&#xe0c3;</i>&nbsp;&nbsp;Save pickup badge notes</button>
 					<iframe src="{{ URL::to('attendee/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 				@endif
 
@@ -293,8 +296,12 @@ setlocale(LC_MONETARY, "en_US");
 					<button class="printonsite btn btn-info" id="printstartcashier" style="display:none;"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT RECEIPT</button>
 					<br/>
 					<button class="dopayment btn btn-info" id="#" ><i class="icon-">&#xe150;</i>&nbsp;&nbsp;MAKE A PAYMENT</button>
+					<iframe src="{{ URL::to('attendee/printreceipt/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
+				@elseif(isset($profile['payonsite']) && $profile['payonsite']=='yes')
+					<button class="printonsite btn btn-info" id="printstartcashier" style=""><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT RECEIPT</button>
+					<iframe src="{{ URL::to('attendee/reprintreceipt/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 				@endif
-				<iframe src="{{ URL::to('attendee/printreceipt/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
+				
 			@endif
 			</div>
 
@@ -310,7 +317,7 @@ setlocale(LC_MONETARY, "en_US");
 				    <select class="statuspayment">
 					  <option value="unpaid">Unpaid</option>
 					  <option value="paid">Paid</option>
-					  <option value="free">Free</option>
+					  
 					  
 					</select>
 				    <br/>
@@ -381,6 +388,16 @@ $('#printstart').click(function(){
 
 });
 
+$('#savebadgenotes').click(function(){
+	var badgepickupnotes = $("#badgepickupnotes").val();
+	
+	$.post('{{ URL::to($ajaxsavebadgenotes) }}',{'id':'{{$userid}}','badgepickupnotes':badgepickupnotes}, function(data) {
+		$('#viewformModal').modal('hide');
+	},'json');
+	
+
+});
+
 
 $('#submitpin').click(function(){
 	var pintrue = '{{ Config::get("eventreg.pinsupervisorconvention") }}';
@@ -411,21 +428,30 @@ $('#printstartcashier').click(function(){
 
 var PD_CASH_idrnominal = '5.500.000,00';
 var PD_CASH_idrwords = '{{ $towords->to_words(5500000,"en")}} Rupiahs';
+var PD_CASH_idrnominal_todb = '5500000';
+
+var PD_CASH_usdnominal = '561.00';
+var PD_CASH_usdwords = '{{ $towords->to_words(561,"en")}} US Dollars';
+var PD_CASH_usdnominal_todb = '561';
 
 
 var PO_CASH_usdnominal = '550.00';
 var PO_CASH_usdwords = '{{ $towords->to_words(550,"en") }} US Dollars';
+var PO_CASH_usdnominal_todb = '550';
 
 var PO_CASH_idrnominal = '5.390.000,00';
 var PO_CASH_idrwords = '{{ $towords->to_words(5390000,"en") }} Rupiahs';
+var PO_CASH_idrnominal_todb = '5390000';
 
 
 var PD_CC_idrnominal = '5.665.000,00';
 var PD_CC_idwords = '{{ $towords->to_words(5665000,"en") }} Rupiahs';
+var PD_CC_idrnominal_todb = '5665000';
 
 
 var PO_CC_idrnominal = '5.551.700,00';
 var PO_CC_idrwords = '{{ $towords->to_words(5551700,"en") }} Rupiahs';
+var PO_CC_idrnominal_todb = '5551700';
 
 
 
@@ -433,19 +459,28 @@ var PO_CC_idrwords = '{{ $towords->to_words(5551700,"en") }} Rupiahs';
 
 var SD_CASH_idrnominal = '440.000,00';
 var SD_CASH_idrwords = '{{ $towords->to_words(440000,"en") }} Rupiahs';
+var SD_CASH_idrnominal_todb = '440000';
+
+var SD_CASH_usdnominal = '45';
+var SD_CASH_usdwords = '{{ $towords->to_words(45,"en") }} US Dollars';
+var SD_CASH_usdnominal_todb = '45';
 
 var SD_CC_idrnominal = '453.200,00';
 var SD_CC_idrwords = '{{ $towords->to_words(453200,"en") }} Rupiahs';
+var SD_CC_idrnominal_todb = '453200';
 
 
 var SO_CASH_usdnominal = '120.00';
 var SO_CASH_usdwords = '{{ $towords->to_words(120,"en") }} US Dollars';
+var SO_CASH_usdnominal_todb = '120';
 
 var SO_CASH_idrnominal = '1.176.000,00';
 var SO_CASH_idrwords = '{{ $towords->to_words(1176000,"en") }} Rupiahs';
+var SO_CASH_idrnominal_todb = '1176000';
 
 var SO_CC_idrnominal = '1.211.280,00';
 var SO_CC_idrwords = '{{ $towords->to_words(1211800,"en") }} Rupiahs';
+var SO_CC_idrnominal_todb = '1211280';
 
 
 
@@ -501,7 +536,7 @@ $(document).ready(function() {
 		}else if(regtype=='PD' && paymentvia=='cash' && currency == 'usd'){
 
 			
-			totalpreview.text(PO_CASH_usdnominal);
+			totalpreview.text(PD_CASH_usdnominal);
 			
 
 		}else if(regtype=='PD' && paymentvia=='cc' && currency == 'idr'){
@@ -536,7 +571,11 @@ $(document).ready(function() {
 		}else if(regtype=='SD' && paymentvia=='cc' && currency == 'idr'){
 			
 			totalpreview.text(SD_CC_idrnominal);
+		
+		}else if(regtype=='SD' && paymentvia=='cash' && currency == 'usd'){
 			
+			totalpreview.text(SD_CASH_usdnominal);
+		
 		
 		}else if(regtype=='SO' && paymentvia=='cash' && currency == 'usd'){
 			
@@ -583,6 +622,9 @@ $('#submitaddassist').click(function(){
 	var checkedimagecashobj = $('.imagecheckcash', iframe.contents());
 	var checkedimageccobj = $('.imagecheckcc', iframe.contents());
 
+	var idr_todb ='';
+	var usd_todb ='';
+
 	if(status == 'unpaid'){
 		alert('Please select payment status');
 
@@ -591,78 +633,124 @@ $('#submitaddassist').click(function(){
 	}else if(currency == 'null'){
 		alert('Please select currency');
 	}else{
+		//access iframe
+		if(regtype=='PD' && paymentvia=='cash' && currency == 'idr'){
 
-		$.post('{{ URL::to($ajaxpaymentupdateonsite) }}',{'id':userid,'status':status}, function(data) {
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(PD_CASH_idrnominal);
+			sayinwordsobject.text(PD_CASH_idrwords);
+
+			idr_todb = PD_CASH_idrnominal_todb;
+			usd_todb = '';
+
+		}else if(regtype=='PD' && paymentvia=='cash' && currency == 'usd'){
+
+			usdnominalidrobject.text(PD_CASH_usdnominal);
+			idrnominalidrobject.text('--');
+			sayinwordsobject.text(PD_CASH_usdwords);
+
+			idr_todb = '';
+			usd_todb = PD_CASH_usdnominal_todb;
+
+		}else if(regtype=='PD' && paymentvia=='cc' && currency == 'idr'){
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(PD_CC_idrnominal);
+			sayinwordsobject.text(PD_CC_idwords);
+
+			idr_todb = PD_CC_idrnominal_todb;
+			usd_todb = '';
+		
+		}else if(regtype=='PO' && paymentvia=='cash' && currency == 'usd'){
+			
+			usdnominalidrobject.text(PO_CASH_usdnominal);
+			idrnominalidrobject.text('--');
+			sayinwordsobject.text(PO_CASH_usdwords);
+
+			idr_todb = '';
+			usd_todb = PO_CASH_usdnominal_todb;
+
+		}else if(regtype=='PO' && paymentvia=='cc' && currency == 'idr'){
+
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(PO_CC_idrnominal);
+			sayinwordsobject.text(PO_CC_idrwords);
+
+			idr_todb = PO_CC_idrnominal_todb;
+			usd_todb = '';
+
+		}else if(regtype=='PO' && paymentvia=='cash' && currency == 'idr'){
+
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(PO_CASH_idrnominal);
+			sayinwordsobject.text(PO_CASH_idrwords);
+
+			idr_todb = PO_CASH_idrnominal_todb;
+			usd_todb = '';
+		}else if(regtype=='SD' && paymentvia=='cash' && currency == 'idr'){
+
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(SD_CASH_idrnominal);
+			sayinwordsobject.text(SD_CASH_idrwords);
+
+			idr_todb = SD_CASH_idrnominal_todb;
+			usd_todb = '';
+
+		}else if(regtype=='SD' && paymentvia=='cash' && currency == 'usd'){
+
+			usdnominalidrobject.text(SD_CASH_usdnominal);
+			idrnominalidrobject.text('--');
+			sayinwordsobject.text(SD_CASH_usdwords);
+
+			idr_todb = '';
+			usd_todb = SD_CASH_usdnominal_todb;
+
+		}else if(regtype=='SD' && paymentvia=='cc' && currency == 'idr'){
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(SD_CC_idrnominal);
+			sayinwordsobject.text(SD_CC_idwords);
+
+			idr_todb = SD_CC_idrnominal_todb;
+			usd_todb = '';
+		
+		}else if(regtype=='SO' && paymentvia=='cash' && currency == 'usd'){
+			
+			usdnominalidrobject.text(SO_CASH_usdnominal);
+			idrnominalidrobject.text('--');
+			sayinwordsobject.text(SO_CASH_usdwords);
+
+			idr_todb = '';
+			usd_todb = SO_CASH_usdnominal_todb;
+
+		}else if(regtype=='SO' && paymentvia=='cc' && currency == 'idr'){
+
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(SO_CC_idrnominal);
+			sayinwordsobject.text(SO_CC_idrwords);
+
+			idr_todb = SO_CC_idrnominal_todb;
+			usd_todb = '';
+
+		}else if(regtype=='SO' && paymentvia=='cash' && currency == 'idr'){
+
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(SO_CASH_idrnominal);
+			sayinwordsobject.text(SO_CASH_idrwords);
+
+			idr_todb = SO_CASH_idrnominal_todb;
+			usd_todb = '';
+		}
+
+		var imagecheck = '√';
+
+		if(paymentvia == 'cash'){
+			checkedimagecashobj.prepend(imagecheck);
+		}else if(paymentvia == 'cc'){
+			checkedimageccobj.prepend(imagecheck);
+		}
+
+		$.post('{{ URL::to($ajaxpaymentupdateonsite) }}',{'id':userid,'status':status,'paymentvia':paymentvia,'currency':currency,'totalidr':idr_todb,'totalusd':usd_todb}, function(data) {
 
 	      if(data.status == 'OK'){
-			//access iframe
-			if(regtype=='PD' && paymentvia=='cash' && currency == 'idr'){
-
-				usdnominalidrobject.text('--');
-				idrnominalidrobject.text(PD_CASH_idrnominal);
-				sayinwordsobject.text(PD_CASH_idrwords);
-
-			}else if(regtype=='PD' && paymentvia=='cc' && currency == 'idr'){
-				usdnominalidrobject.text('--');
-				idrnominalidrobject.text(PD_CC_idrnominal);
-				sayinwordsobject.text(PD_CC_idwords);
-			
-			}else if(regtype=='PO' && paymentvia=='cash' && currency == 'usd'){
-				
-				usdnominalidrobject.text(PO_CASH_usdnominal);
-				idrnominalidrobject.text('--');
-				sayinwordsobject.text(PO_CASH_usdwords);
-
-			}else if(regtype=='PO' && paymentvia=='cc' && currency == 'idr'){
-
-				usdnominalidrobject.text('--');
-				idrnominalidrobject.text(PO_CC_idrnominal);
-				sayinwordsobject.text(PO_CC_idrwords);
-
-			}else if(regtype=='PO' && paymentvia=='cash' && currency == 'idr'){
-
-				usdnominalidrobject.text('--');
-				idrnominalidrobject.text(PO_CASH_idrnominal);
-				sayinwordsobject.text(PO_CASH_idrwords);
-			}
-
-			else if(regtype=='SD' && paymentvia=='cash' && currency == 'idr'){
-
-				usdnominalidrobject.text('--');
-				idrnominalidrobject.text(SD_CASH_idrnominal);
-				sayinwordsobject.text(SD_CASH_idrwords);
-
-			}else if(regtype=='SD' && paymentvia=='cc' && currency == 'idr'){
-				usdnominalidrobject.text('--');
-				idrnominalidrobject.text(SD_CC_idrnominal);
-				sayinwordsobject.text(SD_CC_idwords);
-			
-			}else if(regtype=='SO' && paymentvia=='cash' && currency == 'usd'){
-				
-				usdnominalidrobject.text(SO_CASH_usdnominal);
-				idrnominalidrobject.text('--');
-				sayinwordsobject.text(SO_CASH_usdwords);
-
-			}else if(regtype=='SO' && paymentvia=='cc' && currency == 'idr'){
-
-				usdnominalidrobject.text('--');
-				idrnominalidrobject.text(SO_CC_idrnominal);
-				sayinwordsobject.text(SO_CC_idrwords);
-
-			}else if(regtype=='SO' && paymentvia=='cash' && currency == 'idr'){
-
-				usdnominalidrobject.text('--');
-				idrnominalidrobject.text(SO_CASH_idrnominal);
-				sayinwordsobject.text(SO_CASH_idrwords);
-			}
-
-			var imagecheck = '√';
-
-			if(paymentvia == 'cash'){
-				checkedimagecashobj.prepend(imagecheck);
-			}else if(paymentvia == 'cc'){
-				checkedimageccobj.prepend(imagecheck);
-			}
 
 			$('#convpaymentstat').text(status);
 

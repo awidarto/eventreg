@@ -1057,3 +1057,21 @@ td a.deleteexhibitor i{
 	font-size: 10px;
 	cursor: pointer;
 }
+.resumecashier{
+	margin-top: 40px;
+	border-bottom: 1px solid #c7c7c7;
+	padding-bottom: 40px;
+}
+.sumduit{
+	text-align: center;
+}
+h4.typeregistresume{
+	margin-bottom: 7px;
+	text-align: center;
+}
+.sumduit .typelist{
+	margin-top: 30px;
+}
+.modal-body{
+	background-color: #fff;
+}

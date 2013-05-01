@@ -1356,6 +1356,20 @@ class Attendee_Controller extends Base_Controller {
 		->with('data',$doc);
 	}
 
+
+	public function get_reprintreceipt($id){
+		$id = new MongoId($id);
+
+		$attendee = new Attendee();
+		$towords = new Numberwords();
+
+		$doc = $attendee->get(array('_id'=>$id));
+
+		return View::make('print.reprintattendeereceipt')
+		->with('towords',$towords)
+		->with('data',$doc);
+	}
+
 	public function get_view($id){
 		$id = new MongoId($id);
 
