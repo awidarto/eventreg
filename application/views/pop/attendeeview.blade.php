@@ -277,17 +277,17 @@ setlocale(LC_MONETARY, "en_US");
 					<br/>
 					<p>This user already {{$profile['printbadge']}} print the badge, please input PIN for re-print</p>
 					<input type="password" id="supervisorpin"></input><br/><button class="btn btn-info" value="Submit" id="submitpin">Submit for reprint</button>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="savebadgenotes btn btn-info" id="savebadgenotes"><i class="icon-">&#xe0c3;</i>&nbsp;&nbsp;Save pickup badge notes</button>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="savebadgenotes btn btn-info" id="savebadgenotes"><i class="icon-">&#xe0c3;</i>&nbsp;&nbsp;Save badge pickup notes</button>
 					<iframe src="{{ URL::to('attendee/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 				@elseif($profile['conventionPaymentStatus']=='unpaid')
 					<br/>
 					<p>Unpaid user, please input PIN for print the badge</p>
 					<input type="password" id="supervisorpin"></input><br/><button class="btn btn-info" value="Submit" id="submitpin">Submit for print</button>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="savebadgenotes btn btn-info" id="savebadgenotes"><i class="icon-">&#xe0c3;</i>&nbsp;&nbsp;Save pickup badge notes</button>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="savebadgenotes btn btn-info" id="savebadgenotes"><i class="icon-">&#xe0c3;</i>&nbsp;&nbsp;Save badge pickup notes</button>
 					<iframe src="{{ URL::to('attendee/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 				@else
 					<button class="printonsite btn btn-info" id="printstart"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>
-					<button class="savebadgenotes btn btn-info" id="savebadgenotes" style="margin-top: 40px;"><i class="icon-">&#xe0c3;</i>&nbsp;&nbsp;Save pickup badge notes</button>
+					<button class="savebadgenotes btn btn-info" id="savebadgenotes" style="margin-top: 40px;"><i class="icon-">&#xe0c3;</i>&nbsp;&nbsp;Save badge pickup notes</button>
 					<iframe src="{{ URL::to('attendee/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 				@endif
 
