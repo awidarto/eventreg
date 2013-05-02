@@ -770,6 +770,18 @@ class Official_Controller extends Base_Controller {
 		return View::make('print.officialbadge')->with('profile',$doc);
 	}
 
+	public function get_printbadgeonsite($id){
+		$id = new MongoId($id);
+
+		$attendee = new Official();
+
+		$doc = $attendee->get(array('_id'=>$id));
+
+		return View::make('print.officialbadge')
+		
+		->with('profile',$doc);
+	}
+
 
 	public function get_view($id){
 		$id = new MongoId($id);

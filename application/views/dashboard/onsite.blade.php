@@ -780,6 +780,9 @@
 				}else if($(e.target).is('.visitor')){
 					var _rel = 'onsite/visitor';
 
+				}else if($(e.target).is('.officialview')){
+					var _rel = 'onsite/official';
+
 				}
 
 

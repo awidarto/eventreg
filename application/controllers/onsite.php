@@ -177,6 +177,7 @@ class Onsite_Controller extends Base_Controller {
 		$attendee = new Attendee();
 		$visitor = new Visitor();
 		$exhibitor = new Exhibitor();
+		$official = new Official();
 
 		/* first column is always sequence number, so must be omitted */
 		$fidx = Input::get('iSortCol_0');
@@ -191,27 +192,35 @@ class Onsite_Controller extends Base_Controller {
 		}
 
 		$count_all_attendee = $attendee->count();
-		$count_all_visitor = $attendee->count();
+		$count_all_visitor = $visitor->count();
+		$count_all_exhibitor = $exhibitor->count();
+		$count_all_official = $official->count();
 
-		$count_all = $count_all_attendee + $count_all_visitor;
+		$count_all = $count_all_attendee + $count_all_visitor + $count_all_exhibitor + $count_all_official;
 
 		if(count($q) > 0){
 			$attendees = $attendee->find($q,array(),array($sort_col=>$sort_dir),$limit);
 			$visitors = $visitor->find($q,array(),array($sort_col=>$sort_dir),$limit);
 			$exhibitors = $exhibitor->find($q,array(),array($sort_col=>$sort_dir),$limit);
+			$officials = $official->find($q,array(),array($sort_col=>$sort_dir),$limit);
+
 			$count_display_all_attendee = $attendee->count($q);
 			$count_display_all_visitor = $visitor->count($q);
 			$count_display_all_exhibitor = $exhibitor->count($q);
+			$count_display_all_official = $official->count($q);
 		}else{
 			$attendees = $attendee->find(array(),array(),array($sort_col=>$sort_dir),$limit);
 			$visitors = $visitor->find(array(),array(),array($sort_col=>$sort_dir),$limit);
 			$exhibitors = $exhibitor->find(array(),array(),array($sort_col=>$sort_dir),$limit);
+			$officials = $official->find(array(),array(),array($sort_col=>$sort_dir),$limit);
+
 			$count_display_all_attendee = $attendee->count($q);
 			$count_display_all_visitor = $visitor->count($q);
 			$count_display_all_exhibitor = $exhibitor->count($q);
+			$count_display_all_official = $official->count($q);
 		}
 
-		$count_display_all = $count_display_all_attendee + $count_display_all_visitor+$count_display_all_exhibitor;
+		$count_display_all = $count_display_all_attendee + $count_display_all_visitor+$count_display_all_exhibitor+$count_display_all_official;
 		
 		$aadata = array();
 
@@ -429,10 +438,6 @@ class Onsite_Controller extends Base_Controller {
 
 				$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
 
-				
-
-				
-
 				$aadata[] = array(
 					$counter,
 					//$select,
@@ -449,6 +454,33 @@ class Onsite_Controller extends Base_Controller {
 				);
 				$counter++;
 			}
+
+			$aadata[] = array('','<strong>Officials</strong>','','','','','');
+
+			foreach ($officials as $doc) {
+
+				$extra = $doc;
+
+				$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selector'));
+
+
+				$aadata[] = array(
+					$counter,
+					//$select,
+					date('Y-m-d', $doc['createdDate']->sec),
+					(isset($doc['registrationnumber']))?'<span class="pop officialview fontRed onsitetableclick" id="'.$doc['_id'].'">'.$doc['registrationnumber'].'</span>':'',
+					$doc['email'],
+					'<span class="pop official" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
+					$doc['lastname'],
+					$doc['company'],
+					'',
+					
+
+					'extra'=>$extra
+				);
+				$counter++;
+			}
+
 		}
 
 		$result = array(
@@ -1527,6 +1559,18 @@ class Onsite_Controller extends Base_Controller {
 
 		return View::make('pop.visitorview')
 		->with('ajaxprintbadge',URL::to('onsite/printbadgecountvisitor'))
+		->with('profile',$doc);
+	}
+
+	public function get_official($id){
+		$id = new MongoId($id);
+
+		$document = new Official();
+
+		$doc = $document->get(array('_id'=>$id));
+
+		return View::make('pop.officialview')
+		//->with('ajaxprintbadge',URL::to('onsite/printbadgecountvisitor'))
 		->with('profile',$doc);
 	}
 
