@@ -44,7 +44,7 @@ if($currency == 'idr'){
 	<div style="clear:both;"></div>
 	<hr/>
 	<div style="width:100%;position:relative;display:block;float:left;font-size:10px;">
-		<h2 style="margin:0 auto;padding:5px 0;text-align:center;font-size:18px;">RECEIPT</h2>
+		<h2 style="margin:0 auto;padding:5px 0 2px;text-align:center;font-size:18px;">RECEIPT</h2>
 		<div style="width:100%;position:relative;display:inline-block;float:left;">
 			<table style="font-size:11px;margin-top:6px;">
 			<tr style="vertical-align: top;margin:5px 0;">
@@ -158,7 +158,6 @@ if($currency == 'idr'){
 </div>
 <div style="width:32%;margin-top:-15px;float:right;margin-right:40px;display:block;font-family:Helvetica,Arial,Sans-serif;font-size:10px;">
 	<p>Jakarta, <?php echo date('l jS F Y');?></p>
-	<br/>
 	<br/>
 	<br/>
 	<p style="margin-bottom:0;"><span style="border-bottom:1px solid #000;width:35%;display:block;">KANIA ANISIA</span><span>Finance & Accounting Dept.</span></p>
