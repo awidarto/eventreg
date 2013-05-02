@@ -86,6 +86,12 @@
 			         </div>
 			         <span class="app-label">Register New Attendee</span>
 			      </a>
+			      <a id="boothaddnew" class="tile app bg-color-orange boothadd" href="#">
+			         <div class="image-wrapper">
+			            <span class="icon icon-users"></span>
+			         </div>
+			         <span class="app-label">Register  Exhibitor Pass</span>
+			      </a>
 				<!--
 
 			      <a class="tile app imagetext bg-color-greenDark" href="{{ URL::to('visitor')}}">
@@ -123,12 +129,7 @@
 
 			      
 
-			      <a id="boothaddnew" class="tile app bg-color-orange boothadd" href="#">
-			         <div class="image-wrapper">
-			            <span class="icon icon-users"></span>
-			         </div>
-			         <span class="app-label">Register  Exhibitor Pass</span>
-			      </a>
+			      
 
 			      <a class="tile app bg-color-red" href="{{ URL::to('onsite/report') }}">
 			         <div class="image-wrapper">
