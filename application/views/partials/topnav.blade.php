@@ -19,7 +19,7 @@
         @elseif(Auth::user()->role == 'exhibitionadmin')
 
         @elseif(Auth::user()->role == 'cashier')
-
+            <li>{{ HTML::link('cashier/report','Cashier reports')}}</li>
         @else
             <li class="has-dropdown">{{ HTML::link('attendee','Attendees')}}
                 <ul class="dropdown">
