@@ -190,7 +190,8 @@ class Official_Controller extends Base_Controller {
 					date('Y-m-d H:i:s', $doc['createdDate']->sec),
 					isset($doc['lastUpdate'])?date('Y-m-d H:i:s', $doc['lastUpdate']->sec):'',
 					'<a class="action icon-"  href="'.URL::to('official/edit/'.$doc['_id']).'"><i>&#xe164;</i><span>Update Profile</span>'.
-					'<a class="action icon-"><i>&#xe001;</i><span class="action del" id="'.$doc['_id'].'" >Delete</span>',
+					'<a class="action icon-"  ><i>&#xe14c;</i><span class="action pbadge" id="'.$doc['_id'].'" >Print Badge</span>',
+					
 					'extra'=>$extra
 				);
 			}
