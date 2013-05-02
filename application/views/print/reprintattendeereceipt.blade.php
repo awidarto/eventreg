@@ -129,9 +129,11 @@ if($currency == 'idr'){
 				<td>:</td>
 				<td>
 					@if($data['payonsite_paymentvia']=='cash')
-						<span class="imagecheckcash">√</span>&nbsp;&nbsp;Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="imagecheckcc"></span>&nbsp;&nbsp;Credit Card</td>
+						<span class="imagecheckcash">√</span>&nbsp;&nbsp;Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="imagecheckcc"></span>&nbsp;&nbsp;Credit Card&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="imagecheckdebit"></span>&nbsp;&nbsp;Debit BCA </td>
 					@elseif($data['payonsite_paymentvia']=='cc')
-						<span class="imagecheckcash"></span>&nbsp;&nbsp;Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="imagecheckcc">√</span>&nbsp;&nbsp;Credit Card</td>
+						<span class="imagecheckcash"></span>&nbsp;&nbsp;Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="imagecheckcc">√</span>&nbsp;&nbsp;Credit Card&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="imagecheckdebit"></span>&nbsp;&nbsp;Debit BCA </td>
+					@elseif($data['payonsite_paymentvia']=='debit bca')
+						<span class="imagecheckcash"></span>&nbsp;&nbsp;Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="imagecheckcc"></span>&nbsp;&nbsp;Credit Card&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="imagecheckdebit">√</span>&nbsp;&nbsp;Debit BCA </td>
 					@endif
 			</tr>
 

@@ -171,6 +171,7 @@ Route::get('payment/(:any)',array('uses'=>'register@payment'));
 Route::post('payment/(:any)',array('uses'=>'register@payment'));
 
 Route::get('export/report/(:any)',array('uses'=>'export@report'));
+Route::get('export/cashier/(:any)',array('uses'=>'export@cashier'));
 Route::get('exhibitor/printbadgeonsite/(:all)/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite'));
 Route::get('exhibitor/newprintbadgeonsite/(:all)/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@newprintbadgeonsite'));
 Route::get('exhibitor/printbadgeonsite2/(:all)/(:all)/(:all)',array('uses'=>'exhibitor@printbadgeonsite2'));

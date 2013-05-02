@@ -136,6 +136,7 @@ return array(
 
 		'pinsupervisorconvention'=>'12345',
 		'pinsupervisorexhibitor'=>'123456',
+		'pinsupervisorcashier'=>'cashieradmin',
 
 		'exhibitorassistanttype'=>array(
 			'freepassname'=>'m',
@@ -376,6 +377,20 @@ return array(
 			'PIC country'=> '',
 			'groupname'=> '',
 			'address'=>''
+		),
+
+
+		'cashier_csv_template'=>array(
+			//new template
+			'regnumber'=> '',
+			'participantname'=> '',
+			'regtype'=> '',
+			'paymentvia'=> '',
+			'currency'=> '',
+			'totalidr'=> '',
+			'totalusd'=> '',
+			'payment date'=> '',
+			'cashiername'=> ''
 		),
 
 		'electriclist' =>array(

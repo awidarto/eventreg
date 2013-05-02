@@ -325,6 +325,7 @@ setlocale(LC_MONETARY, "en_US");
 				    <select class="paymentvia">
 				    	<option value="null">Select payment via</option>
 					  	<option value="cash">Cash</option>
+					  	<option value="debit bca">Debit BCA</option>
 					  	<option value="cc">Credit Card</option>
 					</select>
 				    <br/>
@@ -489,7 +490,7 @@ $(document).ready(function() {
 
 	$('.paymentvia').change(function() {
 		var selected = $(this).val();
-		if(selected == 'cc'){
+		if(selected == 'cc' || selected == 'debit bca'){
 			
 			$('.currencyselect').hide();
 			$('.currency').val('idr');
@@ -505,7 +506,7 @@ $(document).ready(function() {
 	$('.currency').change(function() {
 		var selected = $(this).val();
 		
-		if(selected == 'cc'){
+		if(selected == 'cc' || selected == 'debit bca'){
 			$('#currencypreview').text('USD');
 		}
 
@@ -529,25 +530,25 @@ $(document).ready(function() {
 		
 
 		if(regtype=='PD' && paymentvia=='cash' && currency == 'idr'){
-
 			
 			totalpreview.text(PD_CASH_idrnominal);
 
 		}else if(regtype=='PD' && paymentvia=='cash' && currency == 'usd'){
 
-			
 			totalpreview.text(PD_CASH_usdnominal);
 			
-
 		}else if(regtype=='PD' && paymentvia=='cc' && currency == 'idr'){
 			
 			totalpreview.text(PD_CC_idrnominal);
+
+		}else if(regtype=='PD' && paymentvia=='debit bca' && currency == 'idr'){
 			
+			totalpreview.text(PD_CASH_idrnominal);
 		
 		}else if(regtype=='PO' && paymentvia=='cash' && currency == 'usd'){
 			
 			totalpreview.text(PO_CASH_usdnominal);
-			
+
 
 		}else if(regtype=='PO' && paymentvia=='cc' && currency == 'idr'){
 
@@ -556,6 +557,13 @@ $(document).ready(function() {
 			
 
 		}else if(regtype=='PO' && paymentvia=='cash' && currency == 'idr'){
+
+			
+			totalpreview.text(PO_CASH_idrnominal);
+			
+		}
+
+		else if(regtype=='PO' && paymentvia=='debit bca' && currency == 'idr'){
 
 			
 			totalpreview.text(PO_CASH_idrnominal);
@@ -575,6 +583,10 @@ $(document).ready(function() {
 		}else if(regtype=='SD' && paymentvia=='cash' && currency == 'usd'){
 			
 			totalpreview.text(SD_CASH_usdnominal);
+
+		}else if(regtype=='SD' && paymentvia=='debit bca' && currency == 'idr'){
+			
+			totalpreview.text(SD_CASH_idrnominal);
 		
 		
 		}else if(regtype=='SO' && paymentvia=='cash' && currency == 'usd'){
@@ -591,6 +603,10 @@ $(document).ready(function() {
 		}else if(regtype=='SO' && paymentvia=='cash' && currency == 'idr'){
 
 			
+			totalpreview.text(SO_CASH_idrnominal);
+
+		}else if(regtype=='SO' && paymentvia=='debit bca' && currency == 'idr'){
+
 			totalpreview.text(SO_CASH_idrnominal);
 			
 		}else{
@@ -621,6 +637,7 @@ $('#submitaddassist').click(function(){
 	var sayinwordsobject = $('.sayinwords', iframe.contents());
 	var checkedimagecashobj = $('.imagecheckcash', iframe.contents());
 	var checkedimageccobj = $('.imagecheckcc', iframe.contents());
+	var checkedimagedebitobj = $('.imagecheckdebit', iframe.contents());
 
 	var idr_todb ='';
 	var usd_todb ='';
@@ -655,6 +672,14 @@ $('#submitaddassist').click(function(){
 		}else if(regtype=='PD' && paymentvia=='cc' && currency == 'idr'){
 			usdnominalidrobject.text('--');
 			idrnominalidrobject.text(PD_CC_idrnominal);
+			sayinwordsobject.text(PD_CASH_idrwords);
+
+			idr_todb = PD_CASH_idrnominal_todb;
+			usd_todb = '';
+
+		}else if(regtype=='PD' && paymentvia=='debit bca' && currency == 'idr'){
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(PD_CASH_idrnominal);
 			sayinwordsobject.text(PD_CC_idwords);
 
 			idr_todb = PD_CC_idrnominal_todb;
@@ -686,6 +711,16 @@ $('#submitaddassist').click(function(){
 
 			idr_todb = PO_CASH_idrnominal_todb;
 			usd_todb = '';
+
+		}else if(regtype=='PO' && paymentvia=='debit bca' && currency == 'idr'){
+
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(PO_CASH_idrnominal);
+			sayinwordsobject.text(PO_CASH_idrwords);
+
+			idr_todb = PO_CASH_idrnominal_todb;
+			usd_todb = '';
+
 		}else if(regtype=='SD' && paymentvia=='cash' && currency == 'idr'){
 
 			usdnominalidrobject.text('--');
@@ -710,6 +745,14 @@ $('#submitaddassist').click(function(){
 			sayinwordsobject.text(SD_CC_idwords);
 
 			idr_todb = SD_CC_idrnominal_todb;
+			usd_todb = '';
+
+		}else if(regtype=='SD' && paymentvia=='debit bca' && currency == 'idr'){
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(SD_CASH_idrnominal);
+			sayinwordsobject.text(SD_CASH_idrwords);
+
+			idr_todb = SD_CASH_idrnominal_todb;
 			usd_todb = '';
 		
 		}else if(regtype=='SO' && paymentvia=='cash' && currency == 'usd'){
@@ -738,6 +781,15 @@ $('#submitaddassist').click(function(){
 
 			idr_todb = SO_CASH_idrnominal_todb;
 			usd_todb = '';
+
+		}else if(regtype=='SO' && paymentvia=='debit bca' && currency == 'idr'){
+
+			usdnominalidrobject.text('--');
+			idrnominalidrobject.text(SO_CASH_idrnominal);
+			sayinwordsobject.text(SO_CASH_idrwords);
+
+			idr_todb = SO_CASH_idrnominal_todb;
+			usd_todb = '';
 		}
 
 		var imagecheck = '√';
@@ -746,6 +798,8 @@ $('#submitaddassist').click(function(){
 			checkedimagecashobj.prepend(imagecheck);
 		}else if(paymentvia == 'cc'){
 			checkedimageccobj.prepend(imagecheck);
+		}else if(paymentvia == 'debit bca'){
+			checkedimagedebitobj.prepend(imagecheck);
 		}
 
 		$.post('{{ URL::to($ajaxpaymentupdateonsite) }}',{'id':userid,'status':status,'paymentvia':paymentvia,'currency':currency,'totalidr':idr_todb,'totalusd':usd_todb}, function(data) {

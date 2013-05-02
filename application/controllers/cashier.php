@@ -49,48 +49,62 @@ class Cashier_Controller extends Base_Controller {
 	public function get_report()
 	{
 		$today = date('Y-m-d');
-		$getCountAll = $this->getCountAttendee('2013-05-02', $today);
+		$getCountAll = $this->getCountAttendee('2013-05-03', $today);
 
-		$getCount['total_cash_idr'] = $this->getCountAttendee('2013-05-02', $today,'idr',null,'cash');
-		$getCount['total_cash_usd'] = $this->getCountAttendee('2013-05-02', $today,'usd',null,'cash');
-		$getCount['total_cc_idr'] = $this->getCountAttendee('2013-05-02', $today,'idr',null,'cc');
+		$getCount['total_cash_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr',null,'cash');
+		$getCount['total_cash_usd'] = $this->getCountAttendee('2013-05-03', $today,'usd',null,'cash');
+		$getCount['total_cc_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr',null,'cc');
+		$getCount['total_debit_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr',null,'debit bca');
 		
 		//money
-		$getMoney['total_cash_idr'] = $this->getCountMoney('2013-05-02', $today,'idr',null,'cash');
-		$getMoney['total_cash_usd'] = $this->getCountMoney('2013-05-02', $today,'usd',null,'cash');
-		$getMoney['total_cc_idr'] = $this->getCountMoney('2013-05-02', $today,'idr',null,'cc');
+		$getMoney['total_cash_idr'] = $this->getCountMoney('2013-05-03', $today,'idr',null,'cash');
+		$getMoney['total_cash_usd'] = $this->getCountMoney('2013-05-03', $today,'usd',null,'cash');
+		$getMoney['total_cc_idr'] = $this->getCountMoney('2013-05-03', $today,'idr',null,'cc');
+		$getMoney['total_debit_idr'] = $this->getCountMoney('2013-05-03', $today,'idr',null,'debit bca');
 
-		$getCount['pd_cash_idr'] = $this->getCountAttendee('2013-05-02', $today,'idr','PD','cash');
-		$getCount['pd_cash_usd'] = $this->getCountAttendee('2013-05-02', $today,'usd','PD','cash');
-		$getCount['pd_cc_idr'] = $this->getCountAttendee('2013-05-02', $today,'idr','PD','cc');
-		//money
-		$getMoney['pd_cash_idr'] = $this->getCountMoney('2013-05-02', $today,'idr','PD','cash');
-		$getMoney['pd_cash_usd'] = $this->getCountMoney('2013-05-02', $today,'usd','PD','cash');
-		$getMoney['pd_cc_idr'] = $this->getCountMoney('2013-05-02', $today,'idr','PD','cc');
 
-		$getCount['po_cash_idr'] = $this->getCountAttendee('2013-05-02', $today,'idr','PO','cash');
-		$getCount['po_cash_usd'] = $this->getCountAttendee('2013-05-02', $today,'usd','PO','cash');
-		$getCount['po_cc_idr'] = $this->getCountAttendee('2013-05-02', $today,'idr','PO','cc');
-		//money
-		$getMoney['po_cash_idr'] = $this->getCountMoney('2013-05-02', $today,'idr','PO','cash');
-		$getMoney['po_cash_usd'] = $this->getCountMoney('2013-05-02', $today,'usd','PO','cash');
-		$getMoney['po_cc_idr'] = $this->getCountMoney('2013-05-02', $today,'idr','PO','cc');
+		$getCount['pd_cash_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','PD','cash');
+		$getCount['pd_cash_usd'] = $this->getCountAttendee('2013-05-03', $today,'usd','PD','cash');
+		$getCount['pd_cc_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','PD','cc');
+		$getCount['pd_debit_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','PD','debit bca');
 
-		$getCount['sd_cash_idr'] = $this->getCountAttendee('2013-05-02', $today,'idr','SD','cash');
-		$getCount['sd_cash_usd'] = $this->getCountAttendee('2013-05-02', $today,'usd','SD','cash');
-		$getCount['sd_cc_idr'] = $this->getCountAttendee('2013-05-02', $today,'idr','SD','cc');
 		//money
-		$getMoney['sd_cash_idr'] = $this->getCountMoney('2013-05-02', $today,'idr','SD','cash');
-		$getMoney['sd_cash_usd'] = $this->getCountMoney('2013-05-02', $today,'usd','SD','cash');
-		$getMoney['sd_cc_idr'] = $this->getCountMoney('2013-05-02', $today,'idr','SD','cc');
+		$getMoney['pd_cash_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','PD','cash');
+		$getMoney['pd_cash_usd'] = $this->getCountMoney('2013-05-03', $today,'usd','PD','cash');
+		$getMoney['pd_cc_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','PD','cc');
+		$getMoney['pd_debit_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','PD','debit bca');
 
-		$getCount['so_cash_idr'] = $this->getCountAttendee('2013-05-02', $today,'idr','SO','cash');
-		$getCount['so_cash_usd'] = $this->getCountAttendee('2013-05-02', $today,'usd','SO','cash');
-		$getCount['so_cc_idr'] = $this->getCountAttendee('2013-05-02', $today,'idr','SO','cc');
+
+		$getCount['po_cash_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','PO','cash');
+		$getCount['po_cash_usd'] = $this->getCountAttendee('2013-05-03', $today,'usd','PO','cash');
+		$getCount['po_cc_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','PO','cc');
+		$getCount['po_debit_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','PO','debit bca');
 		//money
-		$getMoney['so_cash_idr'] = $this->getCountMoney('2013-05-02', $today,'idr','SO','cash');
-		$getMoney['so_cash_usd'] = $this->getCountMoney('2013-05-02', $today,'usd','SO','cash');
-		$getMoney['so_cc_idr'] = $this->getCountMoney('2013-05-02', $today,'idr','SO','cc');
+		$getMoney['po_cash_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','PO','cash');
+		$getMoney['po_cash_usd'] = $this->getCountMoney('2013-05-03', $today,'usd','PO','cash');
+		$getMoney['po_cc_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','PO','cc');
+		$getMoney['po_debit_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','PO','debit bca');
+
+		$getCount['sd_cash_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','SD','cash');
+		$getCount['sd_cash_usd'] = $this->getCountAttendee('2013-05-03', $today,'usd','SD','cash');
+		$getCount['sd_cc_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','SD','cc');
+		$getCount['sd_debit_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','SD','debit bca');
+		//money
+		$getMoney['sd_cash_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','SD','cash');
+		$getMoney['sd_cash_usd'] = $this->getCountMoney('2013-05-03', $today,'usd','SD','cash');
+		$getMoney['sd_cc_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','SD','cc');
+		$getMoney['sd_debit_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','SD','debit bca');
+
+		$getCount['so_cash_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','SO','cash');
+		$getCount['so_cash_usd'] = $this->getCountAttendee('2013-05-03', $today,'usd','SO','cash');
+		$getCount['so_cc_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','SO','cc');
+		$getCount['so_debit_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr','SO','debit bca');
+
+		//money
+		$getMoney['so_cash_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','SO','cash');
+		$getMoney['so_cash_usd'] = $this->getCountMoney('2013-05-03', $today,'usd','SO','cash');
+		$getMoney['so_cc_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','SO','cc');
+		$getMoney['so_debit_idr'] = $this->getCountMoney('2013-05-03', $today,'idr','SO','debit bca');
 
 		return View::make('cashier.report')
 			->with('getCount',$getCount)
