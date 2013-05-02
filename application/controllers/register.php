@@ -44,6 +44,13 @@ class Register_Controller extends Base_Controller {
 
 		$this->crumb->add('register','Visitor Registration');
 
+		$sytemstat = Config::get('eventreg.systemstatus');
+		$operationalformsystemstat = $sytemstat['conventionregistration'];
+
+		if($operationalformsystemstat == 'closed'){
+			return View::make('register.registrationclosed');
+		}
+
 		$form = new Formly();
 		$form->framework = 'zurb';
 

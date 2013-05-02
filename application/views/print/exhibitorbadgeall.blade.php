@@ -32,7 +32,7 @@ body{
 }
 .barcodearea{
 	position: absolute;
-	top: 23px;
+	top: 17px;
 	right: 5px;
 	
 	text-align: center;
@@ -111,23 +111,42 @@ if(isset($exhibitor['overridefreepassname'])){
 }
 
 for($i=1;$i<$pass+1;$i++){
-	if(isset($profile['freepassname'.$i.''])){
+	if(isset($profile['freepassname'.$i.'']) && $profile['freepassname'.$i.'']!='' ){
   		$freepasscount++;
 	}
 }
 
-for($i=1;$i<11;$i++){
-    if(isset($profile['boothassistant'.$i.''])){
+if(isset($profile['exhibitorid']) && $profile['exhibitorid']== "514c629e8dfa19db46000000"){
+	$boothassistantcounter = 20;
+}elseif(isset($profile['exhibitorid']) && $profile['exhibitorid']== "516267808dfa19911e000000"){
+	$boothassistantcounter = 32;
+}else{
+	$boothassistantcounter = 11;
+}
+
+for($i=1;$i<$boothassistantcounter;$i++){
+    if(isset($profile['boothassistant'.$i.''])&& $profile['boothassistant'.$i.'']!=''){
       $boothassistantcount++;
     }
 }
 
-for($i=1;$i<=$user_form['totaladdbooth'];$i++){
-  	if(isset($profile['addboothname'.$i.''])){
-      $addboothassistantcount++;
-    }
+$totalbayar = 0;
+$totalbayarcount = 0;
+  
+
+if(isset($profile['totaladdbooth'])){
+	$totalbayar =  $profile['totaladdbooth'];
+}else{
+	$totalbayar =  $user_form['totaladdbooth'];
 }
 
+for($i=1;$i<=$totalbayar;$i++){
+
+  	if(isset($profile['addboothname'.$i.''])&& $profile['addboothname'.$i.'']!=''){
+      $totalbayarcount++;
+    }
+
+}
 
 
 
@@ -178,7 +197,7 @@ for($i=1;$i<=$user_form['totaladdbooth'];$i++){
 
 
 <div class="addboothpaylist">
-@for($i=1;$i<=$addboothassistantcount;$i++)
+@for($i=1;$i<=$totalbayarcount;$i++)
 	<div id="preview-card">
 		<div class="card-template-area">
 			{{ HTML::image('images/idcard-template-exhibitor2.jpg','badge_bg',array('class'=>'cardtemplate')) }}

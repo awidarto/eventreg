@@ -43,16 +43,12 @@
 				</tr>
 
 				<tr>
-					<td class="detail-title">Visitor Type</td>
+					<td class="detail-title">Official Type</td>
 					<td>:&nbsp;</td>
 					<td class="detail-info">{{ $profile['role'] }}</td>
 				</tr>
 
-				<tr>
-					<td class="detail-title">Country</td>
-					<td>:&nbsp;</td>
-					<td class="detail-info">{{ $profile['country'] }}</td>
-				</tr>
+				
 
 				
 				
@@ -62,17 +58,9 @@
 			<div class="clear"></div>
 			
 			@if(Auth::user()->role == 'onsite')
-				@if(isset($profile['printbadge']) && ($profile['printbadge']!=''))
-					<br/>
-					<p>This user already {{$profile['printbadge']}} printed the badge, please input PIN for re-print</p>
-					<input type="password" id="supervisorpin"></input><br/><button class="btn btn-info" value="Submit" id="submitpin">Submit for reprint</button>
-					<!--<button class="printonsite btn btn-info" id="printstart" disabled="disabled"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>-->
-					<iframe src="{{ URL::to('visitor/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
-				@else
-					<button class="printonsite btn btn-info" id="printstart"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>
-					<iframe src="{{ URL::to('visitor/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
-				@endif
 
+				<button class="printonsite btn btn-info" id="printstart"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;PRINT BADGE</button>
+				<iframe src="{{ URL::to('official/printbadgeonsite/') }}{{ $profile['_id']}}" id="print_frame" style="display:none;" class="span12"></iframe>
 			@elseif(Auth::user()->role == 'cashier')
 				
 			@endif
@@ -91,7 +79,7 @@
 
 
 
-$('#printstart').click(function(){
+/*$('#printstart').click(function(){
 	$.post('{{ URL::to($ajaxprintbadge) }}',{'id':'{{$userid}}'}, function(data) {
 		if(data.status == 'OK'){
 			var pframe = document.getElementById('print_frame');
@@ -99,6 +87,15 @@ $('#printstart').click(function(){
 			pframeWindow.print();
 		}
 	},'json');
+
+});*/
+
+$('#printstart').click(function(){
+	
+	var pframe = document.getElementById('print_frame');
+	var pframeWindow = pframe.contentWindow;
+	pframeWindow.print();
+	
 
 });
 

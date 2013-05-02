@@ -17,11 +17,18 @@ span.currency{
 <?php
 
 setlocale(LC_MONETARY, "en_US");
-$totalIDRtax = 0.10*$data['totalIDR'];
-$totalIDR = $data['totalIDR']+$totalIDRtax;
+$currency = $data['payonsite_currency'];
 
-$totalUSDtax = 0.10*$data['totalUSD'];
-$totalUSD = $data['totalUSD']+$totalUSDtax;
+if($currency == 'idr'){
+	$totalIDR = $data['payonsite_totalidr'];
+	$totalUSD = '';
+	$sayinwords = $towords->to_words($totalIDR,"en").' Rupiahs';
+}else if($currency == 'usd'){
+	$totalIDR = '';
+	$totalUSD = $data['payonsite_totalusd'];
+	$sayinwords = $towords->to_words($totalUSD,"en").' US Dollars';
+}
+
 ?>
 
 <div style="width:100%;position:relative;display:block;font-family:Helvetica,Arial,Sans-serif;font-size:10px;margin:0;">
@@ -100,22 +107,32 @@ $totalUSD = $data['totalUSD']+$totalUSDtax;
 			<tr style="vertical-align: top;margin:5px 0;">
 				<td>Amount:</td>
 				<td>:</td>
-				<td><p><span class="currency">(IDR)</span> <strong class="idrnominal"></strong></p>
-					
-					<p><span class="currency">(USD)</span><strong class="usdnominal"></strong></p>
+				<td>
+					@if($currency == 'idr')
+						<p><span class="currency">(IDR)</span> <strong class="idrnominal">{{ formatrp ($totalIDR) }}</strong></p>
+						<p><span class="currency">(USD)</span><strong class="usdnominal"></strong></p>
+					@elseif($currency == 'usd')
+						<p><span class="currency">(IDR)</span> <strong class="idrnominal"></strong></p>
+						<p><span class="currency">(USD)</span><strong class="usdnominal">{{money_format(" %!n ", $totalUSD) }}</strong></p>
+					@endif
 				</td>
 			</tr>
 
 			<tr style="vertical-align: top;margin:5px 0;">
 				<td>Say in Word:</td>
 				<td>:</td>
-				<td><i class="sayinwords"></i></td>
+				<td><i class="sayinwords">{{$sayinwords}}</i></td>
 			</tr>
 
 			<tr style="vertical-align: top;margin:5px 0;">
 				<td>Payment Method:</td>
 				<td>:</td>
-				<td><span class="imagecheckcash"></span>&nbsp;&nbsp;Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="imagecheckcc"></span>&nbsp;&nbsp;Credit Card</td>
+				<td>
+					@if($data['payonsite_paymentvia']=='cash')
+						<span class="imagecheckcash">√</span>&nbsp;&nbsp;Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="imagecheckcc"></span>&nbsp;&nbsp;Credit Card</td>
+					@elseif($data['payonsite_paymentvia']=='cc')
+						<span class="imagecheckcash"></span>&nbsp;&nbsp;Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="imagecheckcc">√</span>&nbsp;&nbsp;Credit Card</td>
+					@endif
 			</tr>
 
 			<tr style="vertical-align: top;margin:5px 0;">
@@ -143,7 +160,6 @@ $totalUSD = $data['totalUSD']+$totalUSDtax;
 	<p>Jakarta, <?php echo date('l jS F Y');?></p>
 	<br/>
 	<br/>
-	
 	<p style="margin-bottom:0;"><span style="border-bottom:1px solid #000;width:35%;display:block;">KANIA ANISIA</span><span>Finance & Accounting Dept.</span></p>
 	
 	

@@ -1356,6 +1356,20 @@ class Attendee_Controller extends Base_Controller {
 		->with('data',$doc);
 	}
 
+
+	public function get_reprintreceipt($id){
+		$id = new MongoId($id);
+
+		$attendee = new Attendee();
+		$towords = new Numberwords();
+
+		$doc = $attendee->get(array('_id'=>$id));
+
+		return View::make('print.reprintattendeereceipt')
+		->with('towords',$towords)
+		->with('data',$doc);
+	}
+
 	public function get_view($id){
 		$id = new MongoId($id);
 
@@ -1858,6 +1872,31 @@ class Attendee_Controller extends Base_Controller {
 
 	public function get_action_sample(){
 		\Laravel\CLI\Command::run(array('notify'));
+	}
+
+
+	public function get_deleteunpaid(){
+		
+		$attendee = new Attendee();
+		$condition  = array('conventionPaymentStatus'=>'unpaid');
+		$attendees = $attendee->find($condition, array(), array(),array());
+
+		
+		$deletedcount = 0;
+
+		foreach($attendees as $att){
+			$_id = $att['_id'];
+
+			if($attendee->delete(array('_id'=>$_id))){
+				$deletedcount++;
+			}
+			
+
+		}
+
+		return View::make('attendee.normalizeearly')
+				->with('changecount',$deletedcount)
+				->with('title','Normalize Early');		
 	}
 
 }

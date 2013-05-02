@@ -117,20 +117,7 @@ padding:0 5px;
 	</div>
 </div>
 
-<?php
-$urlonsite = URL::to('onsite');
-?>
-<script type="text/javascript">
 
-
-window.print();	
-setTimeout("location.href = '<?php echo $urlonsite;?>';",1500);
-
-	
-
-
-
-</script>
 
 
 

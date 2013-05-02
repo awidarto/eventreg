@@ -40,7 +40,7 @@ return array(
 		'smtp' => array(
 			'host'       =>	'mail.dyandra.com', 
 			'username'   =>	'conventionipa2013@dyandra.com',
-			'password'   =>	'conventionipa2013',
+			'password'   =>	'dyandraconvex1',
 			'port'       =>	465,
 			'encryption' =>	'ssl',
 		),

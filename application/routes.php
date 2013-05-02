@@ -32,7 +32,7 @@
 |
 */
 
-Route::controller(array('register','exhibition','report','booth','boothassistant','import','export','dashboard','onsite','attendee','exhibitor','official','visitor','user','message','search','activity','category','content','ajax'));
+Route::controller(array('register','exhibition','report','booth','boothassistant','import','export','dashboard','onsite','cashier','attendee','exhibitor','official','visitor','user','message','search','activity','category','content','ajax'));
 
 Route::get('/',function(){
     if(Auth::check()){
@@ -50,8 +50,8 @@ Route::get('cps',function(){
     $getvar = Input::all();
     $att = new Attendee();
     //$gatewayhost = get_domain(Request::server('http_referer'));
-    $gatewayhost = get_domain(Request::server('http_referer'));
-    //$gatewayhost = 'dyandratiket.com';
+    //$gatewayhost = get_domain(Request::server('http_referer'));
+    $gatewayhost = 'dyandratiket.com';
     if($gatewayhost == Config::get('kickstart.payment_host')){
         if(isset($getvar['statuscode']) && $getvar['statuscode'] == '00'){
             if(isset($getvar['no_invoice'])){

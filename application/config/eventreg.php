@@ -10,13 +10,15 @@ return array(
 		'officials' => array(
 			'COM'=>'Committee',
 			'BOD'=>'Board of Director IPA',
-			'MDA'=>'Media',
+			'SD'=>'Student',
+			
 			'ORG'=>'Organizer',
 			//'CTR'=>'Contractor',
 			//'WRK'=>'Worker',
 			//'BA30'=>'Booth Assistant 30',
 			//'BA150'=>'Booth Assistant 150',
 			'SVO'=>'Student Volunteer',
+
 			'SCR'=>'Security',
 			//'OTS'=>'On-Site Technical Support',
 			//'ECP'=>'EC Participant',
@@ -26,6 +28,7 @@ return array(
 			'VS'=>'Walk In Visitor',
 			'VIP'=>'VIP',
 			'VVIP'=>'VVIP',
+			'MDA'=>'Media',
 			'OC'=>'Other Complimentary'
 		),
 		'galadinner'=>1,
@@ -66,6 +69,7 @@ return array(
 
 		'systemstatus'=>array(
 			'operationalform'=>'closed',
+			'conventionregistration'=>'closed',
 			
 		),
 

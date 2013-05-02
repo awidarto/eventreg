@@ -33,7 +33,6 @@ body{
 	position: absolute;
 	top: 17px;
 	right: 5px;
-	
 	text-align: center;
 }
 .card-template-area .fullname{
@@ -64,12 +63,12 @@ margin: 0 auto;
 text-align: center;
 margin-top: 5px;
 font-size: 7px;
+padding:0 5px;
 font-family: Helvetica,Arial,Serif;
 position: absolute;
 bottom: -1px;
 left: 46px;
 background: #fff;
-padding:0 5px;
 
 }
 #preview-card{
@@ -84,24 +83,10 @@ padding:0 5px;
 	text-transform:uppercase; 
 }
 </style>
+
 <div id="preview-card">
 	<div class="card-template-area">
-		@if($profile['role']=='COM')
-			{{ HTML::image('images/idcard-template-comitee.jpg','badge_bg',array('class'=>'cardtemplate')) }}
-		@elseif($profile['role']=='BOD')
-			{{ HTML::image('images/idcard-template-bod.jpg','badge_bg',array('class'=>'cardtemplate')) }}
-		@elseif($profile['role']=='MDA')
-			{{ HTML::image('images/idcard-template-media.jpg','badge_bg',array('class'=>'cardtemplate')) }}
-		@elseif($profile['role']=='ORG')
-			{{ HTML::image('images/idcard-template-organizer.jpg','badge_bg',array('class'=>'cardtemplate')) }}
-		@elseif($profile['role']=='SCR')
-			{{ HTML::image('images/idcard-template-security.jpg','badge_bg',array('class'=>'cardtemplate')) }}
-		@elseif($profile['role']=='SVO')
-			{{ HTML::image('images/idcard-template-studentvol.jpg','badge_bg',array('class'=>'cardtemplate')) }}
-		@elseif($profile['role']=='SD')
-			{{ HTML::image('images/idcard-template-student.jpg','badge_bg',array('class'=>'cardtemplate')) }}
-		@endif
-
+		{{ HTML::image('images/idcard-template-attendee4.jpg','badge_bg',array('class'=>'cardtemplate')) }}
 		<div class="headarea">
 			<p class="fullname"><?php echo $profile['firstname'].' '.$profile['lastname'];?>
 			<small class="companyname"><?php echo $profile['company'];?></p>
@@ -116,22 +101,5 @@ padding:0 5px;
 		</div>
 	</div>
 </div>
-
-<?php
-$urlonsite = URL::to('onsite');
-?>
-<script type="text/javascript">
-
-
-window.print();	
-setTimeout("location.href = '<?php echo $urlonsite;?>';",1500);
-
-	
-
-
-
-</script>
-
-
 
 @endsection

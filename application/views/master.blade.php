@@ -54,6 +54,8 @@
     {{ HTML::script('js/jquery-1.8.3.min.js') }}
     {{ HTML::script('js/jquery-ui-1.9.2.custom.min.js') }}
     {{ HTML::script('js/jquery.jeditable.mini.js') }}
+    {{ HTML::script('js/jquery.autotab-1.1b.js') }}
+    
 
     {{ HTML::script('js/select2.min.js') }}   
 </head>
