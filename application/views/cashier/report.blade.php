@@ -14,7 +14,8 @@ setlocale(LC_MONETARY, "en_US");
 			</div> 
 			  
 	      <div class="clear"></div>
-	      <button class="right btn needsupervisor" id="downloadall" ><i class="icon-">&#xe111;</i>&nbsp;&nbsp;download all data</button>
+	      <button class="right btn needsupervisor donotprint" id="downloadall" ><i class="icon-">&#xe111;</i>&nbsp;&nbsp;download all data</button>
+	      <button class="right btn donotprint" id="print" style="margin-right:5px;"><i class="icon-">&#xe14c;</i>&nbsp;&nbsp;print</button>
 
 	      <div class="blockseparate marginbottom">
 		    <h4><?php echo date('jS F Y');?></h4>
@@ -184,6 +185,10 @@ $downloadalldata = URL::to('export/cashier/?type=all');
 ?>
 $('.needsupervisor').click(function(e){
 	$('#stack4').modal('show');
+});
+
+$('#print').click(function(e){
+	window.print();
 });
 
 $('#submitpinadd').click(function(e){

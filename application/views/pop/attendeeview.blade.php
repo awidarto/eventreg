@@ -1,3 +1,4 @@
+
 @layout('blank')
 
 @section('content')
@@ -431,18 +432,18 @@ var PD_CASH_idrnominal = '5.500.000,00';
 var PD_CASH_idrwords = '{{ $towords->to_words(5500000,"en")}} Rupiahs';
 var PD_CASH_idrnominal_todb = '5500000';
 
-var PD_CASH_usdnominal = '561.00';
-var PD_CASH_usdwords = '{{ $towords->to_words(561,"en")}} US Dollars';
-var PD_CASH_usdnominal_todb = '561';
+var PD_CASH_usdnominal = '550.00';
+var PD_CASH_usdwords = '{{ $towords->to_words(550,"en")}} US Dollars';
+var PD_CASH_usdnominal_todb = '550';
 
 
 var PO_CASH_usdnominal = '550.00';
 var PO_CASH_usdwords = '{{ $towords->to_words(550,"en") }} US Dollars';
 var PO_CASH_usdnominal_todb = '550';
 
-var PO_CASH_idrnominal = '5.390.000,00';
-var PO_CASH_idrwords = '{{ $towords->to_words(5390000,"en") }} Rupiahs';
-var PO_CASH_idrnominal_todb = '5390000';
+var PO_CASH_idrnominal = '5.500.000,00';
+var PO_CASH_idrwords = '{{ $towords->to_words(5500000,"en") }} Rupiahs';
+var PO_CASH_idrnominal_todb = '5500000';
 
 
 var PD_CC_idrnominal = '5.665.000,00';
@@ -450,9 +451,9 @@ var PD_CC_idwords = '{{ $towords->to_words(5665000,"en") }} Rupiahs';
 var PD_CC_idrnominal_todb = '5665000';
 
 
-var PO_CC_idrnominal = '5.551.700,00';
-var PO_CC_idrwords = '{{ $towords->to_words(5551700,"en") }} Rupiahs';
-var PO_CC_idrnominal_todb = '5551700';
+var PO_CC_idrnominal = '5.665.000,00';
+var PO_CC_idrwords = '{{ $towords->to_words(5665000,"en") }} Rupiahs';
+var PO_CC_idrnominal_todb = '5665000';
 
 
 
@@ -462,9 +463,9 @@ var SD_CASH_idrnominal = '440.000,00';
 var SD_CASH_idrwords = '{{ $towords->to_words(440000,"en") }} Rupiahs';
 var SD_CASH_idrnominal_todb = '440000';
 
-var SD_CASH_usdnominal = '45';
-var SD_CASH_usdwords = '{{ $towords->to_words(45,"en") }} US Dollars';
-var SD_CASH_usdnominal_todb = '45';
+var SD_CASH_usdnominal = '44.00';
+var SD_CASH_usdwords = '{{ $towords->to_words(44,"en") }} US Dollars';
+var SD_CASH_usdnominal_todb = '44';
 
 var SD_CC_idrnominal = '453.200,00';
 var SD_CC_idrwords = '{{ $towords->to_words(453200,"en") }} Rupiahs';
@@ -475,13 +476,13 @@ var SO_CASH_usdnominal = '120.00';
 var SO_CASH_usdwords = '{{ $towords->to_words(120,"en") }} US Dollars';
 var SO_CASH_usdnominal_todb = '120';
 
-var SO_CASH_idrnominal = '1.176.000,00';
-var SO_CASH_idrwords = '{{ $towords->to_words(1176000,"en") }} Rupiahs';
-var SO_CASH_idrnominal_todb = '1176000';
+var SO_CASH_idrnominal = '1.200.000,00';
+var SO_CASH_idrwords = '{{ $towords->to_words(1200000,"en") }} Rupiahs';
+var SO_CASH_idrnominal_todb = '1200000';
 
-var SO_CC_idrnominal = '1.211.280,00';
-var SO_CC_idrwords = '{{ $towords->to_words(1211800,"en") }} Rupiahs';
-var SO_CC_idrnominal_todb = '1211280';
+var SO_CC_idrnominal = '1.236.080,00';
+var SO_CC_idrwords = '{{ $towords->to_words(1236000,"en") }} Rupiahs';
+var SO_CC_idrnominal_todb = '1236000';
 
 
 

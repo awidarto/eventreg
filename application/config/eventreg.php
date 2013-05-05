@@ -13,6 +13,7 @@ return array(
 			'SD'=>'Student',
 			
 			'ORG'=>'Organizer',
+			'PTC'=>'Participant',
 			//'CTR'=>'Contractor',
 			//'WRK'=>'Worker',
 			//'BA30'=>'Booth Assistant 30',

@@ -28,6 +28,7 @@
     {{ HTML::style('content/css/icomoon.css') }}
     {{ HTML::style('css/smart_wizard.css') }}
     {{ HTML::style('content/css/app.css') }}
+
     @if(Auth::user()->role == 'onsite' || Auth::user()->role == 'cashier')
       {{ HTML::style('content/css/bootstrap-modal.css') }}
     @endif
@@ -42,6 +43,7 @@
     {{ HTML::style('content/css/demo.css') }}
 
     <link rel="stylesheet" type="text/css" href="{{URL::base()}}/scripts/google-code-prettify/prettify.css" >
+    <link rel="stylesheet" type="text/css" href="{{URL::base()}}/content/css/print.css" media="print">
 
     <!-- Le fav and touch icons -->
 
@@ -64,7 +66,7 @@
 
   <!-- Header and Nav -->
   
-  <header id="nav-bar" class="container-fluid">
+  <header id="nav-bar" class="container-fluid donotprint">
       <div class="row-fluid">
          <div class="span8">
             <div id="header-container">
@@ -93,7 +95,7 @@
         {{ $this->crumb->generate('bootstrap') }}
       @endif
 
-      <div class="row-fluid">
+      <div class="row-fluid print">
         @yield('content')
       </div>
   </div>
@@ -144,10 +146,10 @@
   {{ HTML::script('scripts/holder.js') }}
   {{ HTML::script('js/pnu.js') }}
   
-  @if(Auth::user()->role == 'onsite' || Auth::user()->role == 'cashier'){
+  @if(Auth::user()->role == 'onsite' || Auth::user()->role == 'cashier')
     {{ HTML::script('js/bootstrap-modalmanager.js') }}
     {{ HTML::script('js/bootstrap-modal.js') }}
-  @endif;
+  @endif
  
  <script type="text/javascript">
     $(".metro").metro();
