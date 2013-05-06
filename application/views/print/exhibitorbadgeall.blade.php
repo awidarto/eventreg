@@ -117,7 +117,7 @@ for($i=1;$i<$pass+1;$i++){
 }
 
 if(isset($profile['exhibitorid']) && $profile['exhibitorid']== "514c629e8dfa19db46000000"){
-	$boothassistantcounter = 20;
+	$boothassistantcounter = 21;
 }elseif(isset($profile['exhibitorid']) && $profile['exhibitorid']== "516267808dfa19911e000000"){
 	$boothassistantcounter = 32;
 }else{

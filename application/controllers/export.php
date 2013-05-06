@@ -482,19 +482,39 @@ class Export_Controller extends Base_Controller {
 
 		$dataset = new Cashier();
 		$collection = 'cashier';
-		$userobj = Auth::user()->_id;
+		$userobj = Auth::user()->id;
 		$username = Auth::user()->fullname;
 		
 		//$dataresult = $dataset->find(array('createdDate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
 		
 		//all
-		if(isset($_GET['type'])){
+		if(isset($_GET['type']) && !isset($_GET['currency']) && !isset($_GET['regtype'])){
 			$type = $_GET['type'];
+			
 			if($type == 'all'){
 				$condition  = array('cashierid'=>$userobj);
-				$dataresult = $dataset->find();
+				$dataresult = $dataset->find($condition, array(), array(),array());
 			}
+		}else if(isset($_GET['type']) && isset($_GET['currency']) && !isset($_GET['regtype'])){
+			
+			$type = $_GET['type'];
+			$currency = $_GET['currency'];
+
+			$condition  = array('cashierid'=>$userobj,'paymentvia'=>$type,'currency'=>$currency);
+			$dataresult = $dataset->find($condition, array(), array(),array());
+			
+		}else if(isset($_GET['type']) && isset($_GET['currency']) && isset($_GET['regtype'])){
+			
+			$type = $_GET['type'];
+			$currency = $_GET['currency'];
+			$regtype = $_GET['regtype'];
+
+			$condition  = array('cashierid'=>$userobj,'paymentvia'=>$type,'currency'=>$currency,'regtype'=>$regtype);
+			$dataresult = $dataset->find($condition, array(), array(),array());
+			
 		}
+
+
 
 
 		if(isset($dataresult)){

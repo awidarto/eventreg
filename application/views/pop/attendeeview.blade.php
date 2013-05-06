@@ -1,4 +1,3 @@
-
 @layout('blank')
 
 @section('content')
