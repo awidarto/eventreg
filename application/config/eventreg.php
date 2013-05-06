@@ -46,8 +46,6 @@ return array(
 		'reg_finance_email'=>'conventionipa2013@dyandra.com',
 		'reg_finance_name'=>'37th IPA Convex Finance',
 
-
-
 		'emailpichall'=>array(
 			'mainlobby1'=>array('email'=>'trisa@dyandra.com','name'=>'Trisa'),
 			'mainlobby2'=>array('email'=>'rachel.pardede@dyandra.com','name'=>'Rachel'),
@@ -137,7 +135,7 @@ return array(
 
 		'pinsupervisorconvention'=>'12345',
 		'pinsupervisorexhibitor'=>'123456',
-		'pinsupervisorcashier'=>'cashieradmin',
+		'pinsupervisorcashier'=>'123',
 
 		'exhibitorassistanttype'=>array(
 			'freepassname'=>'m',
