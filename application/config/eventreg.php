@@ -13,6 +13,7 @@ return array(
 			'SD'=>'Student',
 			
 			'ORG'=>'Organizer',
+			'PTC'=>'Participant',
 			//'CTR'=>'Contractor',
 			//'WRK'=>'Worker',
 			//'BA30'=>'Booth Assistant 30',
@@ -136,6 +137,7 @@ return array(
 
 		'pinsupervisorconvention'=>'12345',
 		'pinsupervisorexhibitor'=>'123456',
+		'pinsupervisorcashier'=>'cashieradmin',
 
 		'exhibitorassistanttype'=>array(
 			'freepassname'=>'m',
@@ -376,6 +378,20 @@ return array(
 			'PIC country'=> '',
 			'groupname'=> '',
 			'address'=>''
+		),
+
+
+		'cashier_csv_template'=>array(
+			//new template
+			'regnumber'=> '',
+			'participantname'=> '',
+			'regtype'=> '',
+			'paymentvia'=> '',
+			'currency'=> '',
+			'totalidr'=> '',
+			'totalusd'=> '',
+			'payment date'=> '',
+			'cashiername'=> ''
 		),
 
 		'electriclist' =>array(

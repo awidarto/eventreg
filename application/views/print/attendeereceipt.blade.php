@@ -115,7 +115,7 @@ $totalUSD = $data['totalUSD']+$totalUSDtax;
 			<tr style="vertical-align: top;margin:5px 0;">
 				<td>Payment Method:</td>
 				<td>:</td>
-				<td><span class="imagecheckcash"></span>&nbsp;&nbsp;Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="imagecheckcc"></span>&nbsp;&nbsp;Credit Card</td>
+				<td><span class="imagecheckcash"></span>&nbsp;&nbsp;Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="imagecheckcc"></span>&nbsp;&nbsp;Credit Card&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="imagecheckdebit"></span>&nbsp;&nbsp;Debit BCA</td>
 			</tr>
 
 			<tr style="vertical-align: top;margin:5px 0;">

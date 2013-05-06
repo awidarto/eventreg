@@ -1,3 +1,4 @@
+
 .win-backbutton{
 	top:27px;
 }
@@ -1074,4 +1075,11 @@ h4.typeregistresume{
 }
 .modal-body{
 	background-color: #fff;
+}
+
+@media print
+{
+	.donotprint{
+		display: none;
+	}
 }
