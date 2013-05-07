@@ -135,7 +135,7 @@ return array(
 
 		'pinsupervisorconvention'=>'12345',
 		'pinsupervisorexhibitor'=>'123456',
-		'pinsupervisorcashier'=>'123',
+		'pinsupervisorcashier'=>'cashieradmin',
 
 		'exhibitorassistanttype'=>array(
 			'freepassname'=>'m',
