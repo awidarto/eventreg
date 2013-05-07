@@ -27,6 +27,9 @@
 
 </div>
 <script type="text/javascript">
+
+
+
 $(document).ready(function(){
 	$('.auto_exhibitor').autocomplete({
 		source: base + 'ajax/exhibitor',
@@ -43,9 +46,9 @@ $(document).ready(function(){
 	});
 });
 
+function submitdataassist(){
 
-$('#submitaddassistant').click(function(){
-    var current_pass_name = $('#boothnameinput').val();
+	var current_pass_name = $('#boothnameinput').val();
     var companyname = $('#exhibitorName').val();
     var exhibitorid = $('#exhibitorid').val();
     var codebooth = $('#codebooth').val().toUpperCase();
@@ -108,10 +111,20 @@ $('#submitaddassistant').click(function(){
 	 	
 	}
 	return false;
+}
+
+$('#submitaddassistant').click(function(){
+
+    submitdataassist();
   
 });
 
-
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+        submitdataassist();
+        e.preventDefault();
+    }
+});
 
 </script>
 @endsection
