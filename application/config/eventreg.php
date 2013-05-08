@@ -14,11 +14,13 @@ return array(
 			
 			'ORG'=>'Organizer',
 			'PTC'=>'Participant',
+			'SPK'=>'Speaker',
 			//'CTR'=>'Contractor',
 			//'WRK'=>'Worker',
 			//'BA30'=>'Booth Assistant 30',
 			//'BA150'=>'Booth Assistant 150',
 			'SVO'=>'Student Volunteer',
+			'ATB'=>'Advisor to The Board',
 
 			'SCR'=>'Security',
 			//'OTS'=>'On-Site Technical Support',
@@ -135,7 +137,7 @@ return array(
 
 		'pinsupervisorconvention'=>'12345',
 		'pinsupervisorexhibitor'=>'123456',
-		'pinsupervisorcashier'=>'123',
+		'pinsupervisorcashier'=>'cashieradmin',
 
 		'exhibitorassistanttype'=>array(
 			'freepassname'=>'m',
