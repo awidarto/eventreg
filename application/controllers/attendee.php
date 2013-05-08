@@ -340,7 +340,8 @@ class Attendee_Controller extends Base_Controller {
 			'iTotalRecords'=>$count_all,
 			'iTotalDisplayRecords'=> $count_display_all,
 			'aaData'=>$aadata,
-			'qrs'=>$q
+			'qrs'=>$q,
+			'sort'=>array($sort_col=>$sort_dir)
 		);
 
 		return Response::json($result);
