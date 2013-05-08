@@ -102,6 +102,10 @@ padding:0 5px;
 			{{ HTML::image('images/idcard-template-student.jpg','badge_bg',array('class'=>'cardtemplate')) }}
 		@elseif($profile['role']=='PTC')
 			{{ HTML::image('images/idcard-template-attendee4.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		@elseif($profile['role']=='SPK')
+			{{ HTML::image('images/idcard-template-speaker.jpg','badge_bg',array('class'=>'cardtemplate')) }}
+		@elseif($profile['role']=='ATB')
+			{{ HTML::image('images/idcard-template-atb.jpg','badge_bg',array('class'=>'cardtemplate')) }}
 		@endif
 
 		<div class="headarea">
