@@ -141,9 +141,9 @@ class Attendee_Controller extends Base_Controller {
 
 		$fields = array('registrationnumber','createdDate','email','firstname','lastname','company','regtype','country','conventionPaymentStatus','golfPaymentStatus','golfPaymentStatus');
 
-		$rel = array('like','like','like','like','like','like','like','like');
+		$rel = array('like','like','like','like','like','like','like','like','like','like','like');
 
-		$cond = array('both','both','both','both','both','both','both','both');
+		$cond = array('both','both','both','both','both','both','both','both','both','both','both');
 
 		$pagestart = Input::get('iDisplayStart');
 		$pagelength = Input::get('iDisplayLength');
@@ -182,8 +182,6 @@ class Attendee_Controller extends Base_Controller {
 			$idx++;
 		}
 
-		//print_r($q)
-
 		$attendee = new Attendee();
 
 		/* first column is always sequence number, so must be omitted */
@@ -193,10 +191,12 @@ class Attendee_Controller extends Base_Controller {
 			$sort_col = $fields[$fidx];
 			$sort_dir = $defdir;
 		}else{
-			$fidx = ($fidx > 0)?$fidx - 1:$fidx;
+			$fidx = ($fidx > 0)?$fidx - 2:$fidx;
 			$sort_col = $fields[$fidx];
 			$sort_dir = (Input::get('sSortDir_0') == 'asc')?1:-1;
 		}
+
+		//print_r(array($sort_col=>$sort_dir));
 
 		$count_all = $attendee->count();
 
@@ -340,7 +340,8 @@ class Attendee_Controller extends Base_Controller {
 			'iTotalRecords'=>$count_all,
 			'iTotalDisplayRecords'=> $count_display_all,
 			'aaData'=>$aadata,
-			'qrs'=>$q
+			'qrs'=>$q,
+			'sort'=>array($sort_col=>$sort_dir)
 		);
 
 		return Response::json($result);
