@@ -1899,4 +1899,11 @@ class Attendee_Controller extends Base_Controller {
 				->with('title','Normalize Early');		
 	}
 
+	public function get_changecompanyname(){
+		$form = new Formly();
+		return View::make('attendee.changecompanyname')
+		->with('form',$form);
+	}
+
+
 }
