@@ -104,9 +104,9 @@ class Attendee_Controller extends Base_Controller {
 
 		$btn_add_to_group = '<span class=" add_to_group" id="add_to_group">'.$action_selection.'</span>';
 
-		$heads = array('#','','Import Date','Email','First Name','Last Name','Company','Country','Total Att.');
+		$heads = array('#','','Import Date','Email','First Name','Last Name','Company','Country','Total Att.','Action');
 
-		$searchinput = array(false,false,'Import Date','Email','First Name','Last Name','Company','Country',false,false);
+		$searchinput = array(false,false,'Import Date','Email','First Name','Last Name','Company','Country',false,false,false);
 
 		$colclass = array('','span1','span3','span1','span3','span3','span1','span1');
 
@@ -115,7 +115,7 @@ class Attendee_Controller extends Base_Controller {
 			return View::make('tables.simple')
 				->with('title','Master Data')
 				->with('newbutton','New Visitor')
-				->with('disablesort','0,1')
+				->with('disablesort','0,1,8')
 				->with('addurl','import')
 				->with('colclass',$colclass)
 				->with('searchinput',$searchinput)
@@ -352,7 +352,7 @@ class Attendee_Controller extends Base_Controller {
 
 
 		//$fields = array('email','firstname','lastname','company','country',);
-		$fields = array('createdDate','email','firstname','lastname','company','country','');
+		$fields = array('createdDate','email','firstname','lastname','company','country','','');
 
 		$rel = array('like','like','like','like','like','like','like','like');
 
@@ -467,6 +467,7 @@ class Attendee_Controller extends Base_Controller {
 				$companyname,
 				$country,
 				count($peoples),
+				'<a class="icon-"  ><i>&#xe164;</i><span class="notesgl" id="'.$doc['_id'].'" >Write notes</span>',
 				'extra'=>$extra
 			);
 			$counter++;
@@ -1952,6 +1953,39 @@ class Attendee_Controller extends Base_Controller {
 			}
 
 			return Redirect::to('attendee')->with('notify_success','Attendee saved successfully');
+			
+		}
+
+		
+	}
+
+
+	public function post_writebulknotes(){
+		$data = Input::get();
+
+		$id = $data['idimport'];
+		$notes = $data['notes'];
+
+		$user = new Attendee();
+
+
+
+		if(is_null($id && $notes)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+
+		}else{
+			
+			$condition  = array('cache_id'=>$id);
+			$dataresult = $user->find($condition, array(), array(),array());
+
+			foreach ($dataresult as $att ) {
+				$_id = $att['_id'];
+
+				$user->update(array('_id'=>$_id),array('$set'=>array('notes'=>$notes)));
+					
+			}
+
+			return Redirect::to('attendee/groups')->with('notify_success','Attendee saved successfully');
 			
 		}
 

@@ -14,6 +14,5 @@
 
 {{ Form::submit('Submit',array('class'=>'button'))}}&nbsp;&nbsp;
 {{ Form::reset('Reset',array('class'=>'button'))}}
-</div>
 {{$form->close()}}
 @endsection

@@ -358,6 +358,26 @@
 	</div>
 </div>
 
+<div id="writeGL" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<h3 id="myModalLabel">Write Notes</h3>
+	</div>
+	<div class="modal-body">
+		{{$form->open('attendee/writebulknotes','POST',array('class'=>'custom addAttendeeForm'))}}
+		{{ $form->hidden('idimport','',array('id'=>'importid')) }}
+		{{ $form->textarea('notes','Write Notes','',array('class'=>'text span8','id'=>'firstname')) }}
+
+		{{ Form::submit('Submit',array('class'=>'button'))}}&nbsp;&nbsp;
+		{{ Form::reset('Reset',array('class'=>'button'))}}
+		{{$form->close()}}
+	</div>
+	<div class="modal-footer">
+		
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	</div>
+</div>
+
 <div id="deleteWarning" class="modal warning hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -995,6 +1015,17 @@
 
 				$('#printBadge').modal();
 		   	}
+
+
+		   	if ($(e.target).is('.notesgl')) {
+				var _id = e.target.id;
+
+				$('#importid').val(_id);
+
+				$('#writeGL').modal();
+		   	}
+
+
 
 			if ($(e.target).is('.pay')) {
 				var _id = e.target.id;
