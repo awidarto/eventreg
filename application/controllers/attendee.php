@@ -434,6 +434,27 @@ class Attendee_Controller extends Base_Controller {
 			$peoples = $attendee->find($condition, array(), array(),array());
 			$extra = $peoples;
 
+			if(!isset($doc['lastname'])){
+				$lastname ='-';
+				
+			}else{
+				$lastname = $doc['lastname'];	
+			}
+
+			if(!isset($doc['company'])){
+				$companyname ='-';
+				
+			}else{
+				$companyname = $doc['company'];	
+			}
+
+			if(!isset($doc['country'])){
+				$country ='-';
+				
+			}else{
+				$country = $doc['country'];	
+			}
+			
 			$select = $form->checkbox('sel_'.$doc['_id'],'','',false,array('id'=>$doc['_id'],'class'=>'selectorAll'));
 
 			$aadata[] = array(
@@ -442,9 +463,9 @@ class Attendee_Controller extends Base_Controller {
 				date('Y-m-d', $doc['createdDate']->sec),
 				$doc['email'],
 				'<span class="expander" id="'.$doc['_id'].'">'.$doc['firstname'].'</span>',
-				$doc['lastname'],
-				$doc['company'],
-				$doc['country'],
+				$lastname,
+				$companyname,
+				$country,
 				count($peoples),
 				'extra'=>$extra
 			);
