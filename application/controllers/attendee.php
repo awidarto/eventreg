@@ -141,9 +141,9 @@ class Attendee_Controller extends Base_Controller {
 
 		$fields = array('registrationnumber','createdDate','email','firstname','lastname','company','regtype','country','conventionPaymentStatus','golfPaymentStatus','golfPaymentStatus');
 
-		$rel = array('like','like','like','like','like','like','like','like','like','like','like');
+		$rel = array('like','like','like','like','like','like','like','like');
 
-		$cond = array('both','both','both','both','both','both','both','both','both','both','both');
+		$cond = array('both','both','both','both','both','both','both','both');
 
 		$pagestart = Input::get('iDisplayStart');
 		$pagelength = Input::get('iDisplayLength');
@@ -182,6 +182,8 @@ class Attendee_Controller extends Base_Controller {
 			$idx++;
 		}
 
+		//print_r($q)
+
 		$attendee = new Attendee();
 
 		/* first column is always sequence number, so must be omitted */
@@ -191,12 +193,10 @@ class Attendee_Controller extends Base_Controller {
 			$sort_col = $fields[$fidx];
 			$sort_dir = $defdir;
 		}else{
-			$fidx = ($fidx > 0)?$fidx - 2:$fidx;
+			$fidx = ($fidx > 0)?$fidx - 1:$fidx;
 			$sort_col = $fields[$fidx];
 			$sort_dir = (Input::get('sSortDir_0') == 'asc')?1:-1;
 		}
-
-		//print_r(array($sort_col=>$sort_dir));
 
 		$count_all = $attendee->count();
 
@@ -340,8 +340,7 @@ class Attendee_Controller extends Base_Controller {
 			'iTotalRecords'=>$count_all,
 			'iTotalDisplayRecords'=> $count_display_all,
 			'aaData'=>$aadata,
-			'qrs'=>$q,
-			'sort'=>array($sort_col=>$sort_dir)
+			'qrs'=>$q
 		);
 
 		return Response::json($result);
@@ -1904,6 +1903,38 @@ class Attendee_Controller extends Base_Controller {
 		$form = new Formly();
 		return View::make('attendee.changecompanyname')
 		->with('form',$form);
+	}
+
+
+	public function post_changecompanyname(){
+		$data = Input::get();
+
+		$finddata = $data['findcompanyname'];
+		$replacedata = $data['replacecompanyname'];
+
+		$user = new Attendee();
+
+
+
+		if(is_null($finddata && $replacedata)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$condition  = array('company'=>$finddata);
+			$dataresult = $user->find($condition, array(), array(),array());
+
+			foreach ($dataresult as $company ) {
+				$_id = $company['_id'];
+
+				$user->update(array('_id'=>$_id),array('$set'=>array('company'=>$replacedata)));
+					
+			}
+
+			return Redirect::to('attendee')->with('notify_success','Attendee saved successfully');
+			
+		}
+
+		
 	}
 
 

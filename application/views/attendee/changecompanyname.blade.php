@@ -8,9 +8,9 @@
 
 
 {{$form->open('attendee/changecompanyname','POST',array('class'=>'custom addAttendeeForm'))}}
-{{ $form->text('companyname','Find Company name.req','',array('class'=>'text span8','id'=>'firstname')) }}
+{{ $form->text('findcompanyname','Find Company name.req','',array('class'=>'text span8','id'=>'firstname')) }}
 
-{{ $form->text('companyname','Replace to.req','',array('class'=>'text span8','id'=>'firstname')) }}
+{{ $form->text('replacecompanyname','Replace to.req','',array('class'=>'text span8','id'=>'firstname')) }}
 
 {{ Form::submit('Submit',array('class'=>'button'))}}&nbsp;&nbsp;
 {{ Form::reset('Reset',array('class'=>'button'))}}
