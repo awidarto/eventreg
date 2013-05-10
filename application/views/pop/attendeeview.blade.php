@@ -446,7 +446,7 @@ var PO_CASH_idrnominal_todb = '5500000';
 
 
 var PD_CC_idrnominal = '5.665.000,00';
-var PD_CC_idwords = '{{ $towords->to_words(5665000,"en") }} Rupiahs';
+var PD_CC_idrwords = '{{ $towords->to_words(5665000,"en") }} Rupiahs';
 var PD_CC_idrnominal_todb = '5665000';
 
 
