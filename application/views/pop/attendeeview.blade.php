@@ -680,7 +680,7 @@ $('#submitaddassist').click(function(){
 		}else if(regtype=='PD' && paymentvia=='debit bca' && currency == 'idr'){
 			usdnominalidrobject.text('--');
 			idrnominalidrobject.text(PD_CASH_idrnominal);
-			sayinwordsobject.text(PD_CASH_idwords);
+			sayinwordsobject.text(PD_CASH_idrwords);
 
 			idr_todb = PD_CASH_idrnominal_todb;
 			usd_todb = '';
