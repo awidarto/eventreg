@@ -479,7 +479,7 @@ var SO_CASH_idrnominal = '1.200.000,00';
 var SO_CASH_idrwords = '{{ $towords->to_words(1200000,"en") }} Rupiahs';
 var SO_CASH_idrnominal_todb = '1200000';
 
-var SO_CC_idrnominal = '1.236.080,00';
+var SO_CC_idrnominal = '1.236.000,00';
 var SO_CC_idrwords = '{{ $towords->to_words(1236000,"en") }} Rupiahs';
 var SO_CC_idrnominal_todb = '1236000';
 
