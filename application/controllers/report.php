@@ -67,6 +67,9 @@ class Report_Controller extends Base_Controller {
 		$stat['paidAttendee'] = $attendee->count(array('conventionPaymentStatus'=>'paid'));
 
 		$stat['unpaidAttendee'] = $attendee->count(array('conventionPaymentStatus'=>'unpaid'));
+		
+		$stat['pendingAttendee'] = $attendee->count(array('conventionPaymentStatus'=>'pending'));
+		$stat['cancelAttendee'] = $attendee->count(array('conventionPaymentStatus'=>'cancel'));
 
 		$stat['Golf'] = $attendee->count(array('golf'=>'Yes'));
 		$stat['Dinner'] = $attendee->count(array('attenddinner'=>'Yes'));

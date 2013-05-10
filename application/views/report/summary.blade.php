@@ -84,6 +84,29 @@
 		            <div class="text">Participants</div>
 		         </div>
 		      </a>
+
+		      <a class="tile imagetext bg-color-blue statistic" href="{{ URL::to('export/report/?payment=pending') }}">
+		         <div class="image-wrapper text-big">
+		            <div class="text-big">{{ $stat['pendingAttendee']}}</div>
+		         </div>
+		         <div class="column-text">
+		            <div class="text">Total</div>
+		            <div class="text">Pending</div>
+		            <div class="text">Participants</div>
+		         </div>
+		      </a>
+
+		      <a class="tile imagetext bg-color-greenDark statistic" href="{{ URL::to('export/report/?payment=cancel') }}">
+		         <div class="image-wrapper text-big">
+		            <div class="text-big">{{ $stat['cancelAttendee']}}</div>
+		         </div>
+		         <div class="column-text">
+		            <div class="text">Total</div>
+		            <div class="text">Cancel</div>
+		            <div class="text">Participants</div>
+		         </div>
+		      </a>
+
 	      </div>
 
 	      <div class="separateMetro">
