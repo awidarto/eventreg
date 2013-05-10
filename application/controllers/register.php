@@ -339,6 +339,13 @@ class Register_Controller extends Base_Controller {
 	public function get_checkout(){
 
 		if(isset(Auth::attendee()->id)){
+
+			$sytemstat = Config::get('eventreg.systemstatus');
+			$allsystem = $sytemstat['allsystem'];
+
+			if($allsystem == 'closed'){
+				return View::make('register.registrationclosed');
+			}
 			$type = 'attendee';
 
 			$this->crumb->add('register/payment/'.$type,'Convention Payment Checkout');
@@ -548,6 +555,13 @@ class Register_Controller extends Base_Controller {
 
 		if(!Auth::attendee()){
 			return Redirect::to('/');
+		}
+
+		$sytemstat = Config::get('eventreg.systemstatus');
+		$allsystem = $sytemstat['allsystem'];
+
+		if($allsystem == 'closed'){
+			return View::make('register.registrationclosed');
 		}
 
 		$this->crumb->add('register/payment/'.$type,ucfirst($type).' Payment Confirmation');
@@ -950,6 +964,13 @@ class Register_Controller extends Base_Controller {
 	public function get_edit(){
 
 		$this->crumb->add('user/edit','Edit',false);
+
+		$sytemstat = Config::get('eventreg.systemstatus');
+		$allsystem = $sytemstat['allsystem'];
+
+		if($allsystem == 'closed'){
+			return View::make('register.registrationclosed');
+		}
 
 		$user = new Attendee();
 
