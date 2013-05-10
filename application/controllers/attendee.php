@@ -352,11 +352,11 @@ class Attendee_Controller extends Base_Controller {
 
 
 		//$fields = array('email','firstname','lastname','company','country',);
-		$fields = array('createdDate','email','firstname','lastname','company','country','','');
+		$fields = array('email','firstname','lastname','company','country','','');
 
-		$rel = array('like','like','like','like','like','like','like','like');
+		$rel = array(false,'like','like','like','like','like','like','like','like');
 
-		$cond = array('both','both','both','both','both','both','both','both','both');
+		$cond = array(false,'both','both','both','both','both','both','both','both','both');
 
 		$pagestart = Input::get('iDisplayStart');
 		$pagelength = Input::get('iDisplayLength');
