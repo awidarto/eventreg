@@ -672,17 +672,17 @@ $('#submitaddassist').click(function(){
 		}else if(regtype=='PD' && paymentvia=='cc' && currency == 'idr'){
 			usdnominalidrobject.text('--');
 			idrnominalidrobject.text(PD_CC_idrnominal);
-			sayinwordsobject.text(PD_CASH_idrwords);
+			sayinwordsobject.text(PD_CC_idrwords);
 
-			idr_todb = PD_CASH_idrnominal_todb;
+			idr_todb = PD_CC_idrnominal_todb;
 			usd_todb = '';
 
 		}else if(regtype=='PD' && paymentvia=='debit bca' && currency == 'idr'){
 			usdnominalidrobject.text('--');
 			idrnominalidrobject.text(PD_CASH_idrnominal);
-			sayinwordsobject.text(PD_CC_idwords);
+			sayinwordsobject.text(PD_CASH_idwords);
 
-			idr_todb = PD_CC_idrnominal_todb;
+			idr_todb = PD_CASH_idrnominal_todb;
 			usd_todb = '';
 		
 		}else if(regtype=='PO' && paymentvia=='cash' && currency == 'usd'){
@@ -742,7 +742,7 @@ $('#submitaddassist').click(function(){
 		}else if(regtype=='SD' && paymentvia=='cc' && currency == 'idr'){
 			usdnominalidrobject.text('--');
 			idrnominalidrobject.text(SD_CC_idrnominal);
-			sayinwordsobject.text(SD_CC_idwords);
+			sayinwordsobject.text(SD_CC_idrwords);
 
 			idr_todb = SD_CC_idrnominal_todb;
 			usd_todb = '';
