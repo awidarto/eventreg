@@ -49,7 +49,7 @@ class Cashier_Controller extends Base_Controller {
 	public function get_report()
 	{
 		$today = date('Y-m-d');
-		$getCountAll = $this->getCountAttendee('2013-05-03', $today);
+		$getCountAll = $this->getCountAttendee('2013-05-10', $today);
 
 		$getCount['total_cash_idr'] = $this->getCountAttendee('2013-05-03', $today,'idr',null,'cash');
 		$getCount['total_cash_usd'] = $this->getCountAttendee('2013-05-03', $today,'usd',null,'cash');
