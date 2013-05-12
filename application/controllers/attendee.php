@@ -1993,4 +1993,46 @@ class Attendee_Controller extends Base_Controller {
 	}
 
 
+	public function get_writenotesbasedcompany(){
+		$form = new Formly();
+		return View::make('attendee.writenotesbasedcompany')
+		->with('form',$form);
+	}
+
+
+	public function post_writenotesbasedcompany(){
+		$data = Input::get();
+
+		$finddata = $data['findcompanyname'];
+		$notes = $data['notes'];
+
+		$user = new Attendee();
+
+
+
+		if(is_null($finddata && $notes)){
+			$result = array('status'=>'ERR','data'=>'NOID');
+		}else{
+
+			$condition  = array('company'=>$finddata);
+			$dataresult = $user->find($condition, array(), array(),array());
+			$attendeechangecount = 0;
+			foreach ($dataresult as $company ) {
+				$_id = $company['_id'];
+
+				if($user->update(array('_id'=>$_id),array('$set'=>array('notes'=>$notes)))){
+					$attendeechangecount++;
+				};
+					
+			}
+
+			return Redirect::to('attendee/writenotesbasedcompany')->with('notify_success',$attendeechangecount.' Attendee updated successfully');
+			
+		}
+
+		
+	}
+
+
+
 }

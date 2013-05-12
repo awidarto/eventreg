@@ -62,6 +62,7 @@
                 <li>{{ HTML::link('content', 'Article Manager' ) }}</li>
                 <li>{{ HTML::link('users', 'User Manager' ) }}</li>
                 <li>{{ HTML::link('attendee/changecompanyname', 'Find & Replace Company name' ) }}</li>
+                <li>{{ HTML::link('attendee/writenotesbasedcompany', 'Write notes with company name' ) }}</li>
               </ul>
             </li>
         @elseif(Auth::user()->role == 'exhibitionadmin')
