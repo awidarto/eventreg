@@ -132,6 +132,11 @@ function formatrp($angka){
 	return $rupiah;
 }
 
+function formatdolar($angka){
+	$rupiah=number_format($angka,2,'.',',');
+	return $rupiah;
+}
+
 function get_domain($url)
 {
   $pieces = parse_url($url);

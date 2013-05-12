@@ -484,6 +484,17 @@ class Export_Controller extends Base_Controller {
 		$collection = 'cashier';
 		$userobj = Auth::user()->id;
 		$username = Auth::user()->fullname;
+
+		$today = $_GET['date'];
+		
+		$iDateFrom=mktime(1,0,0,substr($today,5,2),     substr($today,8,2),substr($today,0,4));
+	  	$iDateTo=mktime(1,0,0,substr($today,5,2),     substr($today,8,2),substr($today,0,4));
+
+	  	$fromDate = date('d-M-Y',$iDateFrom);
+	    $toDate = date('d-M-Y',$iDateFrom);
+	    
+	    $dateFrom = new MongoDate(strtotime($fromDate." 00:00:00"));
+		$dateTo = new MongoDate(strtotime($toDate." 23:59:59"));
 		
 		//$dataresult = $dataset->find(array('createdDate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
 		
@@ -492,7 +503,7 @@ class Export_Controller extends Base_Controller {
 			$type = $_GET['type'];
 			
 			if($type == 'all'){
-				$condition  = array('cashierid'=>$userobj);
+				$condition  = array('cashierid'=>$userobj,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo));
 				$dataresult = $dataset->find($condition, array(), array(),array());
 			}
 		}else if(isset($_GET['type']) && isset($_GET['currency']) && !isset($_GET['regtype'])){
@@ -500,7 +511,7 @@ class Export_Controller extends Base_Controller {
 			$type = $_GET['type'];
 			$currency = $_GET['currency'];
 
-			$condition  = array('cashierid'=>$userobj,'paymentvia'=>$type,'currency'=>$currency);
+			$condition  = array('cashierid'=>$userobj,'paymentvia'=>$type,'currency'=>$currency,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo));
 			$dataresult = $dataset->find($condition, array(), array(),array());
 			
 		}else if(isset($_GET['type']) && isset($_GET['currency']) && isset($_GET['regtype'])){
@@ -509,7 +520,7 @@ class Export_Controller extends Base_Controller {
 			$currency = $_GET['currency'];
 			$regtype = $_GET['regtype'];
 
-			$condition  = array('cashierid'=>$userobj,'paymentvia'=>$type,'currency'=>$currency,'regtype'=>$regtype);
+			$condition  = array('cashierid'=>$userobj,'paymentvia'=>$type,'currency'=>$currency,'regtype'=>$regtype,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo));
 			$dataresult = $dataset->find($condition, array(), array(),array());
 			
 		}

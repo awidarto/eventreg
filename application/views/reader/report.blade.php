@@ -10,37 +10,21 @@ setlocale(LC_MONETARY, "en_US");
 	   <div id="section1" class="metro-section tile-span-8">
 	   		<div class="blockseparate marginbottom">
 		    <h1>Cashier Report</h1>
-		    <p class="donotprint">Cashier name: <strong>{{ Auth::user()->fullname }}</strong></p>
-
+		    <p>Cashier name: <strong>{{ Auth::user()->fullname }}</strong></p>
 			</div> 
-
-			<div class="right donotdisplay" style="padding-top:10px;padding-right:40px;">
-		    	<p>Cashier name: <strong>{{ Auth::user()->fullname }}</strong></br/>
-		    date: <strong><?php 
-				$date = DateTime::createFromFormat('Y-m-d', $displaydate);
-				echo $date->format('jS F Y');
-		    ?></strong></p>
-		    </div>
 			  
 	      <div class="clear"></div>
-	      <hr/ class="donotdisplay" style="margin: 5px 0;"> 
 	      <button class="right btn needsupervisor donotprint" id="downloadall" ><i class="icon-" >&#xe111;</i>&nbsp;&nbsp;download all data</button>
 	      <button class="right btn donotprint" id="print" style="margin-right:5px;"><i class="icon-" >&#xe14c;</i>&nbsp;&nbsp;print</button>
-	      {{$form->select('date','',Config::get('eventreg.eventdate'),array('class'=>'span3','id'=>'dateselected'))}}
-	      <br/>
 
-	      <div class="blockseparate marginbottom donotprint">
-
-		    <h4><?php 
-				$date = DateTime::createFromFormat('Y-m-d', $displaydate);
-				echo $date->format('jS F Y');
-		    ?></h4>
+	      <div class="blockseparate marginbottom">
+		    <h4><?php echo date('jS F Y');?></h4>
 		    
 			</div> 
-			<hr/ class="donotprint">  
+			<hr/>  
 	      <div class="clear"></div>
 
-	      <div class="resumecashier row-fluid firstrowresume">
+	      <div class="resumecashier row-fluid">
 	      	<div class="span3">
 	      		<h2>TOTAL CASH IDR</h2>
 	      		<i class="icon- donotprint needsupervisor" id="download_cash_idr">&#xe111;</i>
@@ -227,52 +211,52 @@ $('.needsupervisor').click(function(e){
 	alert(idclicked);
 
 	if(idclicked == 'downloadall'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=all&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=all') }}";
 	}else if(idclicked == 'download_cash_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=idr&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=idr') }}";
 	}else if(idclicked == 'download_pd_cash_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=idr&regtype=PD&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=idr&regtype=PD') }}";
 	}else if(idclicked == 'download_po_cash_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=idr&regtype=PO&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=idr&regtype=PO') }}";
 	}else if(idclicked == 'download_sd_cash_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=idr&regtype=SD&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=idr&regtype=SD') }}";
 	}else if(idclicked == 'download_so_cash_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=idr&regtype=SO&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=idr&regtype=SO') }}";
 
 	}else if(idclicked == 'download_cash_usd'){
 		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=usd') }}";
 	}else if(idclicked == 'download_pd_cash_usd'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=usd&regtype=PD&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=usd&regtype=PD') }}";
 	}else if(idclicked == 'download_po_cash_usd'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=usd&regtype=PO&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=usd&regtype=PO') }}";
 	}else if(idclicked == 'download_sd_cash_usd'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=usd&regtype=SD&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=usd&regtype=SD') }}";
 	}else if(idclicked == 'download_so_cash_usd'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=usd&regtype=SO&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cash&currency=usd&regtype=SO') }}";
 	
 
 	}else if(idclicked == 'download_cc_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cc&currency=idr&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cc&currency=idr') }}";
 	}else if(idclicked == 'download_pd_cc_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cc&currency=idr&regtype=PD&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cc&currency=idr&regtype=PD') }}";
 	}else if(idclicked == 'download_po_cc_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cc&currency=idr&regtype=PO&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cc&currency=idr&regtype=PO') }}";
 	}else if(idclicked == 'download_sd_cc_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cc&currency=idr&regtype=SD&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cc&currency=idr&regtype=SD') }}";
 	}else if(idclicked == 'download_so_cc_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=cc&currency=idr&regtype=SO&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=cc&currency=idr&regtype=SO') }}";
 	
 
 	}else if(idclicked == 'download_debit_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=debit bca&currency=idr&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=debit bca&currency=idr') }}";
 	}else if(idclicked == 'download_pd_debit_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=debit bca&currency=idr&regtype=PD&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=debit bca&currency=idr&regtype=PD') }}";
 	}else if(idclicked == 'download_po_debit_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=debit bca&currency=idr&regtype=PO&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=debit bca&currency=idr&regtype=PO') }}";
 	}else if(idclicked == 'download_sd_debit_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=debit bca&currency=idr&regtype=SD&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=debit bca&currency=idr&regtype=SD') }}";
 	}else if(idclicked == 'download_so_debit_idr'){
-		urltoriderect = "{{ URL::to('export/cashier/?type=debit bca&currency=idr&regtype=SO&date='.$displaydate) }}";
+		urltoriderect = "{{ URL::to('export/cashier/?type=debit bca&currency=idr&regtype=SO') }}";
 	}
 
 });
@@ -296,22 +280,6 @@ $('#submitpinadd').click(function(e){
 		$('#supervisorpinadd').val('');
 	}
 
-});
-
-<?php
-$urlredirect = URL::to('cashier/report');
-?>
-
-$(function(){
-  // bind change event to select
-  $('#field_date').bind('change', function () {
-      var dateselected = $(this).val(); // get selected value
-      var url = '<?php echo $urlredirect;?>?date='+dateselected;
-      if (url) { // require a URL
-          window.location = url; // redirect
-      }
-      return false;
-  });
 });
 
 </script>

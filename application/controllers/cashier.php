@@ -48,69 +48,78 @@ class Cashier_Controller extends Base_Controller {
 
 	public function get_report()
 	{
-		$today = date('Y-m-d');
-		$getCountAll = $this->getCountAttendee('2013-05-10', $today);
+		$form = new Formly();
+		if(isset($_GET['date'])){
+			$today = $_GET['date'];
+		}else{
+			$today = date("Y-m-d");
+		}
+		$getCountAll = $this->getCountAttendee($today, $today);
 
-		$getCount['total_cash_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr',null,'cash');
-		$getCount['total_cash_usd'] = $this->getCountAttendee('2013-05-10', $today,'usd',null,'cash');
-		$getCount['total_cc_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr',null,'cc');
-		$getCount['total_debit_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr',null,'debit bca');
+		$getCount['total_cash_idr'] = $this->getCountAttendee($today, $today,'idr',null,'cash');
+		$getCount['total_cash_usd'] = $this->getCountAttendee($today, $today,'usd',null,'cash');
+		$getCount['total_cc_idr'] = $this->getCountAttendee($today, $today,'idr',null,'cc');
+		$getCount['total_debit_idr'] = $this->getCountAttendee($today, $today,'idr',null,'debit bca');
 		
 		//money
-		$getMoney['total_cash_idr'] = $this->getCountMoney('2013-05-10', $today,'idr',null,'cash');
-		$getMoney['total_cash_usd'] = $this->getCountMoney('2013-05-10', $today,'usd',null,'cash');
-		$getMoney['total_cc_idr'] = $this->getCountMoney('2013-05-10', $today,'idr',null,'cc');
-		$getMoney['total_debit_idr'] = $this->getCountMoney('2013-05-10', $today,'idr',null,'debit bca');
+		$getMoney['total_cash_idr'] = $this->getCountMoney($today, $today,'idr',null,'cash');
+		$getMoney['total_cash_usd'] = $this->getCountMoney($today, $today,'usd',null,'cash');
+		$getMoney['total_cc_idr'] = $this->getCountMoney($today, $today,'idr',null,'cc');
+		$getMoney['total_debit_idr'] = $this->getCountMoney($today, $today,'idr',null,'debit bca');
 
 
-		$getCount['pd_cash_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','PD','cash');
-		$getCount['pd_cash_usd'] = $this->getCountAttendee('2013-05-10', $today,'usd','PD','cash');
-		$getCount['pd_cc_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','PD','cc');
-		$getCount['pd_debit_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','PD','debit bca');
-
-		//money
-		$getMoney['pd_cash_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','PD','cash');
-		$getMoney['pd_cash_usd'] = $this->getCountMoney('2013-05-10', $today,'usd','PD','cash');
-		$getMoney['pd_cc_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','PD','cc');
-		$getMoney['pd_debit_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','PD','debit bca');
-
-
-		$getCount['po_cash_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','PO','cash');
-		$getCount['po_cash_usd'] = $this->getCountAttendee('2013-05-10', $today,'usd','PO','cash');
-		$getCount['po_cc_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','PO','cc');
-		$getCount['po_debit_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','PO','debit bca');
-		//money
-		$getMoney['po_cash_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','PO','cash');
-		$getMoney['po_cash_usd'] = $this->getCountMoney('2013-05-10', $today,'usd','PO','cash');
-		$getMoney['po_cc_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','PO','cc');
-		$getMoney['po_debit_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','PO','debit bca');
-
-		$getCount['sd_cash_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','SD','cash');
-		$getCount['sd_cash_usd'] = $this->getCountAttendee('2013-05-10', $today,'usd','SD','cash');
-		$getCount['sd_cc_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','SD','cc');
-		$getCount['sd_debit_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','SD','debit bca');
-		//money
-		$getMoney['sd_cash_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','SD','cash');
-		$getMoney['sd_cash_usd'] = $this->getCountMoney('2013-05-10', $today,'usd','SD','cash');
-		$getMoney['sd_cc_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','SD','cc');
-		$getMoney['sd_debit_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','SD','debit bca');
-
-		$getCount['so_cash_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','SO','cash');
-		$getCount['so_cash_usd'] = $this->getCountAttendee('2013-05-10', $today,'usd','SO','cash');
-		$getCount['so_cc_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','SO','cc');
-		$getCount['so_debit_idr'] = $this->getCountAttendee('2013-05-10', $today,'idr','SO','debit bca');
+		$getCount['pd_cash_idr'] = $this->getCountAttendee($today, $today,'idr','PD','cash');
+		$getCount['pd_cash_usd'] = $this->getCountAttendee($today, $today,'usd','PD','cash');
+		$getCount['pd_cc_idr'] = $this->getCountAttendee($today, $today,'idr','PD','cc');
+		$getCount['pd_debit_idr'] = $this->getCountAttendee($today, $today,'idr','PD','debit bca');
 
 		//money
-		$getMoney['so_cash_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','SO','cash');
-		$getMoney['so_cash_usd'] = $this->getCountMoney('2013-05-10', $today,'usd','SO','cash');
-		$getMoney['so_cc_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','SO','cc');
-		$getMoney['so_debit_idr'] = $this->getCountMoney('2013-05-10', $today,'idr','SO','debit bca');
+		$getMoney['pd_cash_idr'] = $this->getCountMoney($today, $today,'idr','PD','cash');
+		$getMoney['pd_cash_usd'] = $this->getCountMoney($today, $today,'usd','PD','cash');
+		$getMoney['pd_cc_idr'] = $this->getCountMoney($today, $today,'idr','PD','cc');
+		$getMoney['pd_debit_idr'] = $this->getCountMoney($today, $today,'idr','PD','debit bca');
+
+
+		$getCount['po_cash_idr'] = $this->getCountAttendee($today, $today,'idr','PO','cash');
+		$getCount['po_cash_usd'] = $this->getCountAttendee($today, $today,'usd','PO','cash');
+		$getCount['po_cc_idr'] = $this->getCountAttendee($today, $today,'idr','PO','cc');
+		$getCount['po_debit_idr'] = $this->getCountAttendee($today, $today,'idr','PO','debit bca');
+		//money
+		$getMoney['po_cash_idr'] = $this->getCountMoney($today, $today,'idr','PO','cash');
+		$getMoney['po_cash_usd'] = $this->getCountMoney($today, $today,'usd','PO','cash');
+		$getMoney['po_cc_idr'] = $this->getCountMoney($today, $today,'idr','PO','cc');
+		$getMoney['po_debit_idr'] = $this->getCountMoney($today, $today,'idr','PO','debit bca');
+
+		$getCount['sd_cash_idr'] = $this->getCountAttendee($today, $today,'idr','SD','cash');
+		$getCount['sd_cash_usd'] = $this->getCountAttendee($today, $today,'usd','SD','cash');
+		$getCount['sd_cc_idr'] = $this->getCountAttendee($today, $today,'idr','SD','cc');
+		$getCount['sd_debit_idr'] = $this->getCountAttendee($today, $today,'idr','SD','debit bca');
+		//money
+		$getMoney['sd_cash_idr'] = $this->getCountMoney($today, $today,'idr','SD','cash');
+		$getMoney['sd_cash_usd'] = $this->getCountMoney($today, $today,'usd','SD','cash');
+		$getMoney['sd_cc_idr'] = $this->getCountMoney($today, $today,'idr','SD','cc');
+		$getMoney['sd_debit_idr'] = $this->getCountMoney($today, $today,'idr','SD','debit bca');
+
+		$getCount['so_cash_idr'] = $this->getCountAttendee($today, $today,'idr','SO','cash');
+		$getCount['so_cash_usd'] = $this->getCountAttendee($today, $today,'usd','SO','cash');
+		$getCount['so_cc_idr'] = $this->getCountAttendee($today, $today,'idr','SO','cc');
+		$getCount['so_debit_idr'] = $this->getCountAttendee($today, $today,'idr','SO','debit bca');
+
+		//money
+		$getMoney['so_cash_idr'] = $this->getCountMoney($today, $today,'idr','SO','cash');
+		$getMoney['so_cash_usd'] = $this->getCountMoney($today, $today,'usd','SO','cash');
+		$getMoney['so_cc_idr'] = $this->getCountMoney($today, $today,'idr','SO','cc');
+		$getMoney['so_debit_idr'] = $this->getCountMoney($today, $today,'idr','SO','debit bca');
+
+		
 
 		return View::make('cashier.report')
+			->with('displaydate',$today)
 			->with('getCount',$getCount)
 			->with('getMoney',$getMoney)
 			->with('getCountAll',$getCountAll)
 			->with('title','Cashier Report')
+			->with('form',$form)
 			->with('crumb',$this->crumb);
 	}
 
@@ -118,6 +127,7 @@ class Cashier_Controller extends Base_Controller {
 
 	  $cashierdata = new Cashier();
 	  $aryRange=array();
+	  $userobj = Auth::user()->id;
 
 	  $iDateFrom=mktime(1,0,0,substr($strDateFrom,5,2),     substr($strDateFrom,8,2),substr($strDateFrom,0,4));
 	  $iDateTo=mktime(1,0,0,substr($strDateTo,5,2),     substr($strDateTo,8,2),substr($strDateTo,0,4));
@@ -130,11 +140,11 @@ class Cashier_Controller extends Base_Controller {
 	    $dateFrom = new MongoDate(strtotime($fromDate." 00:00:00"));
 		$dateTo = new MongoDate(strtotime($toDate." 23:59:59"));
 		if($currency ==null && $type ==null && $paymentmethod==null){
-			$dataresult = $cashierdata->count(array('paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
+			$dataresult = $cashierdata->count(array('cashierid'=>$userobj,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
 		}else if($currency!=null && $paymentmethod!=null && $type == null){
-			$dataresult = $cashierdata->count(array('paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod));
+			$dataresult = $cashierdata->count(array('cashierid'=>$userobj,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod));
 		}else{
-			$dataresult = $cashierdata->count(array('paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'regtype'=>$type,'paymentvia'=>$paymentmethod));
+			$dataresult = $cashierdata->count(array('cashierid'=>$userobj,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'regtype'=>$type,'paymentvia'=>$paymentmethod));
 		}
 		array_push($aryRange,$dataresult ); // first entry
 
@@ -146,11 +156,11 @@ class Cashier_Controller extends Base_Controller {
 			$dateFrom = new MongoDate(strtotime($fromDate." 00:00:00"));
 			$dateTo = new MongoDate(strtotime($toDate." 23:59:59"));
 			if($currency ==null && $type ==null && $paymentmethod==null){
-				$dataresult = $cashierdata->count(array('paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
+				$dataresult = $cashierdata->count(array('cashierid'=>$userobj,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
 			}else if($currency!=null && $paymentmethod!=null && $type == null){
-				$dataresult = $cashierdata->count(array('paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod));
+				$dataresult = $cashierdata->count(array('cashierid'=>$userobj,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod));
 			}else{
-				$dataresult = $cashierdata->count(array('paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'regtype'=>$type,'paymentvia'=>$paymentmethod));
+				$dataresult = $cashierdata->count(array('cashierid'=>$userobj,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'regtype'=>$type,'paymentvia'=>$paymentmethod));
 			}
 			array_push($aryRange,$dataresult ); // first entry
 
@@ -166,6 +176,7 @@ class Cashier_Controller extends Base_Controller {
 
 	  $cashierdata = new Cashier();
 	  $aryRange=array();
+	  $userobj = Auth::user()->id;
 
 	  $iDateFrom=mktime(1,0,0,substr($strDateFrom,5,2),     substr($strDateFrom,8,2),substr($strDateFrom,0,4));
 	  $iDateTo=mktime(1,0,0,substr($strDateTo,5,2),     substr($strDateTo,8,2),substr($strDateTo,0,4));
@@ -180,7 +191,7 @@ class Cashier_Controller extends Base_Controller {
 
 		if($currency!=null && $paymentmethod!=null && $type == null){
 			
-			$data = $cashierdata->find(array('paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod));
+			$data = $cashierdata->find(array('cashierid'=>$userobj,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod));
 			$dataresult =0;
 			foreach ($data as $key => $value) {
 				if($currency == 'idr'){
@@ -192,7 +203,7 @@ class Cashier_Controller extends Base_Controller {
 
 		}else{
 
-			$data = $cashierdata->find(array('paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod,'regtype'=>$type));
+			$data = $cashierdata->find(array('cashierid'=>$userobj,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod,'regtype'=>$type));
 			$dataresult =0;
 			foreach ($data as $key => $value) {
 				if($currency == 'idr'){
@@ -214,7 +225,7 @@ class Cashier_Controller extends Base_Controller {
 			$dateTo = new MongoDate(strtotime($toDate." 23:59:59"));
 			if($currency!=null && $paymentmethod!=null && $type == null){
 				
-				$data = $cashierdata->find(array('paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod));
+				$data = $cashierdata->find(array('cashierid'=>$userobj,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod));
 				$dataresult =0;
 				foreach ($data as $key => $value) {
 					if($currency == 'idr'){
@@ -226,7 +237,7 @@ class Cashier_Controller extends Base_Controller {
 
 			}else{
 
-				$data = $cashierdata->find(array('paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod,'regtype'=>$type));
+				$data = $cashierdata->find(array('cashierid'=>$userobj,'paymentdate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo),'currency'=>$currency,'paymentvia'=>$paymentmethod,'regtype'=>$type));
 				$dataresult =0;
 				foreach ($data as $key => $value) {
 					if($currency == 'idr'){

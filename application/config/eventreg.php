@@ -75,7 +75,40 @@ return array(
 			
 		),
 
-		
+		'eventdate'=>array(
+			'-' => 'Select date',
+			'2013-05-12'=>'12 May 2013',
+			'2013-05-13'=>'13 May 2013',
+			'2013-05-14'=>'14 May 2013',
+			'2013-05-15'=>'15 May 2013',
+			'2013-05-16'=>'16 May 2013',
+			'2013-05-17'=>'17 May 2013'
+			
+		),
+
+		'activity'=>array(
+
+			''=>'select activity',
+			'opening'=>'OPENING',
+			'day1tpc'=>'TPC DAY 1',
+			'plenarysession1'=>'PLENARY SESSION I',
+			'day2tpc'=>'TPC DAY 2',
+			'plenarysession2'=>'PLENARY SESSION II',
+			'plenarysession3'=>'PLENARY SESSION III',
+			'industrialdinner'=>'INDUSTRIAL DINNER',
+			'day3tpc'=>'TPC DAY 3',
+			'specialsession1'=>'SPECIAL SESSION I',
+			'specialsession2'=>'SPECIAL SESSION II',
+			'closingceremony'=>'CLOSING CEREMONY',
+			
+		),
+
+		'stationreader'=>array(
+			''=>'select station',
+			'a1'=>'A1',
+			'a2'=>'A2',
+			'a3'=>'A3'
+		),
 		'resendemailtype'=>array(
 			'email.regsuccess'=>'Registration',
 			/*'reset'=>'Reset Password',
