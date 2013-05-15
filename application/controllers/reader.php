@@ -73,6 +73,57 @@ class Reader_Controller extends Base_Controller {
 		return Redirect::to('reader')->with('notify_success','Succesfully store station number, you may scan the barcode now');
 	}
 
+
+	public function get_report()
+	{
+		$form = new Formly();
+
+		if(isset($_GET['activityselected'])){
+			$activity = $_GET['activityselected'];
+			
+		}else{
+			$activity = 'opening';
+		}
+
+		$reader = new Reader();
+
+		$q = array('activity'=>$activity,'$or'=>array(
+			array('role'=>'COM'),
+			array('role'=>'BOD'),
+			array('role'=>'ATB'),
+			));
+
+		$q2 = array('activity'=>$activity,'$or'=>array(
+			array('role'=>'PO'),
+			array('role'=>'PD'),
+			array('role'=>'SD'),
+			array('role'=>'SO'),
+			array('role'=>'PTC'),
+			));
+
+		$q3 = array('activity'=>$activity,'$or'=>array(
+			array('role'=>'VIP'),
+			array('role'=>'VVIP'),
+			));
+
+		$stat['all'] = $reader->count(array('activity'=>$activity));
+		$stat['commitee'] = $reader->count($q,array(),array(),array());
+		$stat['attendee'] = $reader->count($q2,array(),array(),array());
+		$stat['vip'] = $reader->count($q3,array(),array(),array());
+		
+		$stat['other'] = $stat['all']-($stat['commitee']+$stat['attendee']+$stat['vip']);
+
+		
+
+		return View::make('reader.report')
+			->with('stat',$stat)
+			->with('sessionselected',$activity)
+			->with('urlredirect',URL::to('reader/report'))
+			->with('title','Scan Report')
+			->with('form',$form)
+			->with('crumb',$this->crumb);
+	}
+
 	public function post_process(){
 		$data = Input::get();
 
@@ -86,7 +137,37 @@ class Reader_Controller extends Base_Controller {
 		if($stationnumber=='' || $regnumber == ''){
 			return Redirect::to('reader')->with('notify_error','Error! Registration number and Station number cannot be null');	
 		}else if($countcar<5 && $countcar>12){
-			return Redirect::to('reader')->with('notify_error','Error! Wrong format Registration number');	
+
+			//still save in our database
+			$readerfind = $reader->get(array('regplain'=>$regnumber,'activity'=>$activity));
+
+			//this user has attend
+			if(isset($readerfind)){
+				$_idrepeat = $readerfind['_id'];
+				$countrecent = $readerfind['countattend']+1;
+				if($reader->update(array('_id'=>$_idrepeat),array('$set'=>array('countattend'=>$countrecent,'lastUpdate'=>new MongoDate()))) ){
+
+					return Redirect::to('reader')->with('notify_error','Wrong format Registration number, maybe this badge created in other app, please check manual badge color');	
+				}
+			}else{
+				//drop to database
+				$datatoreader['role'] = 'pras';
+				$datatoreader['regplain'] = $regnumber;
+				$datatoreader['participant_number'] = '';
+				$datatoreader['firstname'] = '';
+				$datatoreader['lastname'] = '';
+				$datatoreader['company'] = '';
+				$datatoreader['stationnumber'] = $stationnumber;
+				$datatoreader['countattend'] = 1;
+				$datatoreader['activity'] = $activity;
+				$datatoreader['createdDate'] = new MongoDate();
+				$datatoreader['lastUpdate'] = new MongoDate();
+
+				if($obj = $reader->insert($datatoreader)){
+					return Redirect::to('reader')->with('notify_error','Wrong format Registration number, maybe this badge created in other app, please check manual badge color');	
+				}
+			}
+			
 
 		}else{
 			$reg_number = array();
@@ -116,29 +197,101 @@ class Reader_Controller extends Base_Controller {
 				$attendee = new Attendee();
 				
 
-			}else if($role == 'A'){
+			}else if($role == 'A' || $role == 'O'){
 
 				$type = $splitting[1].$splitting[2].$splitting[3];
-				$dinner = $splitting[4].$splitting[5];
-				$sequence = $splitting[6].$splitting[7].$splitting[8].$splitting[9].$splitting[10].$splitting[11];
+				$typespecialstud = $splitting[1].$splitting[2];
+				$typespecial4char = $splitting[1].$splitting[2].$splitting[3].$splitting[4];
 
-
-				$reg_number[0] = $role;
-				$reg_number[1] = $type;
-				$reg_number[2] = $dinner;
-				$reg_number[3] = $sequence;
-
-				$registratonnumberall = implode('-',$reg_number);
 
 				$attendee = new Official();
 				
+				if($typespecialstud=='SD' || $typespecialstud=='VS' || $typespecialstud=='OC'){
+
+					$type = $typespecialstud;
+					$dinner = $splitting[3].$splitting[4];
+					$sequence = $splitting[5].$splitting[6].$splitting[7].$splitting[8].$splitting[9].$splitting[10];
+
+				}elseif ($typespecial4char == 'VVIP') {
+
+					$type = $typespecial4char;
+					
+					$dinner = '';
+					$sequence = $splitting[5].$splitting[6].$splitting[7].$splitting[8].$splitting[9].$splitting[10];
+					$attendee = new Visitor();
+				
+
+				}else{
+
+					$type = $type;
+					if($type =='VIP' || $type =='MDA'){
+						$attendee = new Visitor();	
+					}
+					
+					$dinner = $splitting[4].$splitting[5];
+					$sequence = $splitting[6].$splitting[7].$splitting[8].$splitting[9].$splitting[10].$splitting[11];
+					
+				}
+
+
+				if($typespecial4char == 'VVIP'){
+					$reg_number[0] = $role;
+					$reg_number[1] = $type;
+					$reg_number[2] = $sequence;
+				}else{
+					$reg_number[0] = $role;
+					$reg_number[1] = $type;
+					$reg_number[2] = $dinner;
+					$reg_number[3] = $sequence;
+				}
+				
+
+				$registratonnumberall = implode('-',$reg_number);
+
+				
+				
 			}else{
-				return Redirect::to('reader')->with('notify_error','Error! Wrong format Registration number');	
+				
+				//still save in our database
+				$readerfind = $reader->get(array('regplain'=>$regnumber,'activity'=>$activity));
+
+				//this user has attend
+				if(isset($readerfind)){
+					$_idrepeat = $readerfind['_id'];
+					$countrecent = $readerfind['countattend']+1;
+					if($reader->update(array('_id'=>$_idrepeat),array('$set'=>array('countattend'=>$countrecent,'lastUpdate'=>new MongoDate()))) ){
+
+						return Redirect::to('reader')->with('notify_error','Wrong format Registration number, maybe this badge created in other app, please check manual badge color');	
+					}
+				}else{
+					//drop to database
+					$datatoreader['role'] = 'pras';
+					$datatoreader['regplain'] = $regnumber;
+					$datatoreader['participant_number'] = '';
+					$datatoreader['firstname'] = '';
+					$datatoreader['lastname'] = '';
+					$datatoreader['company'] = '';
+					$datatoreader['stationnumber'] = $stationnumber;
+					$datatoreader['countattend'] = 1;
+					$datatoreader['activity'] = $activity;
+					$datatoreader['createdDate'] = new MongoDate();
+					$datatoreader['lastUpdate'] = new MongoDate();
+
+					if($obj = $reader->insert($datatoreader)){
+						return Redirect::to('reader')->with('notify_error','Wrong format Registration number, maybe this badge created in other app, please check manual badge color');	
+					}
+				}
 			}
+
+
 			$att = $attendee->get(array('registrationnumber'=>$registratonnumberall));				
 
 			if(isset($att)){
 
+				//student cannot join
+				if(($type == 'SD'&&$role!='C') || $type == 'VS' || $type == 'OC'){
+					return Redirect::to('reader')->with('notify_error','Error! This participant cant have access on this area');			
+				}
 				if(isset($att['firstname'])){
 					$firstname = $att['firstname'];
 				}else{
@@ -148,6 +301,11 @@ class Reader_Controller extends Base_Controller {
 					$lastname = $att['lastname'];
 				}else{
 					$lastname = '';
+				}
+				if(isset($att['company'])){
+					$company = $att['company'];
+				}else{
+					$company = '';
 				}
 				$fullname = $firstname.$lastname;
 				//first check if this user has attend same activity
@@ -163,7 +321,12 @@ class Reader_Controller extends Base_Controller {
 					}
 				}else{
 					//drop to database
+					$datatoreader['role'] = $type;
+					//$datatoreader['usesystem'] = $type;
 					$datatoreader['participant_number'] = $registratonnumberall;
+					$datatoreader['firstname'] = $firstname;
+					$datatoreader['lastname'] = $lastname;
+					$datatoreader['company'] = $company;
 					$datatoreader['regplain'] = $regnumber;
 					$datatoreader['stationnumber'] = $stationnumber;
 					$datatoreader['countattend'] = 1;
@@ -181,7 +344,7 @@ class Reader_Controller extends Base_Controller {
 
 				return Redirect::to('reader')->with('notify_success','Hi Welcome to IPA 37 Convention & Exhibition'.$registratonnumberall);
 			}else{
-				return Redirect::to('reader')->with('notify_error','Error! This participant cannot find in our database');			
+				return Redirect::to('reader')->with('notify_error','This participant cannot find in our database');			
 			}
 
 

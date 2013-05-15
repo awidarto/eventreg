@@ -587,7 +587,88 @@ class Export_Controller extends Base_Controller {
 
 	}
 
+	public function get_reader(){
 
+
+		$dataset = new Reader();
+		$collection = 'reader';
+		
+
+		
+		
+		//all
+		if(isset($_GET['session']) && !isset($_GET['role']) ){
+			
+			$session = $_GET['session'];
+			
+			
+			$condition  = array('activity'=>$session);
+			$dataresult = $dataset->find($condition, array(), array(),array());
+
+			
+		}
+
+
+
+
+		if(isset($dataresult)){
+
+			$filename = 'Report reader-'.$session.'-'. date('Ymd_his',time()).'_'.$collection.'.csv';
+
+			$header['Cache-Control'] = "must-revalidate, post-check=0, pre-check=0";
+			$header['Content-Description'] = "File Transfer";
+			$header['Content-type'] = "text/csv";
+			$header['Content-Disposition'] = "attachment; filename=".$filename;
+			$header['Expires'] = "0";
+			$header['Pragma'] = "public";
+
+			$dataheader = Config::get('eventreg.'.$collection.'_csv_template');
+
+			$dataheader = array_keys($dataheader);
+
+			for($i = 0; $i < count($dataheader);$i++){
+				$first_row[$i] = '"'.$dataheader[$i].'"';
+			}
+
+			$first_row = implode(',',$first_row);
+
+			//print $first_row;
+
+			$result = array();
+			$result[] = $first_row; // add the header
+
+			foreach($dataresult as $row){
+				$inrow = array();
+				for($i = 0; $i < count($dataheader); $i++){
+
+					//$tanggal = date('d-m-Y', $row['paymentdate']->sec);
+					//$row[$dataheader[7]] = $tanggal;
+					
+
+					if(isset($row[$dataheader[$i]])){
+						if(is_float($row[$dataheader[$i]]) || is_double($row[$dataheader[$i]]) || is_long($row[$dataheader[$i]]) || is_integer($row[$dataheader[$i]])){
+							$row[$dataheader[$i]] = (string) $row[$dataheader[$i]];
+							$inrow[$i] = '"\''.$row[$dataheader[$i]].'"';
+						}else{
+							$inrow[$i] = '"'.$row[$dataheader[$i]].'"';
+						}
+					}else{
+						$inrow[$i] = '""';
+					}
+				}					
+				$result[] = implode(',',$inrow);
+			}
+
+			//$dataresult = serialize($dataresult);
+			//$result = Formatter::make($dataresult,'serialize')->to_csv();
+
+			//print_r($result);
+
+			$result = implode("\r\n",$result);
+			return Response::make($result,'200',$header);
+		}
+
+	}
 	public function get_reportbycompany(){
 
 

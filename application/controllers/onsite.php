@@ -1772,6 +1772,8 @@ class Onsite_Controller extends Base_Controller {
 	{
 
 		$visitor = new Visitor();
+		$official = new Official();
+		$attendee = new Attendee();
 	    
 
 		$stat['VS'] = $visitor->count(array('role'=>'VS'));
@@ -1782,7 +1784,25 @@ class Onsite_Controller extends Base_Controller {
 
 		$stat['OC'] = $visitor->count(array('role'=>'OC'));
 
+		$stat['media'] = $visitor->count(array('role'=>'MDA'));
+
+
+		$stat['COM'] = $official->count(array('role'=>'COM'));
+		$stat['BOD'] = $official->count(array('role'=>'BOD'));
+		$stat['SD'] = $official->count(array('role'=>'SD'));
+		$stat['ORG'] = $official->count(array('role'=>'ORG'));
+		$stat['SPK'] = $official->count(array('role'=>'SPK'));
+		$stat['ATB'] = $official->count(array('role'=>'ATB'));
+
+
+
 		$stat['Visitor'] = $visitor->count();
+		$stat['official'] = $official->count();
+
+		//Participant stat
+
+		$stat['registeronsite'] = $attendee->count(array('registeronsite'=>'true'));
+
 		$this->crumb = new Breadcrumb();
 		$this->crumb->add('','On Site Report');
 		

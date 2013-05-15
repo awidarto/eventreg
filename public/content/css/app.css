@@ -1091,9 +1091,15 @@ body#reader{
 }
 #nav-bar.headerreader{
 	background-color: #e1e1e1;
-	height: 500px;
+	height: 440px;
 	margin: 0 auto;
 	text-align: center;
+}
+
+#nav-bar.headerreaderreport{
+	
+	height: 300px;
+	
 }
 .logoreader{
 	margin-top: 150px;

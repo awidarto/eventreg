@@ -428,6 +428,20 @@ return array(
 			'cashiername'=> ''
 		),
 
+		'reader_csv_template'=>array(
+			//new template
+			'firstname'=>'',
+			'lastname'=>'',
+			'company'=>'',
+			'role'=> '',
+			'participant_number'=> '',
+			'regplain'=> '',
+			'stationnumber'=> '',
+			'countattend'=> '',
+			'activity'=> '',
+			
+		),
+
 		'electriclist' =>array(
 			'2A / 1 ph / 440 Watt',
 			'4A / 1 ph / 880 Watt',

@@ -10,6 +10,7 @@
         	<h3 style="display:inline-block;margin:0 0 0 4px;">THE 37TH IPA CONVENTION AND EXHIBITION 2013</h3><br/>
 			<h5 style="display:block;margin:0 0 0 4px;">JAKARTA CONVENTION CENTER</h5>
 			<h5 style="display:inline-block;margin:0 0 0 4px;">15-17 MAY 2013</h5>
+
 		</div>
 		@if (Session::has('notify_error'))
 		    <div class="alert alert-error alertreader">
@@ -44,6 +45,9 @@
 				?>
 				{{$form->hidden('stationnumber',$stationstore)}}
 				{{$form->hidden('activity',$activitystore)}}
+				<p>Application set to <strong>{{ Session::get('activityselected') }}</strong> activity,
+					please change if you're on different activity
+				</p>
 				<div class="span6">
 					{{ $form->text('regnumber','','',array('class'=>'text','id'=>'regnumber')) }}
 				</div>
@@ -54,6 +58,7 @@
 			{{$form->close()}}
 		</div>
 		{{ HTML::decode(HTML::link('reader/selectstation', '<i style="color:#cfcfcf;float:left;margin-right:10px;">&#x0023;</i><small>Select station & activity</small>', array('class' => 'selectbackstation icon- span 7'))); }}
+		{{ HTML::decode(HTML::link('reader/report', '<i style="color:#cfcfcf;float:left;margin-right:10px;">&#x0023;</i><small>Go to report</small>', array('class' => 'selectbackstation icon- span 7'))); }}
 		
   </div>
 </div>
