@@ -529,7 +529,7 @@ class Attendee_Controller extends Base_Controller {
 				//mail to registrant about payment updated
 				//if only set to paid to send email
 				if($paystatus == 'paid'){
-					$data = $user->get(array('_id'=>$_id));
+					/*$data = $user->get(array('_id'=>$_id));
 
 					if($displaytax == 'printtax' ){
 						$body = View::make('email.confirmpaymenttax')->with('data',$data)->render();
@@ -544,7 +544,7 @@ class Attendee_Controller extends Base_Controller {
 					    ->subject('CONFIRMATION OF REGISTRATION - Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$data['registrationnumber'].')')
 					    ->body( $body )
 					    ->html(true)
-					    ->send();
+					    ->send();*/
 				}
 				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
 			}else{
@@ -576,7 +576,7 @@ class Attendee_Controller extends Base_Controller {
 				//mail to registrant about payment updated
 				//if only set to paid to send email
 				if($paystatus == 'paid'){
-					$data = $user->get(array('_id'=>$_id));
+					/*$data = $user->get(array('_id'=>$_id));
 
 					if($displaytax == 'printtax' ){
 						$body = View::make('email.confirmpaymentgolftax')->with('data',$data)->render();
@@ -590,7 +590,7 @@ class Attendee_Controller extends Base_Controller {
 					    ->subject('CONFIRMATION OF REGISTRATION (GOLF)- Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$data['registrationnumber'].')')
 					    ->body( $body )
 					    ->html(true)
-					    ->send();
+					    ->send();*/
 				}
 				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
 			}else{
@@ -624,7 +624,7 @@ class Attendee_Controller extends Base_Controller {
 				//mail to registrant about payment updated
 				//if only set to paid to send email
 				if($paystatus == 'paid'){
-					$data = $user->get(array('_id'=>$_id));
+					/*$data = $user->get(array('_id'=>$_id));
 
 					if($displaytax == 'printtax' ){
 						$body = View::make('email.confirmpaymentalltax')->with('data',$data)->render();
@@ -639,7 +639,7 @@ class Attendee_Controller extends Base_Controller {
 					    ->subject('CONFIRMATION OF REGISTRATION - Indonesia Petroleum Association – 37th Convention & Exhibition (Registration – '.$data['registrationnumber'].')')
 					    ->body( $body )
 					    ->html(true)
-					    ->send();
+					    ->send();*/
 				}
 				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
 			}else{

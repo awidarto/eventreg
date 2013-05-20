@@ -77,6 +77,13 @@ class Report_Controller extends Base_Controller {
 		$today = date('Y-m-d');
 		$getdate = $this->makeDateRange('2013-02-11', $today);
 		$getCount = $this->getCountAttendee('2013-02-11', $today);
+
+		$getCountOnsite = $this->getCountAttendeeOnsite('2013-05-14', $today);
+
+		$conditionpickupbadgenotes = array('badgepickupnotes'=>array('$ne'=>''));
+		$getbadgepickupnotes = $attendee->count($conditionpickupbadgenotes,array(),array());
+
+		$getCountpickupnotes = $this->getCountAttendeePickupNotes('2013-02-11', $today);
 		
 		foreach($companies as $key => $value){
 			$companyValue[$value] = $attendee->count(array('company'=>$value));
@@ -92,9 +99,49 @@ class Report_Controller extends Base_Controller {
 			->with('companies',$companies)
 			->with('coutryValue',$coutryValue)
 			->with('companyValue',$companyValue)
+			->with('getbadgepickupnotes',$getbadgepickupnotes)
 			->with('country',$country)
 			->with('getdate',$getdate)
 			->with('getCount',$getCount)
+			
+			->with('crumb',$this->crumb);
+	}
+
+
+	public function get_onsite()
+	{
+
+		$attendee = new Attendee();
+
+	 
+		$today = date('Y-m-d');
+
+		
+
+		$getCountOnsite = $this->getCountAttendeeOnsite('2013-05-13', $today);
+		
+
+		$totalonsite=0;
+		foreach ($getCountOnsite as $key => $value) {
+			$totalonsite += $value;
+		}
+		
+		$conditionpickupbadgenotes = array('badgepickupnotes'=>array( '$exists'=> true ));
+		$getCountOnsitePickup = $this->getCountAttendeeOnsitePickup('2013-05-13', $today);
+
+		$getbadgepickupnotes = $attendee->count($conditionpickupbadgenotes,array(),array());
+
+		$getCountpickupnotes = $this->getCountAttendeePickupNotes('2013-05-13', $today);
+		
+		$totalallparticipant = $attendee->count();
+
+		return View::make('report.onsite')
+			->with('title','Report')
+			->with('totalonsite',$totalonsite)
+			->with('getbadgepickupnotes',$getbadgepickupnotes)
+			->with('totalallparticipant',$totalallparticipant)
+			->with('getCountpickupnotes',$getCountpickupnotes)
+			->with('getCountOnsite',$getCountOnsite)
 			
 			->with('crumb',$this->crumb);
 	}
@@ -145,6 +192,79 @@ class Report_Controller extends Base_Controller {
 			$dateTo = new MongoDate(strtotime($toDate." 23:59:59"));
 
 			$dataresult = $attendee->count(array('createdDate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
+			array_push($aryRange,$dataresult ); // first entry
+
+	    }
+	  }
+	  return $aryRange;
+	}
+
+
+
+	private function getCountAttendeeOnsite($strDateFrom,$strDateTo){
+
+	  $attendee = new Attendee();
+	  $aryRange=array();
+
+	  $iDateFrom=mktime(1,0,0,substr($strDateFrom,5,2),     substr($strDateFrom,8,2),substr($strDateFrom,0,4));
+	  $iDateTo=mktime(1,0,0,substr($strDateTo,5,2),     substr($strDateTo,8,2),substr($strDateTo,0,4));
+
+	  if ($iDateTo>=$iDateFrom) {
+	   
+	    
+	    $fromDate = date('d-M-Y',$iDateFrom);
+	    $toDate = date('d-M-Y',$iDateFrom);
+	    $dateFrom = new MongoDate(strtotime($fromDate." 00:00:00"));
+		$dateTo = new MongoDate(strtotime($toDate." 23:59:59"));
+
+		$dataresult = $attendee->count(array('registonsite'=>'true','createdDate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
+		array_push($aryRange,$dataresult ); // first entry
+
+
+	    while ($iDateFrom<$iDateTo) {
+	      	$iDateFrom+=86400; // add 24 hours
+			$fromDate = date('d-M-Y',$iDateFrom);
+			$toDate = date('d-M-Y',$iDateFrom);
+			$dateFrom = new MongoDate(strtotime($fromDate." 00:00:00"));
+			$dateTo = new MongoDate(strtotime($toDate." 23:59:59"));
+
+			$dataresult = $attendee->count(array('createdDate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
+			array_push($aryRange,$dataresult ); // first entry
+
+	    }
+	  }
+	  return $aryRange;
+	}
+
+
+	private function getCountAttendeePickupNotes($strDateFrom,$strDateTo){
+
+	  $attendee = new Attendee();
+	  $aryRange=array();
+
+	  $iDateFrom=mktime(1,0,0,substr($strDateFrom,5,2),     substr($strDateFrom,8,2),substr($strDateFrom,0,4));
+	  $iDateTo=mktime(1,0,0,substr($strDateTo,5,2),     substr($strDateTo,8,2),substr($strDateTo,0,4));
+
+	  if ($iDateTo>=$iDateFrom) {
+	   
+	    
+	    $fromDate = date('d-M-Y',$iDateFrom);
+	    $toDate = date('d-M-Y',$iDateFrom);
+	    $dateFrom = new MongoDate(strtotime($fromDate." 00:00:00"));
+		$dateTo = new MongoDate(strtotime($toDate." 23:59:59"));
+
+		$dataresult = $attendee->count(array('badgepickupnotes'=>array( '$exists'=> true ),'printbagdedate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
+		array_push($aryRange,$dataresult ); // first entry
+
+
+	    while ($iDateFrom<$iDateTo) {
+	      	$iDateFrom+=86400; // add 24 hours
+			$fromDate = date('d-M-Y',$iDateFrom);
+			$toDate = date('d-M-Y',$iDateFrom);
+			$dateFrom = new MongoDate(strtotime($fromDate." 00:00:00"));
+			$dateTo = new MongoDate(strtotime($toDate." 23:59:59"));
+
+			$dataresult = $attendee->count(array('badgepickupnotes'=>array( '$exists'=> true ),'printbagdedate'=>array('$gte'=>$dateFrom,'$lte'=>$dateTo)));
 			array_push($aryRange,$dataresult ); // first entry
 
 	    }

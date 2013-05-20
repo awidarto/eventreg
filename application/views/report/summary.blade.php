@@ -143,6 +143,18 @@
 		            <div class="text">Participants</div>
 		         </div>
 		      </a>
+
+		      <a class="tile imagetext bg-color-purple statistic" href="{{ URL::to('export/report/?dinner=yes') }}">
+		         <div class="image-wrapper text-big">
+		            <div class="text-big">{{ $getbadgepickupnotes }}</div>
+		         </div>
+		         <div class="column-text">
+		            <div class="text">Total</div>
+		            <div class="text">Badge</div>
+		            <div class="text">Pickup</div>
+		         </div>
+		      </a>
+		      
 	      </div>
 	      <div class="separateMetro marginbottom">
 	      <h2>Registration by Country</h2>
