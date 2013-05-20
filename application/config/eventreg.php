@@ -747,7 +747,11 @@ return array(
 			'address'=>'',
 			'conventionPaymentStatus'=>'',
 			'golfPaymentStatus'=>'',
-			'notes'=>''
+			'notes'=>'',
+			'badgepickupnotes'=>'',
+			'printbadge'=>'',
+			'registonsite'=>'',
+			'payonsite'=>''
 		)
 		
 	);
